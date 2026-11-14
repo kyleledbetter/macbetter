@@ -1,0 +1,103 @@
+export const metadata = {
+  title: "Text Field",
+  description: "Enter a single line of text: a bordered field on macOS, a filled one on iOS, with a clear button and adornments.",
+}
+
+# Text Field
+
+<Lead>Enter a single line of text, like a name, an address or a URL.</Lead>
+
+<Demo name="text-field/basic" />
+
+## When to use it
+
+Use a text field for a short value someone types. Give it a visible label through a [Field](/docs/components/field), or an `aria-label` when the context already names it, like a toolbar. Use the placeholder for an example or a hint ("name@example.com"), never as the only label: it disappears as soon as someone types.
+
+For a password use a [Secure Field](/docs/components/secure-field), for search a [Search Field](/docs/components/search-field), and for several lines a [Text Area](/docs/components/text-area).
+
+## Usage
+
+```tsx
+import {
+  TextField,
+  TextFieldAdornment,
+  TextFieldClear,
+  TextFieldGroup,
+} from "@dreambase/stardust/text-field"
+```
+
+`TextField` is a native `input`, so `type`, `placeholder`, `autoComplete`, `inputMode` and the rest pass straight through. `size` is `sm`, `md` or `lg`: 22, 28 and 36 points tall on macOS, 34, 44 and 52 on iOS.
+
+### Adornments and a clear button
+
+Wrap the field in a `TextFieldGroup` to put text or an icon beside it, or a clear button after it. The group draws the field; pressing an adornment focuses the input. `TextFieldClear` is the xmark.circle.fill button: it appears only while there's text, empties the field and puts focus back.
+
+<Demo name="text-field/adornments" />
+
+### Variants
+
+`variant="auto"` follows the platform. `bordered` is the macOS field, white with a hairline edge. `filled` is the iOS gray field. `plain` has no chrome at all, for a field inside a list row or a table cell, where the row is the field.
+
+<Demo name="text-field/variants" />
+
+## Platform behavior
+
+- **macOS.** A rounded rectangle on the field background, with a hairline edge and a faint inner shadow. The accent focus halo appears the moment the field starts editing, by mouse or keyboard, and settles in from just outside the edge. Text is 13 points.
+- **iPadOS and iOS.** A gray filled field with 10-point corners and 17-point text, 44 points tall. The caret is the accent color. A `plain` field shows only its caret when editing, as in Settings.
+- **Every platform.** An invalid field turns its edge and halo red. With Increase Contrast on, the filled field gains an edge. The clear button keeps a full pointer or touch target even though it draws at 14 or 17 points.
+
+## Accessibility
+
+- The input is native, so text editing, selection, autofill and spell checking work as everywhere else.
+- Name every field with a Field label or `aria-label`. Name `TextFieldClear` when "Clear text" isn't specific enough, like "Clear website".
+- Inside a Field, an invalid input gets `aria-invalid` and is described by its error.
+
+## API
+
+### TextField
+
+<PropsTable
+  rows={[
+    { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Height, padding and type size, from the platform's metrics." },
+    { name: "variant", type: '"auto" | "bordered" | "filled" | "plain"', default: '"auto"', description: "Bordered on macOS and filled on touch, or a fixed look." },
+    { name: "value", type: "string", description: "The text, for a controlled field." },
+    { name: "defaultValue", type: "string", description: "The text it starts with. A form reset returns here." },
+    { name: "onValueChange", type: "(value, details) => void", description: "Runs on typing, a clear press, a reset or a controller. details.reason says which." },
+  ]}
+/>
+
+### TextFieldGroup
+
+<PropsTable
+  rows={[
+    { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "The size of the field the group draws." },
+    { name: "variant", type: '"auto" | "bordered" | "filled" | "plain"', default: '"auto"', description: "The look of the field the group draws." },
+  ]}
+/>
+
+### TextFieldClear
+
+A `button`, named "Clear text" unless you pass `aria-label`. It draws xmark.circle.fill unless it has children.
+
+`TextFieldAdornment` takes the props of a `span`.
+
+### Data attributes
+
+| Attribute | On | Values |
+| --- | --- | --- |
+| `data-size` | TextField, TextFieldGroup | `sm`, `md`, `lg` |
+| `data-variant` | TextField, TextFieldGroup | `auto`, `bordered`, `filled`, `plain` |
+| `data-filled` | TextField, group, clear | Present while there's text |
+| `data-invalid` | TextField | Present inside an invalid Field |
+| `data-disabled`, `data-readonly` | TextField, group | Present when disabled or read-only |
+
+### CSS variables
+
+| Variable | macOS | iOS | What it sets |
+| --- | --- | --- | --- |
+| `--sd-text-field-radius` | `6px` | `10px` | Corner radius at `md` |
+| `--sd-text-field-padding` | `8px` | `12px` | Inline padding at `md` |
+| `--sd-text-field-font` | 13px | 17px | Type at `md` |
+| `--sd-text-field-icon` | `14px` | `17px` | Adornment icon and clear button size |
+| `--sd-text-field-auto-bg` | Field white | Tertiary fill | What `auto` fills with |
+| `--sd-field-placeholder` | Ink at 64% (60% dark) | Same | Placeholder color for every text control, kept at 4.5:1 |

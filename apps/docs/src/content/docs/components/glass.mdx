@@ -1,0 +1,115 @@
+export const metadata = {
+  title: "Glass",
+  description: "Translucent materials for chrome, and Liquid Glass for controls that float over content.",
+}
+
+# Glass
+
+<Lead>Translucent layers that let content show through, so chrome floats above it.</Lead>
+
+<Demo name="glass/materials" wallpaper height={360} />
+
+## When to use it
+
+Apple uses translucency for the layer that sits above content: bars, sidebars, menus, popovers, sheets, and floating controls. It keeps people oriented, because they can see what's underneath, while the chrome stays out of the way.
+
+Stardust has two kinds:
+
+- **Materials** are frosted panes for surfaces: a toolbar, a sidebar, a popover, a sheet. They blur heavily and come in thicknesses.
+- **Glass** is Liquid Glass, for controls that float over content: a tab bar, a capsule of toolbar buttons, a floating action. It blurs less and bends light at its edges, with a bright rim and an inner glow.
+
+Never put one translucent layer on another. Blur on blur muddies both, and text on the top layer loses its contrast. A menu over a glass toolbar is fine, because the menu is a separate layer above it; a glass button inside a material sidebar is not. Inside glass, use plain controls.
+
+## Choosing a material
+
+Thicker materials hide more of what's behind them. Use a thicker one for bigger surfaces and for anything with a lot of text, and a thinner one where the content behind is the point.
+
+| Material | Use it for |
+| --- | --- |
+| `ultrathin` | Controls over photos and video, where you want the content to show. |
+| `thin` | Small floating panels and HUDs. |
+| `regular` | Menus, popovers and most surfaces. The default. |
+| `thick` | Sheets and inspectors over busy content, and anywhere with long text. |
+| `chrome` | Toolbars, tab bars and title bars: the window's own background, slightly translucent. |
+| `sidebar` | Source lists beside a window's content, tinted like the desktop. |
+
+## Usage
+
+```tsx
+import { Glass, GlassGroup, Material } from "@dreambase/stardust/glass"
+```
+
+`Material` is a `div` with the `sd-material` class and `data-material`. Use `render` to make it another element, such as `<nav />` or `<aside />`. Component styles use the same tokens directly: `background: var(--sd-material-regular)` with `backdrop-filter: var(--sd-material-filter)`.
+
+### Liquid Glass
+
+`Glass` is a rounded pane by default. Set `shape` to `capsule` or `circle`. `variant="clear"` lets more through, for glass over photos and video; keep what's on it bold. `variant="tinted"` carries the accent, for the one prominent floating action.
+
+<Demo name="glass/glass" wallpaper height={360} />
+
+### Floating clusters
+
+`GlassGroup` is one capsule of glass around a cluster of plain buttons, like a toolbar's trailing actions or a map's zoom controls. Group related actions so they share one piece of glass, rather than giving each its own. A vertical `Separator` divides groups within it.
+
+Glass that is itself a control, like a floating location button, takes `interactive` or renders as a button: it brightens under the pointer and glows from inside when pressed.
+
+<Demo name="glass/group" wallpaper height={360} />
+
+## Platform behavior
+
+The materials are the same on every platform. Interactive glass flexes on iOS and iPadOS: it swells slightly under a finger, the way Liquid Glass responds to touch. On macOS it brightens on hover and glows a little more on press instead, and never scales.
+
+## Accessibility
+
+- **Reduce Transparency** turns every material and glass surface opaque: the blur and the highlights go, and the edge stays so the shape still reads.
+- **Increase Contrast** makes them opaque too, and replaces the specular rim with a real edge in the control border color.
+- In forced colors mode, they become plain `Canvas` with a `CanvasText` border.
+- In dark mode a material also dims what's behind it, as Apple's do, so labels stay legible over bright content.
+- Text on glass uses the label tokens, which hold their contrast against the material, not against the wallpaper. Check text on clear glass against the content you'll actually put behind it.
+- A `GlassGroup` is a `group`. Give it an `aria-label` that names the cluster, and name every button in it.
+
+## API
+
+### Material
+
+<PropsTable
+  rows={[
+    { name: "material", type: '"ultrathin" | "thin" | "regular" | "thick" | "chrome" | "sidebar"', default: '"regular"', description: "How much of what's behind shows through." },
+    { name: "render", type: "ReactElement | (props) => ReactElement", description: "Renders a different element with the material's props." },
+  ]}
+/>
+
+### Glass
+
+<PropsTable
+  rows={[
+    { name: "variant", type: '"regular" | "clear" | "tinted"', default: '"regular"', description: "`clear` for glass over media; `tinted` carries the accent." },
+    { name: "shape", type: '"rounded" | "capsule" | "circle"', default: '"rounded"', description: "The pane's shape." },
+    { name: "interactive", type: "boolean", description: "Responds to hover and press. Glass rendered as a button or link does this on its own." },
+    { name: "render", type: "ReactElement | (props) => ReactElement", description: "Renders a different element, such as a button." },
+  ]}
+/>
+
+### GlassGroup
+
+<PropsTable
+  rows={[
+    { name: "orientation", type: '"horizontal" | "vertical"', default: '"horizontal"', description: "Which way the controls run." },
+    { name: "variant", type: '"regular" | "clear"', default: '"regular"', description: "The glass." },
+    { name: "aria-label", type: "string", description: "Names the cluster." },
+  ]}
+/>
+
+### Classes and tokens
+
+The classes work without the components, in any markup.
+
+| Class, attribute or token | Description |
+| --- | --- |
+| `.sd-material` with `data-material` | A material pane. |
+| `.sd-glass` with `data-variant`, `data-shape`, `data-interactive` | A Liquid Glass pane. |
+| `--sd-material-ultrathin` … `--sd-material-sidebar` | Each material's fill, for component styles. |
+| `--sd-material-filter` | The backdrop filter every material uses. |
+| `--sd-glass-rim`, `--sd-glass-edge`, `--sd-glass-border` | The bright top edge and hairline border. |
+| `--sd-glass-fill`, `--sd-glass-filter`, `--sd-glass-radius`, `--sd-glass-shadow` | Set on a `.sd-glass` element to adjust one pane. |
+| `--sd-material-scrim` | Set on a `.sd-material` element: the dimming layer under a dark material. Transparent in light mode. |

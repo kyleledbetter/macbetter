@@ -1,0 +1,44 @@
+export const metadata = { title: "Context Menu", description: "Offer actions for the thing under the pointer or finger." }
+
+# Context Menu
+
+<Lead>Offer actions for the thing under the pointer or finger.</Lead>
+
+<Demo name="context-menu/basic" wallpaper height={440} />
+
+## When to use it
+
+A context menu holds the most useful commands for one object: a file, a message, a photo. People open it with a right-click or Control-click on the Mac and a long press on iPhone and iPad.
+
+- Show only commands that apply to what was clicked, and keep them short.
+- Never make a context menu the only way to reach a command. It's a shortcut; the same commands belong in a toolbar, a menu bar menu or a pull-down button.
+- Put destructive commands last, separated from the rest.
+
+## Usage
+
+```tsx
+import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from "@dreambase/stardust/context-menu"
+import { MenuItem, MenuSeparator } from "@dreambase/stardust/menu"
+```
+
+`ContextMenu` is a [Menu](/docs/components/menu) whose trigger is an area instead of a button. Fill `ContextMenuContent` with the menu's own items, icons, checkboxes and submenus. Give the area `tabIndex={0}` and an accessible name so the keyboard can reach it.
+
+## Platform behavior
+
+- **macOS**: the menu opens at the pointer, at full size, with no scale. While it's open, the area gets an accent ring, as Finder rings the file you right-clicked.
+- **iOS and iPadOS**: a long press first presses the area down a little, then lifts it with a shadow while the menu springs open beside it, in the roomy iOS menu style.
+
+## Accessibility
+
+The context-menu key opens the menu for the focused area, with focus on its first item. Shift+F10 does too in browsers that turn it into a context-menu event, as on Windows and Linux. Arrow keys, typeahead, Enter and Escape work as in any menu, and Escape returns focus to the area. Set `disabled` on the trigger to let the browser's own menu through.
+
+## API
+
+<PropsTable
+  rows={[
+    { name: "ContextMenu", type: "MenuProps", description: "The root. Takes the Menu's props, like onAction. Always presents as a popover." },
+    { name: "ContextMenuTrigger", type: "disabled, payload", description: "The area. Classes: sd-menu-context-trigger sd-context-menu-trigger." },
+    { name: "ContextMenuContent", type: "MenuContent props", description: "The menu. Opens at the pointer." },
+    { name: "--sd-context-menu-enter-scale", type: "number", default: "1 · 0.6", description: "How small the menu starts, on the Mac · on touch." },
+  ]}
+/>

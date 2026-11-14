@@ -1,0 +1,193 @@
+/* Token Field — text where each entry is a rounded token tinted with the accent, as in Mail's address fields. */
+
+:where(:root, [data-platform="macos"]) {
+  --sd-token-field-token-height: 18px;
+  --sd-token-field-token-radius: var(--sd-radius-xs);
+  --sd-token-field-token-pad: 6px;
+  --sd-token-field-token-font: 400 12px/18px var(--sd-font);
+  --sd-token-field-pad-block: 4px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --sd-token-field-token-height: 28px;
+  --sd-token-field-token-radius: var(--sd-radius-full);
+  --sd-token-field-token-pad: 10px;
+  --sd-token-field-token-font: 400 16px/28px var(--sd-font);
+  --sd-token-field-pad-block: 7px;
+}
+
+.sd-token-field {
+  --sd-token-field-bg: var(--sd-text-field-auto-bg);
+  --sd-token-field-edge: var(--sd-text-field-auto-edge);
+  --sd-token-field-ring: var(--sd-focus-ring);
+  --sd-token-field-tint: var(--sd-accent);
+
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: var(--sd-control-height);
+  margin: 0;
+  padding: var(--sd-token-field-pad-block) var(--sd-text-field-padding);
+  border-radius: var(--sd-text-field-radius);
+  background: var(--sd-token-field-bg);
+  box-shadow: var(--sd-token-field-edge);
+  color: var(--sd-label);
+  font: var(--sd-text-field-font);
+  line-height: calc(var(--sd-token-field-token-height) + 2px);
+  letter-spacing: var(--sd-tracking-body);
+  caret-color: var(--sd-accent);
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+  cursor: text;
+  outline: var(--sd-focus-ring-width) solid transparent;
+  outline-offset: 2px;
+  transition:
+    outline-color var(--sd-duration-fast) var(--sd-ease-out),
+    outline-offset var(--sd-duration-fast) var(--sd-ease-out);
+}
+
+.sd-token-field[data-size="sm"] {
+  min-height: var(--sd-control-height-sm);
+  padding-block: calc(var(--sd-token-field-pad-block) - 2px);
+  font: var(--sd-text-field-font-sm);
+  line-height: calc(var(--sd-token-field-token-height));
+}
+
+.sd-token-field[data-size="lg"] {
+  min-height: var(--sd-control-height-lg);
+  font: var(--sd-text-field-font-lg);
+  line-height: calc(var(--sd-token-field-token-height) + 6px);
+}
+
+.sd-token-field[data-variant="bordered"] {
+  --sd-token-field-bg: var(--sd-bg-field);
+  --sd-token-field-edge: inset 0 0 0 var(--sd-hairline) var(--sd-control-border),
+    inset 0 0.5px 1px light-dark(rgb(0 0 0 / 0.07), rgb(0 0 0 / 0.2));
+}
+
+.sd-token-field[data-variant="filled"] {
+  --sd-token-field-bg: var(--sd-fill-tertiary);
+  --sd-token-field-edge: inset 0 0 0 0 transparent;
+}
+
+.sd-token-field:focus,
+.sd-token-field:focus-within {
+  outline-color: var(--sd-token-field-ring);
+  outline-offset: 0px;
+}
+
+.sd-token-field[data-empty]::before {
+  content: attr(aria-placeholder);
+  position: absolute;
+  inset-inline: var(--sd-text-field-padding);
+  color: var(--sd-field-placeholder);
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sd-token-field[data-disabled] {
+  --sd-token-field-bg: var(--sd-fill-quaternary);
+  --sd-token-field-edge: inset 0 0 0 var(--sd-hairline) var(--sd-separator);
+  color: var(--sd-label-tertiary);
+  cursor: default;
+}
+
+.sd-token-field:is([data-invalid], [aria-invalid="true"]) {
+  --sd-token-field-edge: inset 0 0 0 1px var(--sd-destructive);
+  --sd-token-field-ring: color-mix(in oklch, var(--sd-destructive) 80%, transparent);
+}
+
+.sd-token-field-token {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  box-sizing: border-box;
+  height: var(--sd-token-field-token-height);
+  margin-inline: 1px 3px;
+  padding-inline: var(--sd-token-field-token-pad);
+  border-radius: var(--sd-token-field-token-radius);
+  background: light-dark(
+    color-mix(in oklch, var(--sd-token-field-tint) 18%, transparent),
+    color-mix(in oklch, var(--sd-token-field-tint) 30%, transparent)
+  );
+  box-shadow: inset 0 0 0 var(--sd-hairline) color-mix(in oklch, var(--sd-token-field-tint) 45%, transparent);
+  color: var(--sd-label);
+  font: var(--sd-token-field-token-font);
+  letter-spacing: var(--sd-tracking-body);
+  vertical-align: middle;
+  white-space: nowrap;
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+  transition:
+    background-color var(--sd-duration-fast) var(--sd-ease-out),
+    color var(--sd-duration-fast) var(--sd-ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .sd-token-field-token:not([data-selected]):hover {
+    background: light-dark(
+      color-mix(in oklch, var(--sd-token-field-tint) 26%, transparent),
+      color-mix(in oklch, var(--sd-token-field-tint) 40%, transparent)
+    );
+  }
+}
+
+/* A selected token fills with the accent, like a selected row. */
+.sd-token-field-token[data-selected] {
+  background: var(--sd-token-field-tint);
+  box-shadow: none;
+  color: var(--sd-on-accent);
+}
+
+.sd-token-field-token[data-pending] {
+  opacity: 0.6;
+}
+
+.sd-token-field-token[data-unresolved] {
+  --sd-token-field-tint: var(--sd-destructive);
+}
+
+.sd-token-field-token :where(svg:not(.sd-token-field-token-remove svg)) {
+  width: 12px;
+  height: 12px;
+}
+
+.sd-token-field-token-remove {
+  position: relative;
+  display: inline-flex;
+  width: 12px;
+  height: 12px;
+  margin-inline: 1px -3px;
+  color: color-mix(in oklch, currentColor 55%, transparent);
+  cursor: default;
+}
+
+.sd-token-field-token-remove::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: max(var(--sd-token-field-token-height), 20px);
+  height: max(var(--sd-token-field-token-height), 20px);
+  translate: -50% -50%;
+}
+
+.sd-token-field-token-remove :where(svg) {
+  width: 100%;
+  height: 100%;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .sd-token-field-token-remove:hover {
+    color: currentColor;
+  }
+}
+
+.sd-token-field-token-remove[data-readonly],
+.sd-token-field-token-remove[data-disabled] {
+  display: none;
+}

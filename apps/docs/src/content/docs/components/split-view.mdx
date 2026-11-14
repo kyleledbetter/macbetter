@@ -1,0 +1,92 @@
+export const metadata = {
+  title: "Split View",
+  description: "Show a sidebar, content and an inspector side by side, with dividers people can drag.",
+}
+
+# Split View
+
+<Lead>Show a sidebar, content and an inspector side by side, with dividers people can drag.</Lead>
+
+<Demo name="split-view/mail" platforms={["macos", "ipados"]} wallpaper height={520} />
+
+## When to use it
+
+Use a split view when people move through a hierarchy and want to keep their place: mailboxes, then messages, then the message itself. Each column narrows the one after it, so the leading column is the broadest and the trailing one the most specific.
+
+Keep it to two or three columns. Let people resize the panes and collapse the ones they don't need, and give each pane a sensible minimum so nothing gets crushed. An inspector belongs on the trailing side and shows details about the selection in the content.
+
+## Usage
+
+```tsx
+import { SplitView, SplitViewDivider, SplitViewPane } from "@dreambase/stardust/split-view"
+```
+
+### Sidebar, content and detail
+
+Put a `SplitViewDivider` between each pair of panes and name it with `aria-label`. Sizes are percentages as numbers or strings with `px`; a pane without `defaultSize` takes what's left. `variant="sidebar"` gives a pane the translucent sidebar material. Drag the mailboxes closed: the pane is `collapsible`.
+
+<Demo name="split-view/mail" platforms={["macos", "ipados"]} wallpaper height={520} />
+
+### Inspector
+
+`variant="inspector"` gives the trailing pane the secondary background. Pixel bounds hold as the window resizes, so the inspector stays between 200 and 320 pixels wide.
+
+<Demo name="split-view/inspector" platforms={["macos", "ipados"]} wallpaper height={440} />
+
+## Platform behavior
+
+- **macOS**: like `NSSplitView`, a 1px divider in the separator color, with a resize cursor while it's hovered or dragged.
+- **iPadOS**: like `UISplitViewController`, a hairline between columns, with a 24pt touch area around it so a finger can catch it.
+- Under a pointer the hit area is 10px wide; ui-sdk extends it without changing how the line looks.
+- A focused or dragged divider turns the accent color so you can see which one the keys move.
+- A [Sidebar](/docs/components/sidebar) inside a `variant="sidebar"` pane drops its own material, so glass never sits on glass.
+
+## Accessibility
+
+- Each divider is a focusable `separator` with `aria-valuenow`, following the WAI-ARIA window splitter pattern. Name it with `aria-label`, like "Resize mailboxes".
+- Arrow keys along the split move the divider, Shift moves it farther, and Home and End go as far as the panes allow.
+- Enter, or a double-click, collapses a `collapsible` pane and restores it. A pane collapsed to 0 leaves the tab order and the accessibility tree.
+
+## API
+
+### SplitView
+
+<PropsTable
+  rows={[
+    { name: "orientation", type: '"horizontal" | "vertical"', default: '"horizontal"', description: "Panes side by side, or stacked." },
+    { name: "defaultLayout", type: "number[]", description: "Every pane's starting size, in percent." },
+    { name: "layout", type: "number[]", description: "Every pane's size, to control the layout." },
+    { name: "onLayoutChange", type: "(layout, details) => void", description: "Runs on every frame of a drag and every key." },
+    { name: "onLayoutCommit", type: "(layout, details) => void", description: "Runs once a drag or key press ends, for saving." },
+    { name: "autoSaveId", type: "string", description: "Saves the layout and restores it on the next visit." },
+    { name: "controller", type: "ResizableController", description: "Collapses, expands and resizes panes from anywhere." },
+  ]}
+/>
+
+### SplitViewPane
+
+<PropsTable
+  rows={[
+    { name: "variant", type: '"sidebar" | "content" | "inspector"', default: '"content"', description: "The pane's background: sidebar material, the window background, or the secondary background." },
+    { name: "defaultSize", type: "number | string", description: "Starting size, like `30` or `\"240px\"`." },
+    { name: "minSize", type: "number | string", description: "The smallest the pane gets while open." },
+    { name: "maxSize", type: "number | string", description: "The largest the pane gets." },
+    { name: "collapsible", type: "boolean", description: "Lets the pane collapse below its minimum." },
+    { name: "collapsedSize", type: "number | string", default: "0", description: "The size it collapses to." },
+  ]}
+/>
+
+### SplitViewDivider
+
+<PropsTable rows={[{ name: "disabled", type: "boolean", description: "Stops the divider: no drags, no keys, out of the tab order." }]} />
+
+### Data attributes and CSS variables
+
+| Attribute or variable | On | Meaning |
+| --- | --- | --- |
+| `data-variant` | `.sd-split-view-pane` | `sidebar`, `content` or `inspector` |
+| `data-collapsed` | `.sd-split-view-pane` | The pane is collapsed |
+| `data-orientation` | every part | `horizontal` or `vertical` |
+| `data-dragging` | `.sd-split-view`, `.sd-split-view-divider` | A divider is being dragged |
+| `data-hovering` | `.sd-split-view-divider` | The pointer is within the divider's hit area |
+| `--resizable-panel-size` | `.sd-split-view-pane` | The pane's share of the group, from ui-sdk |

@@ -1,0 +1,114 @@
+export const metadata = {
+  title: "Navigation Bar",
+  description: "Show where you are in an app's hierarchy, with a back button, a title and actions.",
+}
+
+# Navigation Bar
+
+<Lead>Show where you are in an app's hierarchy, with a back button, a title and the actions for the screen.</Lead>
+
+<Demo name="navigation-bar/large-title" platforms={["ios"]} wallpaper height={720} />
+
+## When to use it
+
+Use a navigation bar at the top of every screen in a hierarchy on iOS and iPadOS. It tells people where they are, takes them back one level, and holds the two or three actions that apply to the whole screen.
+
+- Use a large title on the top level of a tab or app, where the title orients people. Use an inline title on the screens you push from it.
+- Make the back button's label the previous screen's title, so people know where it goes. Shorten it to "Back" only when that title is long.
+- Keep trailing actions to icons people recognize, like Add, Share or More. Put anything else in a menu.
+- On macOS, use a [toolbar](/docs/components/toolbar) in the [window](/docs/components/window)'s title bar instead.
+
+## Usage
+
+```tsx
+import {
+  NavigationBar,
+  NavigationBarBackButton,
+  NavigationBarLeading,
+  NavigationBarTrailing,
+  NavigationStack,
+} from "@dreambase/stardust/navigation-bar"
+```
+
+Put the bar first inside a `NavigationStack`, the screen's scroll view. The stack's scroll position drives the bar, so the bar stays pinned while content scrolls under it.
+
+### Large title
+
+Set `largeTitle` and the title shows large below the bar. As you scroll, it slides under the bar and is cut off at the bar's bottom edge, then the inline title fades in with the bar's translucent material. Choose a show above to push its screen, and Library to go back.
+
+### Inline title and back button
+
+Without `largeTitle`, the title sits centered in the bar. `NavigationBarBackButton` draws the chevron and the previous screen's title in the accent color, and goes in the leading position on its own.
+
+<Demo name="navigation-bar/inline-title" platforms={["ios"]} wallpaper height={720} />
+
+### Actions
+
+Put actions in `NavigationBarTrailing`, and anything that isn't a back button, like Cancel or Edit, in `NavigationBarLeading`. Use plain [buttons](/docs/components/button): icon-only ones need an `aria-label`.
+
+```tsx
+<NavigationBar title="New Event">
+  <NavigationBarLeading>
+    <Button variant="plain">Cancel</Button>
+  </NavigationBarLeading>
+  <NavigationBarTrailing>
+    <Button variant="plain">Add</Button>
+  </NavigationBarTrailing>
+</NavigationBar>
+```
+
+## Platform behavior
+
+- **iOS and iPadOS.** The bar is 44 points tall on iPhone and 50 on iPad, below the status bar, with a 17-point semibold title and a 34-point bold large title. It sits below `--sd-safe-top`, which a [device frame](/docs/components/device-frame) sets and which is the device's real safe area in a full-screen web app.
+- **iPad with a tab bar.** A floating [tab bar](/docs/components/tab-bar) sits in the center of the bar on iPadOS, so the inline title steps out of sight there and stays the heading for assistive technology. Use a large title on those screens.
+- **Sticky content.** `NavigationStack` sets `--sd-content-inset-top` to the bar's height, so a plain [list](/docs/components/list)'s section headers pin below the bar instead of sliding under it.
+- **The material appears only when it's needed.** At the top of the scroll view the bar is clear and the content shows through. Once content scrolls under it, the chrome material and the hairline fade in over the first few points of scroll, as UIKit does with its scroll edge appearance.
+- **macOS.** Mac apps don't use navigation bars. On a Mac page the bar takes the platform's 13-point metrics, for previews, but prefer a window toolbar.
+
+The collapse is a CSS scroll-driven animation, so it runs off the main thread and never lags behind the finger. In browsers without scroll-driven animations, like Safari before version 26, `NavigationStack` listens for scroll: it cuts off the large title with the same edge and switches the inline title and material on once the large title is gone.
+
+## Accessibility
+
+- The title is a real heading element (`h1` by default, set with `headingLevel`). With `largeTitle`, the large title is the heading and the inline copy is hidden from assistive technology, so the title is read once.
+- The back button is a real button whose name is the previous screen's title. Give a back button with no label `aria-label="Back"`.
+- The bar is never a focus trap: Tab moves from the leading button through the trailing actions into the content.
+- Under `prefers-reduced-transparency`, the material is opaque.
+- In right-to-left layouts the back button moves to the right and its chevron points right, as on iOS.
+
+## API
+
+### NavigationStack
+
+The screen's scroll view. Takes the props of a `div`, including `ref`.
+
+### NavigationBar
+
+<PropsTable
+  rows={[
+    { name: "title", type: "ReactNode", description: "The screen's title." },
+    { name: "largeTitle", type: "boolean", default: "false", description: "Shows the title large below the bar, collapsing into it on scroll." },
+    { name: "headingLevel", type: "1 | 2 | 3 | 4 | 5 | 6", default: "1", description: "The level of the title's heading." },
+  ]}
+/>
+
+### NavigationBarBackButton
+
+A ui-sdk `Button`. Its children are the previous screen's title.
+
+### NavigationBarLeading, NavigationBarTrailing
+
+Containers for the bar's buttons. Take the props of a `div`.
+
+### Data attributes and variables
+
+| Attribute or variable | On | Meaning |
+| --- | --- | --- |
+| `data-large-title` | `.sd-navigation-bar` | The bar collapses a large title. |
+| `data-scrolled` | `.sd-navigation-stack` | Content is under the bar. Only set in browsers without scroll-driven animations. |
+| `--sd-navigation-offset` | `.sd-navigation-stack` | The scroll position, set only in browsers without scroll-driven animations. |
+| `--sd-safe-top`, `--sd-safe-left`, `--sd-safe-right` | inherited | The device's safe area. Defaults to `env(safe-area-inset-*)`; a [device frame](/docs/components/device-frame) sets it for its screen. |
+| `--sd-content-inset-top` | `.sd-navigation-stack` | Set to the bar's height (with the safe area), for sticky content inside the stack. |
+| `--sd-content-inset-bottom` | inherited | Space below the content, like a tab bar's height. Set by `TabBar`; falls back to `--sd-safe-bottom`. |
+| `--sd-navigation-bar-row` | inherited | The height of the bar's row: 44px on iPhone, 50px on iPad, the bar height on macOS. |
+| `--sd-navigation-large-title-height` | inherited | The large title's row, and the scroll distance over which it collapses. |
+| `--sd-navigation-bar-title-clip` | inherited | A `clip-path` for the inline title. An iPadOS tab bar sets it to hide the title visually. |

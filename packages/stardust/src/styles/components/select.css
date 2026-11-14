@@ -1,0 +1,290 @@
+/*
+ * Select — the Mac's pop-up button (a bezel with an accent cap holding a
+ * double chevron) and the iOS menu picker (accent text and an up-and-down
+ * chevron). The list is a menu with a checkmark beside the chosen item.
+ */
+
+:where(:root, [data-platform="macos"]) {
+  --sd-select-plain-fg: var(--sd-label);
+  --sd-select-padding-start: 10px;
+  --sd-select-cap-inset: 4px;
+  --sd-select-chevron-size: 12px;
+  --sd-select-font: 400 13px/16px var(--sd-font);
+  /* Lines the menu's text up with the button's, as the Mac does. */
+  --sd-select-content-shift: calc(var(--sd-select-padding-start) - var(--sd-menu-inset) - var(--sd-menu-row-padding) - var(--sd-menu-gutter));
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --sd-select-plain-fg: var(--sd-accent-text);
+  --sd-select-padding-start: 16px;
+  --sd-select-cap-inset: 6px;
+  --sd-select-chevron-size: 15px;
+  --sd-select-font: 400 17px/22px var(--sd-font);
+  --sd-select-content-shift: 0px;
+}
+
+.sd-select-trigger {
+  --sd-select-height: var(--sd-control-height);
+  --sd-select-bg: var(--sd-bg-control);
+  --sd-select-fg: var(--sd-label);
+  --sd-select-shadow: 0 0 0 var(--sd-hairline) var(--sd-control-border), 0 0.5px 1.5px var(--sd-shadow-color);
+  --sd-select-cap-bg: var(--sd-accent);
+  --sd-select-cap-fg: var(--sd-on-accent);
+  --sd-select-cap-size: calc(var(--sd-select-height) - var(--sd-select-cap-inset) * 2);
+  --sd-select-radius: var(--sd-control-radius);
+
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  height: var(--sd-select-height);
+  margin: 0;
+  padding-block: 0;
+  padding-inline: var(--sd-select-padding-start) var(--sd-select-cap-inset);
+  border: 0;
+  border-radius: var(--sd-select-radius);
+  background: var(--sd-select-bg);
+  box-shadow: var(--sd-select-shadow);
+  color: var(--sd-select-fg);
+  font: var(--sd-select-font);
+  letter-spacing: var(--sd-tracking-body);
+  text-align: start;
+  white-space: nowrap;
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  transition:
+    background-color var(--sd-duration-fast) var(--sd-ease-out),
+    opacity var(--sd-duration-fast) var(--sd-ease-out);
+}
+
+.sd-select-trigger::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: max(100%, var(--sd-hit-target));
+  height: max(100%, var(--sd-hit-target));
+  translate: -50% -50%;
+}
+
+.sd-select-trigger[data-size="sm"] {
+  --sd-select-height: var(--sd-control-height-sm);
+  --sd-select-cap-inset: 3px;
+  --sd-select-radius: var(--sd-control-radius-sm);
+  font: var(--sd-control-font-sm);
+  font-weight: 400;
+}
+
+.sd-select-trigger[data-size="lg"] {
+  --sd-select-height: var(--sd-control-height-lg);
+  --sd-select-radius: var(--sd-control-radius-lg);
+}
+
+.sd-select-value {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sd-select-value[data-placeholder] {
+  color: var(--sd-label-secondary);
+}
+
+.sd-select-value-icon {
+  display: inline-flex;
+  flex: none;
+}
+
+.sd-select-value-icon :where(svg) {
+  width: var(--sd-menu-icon-size);
+  height: var(--sd-menu-icon-size);
+}
+
+.sd-select-trigger-cap {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--sd-select-cap-size);
+  height: var(--sd-select-cap-size);
+  margin-inline-start: auto;
+  border-radius: max(3px, calc(var(--sd-select-radius) - var(--sd-select-cap-inset)));
+  background: var(--sd-select-cap-bg);
+  color: var(--sd-select-cap-fg);
+  box-shadow: inset 0 0.5px 0 rgb(255 255 255 / 0.28);
+}
+
+.sd-select-trigger-cap svg {
+  width: var(--sd-select-chevron-size);
+  height: var(--sd-select-chevron-size);
+}
+
+/* Plain: text and a chevron, for toolbars, forms and inline choices. */
+.sd-select-trigger[data-variant="plain"] {
+  --sd-select-bg: transparent;
+  --sd-select-shadow: none;
+  --sd-select-fg: var(--sd-select-plain-fg);
+  --sd-select-cap-bg: transparent;
+  --sd-select-cap-fg: currentColor;
+  --sd-select-cap-size: var(--sd-select-chevron-size);
+  gap: 4px;
+  padding-inline: 0;
+}
+
+.sd-select-trigger[data-variant="plain"] .sd-select-trigger-cap {
+  box-shadow: none;
+  opacity: 0.85;
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .sd-select-trigger[data-variant="auto"] {
+    --sd-select-bg: transparent;
+    --sd-select-shadow: none;
+    --sd-select-fg: var(--sd-select-plain-fg);
+    --sd-select-cap-bg: transparent;
+    --sd-select-cap-fg: currentColor;
+    --sd-select-cap-size: var(--sd-select-chevron-size);
+    gap: 4px;
+    padding-inline: 0;
+  }
+
+  .sd-select-trigger[data-variant="auto"] .sd-select-trigger-cap {
+    box-shadow: none;
+    opacity: 0.85;
+  }
+
+  .sd-select-trigger[data-variant="bezeled"] {
+    --sd-select-bg: var(--sd-fill-secondary);
+    --sd-select-shadow: none;
+    --sd-select-fg: var(--sd-accent-text);
+    --sd-select-cap-bg: transparent;
+    --sd-select-cap-fg: currentColor;
+    --sd-select-cap-size: var(--sd-select-chevron-size);
+    padding-inline-end: var(--sd-select-padding-start);
+  }
+
+  .sd-select-trigger:active:not([data-disabled]),
+  .sd-select-trigger[data-open] {
+    opacity: 0.45;
+  }
+
+  .sd-select-trigger[data-variant="bezeled"]:is(:active, [data-open]) {
+    opacity: 1;
+    --sd-select-bg: var(--sd-fill);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .sd-select-trigger:not([data-variant="plain"]):hover {
+    --sd-select-bg: color-mix(in oklch, var(--sd-bg-control), var(--sd-ink) 5%);
+  }
+}
+
+@scope (:root:not([data-platform]), [data-platform="macos"]) to (:scope [data-platform]) {
+  .sd-select-trigger:not([data-variant="plain"]):is(:active, [data-open]) {
+    --sd-select-bg: color-mix(in oklch, var(--sd-bg-control), var(--sd-ink) 10%);
+  }
+
+  .sd-select-trigger[data-variant="plain"]:is(:active, [data-open]) {
+    opacity: 0.7;
+  }
+}
+
+.sd-select-trigger:focus-visible {
+  outline: var(--sd-focus-ring-width) solid var(--sd-focus-ring);
+  outline-offset: var(--sd-focus-ring-offset);
+}
+
+.sd-select-trigger:where([data-disabled], :disabled) {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.sd-select-trigger[data-readonly] .sd-select-trigger-cap {
+  visibility: hidden;
+}
+
+.sd-select-label {
+  color: var(--sd-label);
+  font: var(--sd-text-body);
+}
+
+.sd-select-label[data-disabled] {
+  color: var(--sd-label-tertiary);
+}
+
+/* ── The list ───────────────────────────────────────────────── */
+
+/* A pop-up menu always keeps its check column, so choices don't shift as the value changes. */
+.sd-menu-content.sd-select-content {
+  --sd-menu-lead: calc(var(--sd-menu-row-padding) + var(--sd-menu-gutter));
+
+  min-width: max(var(--sd-menu-min-width), calc(var(--anchor-width) - var(--sd-select-content-shift)));
+}
+
+/* The sheet's translate belongs to its drag, so only the popover shifts. */
+.sd-menu-content.sd-select-content:not([data-presentation="sheet"]) {
+  translate: var(--sd-select-content-shift) 0;
+}
+
+.sd-menu-content.sd-select-content:not([data-presentation="sheet"]):where([dir="rtl"] *) {
+  translate: calc(var(--sd-select-content-shift) * -1) 0;
+}
+
+/* As a bottom sheet it spans the screen; menu.css draws the grabber and the scrim. */
+.sd-menu-content.sd-select-content[data-presentation="sheet"] {
+  min-width: 0;
+}
+
+.sd-select-item-indicator:not([data-selected]) {
+  visibility: hidden;
+}
+
+.sd-select-item-text mark,
+.sd-select-item-text [data-matched] {
+  background: none;
+  color: inherit;
+  font-weight: 600;
+}
+
+.sd-select-input {
+  display: block;
+  width: calc(100% - var(--sd-menu-row-padding));
+  height: var(--sd-menu-item-height);
+  margin: 2px auto 4px;
+  padding-inline: 8px;
+  border: 0;
+  border-radius: var(--sd-menu-row-radius);
+  background: var(--sd-fill-tertiary);
+  color: var(--sd-label);
+  font: inherit;
+  outline: none;
+}
+
+.sd-select-input::placeholder {
+  color: var(--sd-placeholder);
+}
+
+.sd-select-input:focus-visible {
+  outline: var(--sd-focus-ring-width) solid var(--sd-focus-ring);
+  outline-offset: 0;
+}
+
+.sd-select-empty:not(:empty),
+.sd-select-status:not(:empty) {
+  padding: 6px var(--sd-menu-row-padding);
+  color: var(--sd-label-secondary);
+}
+
+.sd-select-clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: none;
+  color: var(--sd-label-secondary);
+}

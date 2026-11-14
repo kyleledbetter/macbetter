@@ -1,0 +1,412 @@
+/* Alert — the system alert: a compact centered panel on macOS, the 270pt alert and action sheet on iOS. */
+
+:where(:root, [data-platform="macos"]) {
+  --sd-alert-width: 260px;
+  --sd-alert-radius: var(--sd-popup-radius);
+  --sd-alert-padding-block: 20px 16px;
+  --sd-alert-padding-inline: 16px;
+  --sd-alert-gap: 4px;
+  --sd-alert-title-font: 700 13px/16px var(--sd-font);
+  --sd-alert-message-font: 400 11px/14px var(--sd-font);
+  --sd-alert-enter-scale: 0.92;
+  /* macOS doesn't dim the window behind an alert; a light veil keeps the modality readable on the web. */
+  --sd-alert-scrim: color-mix(in oklch, var(--sd-scrim) 55%, transparent);
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --sd-alert-width: 270px;
+  /* iOS alerts and action sheets round to 14pt, between the radius tokens. */
+  --sd-alert-radius: calc(14px * var(--sd-radius-scale));
+  --sd-alert-padding-block: 19px 20px;
+  --sd-alert-padding-inline: 16px;
+  --sd-alert-gap: 2px;
+  --sd-alert-title-font: 600 17px/22px var(--sd-font);
+  --sd-alert-message-font: 400 13px/18px var(--sd-font);
+  --sd-alert-enter-scale: 1.12;
+  --sd-alert-scrim: var(--sd-scrim);
+}
+
+.sd-alert-backdrop {
+  position: fixed;
+  inset: 0;
+  background: var(--sd-alert-scrim);
+  transition: opacity var(--sd-duration-base) var(--sd-ease-out);
+}
+
+.sd-alert-backdrop:is([data-starting-style], [data-ending-style]) {
+  opacity: 0;
+}
+
+.sd-alert-backdrop[data-ending-style] {
+  transition-duration: var(--sd-duration-fast);
+}
+
+.sd-alert {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sd-alert-gap);
+  width: min(var(--sd-alert-width), calc(100vw - 32px));
+  height: fit-content;
+  max-width: none;
+  max-height: calc(100dvh - 32px);
+  margin: auto;
+  padding: var(--sd-alert-padding-block);
+  padding-inline: var(--sd-alert-padding-inline);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 0;
+  border-radius: var(--sd-alert-radius);
+  /* Denser than the thick material: an alert's message must read over any backdrop. Opaque under reduced transparency. */
+  background: color-mix(in oklch, var(--sd-material-thick), var(--sd-bg-elevated) 70%);
+  -webkit-backdrop-filter: var(--sd-material-filter);
+  backdrop-filter: var(--sd-material-filter);
+  box-shadow: var(--sd-glass-rim), var(--sd-shadow-window);
+  color: var(--sd-label);
+  text-align: center;
+  outline: none;
+  transition:
+    opacity var(--sd-duration-fast) var(--sd-ease-out),
+    scale var(--sd-spring-snappy-duration) var(--sd-spring-snappy);
+}
+
+.sd-alert:is([data-starting-style], [data-ending-style]) {
+  opacity: 0;
+}
+
+.sd-alert[data-starting-style] {
+  scale: var(--sd-alert-enter-scale);
+}
+
+.sd-alert[data-ending-style] {
+  scale: 0.97;
+  transition-duration: var(--sd-duration-fast);
+  transition-timing-function: var(--sd-ease-out);
+}
+
+.sd-alert-icon {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  margin-block-end: 10px;
+}
+
+.sd-alert-icon > :where(img, svg) {
+  width: 100%;
+  height: 100%;
+}
+
+.sd-alert-title {
+  margin: 0;
+  font: var(--sd-alert-title-font);
+  letter-spacing: var(--sd-tracking-body);
+  text-wrap: balance;
+}
+
+.sd-alert-description {
+  margin: 0;
+  color: var(--sd-label);
+  font: var(--sd-alert-message-font);
+  letter-spacing: var(--sd-tracking-caption);
+  text-wrap: pretty;
+}
+
+/* Actions: side by side for two, stacked for one or three and more. */
+.sd-alert-actions {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  gap: 8px;
+  margin-block-start: 16px;
+}
+
+.sd-alert-actions:where(
+    [data-orientation="horizontal"],
+    [data-orientation="auto"]:has(> :nth-child(2):last-child)
+  ) {
+  flex-direction: row;
+}
+
+.sd-alert-actions:where(
+    [data-orientation="horizontal"],
+    [data-orientation="auto"]:has(> :nth-child(2):last-child)
+  )
+  > * {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+/* In a stack the cancel button sits at the bottom, wherever it is in the markup (and so in Tab order). */
+.sd-alert-actions:where(
+    :not([data-orientation="horizontal"], [data-orientation="auto"]:has(> :nth-child(2):last-child))
+  )
+  > [data-variant="cancel"] {
+  order: 1;
+}
+
+.sd-alert-action {
+  --sd-alert-action-bg: var(--sd-bg-control);
+  --sd-alert-action-fg: var(--sd-label);
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--sd-control-height);
+  margin: 0;
+  padding: 0 var(--sd-control-padding-sm);
+  border: 0;
+  border-radius: var(--sd-control-radius);
+  background: var(--sd-alert-action-bg);
+  color: var(--sd-alert-action-fg);
+  font: var(--sd-control-font);
+  letter-spacing: var(--sd-tracking-body);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  box-shadow:
+    0 0 0 var(--sd-hairline) var(--sd-control-border),
+    0 0.5px 1.5px var(--sd-shadow-color);
+  transition:
+    background-color var(--sd-duration-fast) var(--sd-ease-out),
+    color var(--sd-duration-fast) var(--sd-ease-out);
+}
+
+.sd-alert-action[data-tone="destructive"] {
+  --sd-alert-action-fg: var(--sd-destructive-text);
+}
+
+.sd-alert-action[data-variant="primary"] {
+  --sd-alert-action-bg: var(--sd-accent);
+  --sd-alert-action-fg: var(--sd-on-accent);
+  font-weight: 600;
+  box-shadow:
+    inset 0 0.5px 0 rgb(255 255 255 / 0.28),
+    0 0.5px 1.5px var(--sd-shadow-color);
+}
+
+.sd-alert-action[data-variant="primary"][data-tone="destructive"] {
+  --sd-alert-action-bg: var(--sd-destructive);
+  --sd-alert-action-fg: var(--sd-on-destructive);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .sd-alert-action:hover {
+    --sd-alert-action-bg: color-mix(in oklch, var(--sd-bg-control), var(--sd-ink) 5%);
+  }
+
+  .sd-alert-action[data-variant="primary"]:hover {
+    --sd-alert-action-bg: var(--sd-accent-hover);
+  }
+
+  .sd-alert-action[data-variant="primary"][data-tone="destructive"]:hover {
+    --sd-alert-action-bg: oklch(from var(--sd-destructive) calc(l + 0.035) c h);
+  }
+}
+
+.sd-alert-action:active {
+  --sd-alert-action-bg: color-mix(in oklch, var(--sd-bg-control), var(--sd-ink) 12%);
+  transition-duration: 0ms;
+}
+
+.sd-alert-action[data-variant="primary"]:active {
+  --sd-alert-action-bg: var(--sd-accent-pressed);
+}
+
+.sd-alert-action[data-variant="primary"][data-tone="destructive"]:active {
+  --sd-alert-action-bg: oklch(from var(--sd-destructive) calc(l - 0.06) c h);
+}
+
+.sd-alert-action:focus-visible {
+  outline: var(--sd-focus-ring-width) solid var(--sd-focus-ring);
+  outline-offset: var(--sd-focus-ring-offset);
+}
+
+.sd-alert-action[data-pending] {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+/* iOS and iPadOS: full-bleed text buttons divided by hairlines. */
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .sd-alert-icon {
+    display: none;
+  }
+
+  .sd-alert-actions {
+    gap: 0;
+    margin-block-start: 19px;
+    margin-inline: calc(-1 * var(--sd-alert-padding-inline));
+    margin-block-end: -20px;
+  }
+
+  .sd-alert-action {
+    --sd-alert-action-bg: transparent;
+    --sd-alert-action-fg: var(--sd-accent-text);
+
+    height: 44px;
+    padding-inline: 8px;
+    border-radius: 0;
+    border-block-start: var(--sd-hairline) solid var(--sd-separator-strong);
+    box-shadow: none;
+    font: 400 17px/22px var(--sd-font);
+    letter-spacing: var(--sd-tracking-body);
+    transition: background-color var(--sd-duration-base) var(--sd-ease-out);
+  }
+
+  .sd-alert-actions:where(
+      [data-orientation="horizontal"],
+      [data-orientation="auto"]:has(> :nth-child(2):last-child)
+    )
+    > * + * {
+    border-inline-start: var(--sd-hairline) solid var(--sd-separator-strong);
+  }
+
+  .sd-alert-action[data-variant="primary"] {
+    --sd-alert-action-bg: transparent;
+    --sd-alert-action-fg: var(--sd-accent-text);
+    font-weight: 600;
+  }
+
+  .sd-alert-action[data-tone="destructive"],
+  .sd-alert-action[data-variant="primary"][data-tone="destructive"] {
+    --sd-alert-action-bg: transparent;
+    --sd-alert-action-fg: var(--sd-destructive-text);
+  }
+
+  /* An iPad with a pointer has hover; the Mac's bezel hover mustn't leak into text buttons. */
+  .sd-alert-action:hover,
+  .sd-alert-action[data-variant="primary"]:hover,
+  .sd-alert-action[data-variant="primary"][data-tone="destructive"]:hover {
+    --sd-alert-action-bg: transparent;
+  }
+
+  .sd-alert-action:active,
+  .sd-alert-action[data-variant="primary"]:active,
+  .sd-alert-action[data-variant="primary"][data-tone="destructive"]:active {
+    --sd-alert-action-bg: var(--sd-fill-secondary);
+  }
+
+  .sd-alert-action:focus-visible {
+    outline-offset: -3px;
+  }
+}
+
+/* iOS action sheet: a card of choices docked to the bottom, with Cancel standing apart. */
+@scope ([data-platform="ios"]) to (:scope [data-platform]) {
+  .sd-alert[data-variant="sheet"] {
+    inset: auto 0 calc(8px + env(safe-area-inset-bottom)) 0;
+    gap: 0;
+    width: min(calc(100vw - 16px), 420px);
+    max-height: calc(100dvh - 48px);
+    margin-block: 0;
+    padding: 0;
+    overflow: visible;
+    border-radius: 0;
+    background: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: none;
+    align-items: stretch;
+    transition:
+      opacity var(--sd-duration-fast) var(--sd-ease-out),
+      translate var(--sd-spring-sheet-duration) var(--sd-spring-sheet);
+  }
+
+  .sd-alert[data-variant="sheet"][data-starting-style] {
+    scale: none;
+    opacity: 1;
+    translate: 0 calc(100% + 16px);
+  }
+
+  .sd-alert[data-variant="sheet"][data-ending-style] {
+    scale: none;
+    opacity: 1;
+    translate: 0 calc(100% + 16px);
+    transition-duration: var(--sd-duration-base);
+    transition-timing-function: var(--sd-ease-in-out);
+  }
+
+  .sd-alert[data-variant="sheet"] > :is(.sd-alert-title, .sd-alert-description) {
+    padding-inline: 16px;
+    background: var(--sd-material-thick);
+    -webkit-backdrop-filter: var(--sd-material-filter);
+    backdrop-filter: var(--sd-material-filter);
+    color: var(--sd-label-secondary);
+    font: 400 13px/18px var(--sd-font);
+  }
+
+  .sd-alert[data-variant="sheet"] > .sd-alert-title {
+    padding-block-start: 14px;
+    border-start-start-radius: var(--sd-alert-radius);
+    border-start-end-radius: var(--sd-alert-radius);
+    font-weight: 600;
+  }
+
+  .sd-alert[data-variant="sheet"] > .sd-alert-title:not(:has(+ .sd-alert-description)) {
+    padding-block-end: 14px;
+  }
+
+  .sd-alert[data-variant="sheet"] > .sd-alert-description {
+    padding-block: 2px 14px;
+  }
+
+  .sd-alert[data-variant="sheet"] > .sd-alert-actions {
+    flex-direction: column;
+    margin: 0;
+  }
+
+  .sd-alert[data-variant="sheet"] .sd-alert-action {
+    flex: none;
+    height: 57px;
+    background-color: var(--sd-material-thick);
+    -webkit-backdrop-filter: var(--sd-material-filter);
+    backdrop-filter: var(--sd-material-filter);
+    border-inline-start: 0;
+    font: 400 20px/25px var(--sd-font);
+    letter-spacing: -0.02em;
+  }
+
+  .sd-alert[data-variant="sheet"] .sd-alert-action:active {
+    background-color: color-mix(in oklch, var(--sd-material-thick), var(--sd-ink) 10%);
+  }
+
+  .sd-alert[data-variant="sheet"] .sd-alert-action[data-variant="primary"] {
+    font-weight: 600;
+  }
+
+  .sd-alert[data-variant="sheet"] .sd-alert-action:nth-last-child(1 of :not([data-variant="cancel"])) {
+    border-end-start-radius: var(--sd-alert-radius);
+    border-end-end-radius: var(--sd-alert-radius);
+  }
+
+  .sd-alert[data-variant="sheet"] > .sd-alert-actions:first-child > :nth-child(1 of :not([data-variant="cancel"])) {
+    border-block-start: 0;
+    border-start-start-radius: var(--sd-alert-radius);
+    border-start-end-radius: var(--sd-alert-radius);
+  }
+
+  .sd-alert[data-variant="sheet"] .sd-alert-action[data-variant="cancel"] {
+    order: 1;
+    margin-block-start: 8px;
+    border-block-start: 0;
+    border-radius: var(--sd-alert-radius);
+    background-color: var(--sd-bg-elevated);
+    font-weight: 600;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sd-alert,
+  .sd-alert:is([data-starting-style], [data-ending-style]) {
+    scale: none;
+    translate: none;
+  }
+}

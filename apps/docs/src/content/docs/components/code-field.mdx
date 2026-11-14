@@ -1,0 +1,83 @@
+export const metadata = {
+  title: "Code Field",
+  description: "Enter a one-time code in separate rounded cells, with the active cell ringed in the accent.",
+}
+
+# Code Field
+
+<Lead>Enter a one-time code, one character per cell.</Lead>
+
+<Demo name="code-field/basic" />
+
+## When to use it
+
+Use a code field for a short code sent by text or email: a sign-in code, a two-factor code, a device pairing code. Each character gets its own cell, but it's one input, so a pasted or autofilled code fills every cell at once and a phone can offer the code from a message.
+
+Say where the code was sent in the description. When the code is wrong or expired, mark the Field invalid and say what to do next.
+
+## Usage
+
+```tsx
+import { CodeField } from "@dreambase/stardust/code-field"
+```
+
+`length` sets how many cells it draws (six by default). `onValueCommit` runs once every cell is filled, the moment to verify the code.
+
+### Groups, letters and errors
+
+`groupSize` splits the cells into runs with a dash between, like 3 for "123–456". `pattern` accepts `"digits"` (the default), `"letters"`, `"alphanumeric"` or a regular expression, and picks the matching touch keyboard.
+
+<Demo name="code-field/grouped" />
+
+To lay the cells out yourself, pass `CodeFieldGroup`, `CodeFieldSlot` and `CodeFieldSeparator` as children.
+
+## Platform behavior
+
+- **macOS.** Cells look like small text fields: 34 by 42 points, bordered, with 22-point digits. The active cell takes an accent edge and the focus halo.
+- **iPadOS and iOS.** Gray filled cells, 46 by 58 points with 12-point corners and 28-point semibold digits, as in the system's verification screens. The active cell takes a 2-point accent edge.
+- **Every platform.** When the row is wider than its container, as with a long code on a phone, the cells narrow together and keep their shape. The empty active cell shows an accent caret that blinks like the system's, and holds still under Reduce Motion. A typed digit settles into its cell with a small spring.
+
+## Accessibility
+
+- It's one native input with `autocomplete="one-time-code"`, so autofill, paste and undo work, and screen readers read it as a single text field.
+- The cells are hidden from assistive technology; the Field label names the input.
+- Arrow keys move between characters, and clicking a cell selects it.
+
+## API
+
+### CodeField
+
+<PropsTable
+  rows={[
+    { name: "length", type: "number", default: "6", description: "How many characters, one cell each." },
+    { name: "groupSize", type: "number", description: "Splits the cells into runs of this many with a dash between." },
+    { name: "size", type: '"md" | "lg"', default: '"md"', description: "Cell size." },
+    { name: "pattern", type: '"digits" | "letters" | "alphanumeric" | RegExp', default: '"digits"', description: "Which characters it accepts." },
+    { name: "value", type: "string", description: "The code, for a controlled field." },
+    { name: "onValueChange", type: "(value, details) => void", description: "Runs on typing, paste, undo or a controller." },
+    { name: "onValueCommit", type: "(value, details) => void", description: "Runs when every cell is filled." },
+    { name: "name", type: "string", description: "The name the code submits under." },
+  ]}
+/>
+
+`CodeFieldGroup`, `CodeFieldSlot` (with its `index`) and `CodeFieldSeparator` take the props of a `div`.
+
+### Data attributes
+
+| Attribute | On | Values |
+| --- | --- | --- |
+| `data-size` | CodeField | `md`, `lg` |
+| `data-active` | Slot | The cell typing goes to, while focused |
+| `data-fake-caret` | Slot | The active cell while it's empty |
+| `data-filled` | Root, slot | Present when it holds a character |
+| `data-complete` | Root | Present while every cell is filled |
+
+### CSS variables
+
+| Variable | macOS | iOS | What it sets |
+| --- | --- | --- | --- |
+| `--sd-code-field-cell-width` | `34px` | `46px` | Cell width |
+| `--sd-code-field-cell-ratio` | `34 / 42` | `46 / 58` | Cell width to height; cells keep it as they narrow to fit |
+| `--sd-code-field-cell-radius` | `8px` | `12px` | Cell corners |
+| `--sd-code-field-cell-bg` | Field white | Tertiary fill | Cell background |
+| `--sd-code-field-font` | 22px medium | 28px semibold | Digit type |

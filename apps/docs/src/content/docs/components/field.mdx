@@ -1,0 +1,111 @@
+export const metadata = {
+  title: "Field",
+  description: "Give a control a label, a description and an error, stacked or side by side as in macOS forms.",
+}
+
+# Field
+
+<Lead>Give a control a label, a description and an error, stacked above it or beside it.</Lead>
+
+<Demo name="field/stacked" />
+
+## When to use it
+
+Wrap every form control in a field. The field connects the label, the description and any error to the control for you, so a click on the label focuses it and a screen reader hears all three.
+
+- **Stacked** puts the label above the control. It's the default, and it suits narrow layouts, iOS forms and sign-in screens.
+- **Horizontal** puts the label beside the control, right-aligned in its own column, the way macOS forms, settings panes and inspectors do it. On macOS, end each label with a colon ("Name:").
+- Keep descriptions short and factual. Show an error only after someone tries to submit, and say how to fix it.
+
+## Usage
+
+```tsx
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+  FieldLegend,
+  FieldSet,
+  Label,
+} from "@dreambase/stardust/field"
+```
+
+### Side by side
+
+Put fields in a `FieldGroup` with `layout="horizontal"` and every label lines up in one column, sized to the longest. A single field can take `layout="horizontal"` on its own. A field with `layout="stacked"` inside a horizontal group sits in the control column, for a checkbox or a note that needs no label of its own.
+
+<Demo name="field/horizontal" />
+
+### Validation
+
+Native constraints like `required` and `type="email"` work as they do in HTML. Errors stay hidden until a submit, then follow the value as it changes. Give each `FieldError` a `match` to write your own message for one problem, or pass `invalid` to the field when your server decides.
+
+<Demo name="field/validation" />
+
+### Groups
+
+`FieldSet` and `FieldLegend` group related fields under a heading and disable them together. `Label` names a control that isn't inside a field, pointed at it with `htmlFor`.
+
+## Platform behavior
+
+- **macOS.** Labels are 13-point regular text in the primary label color. Horizontal labels are right-aligned and centered on the control's first line; descriptions are 11-point secondary text under the control.
+- **iPadOS and iOS.** Stacked labels are footnote-sized secondary text, inset to line up with the text inside the field, like a grouped list's header. Horizontal labels are left-aligned, as in a Contacts edit row. Descriptions are footnotes.
+- **Every platform.** Error text uses the destructive color and stays 4.5:1 against the background in light and dark.
+
+## Accessibility
+
+- The label names the control through `aria-labelledby` and a native `for`, so clicking it focuses the control or toggles a checkbox.
+- The description and any shown error describe the control through `aria-describedby`; an invalid control gets `aria-invalid`.
+- After a failed submit, the first invalid control takes focus.
+
+## API
+
+### Field
+
+<PropsTable
+  rows={[
+    { name: "layout", type: '"stacked" | "horizontal"', default: '"stacked"', description: "Label above the control, or beside it in its own column." },
+    { name: "name", type: "string", description: "The name the control submits under, when it doesn't set its own." },
+    { name: "disabled", type: "boolean", default: "false", description: "Disables the control and marks every part." },
+    { name: "invalid", type: "boolean", description: "Shows the field as invalid now (true) or never (false). Leave it out to follow the browser's validation." },
+  ]}
+/>
+
+### FieldGroup
+
+<PropsTable
+  rows={[
+    { name: "layout", type: '"stacked" | "horizontal"', default: '"stacked"', description: "Horizontal lines every field's label up in one column." },
+  ]}
+/>
+
+### FieldError
+
+<PropsTable
+  rows={[
+    { name: "match", type: 'boolean | "valueMissing" | "typeMismatch" | …', description: "When the error shows: always, never, or only for one validity problem." },
+  ]}
+/>
+
+`FieldLabel`, `FieldDescription`, `FieldSet`, `FieldLegend` and `Label` take the props of their elements. `FieldDescription` renders a `div`.
+
+### Data attributes
+
+| Attribute | On | Values |
+| --- | --- | --- |
+| `data-layout` | Field, FieldGroup | `stacked`, `horizontal` |
+| `data-invalid` | Every part | Present while the field shows as invalid |
+| `data-disabled` | Every part | Present when the field is disabled |
+| `data-required` | Every part | Present when the control is required |
+
+### CSS variables
+
+| Variable | macOS | iOS | What it sets |
+| --- | --- | --- | --- |
+| `--sd-field-gap` | `6px` | `7px` | Space between label, control and description |
+| `--sd-field-group-gap` | `14px` | `20px` | Space between fields in a group |
+| `--sd-field-column-gap` | `8px` | `16px` | Space between a horizontal label and its control |
+| `--sd-field-label-font` | 13px regular | Footnote | Stacked label type |
+| `--sd-field-label-align` | `end` | `start` | Horizontal label alignment |

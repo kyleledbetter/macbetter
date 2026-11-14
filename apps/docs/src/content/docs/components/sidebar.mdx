@@ -1,0 +1,105 @@
+export const metadata = {
+  title: "Sidebar",
+  description: "Move between an app's top-level places from a source list on Mac and iPad.",
+}
+
+# Sidebar
+
+<Lead>Move between an app's top-level places from a source list on Mac and iPad.</Lead>
+
+<Demo name="sidebar/mail" platforms={["macos", "ipados"]} wallpaper height={480} />
+
+## When to use it
+
+Use a sidebar for an app's top-level places: mailboxes, folders, playlists, projects. It stays visible while the content beside it changes, so people always know where they are and can go anywhere in one click.
+
+- Group rows into a few sections with short headers. Let people collapse sections they don't use.
+- Use a symbol for every row and keep labels to a word or two. A trailing count tells people what's waiting, like unread messages.
+- Don't put actions in a sidebar. Commands belong in the toolbar or a menu.
+
+On iPhone, use a [tab bar](/docs/components/tab-bar) or a list that pushes screens instead.
+
+## Usage
+
+```tsx
+import { Sidebar, SidebarItem, SidebarSection } from "@dreambase/stardust/sidebar"
+```
+
+Rows with an `href` are links; rows without one are buttons, for apps that keep the place in state. Mark the place on screen with `current`.
+
+### Selection
+
+The selected row fills with the accent color and its text and icon switch to the color that reads on the accent, as macOS does in the key window. Use `selection="gray"` for a quieter neutral fill that keeps the icon's color. Inside an inactive [window](/docs/components/window), either style turns gray.
+
+<Demo name="sidebar/selection" platforms={["macos", "ipados"]} wallpaper />
+
+### Collapsible sections
+
+Add `collapsible` to a section and its header becomes a disclosure button. On the Mac the chevron appears when the pointer is over the section; on iPad it's always there, in the accent color.
+
+### Icon colors
+
+Row icons take the accent color. Pass `tint` to color one row's icon, like a tag or a smart folder.
+
+## Platform behavior
+
+- **macOS**: 28 point rows with 13 point labels, 16 point symbols and small, secondary section headers. Rows don't highlight on hover, as in Finder and Mail.
+- **iPadOS**: 44 point rows with 17 point labels, bold section headers with a visible chevron, and larger symbols.
+- In a [window](/docs/components/window), place the sidebar in `WindowSidebar`: it becomes an inset pane of glass and the sidebar drops its own material.
+
+## Accessibility
+
+- `Sidebar` is a `navigation` landmark. Name it with `aria-label`, like "Mailboxes".
+- Each section is a list named by its header, so a screen reader announces "Favorites, list, 6 items".
+- The current row has `aria-current="page"`. Its icon is decorative; the count is read after the label.
+- A collapsible header is a button with `aria-expanded`, from ui-sdk's Collapsible. A collapsed section's rows leave the tab order.
+
+## API
+
+### Sidebar
+
+<PropsTable
+  rows={[
+    { name: "selection", type: '"accent" | "gray"', default: '"accent"', description: "How the current row is filled." },
+    { name: "aria-label", type: "string", description: "Names the navigation." },
+  ]}
+/>
+
+### SidebarSection
+
+<PropsTable
+  rows={[
+    { name: "title", type: "ReactNode", description: "The header. A string also names the section's list." },
+    { name: "collapsible", type: "boolean", default: "false", description: "Makes the header a disclosure button." },
+    { name: "defaultOpen", type: "boolean", default: "true", description: "Whether a collapsible section starts open." },
+    { name: "open", type: "boolean", description: "Controls whether a collapsible section is open." },
+    { name: "onOpenChange", type: "(open, details) => void", description: "Runs when a collapsible section opens or closes." },
+  ]}
+/>
+
+### SidebarItem
+
+<PropsTable
+  rows={[
+    { name: "href", type: "string", description: "Renders the row as a link. Without it, the row is a button." },
+    { name: "current", type: "boolean", default: "false", description: "Marks the place on screen. Sets aria-current." },
+    { name: "icon", type: "ReactNode", description: "A leading symbol, hidden from assistive technology." },
+    { name: "badge", type: "ReactNode", description: "A trailing count or status." },
+    { name: "tint", type: "string", description: "A color for this row's icon." },
+    { name: "onClick", type: "MouseEventHandler", description: "Runs when the row is chosen." },
+  ]}
+/>
+
+A row with `href` takes the rest of an `a`'s props; a row without it passes the same attributes, like `id` or `data-*`, to its button.
+
+### Data attributes and CSS variables
+
+| Name | On | Description |
+| --- | --- | --- |
+| `data-selection` | `.sd-sidebar` | `accent` or `gray`. |
+| `data-current` | `.sd-sidebar-item` | The current row. |
+| `data-open`, `data-closed` | `.sd-sidebar-section-header` | A collapsible section's state. |
+| `--sd-sidebar-bg` | inherited | The sidebar's background. Defaults to the sidebar material; a window sidebar and a split view's sidebar pane set it to transparent. |
+| `--sd-sidebar-filter` | inherited | The sidebar's backdrop filter. Set to `none` alongside a transparent background. |
+| `--sd-sidebar-icon-color` | `.sd-sidebar-item` | Set by `tint`. |
+| `--sd-sidebar-row-height` | inherited | 28 points on macOS, 44 on iPadOS. |

@@ -1,0 +1,168 @@
+/*
+ * Popover — a translucent panel with an arrow that points at its trigger and
+ * grows out of it. The material sits on a ::before layer so the arrow, outside
+ * the panel, can blur the page behind it too (backdrop-filter on the panel
+ * would make it the arrow's backdrop root).
+ */
+
+:where(:root, [data-platform="macos"]) {
+  --sd-popover-radius: var(--sd-radius-lg);
+  --sd-popover-padding: 14px;
+  --sd-popover-max-width: 320px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --sd-popover-radius: var(--sd-popup-radius);
+  --sd-popover-padding: 16px;
+  --sd-popover-max-width: 360px;
+}
+
+.sd-popover {
+  --sd-popover-material: var(--sd-material-thick);
+
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 180px;
+  max-width: min(var(--sd-popover-max-width), var(--available-width, 100vw));
+  max-height: var(--available-height);
+  margin: 0;
+  padding: var(--sd-popover-padding);
+  overflow: visible;
+  border: 0;
+  border-radius: var(--sd-popover-radius);
+  background: transparent;
+  box-shadow: var(--sd-shadow-menu);
+  color: var(--sd-label);
+  font: var(--sd-text-body);
+  letter-spacing: var(--sd-tracking-body);
+  outline: none;
+  transform-origin: var(--transform-origin);
+  transition:
+    opacity var(--sd-duration-fast) var(--sd-ease-out),
+    scale var(--sd-spring-snappy-duration) var(--sd-spring-snappy);
+}
+
+.sd-popover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--sd-popover-material);
+  -webkit-backdrop-filter: var(--sd-material-filter);
+  backdrop-filter: var(--sd-material-filter);
+  box-shadow: var(--sd-glass-rim);
+  pointer-events: none;
+}
+
+.sd-popover:is([data-starting-style], [data-ending-style]) {
+  opacity: 0;
+  scale: 0.9;
+}
+
+.sd-popover[data-ending-style] {
+  scale: 0.96;
+  transition-duration: var(--sd-duration-fast);
+  transition-timing-function: var(--sd-ease-out);
+}
+
+/*
+ * ui-sdk positions the arrow box with inline left/top, so it only needs
+ * placing against the panel's edge. It tucks 0.5px under the panel so the
+ * panel's hairline doesn't cut across its base, and a ::after hairline traces
+ * its curve to continue the panel's outline.
+ */
+.sd-popover-arrow {
+  position: absolute;
+  z-index: -1;
+  width: 22px;
+  height: 11px;
+  background: var(--sd-popover-material);
+  -webkit-backdrop-filter: var(--sd-material-filter);
+  backdrop-filter: var(--sd-material-filter);
+  clip-path: path("M0 11C5 11 8 6.5 9.6 3.4C10.3 2 10.6 1.5 11 1.5S11.7 2 12.4 3.4C14 6.5 17 11 22 11Z");
+  pointer-events: none;
+}
+
+.sd-popover-arrow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--sd-glass-border);
+  -webkit-mask: var(--sd-popover-arrow-stroke) center / 100% 100% no-repeat;
+  mask: var(--sd-popover-arrow-stroke) center / 100% 100% no-repeat;
+}
+
+.sd-popover-arrow {
+  --sd-popover-arrow-stroke: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 11'%3E%3Cpath d='M0 11C5 11 8 6.5 9.6 3.4C10.3 2 10.6 1.5 11 1.5S11.7 2 12.4 3.4C14 6.5 17 11 22 11' fill='none' stroke='black' stroke-width='1'/%3E%3C/svg%3E");
+}
+
+.sd-popover-arrow[data-side="bottom"] {
+  bottom: calc(100% - 0.5px);
+}
+
+.sd-popover-arrow[data-side="top"] {
+  top: calc(100% - 0.5px);
+  rotate: 180deg;
+}
+
+/* Rotated a quarter turn about its center, the 22×11 box needs 5.5px to sit flush. */
+.sd-popover-arrow[data-side="left"] {
+  left: calc(100% - 0.5px);
+  rotate: 90deg;
+  translate: -5.5px 0;
+}
+
+.sd-popover-arrow[data-side="right"] {
+  right: calc(100% - 0.5px);
+  rotate: -90deg;
+  translate: 5.5px 0;
+}
+
+.sd-popover-title {
+  margin: 0;
+  font: var(--sd-text-headline);
+  letter-spacing: var(--sd-tracking-body);
+}
+
+.sd-popover-description {
+  margin: 0;
+  color: var(--sd-label-secondary);
+  font: var(--sd-text-callout);
+  letter-spacing: var(--sd-tracking-body);
+}
+
+/* Presented as a sheet on a phone: ui-sdk moves it; it only needs a shape. */
+.sd-popover[data-presentation="sheet"] {
+  max-width: none;
+  width: 100%;
+  padding-block: calc(var(--sd-popover-padding) + 10px) calc(var(--sd-popover-padding) + env(safe-area-inset-bottom));
+  border-radius: var(--sd-sheet-radius) var(--sd-sheet-radius) 0 0;
+  transition: none;
+}
+
+.sd-popover[data-presentation="sheet"] .sd-popover-arrow {
+  display: none;
+}
+
+/* The grabber says it can be swiped away. Decorative: Escape and the scrim dismiss it too. */
+.sd-popover[data-presentation="sheet"]::after {
+  content: "";
+  position: absolute;
+  inset-block-start: 5px;
+  inset-inline: 0;
+  width: 36px;
+  height: 5px;
+  margin-inline: auto;
+  border-radius: var(--sd-radius-full);
+  background: var(--sd-label-quaternary);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sd-popover:is([data-starting-style], [data-ending-style]) {
+    scale: none;
+  }
+}

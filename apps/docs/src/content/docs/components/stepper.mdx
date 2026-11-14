@@ -1,0 +1,103 @@
+export const metadata = {
+  title: "Stepper",
+  description: "Change a number by small, fixed steps, with or without a field to type it.",
+}
+
+# Stepper
+
+<Lead>Change a number by small, fixed steps, with or without a field to type it.</Lead>
+
+<Demo name="stepper/basic" />
+
+## When to use it
+
+Use a stepper for a number that people usually change by a little, like copies to print, guests at a table or a font size. It suits small ranges; for a wide range or an imprecise value, use a [Slider](/docs/components/slider).
+
+- `NumberField` pairs a text field with the stepper, so people can type a number or step it. Use it whenever typing a value could be faster than stepping to it.
+- `Stepper` is the buttons alone, for a value shown elsewhere, like "Guests: 2" in a row's title. Always show the value next to it.
+
+## Usage
+
+```tsx
+import { NumberField, Stepper } from "@dreambase/stardust/stepper"
+```
+
+Name the field with a [Field](/docs/components/field) label, `aria-label` or `aria-labelledby`. The buttons are named "Decrease" and "Increase"; change them with `decrementLabel` and `incrementLabel`.
+
+### Stepper alone
+
+Its number field is visually hidden but still takes focus, so keyboard and screen reader users can step it with the arrow keys. Point `aria-labelledby` at the visible value.
+
+<Demo name="stepper/stepper" />
+
+### Step and format
+
+`min`, `max` and `step` set the bounds and the step. `format` takes `Intl.NumberFormat` options; for percents, the value is a fraction, so 75% is 0.75.
+
+<Demo name="stepper/format" />
+
+### Sizes
+
+<Demo name="stepper/sizes" />
+
+### Disabled
+
+<Demo name="stepper/disabled" />
+
+## Platform behavior
+
+- **macOS.** A text field with an NSStepper beside it: a narrow, raised control split into up and down arrows. Numbers align to the trailing edge of the field. The field shows the accent focus ring whenever it has focus.
+- **iPadOS and iOS.** The UIStepper capsule, with − and + separated by a hairline, beside the value. The field drops its border and reads as the value itself.
+- **Every platform.** Holding a button repeats the step. A button at its bound dims and stops responding.
+
+## Accessibility
+
+- The field follows the spinbutton keyboard: ArrowUp and ArrowDown step, Shift steps by ten, Page Up and Page Down by the large step, Home and End go to the bounds, and Enter or leaving the field commits typed text.
+- The step buttons stay out of the tab order, because the focused field gives the same steps from the keyboard. Each points at the field with `aria-controls`.
+- The standalone stepper draws the focus ring around its buttons when its hidden field has focus.
+
+## API
+
+### NumberField and Stepper
+
+Both take the same props.
+
+<PropsTable
+  rows={[
+    { name: "value", type: "number | null", description: "The value, or null when empty. Pass it to control the field." },
+    { name: "defaultValue", type: "number | null", description: "The value at first." },
+    { name: "onValueChange", type: "(value, details) => void", description: "Runs as typing becomes valid and on every step." },
+    { name: "onValueCommit", type: "(value, details) => void", description: "Runs once an interaction ends. For saving." },
+    { name: "min", type: "number", description: "The lowest value." },
+    { name: "max", type: "number", description: "The highest value." },
+    { name: "step", type: "number", default: "1", description: "How far one step moves." },
+    { name: "largeStep", type: "number", description: "How far Page Up, Page Down and Shift move." },
+    { name: "format", type: "Intl.NumberFormatOptions", description: "How the value shows and how typing is read." },
+    { name: "size", type: '"sm" | "md"', default: '"md"', description: "Height of the field and stepper." },
+    { name: "decrementLabel", type: "string", default: '"Decrease"', description: "Names the decrement button." },
+    { name: "incrementLabel", type: "string", default: '"Increase"', description: "Names the increment button." },
+    { name: "aria-label", type: "string", description: "Names the number field." },
+    { name: "placeholder", type: "string", description: "NumberField only: shown while empty." },
+    { name: "disabled", type: "boolean", default: "false", description: "Can't be focused or changed." },
+    { name: "readOnly", type: "boolean", default: "false", description: "Focusable and submitted, but doesn't change." },
+    { name: "name", type: "string", description: "The name the number submits under." },
+  ]}
+/>
+
+### Data attributes
+
+| Attribute | On | Values |
+| --- | --- | --- |
+| `data-size` | NumberField, Stepper | `sm`, `md` |
+| `data-step` | Buttons | `decrement`, `increment` |
+| `data-disabled` | Buttons | Present when the button can't step, including at a bound |
+| `data-disabled`, `data-readonly` | Root | Present in those states |
+
+### CSS variables
+
+| Variable | macOS | iOS | What it sets |
+| --- | --- | --- | --- |
+| `--sd-stepper-width` | `15px` | `94px` | Width of the stepper |
+| `--sd-stepper-height` | `--sd-control-height` | `32px` | Height of the field and stepper |
+| `--sd-stepper-height-sm` | `--sd-control-height-sm` | `28px` | Small height |
+| `--sd-number-field-width` | `64px` | `5ch` | Width of the text field |

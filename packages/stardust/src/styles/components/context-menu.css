@@ -1,0 +1,43 @@
+/* Context Menu — the menu, at the pointer on the Mac and lifted from a long press on touch. */
+
+:where(:root, [data-platform="macos"]) {
+  --sd-context-menu-enter-scale: 1;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --sd-context-menu-enter-scale: 0.6;
+}
+
+.sd-menu-content.sd-context-menu-content[data-starting-style] {
+  scale: var(--sd-context-menu-enter-scale);
+}
+
+.sd-context-menu-trigger {
+  border-radius: var(--sd-group-radius);
+  outline-offset: 2px;
+  transition:
+    scale var(--sd-spring-bouncy-duration) var(--sd-spring-bouncy),
+    box-shadow var(--sd-duration-base) var(--sd-ease-out),
+    outline-color var(--sd-duration-fast) var(--sd-ease-out);
+}
+
+/* Finder rings what you right-clicked while its menu is open. */
+@scope (:root:not([data-platform]), [data-platform="macos"]) to (:scope [data-platform]) {
+  .sd-context-menu-trigger:not([data-closed]) {
+    outline: 2px solid var(--sd-accent);
+    outline-offset: -1px;
+  }
+}
+
+/* On touch, the area gives under the finger, then lifts once the menu opens. */
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .sd-context-menu-trigger:active {
+    scale: 0.97;
+    transition-duration: var(--sd-duration-slow);
+  }
+
+  .sd-context-menu-trigger:not([data-closed]) {
+    scale: 1.03;
+    box-shadow: var(--sd-shadow-4);
+  }
+}

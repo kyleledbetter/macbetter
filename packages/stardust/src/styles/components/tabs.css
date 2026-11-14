@@ -1,0 +1,248 @@
+/* Tabs — the macOS tab view: a segmented strip on the edge of a framed panel. */
+
+:where(:root, [data-platform="macos"]) {
+  --sd-tabs-height: 24px;
+  --sd-tabs-padding: 12px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --sd-tabs-height: 34px;
+  --sd-tabs-padding: 14px;
+}
+
+.sd-tabs {
+  --sd-tabs-inset: 2px;
+  --sd-tabs-radius: var(--sd-control-radius);
+
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  color: var(--sd-label);
+  font: var(--sd-text-body);
+  letter-spacing: var(--sd-tracking-body);
+}
+
+.sd-tabs-list {
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+  display: inline-flex;
+  flex: none;
+  align-self: center;
+  align-items: stretch;
+  max-width: 100%;
+  height: var(--sd-tabs-height);
+  padding: var(--sd-tabs-inset);
+  border-radius: var(--sd-tabs-radius);
+  background: var(--sd-bg-secondary);
+  box-shadow: inset 0 0 0 var(--sd-hairline) var(--sd-separator);
+  font: var(--sd-control-font);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* The strip sits on a solid backing so the panel's frame doesn't show through it. */
+.sd-tabs-list::before {
+  content: "";
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--sd-fill-tertiary);
+}
+
+.sd-tabs-indicator {
+  position: absolute;
+  z-index: -1;
+  top: var(--active-tab-top, 0);
+  left: var(--active-tab-left, 0);
+  width: var(--active-tab-width, 0);
+  height: var(--active-tab-height, 0);
+  border-radius: calc(var(--sd-tabs-radius) - var(--sd-tabs-inset));
+  background: light-dark(#ffffff, color-mix(in oklch, var(--sd-tint) 46%, var(--sd-bg)));
+  box-shadow:
+    0 0 0 var(--sd-hairline) var(--sd-separator),
+    0 1px 2px var(--sd-shadow-color),
+    0 2px 6px -2px var(--sd-shadow-color);
+  transition:
+    left var(--sd-spring-snappy-duration) var(--sd-spring-snappy),
+    top var(--sd-spring-snappy-duration) var(--sd-spring-snappy),
+    width var(--sd-spring-snappy-duration) var(--sd-spring-snappy),
+    height var(--sd-spring-snappy-duration) var(--sd-spring-snappy);
+}
+
+.sd-tabs-indicator[data-activation-direction="none"] {
+  transition: none;
+}
+
+.sd-tabs-tab {
+  position: relative;
+  display: inline-flex;
+  flex: 0 1 auto;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sd-control-gap);
+  min-width: 0;
+  margin: 0;
+  padding: 0 var(--sd-tabs-padding);
+  border: 0;
+  border-radius: calc(var(--sd-tabs-radius) - var(--sd-tabs-inset));
+  background: transparent;
+  color: var(--sd-label);
+  font: inherit;
+  letter-spacing: inherit;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: default;
+  touch-action: manipulation;
+  transition: color var(--sd-duration-fast) var(--sd-ease-out), opacity var(--sd-duration-fast) var(--sd-ease-out);
+}
+
+.sd-tabs-tab::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: 100%;
+  height: max(100%, var(--sd-hit-target));
+  translate: -50% -50%;
+}
+
+.sd-tabs-tab-icon {
+  display: inline-flex;
+}
+
+.sd-tabs-tab-icon :where(svg) {
+  width: var(--sd-icon-size);
+  height: var(--sd-icon-size);
+}
+
+:where([dir="rtl"]) .sd-tabs-tab-icon[data-mirror] {
+  scale: -1 1;
+}
+
+.sd-tabs-tab[data-selected] {
+  font-weight: 600;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .sd-tabs-tab:not([data-selected]):hover {
+    background: var(--sd-fill-quaternary);
+  }
+}
+
+.sd-tabs-tab:not([data-selected]):active {
+  opacity: 0.6;
+}
+
+.sd-tabs-tab:focus-visible {
+  outline: var(--sd-focus-ring-width) solid var(--sd-focus-ring);
+  outline-offset: -1px;
+}
+
+.sd-tabs-tab[data-disabled] {
+  opacity: 0.4;
+}
+
+/* Bordered: the strip straddles the top edge of a recessed, framed box. */
+.sd-tabs[data-variant="bordered"] > .sd-tabs-list {
+  margin-bottom: calc(var(--sd-tabs-height) / -2);
+}
+
+.sd-tabs-panel {
+  min-width: 0;
+  outline: none;
+}
+
+.sd-tabs[data-variant="bordered"] > .sd-tabs-panel {
+  padding: calc(var(--sd-tabs-height) / 2 + var(--sd-space-6)) var(--sd-space-7) var(--sd-space-7);
+  border-radius: var(--sd-radius-md);
+  background: light-dark(rgb(0 0 0 / 0.03), rgb(255 255 255 / 0.03));
+  box-shadow: inset 0 0 0 var(--sd-hairline) var(--sd-separator-strong);
+}
+
+.sd-tabs[data-variant="plain"] > .sd-tabs-panel {
+  padding-top: var(--sd-space-6);
+}
+
+.sd-tabs-panel:focus-visible {
+  outline: var(--sd-focus-ring-width) solid var(--sd-focus-ring);
+  outline-offset: var(--sd-focus-ring-offset);
+}
+
+/* Plain: no track and no frame; a soft capsule slides behind the selected label. */
+.sd-tabs[data-variant="plain"] > .sd-tabs-list {
+  align-self: flex-start;
+  background: transparent;
+  box-shadow: none;
+  gap: var(--sd-space-1);
+  --sd-tabs-radius: var(--sd-radius-full);
+}
+
+.sd-tabs[data-variant="plain"] > .sd-tabs-list::before {
+  content: none;
+}
+
+.sd-tabs[data-variant="plain"] .sd-tabs-indicator {
+  background: var(--sd-fill);
+  box-shadow: none;
+}
+
+.sd-tabs[data-variant="plain"] .sd-tabs-tab {
+  color: var(--sd-label-secondary);
+  font-weight: 500;
+}
+
+.sd-tabs[data-variant="plain"] .sd-tabs-tab[data-selected] {
+  color: var(--sd-label);
+  font-weight: 600;
+}
+
+/* Vertical */
+.sd-tabs[data-orientation="vertical"] {
+  flex-direction: row;
+  gap: var(--sd-space-6);
+}
+
+.sd-tabs-list[data-orientation="vertical"] {
+  flex-direction: column;
+  align-self: flex-start;
+  height: auto;
+  margin-bottom: 0;
+}
+
+.sd-tabs-list[data-orientation="vertical"] .sd-tabs-tab {
+  justify-content: flex-start;
+  min-height: calc(var(--sd-tabs-height) - var(--sd-tabs-inset) * 2);
+}
+
+.sd-tabs[data-orientation="vertical"] > .sd-tabs-panel {
+  flex: 1;
+  margin: 0;
+}
+
+/* Touch: a full-width segmented control above the content, as iOS and iPadOS present it. */
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .sd-tabs-list[data-orientation="horizontal"] {
+    display: flex;
+    align-self: stretch;
+  }
+
+  .sd-tabs-list[data-orientation="horizontal"] .sd-tabs-tab {
+    flex: 1 1 0;
+  }
+
+  .sd-tabs[data-variant="bordered"] > .sd-tabs-list {
+    margin-bottom: var(--sd-space-6);
+  }
+
+  .sd-tabs[data-variant="bordered"] > .sd-tabs-panel {
+    padding: var(--sd-space-6);
+    border-radius: var(--sd-group-radius);
+    background: var(--sd-bg-grouped-secondary);
+    box-shadow: none;
+  }
+
+  .sd-tabs-list:has(.sd-tabs-tab[data-selected]:active) .sd-tabs-indicator {
+    scale: 0.96;
+  }
+}

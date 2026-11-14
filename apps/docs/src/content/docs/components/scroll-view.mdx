@@ -1,0 +1,78 @@
+export const metadata = {
+  title: "Scroll View",
+  description: "Scroll content with Apple's overlay scroll bars and edges that fade while there's more to see.",
+}
+
+# Scroll View
+
+<Lead>Scroll content with Apple's overlay scroll bars and edges that fade while there's more to see.</Lead>
+
+<Demo name="scroll-view/notes" />
+
+## When to use it
+
+Use a scroll view when a region of a page scrolls on its own: a sidebar, a log, a table under a fixed header, a row of albums. The page itself scrolls with the browser's own scroll bars; a scroll view is for the parts inside it.
+
+- Give it a fixed height (or width, sideways) so it has something to scroll.
+- Name it with `aria-label` when it holds content people read, so it becomes a landmark they can reach.
+- Don't nest scroll views that scroll the same way.
+
+## Usage
+
+```tsx
+import { ScrollView } from "@dreambase/stardust/scroll-view"
+```
+
+`ScrollView` puts its children in a viewport from ui-sdk's Scroll Area and draws the scroll bars for you. `viewportProps` reach the element that scrolls, like `tabIndex` or `onScroll`.
+
+### Sideways
+
+`orientation="horizontal"` scrolls sideways; `"both"` scrolls both ways, with a corner where the bars meet.
+
+<Demo name="scroll-view/horizontal" />
+
+### Edge fades
+
+Content fades out at an edge while there's more to scroll that way, and the fade shrinks to nothing as you reach the end, like the scroll edge effect under iOS bars. Turn it off with `fade={false}`.
+
+### Frames
+
+`variant="bordered"` draws a hairline frame with rounded corners, the bordered scroll view a macOS table or text view sits in.
+
+## Platform behavior
+
+- **macOS.** The overlay scroll bar: a 7-point rounded thumb that appears while you scroll or point at the view, fades out once you stop, and widens on a faint track when the pointer is over it, ready to drag.
+- **iOS and iPadOS.** A 3-point thumb that shows only while the content moves, with no track and no hover. Scrolling is the browser's, with its momentum and rubber banding.
+- In right-to-left layouts the vertical scroll bar sits on the left, and horizontal fades follow the reading direction.
+- The thumb is a translucent black in light appearance and a translucent white in dark, so it reads on any content.
+
+## Accessibility
+
+- The viewport is the browser's own scroller, so the arrow keys, Page Up, Page Down, Space and the trackpad all work, and screen readers read the content in order.
+- A named scroll view is a region landmark. Make an unnamed one focusable with `viewportProps={{ tabIndex: 0 }}` if it holds no focusable content, so keyboard users can scroll it.
+- The scroll bars are pointer affordances and are hidden from screen readers.
+
+## API
+
+### ScrollView
+
+Takes the props of ui-sdk's [Scroll Area](https://ui-sdk.dev/docs/react/components/scroll-area), including `type`, `scrollHideDelay`, `stickToEnd` and `controller`, plus:
+
+<PropsTable
+  rows={[
+    { name: "orientation", type: '"vertical" | "horizontal" | "both"', default: '"vertical"', description: "The axes that scroll." },
+    { name: "fade", type: "boolean", default: "true", description: "Fades content at an edge while there's more that way." },
+    { name: "variant", type: '"plain" | "bordered"', default: '"plain"', description: "Draws a hairline frame." },
+    { name: "type", type: '"auto" | "always" | "scroll" | "hover"', default: '"hover"', description: "When the scroll bars show." },
+    { name: "viewportProps", type: "ComponentProps<typeof ScrollAreaViewport>", description: "Props for the element that scrolls." },
+  ]}
+/>
+
+### Data attributes and CSS variables
+
+| Attribute or variable | On | Meaning |
+| --- | --- | --- |
+| `data-orientation`, `data-fade`, `data-variant` | `.sd-scroll-view` | The props above. |
+| `data-visible`, `data-dragging` | `.sd-scroll-view-scrollbar` | The bar is showing, or its thumb is being dragged. |
+| `--sd-scroll-view-thumb`, `--sd-scroll-view-thumb-hover` | platform | The thumb's thickness, at rest and under the pointer. |
+| `--sd-scroll-view-fade` | platform | How long the edge fades grow. |

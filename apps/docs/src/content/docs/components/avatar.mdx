@@ -1,0 +1,108 @@
+export const metadata = {
+  title: "Avatar",
+  description: "A person's photo with a monogram fallback, or the rounded square of an app or a team.",
+}
+
+# Avatar
+
+<Lead>Show a person's photo, with their initials until it loads or if it fails.</Lead>
+
+<Demo name="avatar/basic" />
+
+## When to use it
+
+Use an avatar to identify a person in a comment, a member list, a message thread or an account menu. It's an image of who they are, so pair it with their name wherever there's room; on its own it only works for people the viewer already knows.
+
+Use the `app` shape for things that aren't people: an app, a workspace, a team. The rounded square tells the viewer at a glance that it isn't a face.
+
+Keep sizes consistent within a list. iOS and macOS use one size per context, such as 40 points in a contacts list and 24 points in a sidebar.
+
+## Usage
+
+```tsx
+import { Avatar, AvatarGroup } from "@dreambase/stardust/avatar"
+```
+
+Pass `name` and `src`. The name becomes the image's alt text and the fallback's initials, and a screen reader reads it in either state.
+
+### Fallback colors
+
+The fallback is a soft gradient of one system color. `gray` is the Contacts monogram and the default. `auto` picks a color from the name, so the same person always gets the same color.
+
+<Demo name="avatar/colors" />
+
+### Status
+
+`status` adds a dot on the bottom trailing edge, ringed in the surface color. It's read after the name: "Online", "Away", "Do not disturb" or "Offline". Use `statusLabel` to say something else.
+
+<Demo name="avatar/status" />
+
+<Callout type="note">The ring is drawn in `--sd-bg`. On another surface, such as a grouped list row, set `--sd-avatar-ring` to that surface's color.</Callout>
+
+### Groups
+
+`AvatarGroup` overlaps avatars, each cut out of the one behind it. Set `size` on the group and leave it off the avatars. With `max`, the rest collapse into a count. Give the group an `aria-label` that says who they are.
+
+<Demo name="avatar/group" />
+
+### App icons
+
+`shape="app"` is the rounded square of an app icon. Browsers that support `corner-shape` draw Apple's continuous corner; others draw a plain 22.5% radius.
+
+<Demo name="avatar/app-icon" />
+
+### As a button
+
+When pressing an avatar opens a profile or an account menu, render it as a button and name the button.
+
+<Demo name="avatar/button" />
+
+## Platform behavior
+
+Avatars look the same on every platform: the sizes are absolute, because a photo's size follows the layout around it rather than the platform's text size. Pick a larger size on iOS and iPadOS rows, which are taller. A pressed avatar button dims, as image buttons do on every Apple platform.
+
+## Accessibility
+
+- The image's alt text and the fallback's hidden text both come from `name`, so the person is named while the image loads and after it fails. The initials themselves are hidden from screen readers.
+- When the name is already next to the avatar, leave `name` off and pass your own `AvatarImage` with an empty `alt` so it isn't read twice.
+- Status is never color alone: it's read as text.
+- Rendered as a button or link, an avatar shows the accent focus ring when you reach it with the keyboard. Name the button for what it does, like "Account: Maya Okafor".
+- A group is a `group` named by its `aria-label`, and its overflow count reads as "and 3 more".
+
+## API
+
+### Avatar
+
+<PropsTable
+  rows={[
+    { name: "name", type: "string", description: "The person or thing pictured. Gives the image its alt text and the fallback its initials." },
+    { name: "src", type: "string", description: "The photo. While it loads, and if it fails, the fallback shows." },
+    { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', default: '"md"', description: "20, 28, 36, 52 or 80 pixels. Inside a group, leave it out to take the group's size." },
+    { name: "shape", type: '"circle" | "app"', default: '"circle"', description: "`app` is the rounded square of an app icon." },
+    { name: "color", type: 'SystemColor | "gray" | "auto"', default: '"gray"', description: "The fallback gradient's hue. `auto` picks one from the name." },
+    { name: "status", type: '"online" | "away" | "busy" | "offline"', description: "Adds a status dot." },
+    { name: "statusLabel", type: "string", description: "Read in place of the default word for the status." },
+    { name: "children", type: "ReactNode", description: "Your own AvatarImage and AvatarFallback, in place of the ones made from src and name." },
+  ]}
+/>
+
+`Avatar` also takes every prop of ui-sdk's `Avatar`, including `render` and `onLoadingStatusChange`. `AvatarImage` and `AvatarFallback` take ui-sdk's props.
+
+### AvatarGroup
+
+<PropsTable
+  rows={[
+    { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', default: '"md"', description: "The size of every avatar in the group that doesn't set its own." },
+    { name: "max", type: "number", description: "How many to show, counting the overflow count." },
+  ]}
+/>
+
+### Data attributes and variables
+
+| Attribute or variable | On | Description |
+| --- | --- | --- |
+| `data-loading-status` | `.sd-avatar` | `idle`, `loading`, `loaded` or `error`, from ui-sdk. |
+| `data-size`, `data-shape`, `data-color` | `.sd-avatar` | The props, for styling. |
+| `data-status` | `.sd-avatar-status` | The status. |
+| `--sd-avatar-size` | `.sd-avatar`, `.sd-avatar-group` | Set any size, not just the five named ones. |
+| `--sd-avatar-ring` | any ancestor | The color of the cut-out ring in groups and around the status dot. Defaults to `--sd-bg`. |

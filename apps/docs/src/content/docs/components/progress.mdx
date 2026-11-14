@@ -1,0 +1,110 @@
+export const metadata = {
+  title: "Progress",
+  description: "The thin Apple progress bar, its indeterminate sweep, and a circular ring for downloads.",
+}
+
+# Progress
+
+<Lead>Show how far a task has come, or that it's under way when you can't tell.</Lead>
+
+<Demo name="progress/basic" />
+
+## When to use it
+
+Use a progress bar for a task that will finish: an export, a download, an upload, a backup. Show the real fraction whenever you know it, because a bar that moves tells people the app is working and how long to wait. When you can't tell how far along it is, use an indeterminate bar, and switch to a determinate one as soon as you can.
+
+For a short wait with nothing to measure, use an [activity indicator](/docs/components/activity-indicator) instead. For a reading that doesn't finish, like storage used, use a [gauge](/docs/components/gauge).
+
+Say what's happening in the label, and keep the bar in one place while it runs. Don't restart a bar from zero for each step of one task.
+
+## Usage
+
+```tsx
+import { Progress, ProgressCircle, ProgressLabel, ProgressValue } from "@dreambase/stardust/progress"
+```
+
+Put a `ProgressLabel` and a `ProgressValue` inside a `Progress`. The track and its fill are drawn for you, below them, and the fill eases to each new value.
+
+### Indeterminate
+
+Pass `value={null}`. A short segment glides across the track and comes back around.
+
+<Demo name="progress/indeterminate" />
+
+### Following a task
+
+Pass the latest `value` as the work advances.
+
+<Demo name="progress/live" />
+
+### Sizes and tones
+
+`md` is the standard bar. Use `sm` inside a row or a table cell and `lg` for the one task a view is about. `neutral` is for background work that shouldn't draw the eye.
+
+<Demo name="progress/sizes" />
+
+### Formatting the value
+
+`format` takes `Intl.NumberFormat` options or a function, for units and time remaining.
+
+<Demo name="progress/format" />
+
+### Circular
+
+`ProgressCircle` is the ring from the App Store and Safari downloads. Anything you put inside sits in the middle, like a stop square. Without a value, it spins.
+
+<Demo name="progress/circle" />
+
+## Platform behavior
+
+On macOS the bar is 5 points thick, on iOS and iPadOS 4 points, like `UIProgressView`. Rings are 24 points on macOS and 28 on iOS, where they're usually tap targets. Neither changes behavior between platforms.
+
+In a right-to-left layout the bar fills from the right and the indeterminate segment travels right to left, as Apple's do. A ring keeps turning clockwise, like a clock face, which Apple doesn't mirror either.
+
+With Reduce Motion on, the indeterminate segment stops sliding and fills the track, dimmed, so it still reads as busy without moving. A spinning ring holds still the same way.
+
+## Accessibility
+
+- `Progress` is a `progressbar`, named by `ProgressLabel` or `aria-label`. The value is part of its description, so the visible `ProgressValue` is hidden from screen readers to avoid reading it twice.
+- An indeterminate bar has no `aria-valuenow`.
+- Use `getValueLabel` when the number needs words, like "3 of 12 files".
+- A ring has no visible label, so always give it an `aria-label`.
+
+## API
+
+### Progress
+
+<PropsTable
+  rows={[
+    { name: "value", type: "number | null", description: "How far the task has come. `null` is indeterminate." },
+    { name: "min", type: "number", default: "0", description: "The start of the range." },
+    { name: "max", type: "number", default: "100", description: "The end of the range." },
+    { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "The bar's thickness." },
+    { name: "tone", type: '"accent" | "neutral" | "destructive"', default: '"accent"', description: "The fill color." },
+    { name: "format", type: "Intl.NumberFormatOptions | (value) => string", description: "How the value reads." },
+    { name: "getValueLabel", type: "(value, details) => string", description: "What screen readers announce for the value." },
+  ]}
+/>
+
+`ProgressLabel` and `ProgressValue` take ui-sdk's props.
+
+### ProgressCircle
+
+<PropsTable
+  rows={[
+    { name: "value", type: "number | null", description: "How far the task has come. `null` spins." },
+    { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "16, 24 or 36 points on macOS; 20, 28 or 44 on iOS." },
+    { name: "tone", type: '"accent" | "neutral" | "destructive"', default: '"accent"', description: "The ring's color." },
+    { name: "children", type: "ReactNode", description: "What sits in the middle." },
+  ]}
+/>
+
+### Data attributes and variables
+
+| Attribute or variable | On | Description |
+| --- | --- | --- |
+| `data-indeterminate`, `data-progressing`, `data-complete` | every part | The task's status, from ui-sdk. |
+| `data-size`, `data-tone` | `.sd-progress`, `.sd-progress-circle` | The props. |
+| `--progress-value` | `.sd-progress` | The value as a percentage, from ui-sdk. |
+| `--sd-progress-tone` | `.sd-progress`, `.sd-progress-circle` | The fill color. |
+| `--sd-progress-track-color` | `.sd-progress`, `.sd-progress-circle` | The track color. |

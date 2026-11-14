@@ -1,0 +1,104 @@
+export const metadata = {
+  title: "Platforms",
+  description: "How data-platform picks macOS, iPadOS or iOS metrics, how components adapt, and how to force or nest a platform.",
+}
+
+# Platforms
+
+<Lead>One attribute, `data-platform`, decides whether a page looks and feels like macOS, iPadOS or iOS. Components read their sizes from tokens that change with it.</Lead>
+
+<Demo name="guides/settings" />
+
+Pick a platform in the preview's toolbar. The same markup gets taller rows, larger text and capsule controls on iPadOS and iOS.
+
+## How the platform is chosen
+
+`<StardustScript />` runs before first paint and sets `data-platform` on `<html>`. With the default `platform="auto"` it checks two media queries:
+
+- A fine pointer, such as a mouse or trackpad, gives `macos`.
+- A coarse pointer gives `ipados` when the viewport is at least 744px wide, and `ios` when it's narrower.
+
+Without the attribute at all, Stardust falls back to macOS metrics.
+
+## What changes
+
+Each platform sets the same tokens to different values. These are the values in `platforms.css`:
+
+| Token | macOS | iPadOS | iOS |
+| --- | --- | --- | --- |
+| `--sd-text-body` | 13/16 regular | 17/22 regular | 17/22 regular |
+| `--sd-text-headline` | 13/16 semibold | 17/22 semibold | 17/22 semibold |
+| `--sd-text-large-title` | 26/32 semibold | 34/41 bold | 34/41 bold |
+| `--sd-control-height-sm` | 22px | 30px | 34px |
+| `--sd-control-height` | 28px | 38px | 44px |
+| `--sd-control-height-lg` | 36px | 50px | 52px |
+| `--sd-control-radius` | 8px | capsule | capsule |
+| `--sd-control-font` | 13px medium | 17px medium | 17px medium |
+| `--sd-row-height` | 28px | 44px | 48px |
+| `--sd-menu-item-height` | 24px | 44px | 44px |
+| `--sd-hit-target` | 24px | 44px | 44px |
+| `--sd-icon-size` | 16px | 20px | 22px |
+| `--sd-bar-height` | 52px | 50px | 44px |
+| `--sd-content-padding` | 20px | 20px | 16px |
+
+[Typography](/docs/foundations/typography) has the full type ramp and [Layout and shape](/docs/foundations/layout) the rest of the metrics.
+
+The idioms differ as well as the numbers. On macOS, controls show hover states and bezeled buttons look raised. On iOS and iPadOS there's no hover, bezeled buttons become gray fills, and buttons shrink slightly while pressed. Hover styles only apply under `@media (hover: hover) and (pointer: fine)`, so a touch screen never shows a stuck hover.
+
+## How components adapt
+
+Components use two tools, and both are safe to nest.
+
+**Different numbers** come from inherited custom properties. A component sets its own metrics per platform, and the nearest `data-platform` wins:
+
+```css
+:where(:root, [data-platform="macos"]) {
+  --sd-switch-width: 38px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --sd-switch-width: 51px;
+}
+```
+
+**Different rules** use `@scope` with a lower boundary, so they stop at a nested platform:
+
+```css
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .sd-button:active {
+    scale: 0.97;
+  }
+}
+```
+
+A plain descendant selector such as `[data-platform="ios"] .sd-button` would leak into a macOS preview nested inside an iOS page. If you write platform-specific CSS for your own components, use the same two patterns, and reach for the shared tokens (`--sd-control-height`, `--sd-row-height`, `--sd-hit-target`, `--sd-text-*`) first: most of the time they're all you need.
+
+## Force a platform
+
+Pass a platform to the script to skip detection:
+
+```tsx
+<StardustScript platform="ios" />
+```
+
+To let people choose, store their choice in `localStorage` and give the script its key. A saved `macos`, `ipados`, `ios` or `auto` wins over the `platform` prop:
+
+```tsx
+<StardustScript storageKey="app-platform" />
+```
+
+When the choice changes at runtime, write the new value to `localStorage` and set `document.documentElement.dataset.platform` yourself. The script only runs on load.
+
+## Nest a platform
+
+Put `data-platform` on any element to render its subtree as another platform. The attribute restates the body text style, so text inside picks up the right size even before any component does:
+
+```tsx
+<div data-platform="ios">
+  <Settings />
+</div>
+```
+
+The previews on this site work this way. Here's the same form rendered for all three platforms on one page:
+
+<Demo name="guides/platforms-side-by-side" hideCode />

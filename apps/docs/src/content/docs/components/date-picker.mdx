@@ -1,0 +1,104 @@
+export const metadata = {
+  title: "Date Picker",
+  description: "Type a date, step it, or pick it from a calendar in a popover, or a sheet on a phone.",
+}
+
+# Date Picker
+
+<Lead>Type a date, step it with the arrow keys, or pick it from a calendar.</Lead>
+
+<Demo name="date-picker/basic" />
+
+## When to use it
+
+Use a date picker for a date people might type or might want to see in a month: a start date, a due date, a booking. It's the macOS date field: month, day and year are separate parts you type into or step with the arrow keys, and the calendar button opens the month in a popover.
+
+For a date people know by heart, like a birthday, a `DateField` alone is quicker. For a month that should stay on screen, use a [Calendar](/docs/components/calendar).
+
+## Usage
+
+```tsx
+import { DateField, DatePicker, TimeField } from "@dreambase/stardust/date-picker"
+```
+
+The value is an ISO date string like `"2026-11-14"`, or `null`. Typing a whole date or picking a day both report it through `onValueChange`, and `name` submits it with a form. `min`, `max` and `unavailable` limit what can be picked, in the field and the calendar alike.
+
+### Compact
+
+`variant="compact"` shows the date as a gray button that opens the calendar, as iOS does in a form row. Pair it with a `TimeField` for a date and a time.
+
+<Demo name="date-picker/compact" platforms={["ios", "ipados", "macos"]} height={300} />
+
+### Date and time fields
+
+`DateField` and `TimeField` are the segments on their own, without a calendar. `granularity="minute"` adds the time to a `DateField`.
+
+<Demo name="date-picker/fields" />
+
+## Platform behavior
+
+- **macOS.** The field is a bordered text field holding the parts. The part you're editing fills with the accent, as a macOS date field selects it. The calendar opens in a translucent popover aligned with the field, scaling in from it, with compact 26-point days.
+- **iPadOS and iOS.** The field is filled gray with 17-point text. The compact button turns its text accent while its calendar is open. On a small touch screen the calendar arrives in a sheet from the bottom edge, with a grabber, full-size days and a swipe to dismiss.
+- **Every platform.** The calendar shows six weeks so the popover never changes height as you page through months.
+- **Right to left.** The parts keep the direction of the locale that formats them, so a US date reads 11/14/2026 even on a right-to-left page, and Arrow Right moves to the next part on screen. The calendar mirrors with the page.
+
+## Accessibility
+
+- Each part is its own small input, named by its unit; the Field label names the group. Arrow Up and Down step a part, and typing fills it and moves on.
+- The calendar button is named "Show calendar" and reports whether the calendar is open. Option-Down Arrow in the field opens it too. In the calendar, arrow keys move by day and week, Page Up and Down by month, and Escape closes it and returns focus.
+- The compact button reads its label and the chosen date, like "Start date, Nov 14, 2026".
+
+## API
+
+### DatePicker
+
+<PropsTable
+  rows={[
+    { name: "variant", type: '"field" | "compact"', default: '"field"', description: "Segments with a calendar button, or a button showing the date." },
+    { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "The field's height and type size." },
+    { name: "value", type: "string | null", description: "The ISO date, for a controlled picker." },
+    { name: "defaultValue", type: "string | null", default: "null", description: "The date it starts with." },
+    { name: "onValueChange", type: "(value, details) => void", description: "Runs when a day is picked or typing completes a date." },
+    { name: "min", type: "string", description: "The earliest date that can be picked." },
+    { name: "max", type: "string", description: "The latest date that can be picked." },
+    { name: "unavailable", type: "DateMatchers", description: "Dates that can't be picked, like weekends or booked days." },
+    { name: "presentation", type: '"popover" | "sheet" | "auto"', default: '"auto"', description: "A sheet on small touch screens, a popover elsewhere." },
+    { name: "months", type: "number", default: "1", description: "How many months the calendar shows." },
+    { name: "locale", type: "string", description: "The language that orders and names the date parts, and sets their direction. Defaults to the browser's." },
+    { name: "name", type: "string", description: "The name the ISO date submits under." },
+    { name: "aria-label", type: "string", description: "Names the field or button when there's no Field label." },
+  ]}
+/>
+
+### DateField and TimeField
+
+<PropsTable
+  rows={[
+    { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Height and type size." },
+    { name: "variant", type: '"auto" | "bordered" | "filled"', default: '"auto"', description: "Bordered on macOS and filled on touch, or a fixed look." },
+    { name: "granularity", type: '"day" | "hour" | "minute" | "second"', description: "The smallest unit shown. A DateField with a time unit shows the time too." },
+    { name: "hourCycle", type: "12 | 24", description: "The clock. Defaults to the locale's." },
+    { name: "value", type: "string | null", description: "An ISO date, date and time, or time." },
+  ]}
+/>
+
+`DatePickerTrigger` and `DatePickerContent` are exported for your own layout; the content draws the compact calendar unless it has children.
+
+### Data attributes
+
+| Attribute | On | Values |
+| --- | --- | --- |
+| `data-variant`, `data-size` | DatePicker | As above |
+| `data-open` | DatePicker, trigger | Present while the calendar is open |
+| `data-presentation` | Content | `popover`, `sheet` |
+| `data-invalid` | DatePicker, DateField | Present when the date can't be picked |
+| `data-type` | Segment | `month`, `day`, `year`, `hour`, `minute`, `dayPeriod`, `literal` |
+| `data-empty` | Segment | Present while the part is empty |
+
+### CSS variables
+
+| Variable | macOS | iOS | What it sets |
+| --- | --- | --- | --- |
+| `--sd-date-field-segment-radius` | `3px` | `6px` | The selected part's corners |
+| `--sd-date-picker-popover-pad` | `10px` | `14px` | Popover padding |
+| `--sd-date-picker-button-bg` | Tertiary fill | Tertiary fill | Compact button fill |

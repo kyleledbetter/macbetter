@@ -1,0 +1,112 @@
+export const metadata = {
+  title: "Toolbar",
+  description: "Put a window's most-used commands in its title bar, or float them over an iPhone screen.",
+}
+
+# Toolbar
+
+<Lead>Put a window's most-used commands in its title bar, or float them over an iPhone screen.</Lead>
+
+<Demo name="toolbar/unified" platforms={["macos"]} wallpaper height={300} />
+
+## When to use it
+
+Use a toolbar for the commands people reach for most in the current view: navigating back, switching views, sharing, creating something new, searching. Everything else belongs in a menu.
+
+- Prefer symbols, and name each one. A title or a short label is fine when a symbol would be unclear.
+- Group related buttons into a cluster, and push the rest to the trailing edge with a flexible space.
+- Put search at the trailing end on the Mac.
+- On iPhone, put the toolbar at the bottom, within reach of a thumb, with three to five items.
+
+## Usage
+
+```tsx
+import {
+  Toolbar,
+  ToolbarButton,
+  ToolbarGroup,
+  ToolbarSearchField,
+  ToolbarSeparator,
+  ToolbarSpacer,
+  ToolbarTitle,
+  ToolbarToggle,
+  ToolbarToggleGroup,
+} from "@dreambase/stardust/toolbar"
+```
+
+### Unified toolbar
+
+Put the toolbar in a [window's](/docs/components/window) title bar. `ToolbarTitle` shows the document's name with an optional subtitle, `ToolbarGroup` clusters related buttons in a capsule, `ToolbarSpacer` pushes what follows to the trailing edge, and `ToolbarSearchField` is a search field that joins the toolbar's arrow-key navigation.
+
+### Toggles and view switchers
+
+`ToolbarToggle` stays pressed, like Show Sidebar. `ToolbarToggleGroup` holds a set of toggles where one is chosen, like the Finder's icon, list and column views. Both join the toolbar's navigation without adding tab stops.
+
+### Floating toolbar
+
+`variant="floating"` is the iOS bottom toolbar: each button, cluster and search field becomes its own capsule of glass floating over the content.
+
+<Demo name="toolbar/floating" platforms={["ios"]} wallpaper height={720} />
+
+## Platform behavior
+
+- **macOS**: 28 point buttons with a soft fill under the pointer and a darker one when pressed. Symbols are secondary gray and darken on hover. Clusters sit in a recessed capsule, and a chosen toggle in a cluster is raised.
+- **Narrow windows**: the search field gives up its width first. Below about 100 points it folds into a magnifying glass, which opens back into a field when focused. Only after that does a long title truncate.
+- **Right to left**: the toolbar mirrors. Mark directional symbols, like Back and Forward chevrons, with `data-mirror` and they point the other way.
+- **iOS and iPadOS**: 44 point targets with no hover. Buttons give slightly under the finger. Plain toolbar buttons take the accent color; floating capsules keep the label color, so the glass carries the emphasis.
+
+## Accessibility
+
+- The toolbar is one tab stop. Tab enters on the first item, or the one focused last; the arrow keys move between items, Home and End jump to the ends, and Tab leaves. This comes from ui-sdk's Toolbar.
+- Name the toolbar with `aria-label`, and give every icon-only button its own.
+- Separators and the flexible space are hidden from assistive technology; groups are named with `aria-label`.
+- The search field keeps the arrow keys while its caret moves, and moves on at either end.
+
+## API
+
+### Toolbar
+
+<PropsTable
+  rows={[
+    { name: "variant", type: '"unified" | "floating"', default: '"unified"', description: "Unified sits in a title bar. Floating turns each item into a capsule of glass." },
+    { name: "orientation", type: '"horizontal" | "vertical"', default: '"horizontal"', description: "Which arrow keys move between items." },
+    { name: "loop", type: "boolean", description: "Whether the arrow keys wrap from the last item to the first." },
+    { name: "disabled", type: "boolean", description: "Disables every item. They stay focusable." },
+  ]}
+/>
+
+### ToolbarButton, ToolbarLink, ToolbarToggle
+
+`ToolbarButton` and `ToolbarLink` take ui-sdk's props: `disabled` and `focusableWhenDisabled`. `ToolbarToggle` takes the Toggle's `pressed`, `defaultPressed`, `onPressedChange` and, in a group, `value`.
+
+### ToolbarGroup, ToolbarToggleGroup
+
+`ToolbarGroup` takes `disabled`. `ToolbarToggleGroup` takes the Toggle Group's `value`, `defaultValue`, `onValueChange` and `multiple`. Name both with `aria-label`.
+
+### ToolbarTitle
+
+<PropsTable rows={[{ name: "subtitle", type: "ReactNode", description: "A second line, like when the document was edited." }]} />
+
+### ToolbarSearchField
+
+<PropsTable
+  rows={[
+    { name: "aria-label", type: "string", description: "Names the field. Required." },
+    { name: "placeholder", type: "string", default: '"Search"', description: "Hint text." },
+  ]}
+/>
+
+It takes the rest of an `input`'s props, like `value` and `onChange`.
+
+### Data attributes and CSS variables
+
+| Name | On | Description |
+| --- | --- | --- |
+| `data-variant` | `.sd-toolbar` | `unified` or `floating`. |
+| `data-orientation` | every part | The toolbar's orientation. |
+| `data-pressed` | `.sd-toolbar-button` | A toggle that's on. |
+| `data-disabled` | items and groups | Unavailable, still focusable. |
+| `data-mirror` | an `svg` in `.sd-toolbar-button` | Set it yourself on a directional symbol to flip it in right to left. |
+| `--sd-toolbar-item-height` | inherited | 28 points on macOS, 44 on touch. |
+| `--sd-toolbar-icon-size` | inherited | 16 points on macOS, 22 on touch. |
+| `--sd-toolbar-floating-height` | inherited | Height of the floating capsules. |

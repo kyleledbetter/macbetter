@@ -1,0 +1,98 @@
+export const metadata = {
+  title: "Color Well",
+  description: "Show a color and open an editor to change it.",
+}
+
+# Color Well
+
+<Lead>Show a color and open an editor to change it.</Lead>
+
+<Demo name="color-well/basic" />
+
+## When to use it
+
+Use a color well wherever someone picks a color for something, like a highlight, a label or a shape's fill. The well always shows the current color; pressing it opens an editor in a popover, and every change applies as it happens.
+
+- Put the well next to a label that names what it colors.
+- Offer presets that fit the context, like your brand's colors, so most people never need the full editor.
+- Turn off the opacity slider with `alpha={false}` when transparency makes no sense, like for a text color.
+
+## Usage
+
+```tsx
+import { ColorWell } from "@dreambase/stardust/color-well"
+```
+
+`aria-label` names both the color picker and the well's button. The value is a CSS color string; `format="hex"` (the default) writes it as hex, with an alpha pair when it's translucent.
+
+### In a list of properties
+
+<Demo name="color-well/field" />
+
+### Presets
+
+`presets` replaces Apple's system colors with your own. Pass `[]` for none.
+
+<Demo name="color-well/presets" />
+
+### Controlled
+
+Pass `value` and `onValueChange`, which runs on every step of a drag. Use `onValueCommit` to save once a drag ends.
+
+<Demo name="color-well/controlled" />
+
+## Platform behavior
+
+- **macOS.** A bezeled well, like NSColorWell, with the color inset in a rounded rectangle. It stays pressed while its popover is open. The editor floats on a translucent material: a saturation and brightness area, hue and opacity sliders, a hex field, a screen color picker where the browser supports one, and presets.
+- **iPadOS and iOS.** UIColorWell's circle of color inside a spectrum ring. The editor has larger thumbs and touch targets. On an iPhone it opens as a bottom sheet; on iPad it's a popover.
+- **Every platform.** Transparent colors show over a checkerboard, and thumbs stay inside their tracks at both ends.
+
+## Accessibility
+
+- The well is a button that opens the editor, and focus moves into it. Escape closes it and returns focus to the well.
+- The area's thumb is a two-dimensional slider named for both channels, like "Saturation 76%, Brightness 96%". Each slider is a slider, with arrow keys, Shift for ten steps and Page Up and Page Down.
+- Presets are a listbox, named by color, like "vivid red". The arrow keys move between them.
+- The hex field accepts any CSS color when you press Enter or leave it.
+
+## API
+
+<PropsTable
+  rows={[
+    { name: "aria-label", type: "string", description: "Names the picker and the well's button." },
+    { name: "value", type: "string", description: "The color, as any CSS color. Pass it to control the well." },
+    { name: "defaultValue", type: "string", default: '"#000000"', description: "The color at first." },
+    { name: "onValueChange", type: "(value, details) => void", description: "Runs on every step of a drag or a key." },
+    { name: "onValueCommit", type: "(value, details) => void", description: "Runs once an interaction ends. For saving." },
+    { name: "presets", type: "string[]", default: "Apple's system colors", description: "Preset colors under the editor." },
+    { name: "alpha", type: "boolean", default: "true", description: "Shows the opacity slider." },
+    { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Size of the well." },
+    { name: "format", type: '"hex" | "rgb" | "hsl" | "oklch" | …', default: '"hex"', description: "How the value is written." },
+    { name: "space", type: '"hsv" | "hsl" | "srgb" | "oklch"', default: '"hsv"', description: "The space the editor works in." },
+    { name: "presentation", type: '"popover" | "sheet" | "auto"', default: '"auto"', description: "auto opens a sheet on small touch screens." },
+    { name: "side", type: '"top" | "bottom" | "left" | "right"', default: '"bottom"', description: "Where the popover opens." },
+    { name: "align", type: '"start" | "center" | "end"', default: '"start"', description: "How the popover lines up with the well." },
+    { name: "disabled", type: "boolean", default: "false", description: "Can't be opened or changed." },
+    { name: "children", type: "ReactNode", description: "Extra content at the end of the editor." },
+  ]}
+/>
+
+### Data attributes
+
+| Attribute | On | Values |
+| --- | --- | --- |
+| `data-size` | Root | `sm`, `md`, `lg` |
+| `data-open` | Well | Present while the editor is open |
+| `data-presentation` | Editor | `popover`, `sheet` |
+| `data-starting-style`, `data-ending-style` | Editor | Present while it opens or closes |
+| `data-channel` | Sliders | `hue`, `alpha` |
+| `data-selected` | Presets | Present on the preset that matches the color |
+| `data-out-of-gamut` | Every part | Present while a drag holds a color outside the gamut |
+
+### CSS variables
+
+| Variable | macOS | iOS | What it sets |
+| --- | --- | --- | --- |
+| `--sd-color-well-width` | `44px` | `30px` | Width of the well |
+| `--sd-color-well-height` | `--sd-control-height-sm` | `30px` | Height of the well |
+| `--sd-color-well-panel-width` | `240px` | `300px` | Width of the editor |
+| `--color-picker-color` | | | From ui-sdk: the current color, on every part |

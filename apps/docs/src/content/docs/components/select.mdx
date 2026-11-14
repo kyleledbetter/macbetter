@@ -1,0 +1,108 @@
+export const metadata = { title: "Pop-Up Button", description: "Choose one option, or several, from a menu of choices." }
+
+# Pop-Up Button
+
+<Lead>Choose one option, or several, from a menu of choices.</Lead>
+
+<Demo name="select/basic" wallpaper height={300} />
+
+## When to use it
+
+A pop-up button shows the current choice and opens a menu of the others. Use it for a set of mutually exclusive options that would take too much room as radio buttons, like a setting with four values.
+
+- Use it for choices, not commands. A list of actions belongs in a [pull-down menu](/docs/components/menu).
+- For two or three options that people switch often, a [segmented control](/docs/components/segmented-control) is faster.
+- Label it, and keep option names short enough to fit the button.
+
+## Usage
+
+```tsx
+import { Select, SelectContent, SelectItem, SelectLabel, SelectTrigger } from "@dreambase/stardust/select"
+```
+
+`SelectTrigger` renders the value and its chevron on its own. `SelectItem` renders the checkmark beside the selected item. On the Mac the menu opens over the button with the selected item on top of it, its text lined up with the button's. Pass `alignItemWithTrigger={false}` to `SelectContent` to open it below instead; iOS and iPadOS, and any touch, always do.
+
+Pass the options to `Select` as `items` too, as the examples do. Then the button can show the selected label before the menu has ever opened, including in the server-rendered page.
+
+### Groups
+
+`SelectGroup`, `SelectGroupLabel` and `SelectSeparator` organize a long list.
+
+<Demo name="select/groups" wallpaper height={420} />
+
+### Multiple
+
+Set `multiple` to let people pick several. The menu stays open while they toggle items, and `SelectValue`'s `maxLabels` summarizes a long selection.
+
+<Demo name="select/multiple" wallpaper height={300} />
+
+### Plain
+
+`variant="plain"` drops the bezel: text and a small chevron, for toolbars, sort controls and table headers. It's what `auto` uses on iOS and iPadOS.
+
+<Demo name="select/plain" wallpaper height={300} />
+
+### On a phone
+
+Set `presentation="auto"` on `Select` to show the list as a bottom sheet on small touch screens, with a popover everywhere else. `presentation="sheet"` always uses a sheet. Swipe the sheet down to dismiss it without changing the value.
+
+<Demo name="select/sheet" wallpaper height={300} />
+
+### Listbox
+
+When the choices should stay on screen, use `Listbox`. It's the same choice in a list that's always visible: a bordered table with an accent selection on the Mac, and an inset list with a checkmark on iOS. The selection turns gray when the list doesn't have focus, as on the Mac.
+
+<Demo name="select/listbox" height={300} />
+
+```tsx
+import { Listbox, ListboxItem } from "@dreambase/stardust/listbox"
+```
+
+## Platform behavior
+
+- **macOS**: a bezeled button with the value and an accent square at its trailing edge holding a double chevron. Its menu is a Mac menu that always keeps a check column, so items don't shift as the value changes.
+- **iOS and iPadOS**: the menu picker. The value is plain accent-colored text with an up-and-down chevron, and the menu is the roomy iOS menu with a checkmark beside the choice. `variant="bezeled"` gives it a gray capsule instead.
+- `presentation="auto"` on `Select` shows the list as a bottom sheet on small touch screens.
+- Right to left, the check column and the Mac's text alignment mirror.
+
+## Accessibility
+
+The trigger is a combobox named by `SelectLabel`. Enter, Space and the arrow keys open the list, typing selects by name even while it's closed, Enter chooses, and Escape closes without changing the value. With `name`, the value submits with a form.
+
+## API
+
+### SelectTrigger
+
+<PropsTable
+  rows={[
+    { name: "variant", type: '"auto" | "bezeled" | "plain"', default: '"auto"', description: "Bezeled on the Mac and plain on touch, or one of them everywhere." },
+    { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "The control size." },
+    { name: "children", type: "ReactNode", default: "<SelectValue />", description: "What the button shows. The cap is always added." },
+  ]}
+/>
+
+### Other parts
+
+<PropsTable
+  rows={[
+    { name: "Select", type: "items, value, defaultValue, multiple, presentation, name", description: "The root. items lets the button show labels before the list opens. presentation is popover, sheet or auto." },
+    { name: "SelectContent", type: 'alignItemWithTrigger: boolean | "auto"', default: '"auto"', description: "Opens the menu over the button with the selected item on it. auto does that on the Mac only." },
+    { name: "SelectItem", type: "value, label, disabled", description: "An option. Renders its own checkmark." },
+    { name: "SelectItemIcon", type: "mirror", description: "An icon before the label." },
+    { name: "SelectGroup, SelectGroupLabel, SelectSeparator", type: "—", description: "Organize the list." },
+    { name: "SelectInput, SelectEmpty, SelectStatus", type: "—", description: "A search field inside the list, and its messages." },
+    { name: "Listbox, ListboxItem", type: "value, multiple", description: "The always-visible list. ListboxItem renders its own checkmark." },
+  ]}
+/>
+
+### Styling hooks
+
+<PropsTable
+  rows={[
+    { name: "data-selected", type: "item", description: "The chosen item, and its checkmark." },
+    { name: "data-placeholder", type: "trigger and value", description: "Nothing is chosen yet." },
+    { name: "data-open", type: "trigger", description: "The list is open." },
+    { name: "--sd-select-cap-inset", type: "length", default: "4px", description: "Space around the accent cap." },
+    { name: "--sd-select-content-shift", type: "length", description: "How far the Mac menu moves to line its text up with the button's." },
+  ]}
+/>

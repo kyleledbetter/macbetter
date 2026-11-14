@@ -1,0 +1,93 @@
+export const metadata = {
+  title: "Tabs",
+  description: "Switch between related views that share the same space, as a macOS tab view.",
+}
+
+# Tabs
+
+<Lead>Switch between related views that share the same space.</Lead>
+
+<Demo name="tabs/basic" height={280} />
+
+## When to use it
+
+Use a tab view to group a few related panes of controls, like the sections of a settings window, where each pane makes sense on its own. Keep the labels to a word or two and use nouns, not verbs.
+
+Tabs are for content within a window. To switch between the top-level areas of an iPhone or iPad app, use a [tab bar](/docs/components/tab-bar). To change how one set of content is shown, like a list or a grid, use a [segmented control](/docs/components/segmented-control) in the toolbar.
+
+Keep the number of tabs small, usually six or fewer. If people need more, a sidebar or a pop-up button reads better.
+
+## Usage
+
+```tsx
+import { Tabs, TabsList, TabsPanel, TabsTab } from "@dreambase/stardust/tabs"
+```
+
+### Tab view
+
+The default `bordered` variant is the macOS tab view: a segmented strip sits on the top edge of a recessed, framed box. The selected segment slides to the tab you choose.
+
+<Demo name="tabs/basic" height={280} />
+
+### Plain
+
+`variant="plain"` drops the frame and the track. A soft capsule slides behind the selected label, with no underline, for tabs at the top of a page or a popover. Put decorative icons in `TabsTabIcon`.
+
+<Demo name="tabs/plain" height={220} />
+
+## Platform behavior
+
+- **macOS**: a compact strip, 24px tall, centered on the panel's top edge, with hover feedback under a pointer.
+- **iPadOS and iOS**: the strip stretches to the width of the content as a segmented control, 34pt tall, and the panel becomes an inset grouped surface below it. The selected segment gives a little under the finger.
+- A vertical tab view (`orientation="vertical"`) puts the strip beside its panel on every platform.
+
+## Accessibility
+
+- The list is a `tablist`; each tab controls its panel, and each panel is labelled by its tab. Name the list with `aria-label`.
+- Tab moves focus into the list at the selected tab and out again on the next Tab. Left and Right move between tabs and select them, Home and End go to the ends, and right-to-left text swaps the arrows.
+- Icons in `TabsTabIcon` stay out of the tab's name. An icon-only tab still needs `aria-label`.
+
+## API
+
+### Tabs
+
+<PropsTable
+  rows={[
+    { name: "variant", type: '"bordered" | "plain"', default: '"bordered"', description: "The framed macOS tab view, or tabs with no frame." },
+    { name: "defaultValue", type: "string", description: "The tab selected at first. Defaults to the first enabled tab." },
+    { name: "value", type: "string | null", description: "The selected tab, to control it." },
+    { name: "onValueChange", type: "(value, details) => void", description: "Runs when the selection wants to change." },
+    { name: "orientation", type: '"horizontal" | "vertical"', default: '"horizontal"', description: "Which arrow keys move between tabs, and where the strip sits." },
+    { name: "activation", type: '"automatic" | "manual"', default: '"automatic"', description: "Whether arrow keys select a tab or only focus it." },
+  ]}
+/>
+
+### TabsList
+
+Renders the sliding indicator for you. Takes the props of a `div`; name it with `aria-label`.
+
+### TabsTab and TabsPanel
+
+<PropsTable
+  rows={[
+    { name: "value", type: "string", description: "Pairs a tab with the panel of the same value." },
+    { name: "disabled", type: "boolean", description: "On a tab: keeps it focusable but unselectable." },
+    { name: "keepMounted", type: "boolean", description: "On a panel: keeps it in the page while hidden, to preserve state." },
+  ]}
+/>
+
+### TabsTabIcon
+
+<PropsTable rows={[{ name: "mirror", type: "boolean", description: "Flips a directional icon in right-to-left text." }]} />
+
+### Data attributes and CSS variables
+
+| Attribute or variable | On | Meaning |
+| --- | --- | --- |
+| `data-variant` | `.sd-tabs` | `bordered` or `plain` |
+| `data-selected` | `.sd-tabs-tab`, `.sd-tabs-panel` | The selected tab and its panel |
+| `data-orientation` | every part | `horizontal` or `vertical` |
+| `data-disabled` | `.sd-tabs-tab` | The tab can't be selected |
+| `--sd-tabs-height` | inherited | Height of the strip: 24px on macOS, 34pt on touch |
+| `--sd-tabs-padding` | inherited | Horizontal padding inside each tab |
+| `--active-tab-left`, `--active-tab-width`… | `.sd-tabs-indicator` | The selected tab's box, from ui-sdk |

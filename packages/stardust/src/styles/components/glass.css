@@ -1,0 +1,40 @@
+/* Glass group — one capsule of Liquid Glass around a cluster of plain controls. The material itself is in materials.css. */
+
+:where(:root, [data-platform="macos"]) {
+  --sd-glass-group-padding: 3px;
+  --sd-glass-group-gap: 0px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --sd-glass-group-padding: 4px;
+  --sd-glass-group-gap: 2px;
+}
+
+.sd-glass-group {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--sd-glass-group-gap);
+  padding: var(--sd-glass-group-padding);
+}
+
+.sd-glass-group[data-orientation="vertical"] {
+  flex-direction: column;
+}
+
+/* Controls take the capsule's shape. */
+.sd-glass-group > :where(.sd-button) {
+  --sd-button-radius: var(--sd-radius-full);
+}
+
+.sd-glass-group > :where(.sd-separator[data-orientation="vertical"]) {
+  align-self: stretch;
+  margin-block: 6px;
+  margin-inline: 2px;
+}
+
+.sd-glass-group > :where(.sd-separator[data-orientation="horizontal"]) {
+  align-self: stretch;
+  margin-inline: 6px;
+  margin-block: 2px;
+}

@@ -1,0 +1,86 @@
+export const metadata = {
+  title: "Popover",
+  description: "Show a small task or more detail beside the control it belongs to, with an arrow that points back at it.",
+}
+
+# Popover
+
+<Lead>Show a small task or more detail beside the control it belongs to.</Lead>
+
+<Demo name="popover/basic" wallpaper height={440} />
+
+## When to use it
+
+Use a popover for something brief that belongs to one control: sharing a link, adjusting a few options, explaining a setting. It closes when people click elsewhere, so don’t put work in it that would be painful to lose. For a longer task, use a [Dialog](/docs/components/dialog); for a list of commands, a Menu; for a few words on hover, a [Tooltip](/docs/components/tooltip).
+
+## Usage
+
+```tsx
+import {
+  Popover,
+  PopoverClose,
+  PopoverContent,
+  PopoverDescription,
+  PopoverTitle,
+  PopoverTrigger,
+} from "@dreambase/stardust/popover"
+```
+
+`PopoverContent` draws its arrow and grows out of the trigger. It opens below the trigger and flips or shifts when there isn’t room; the arrow keeps pointing at the trigger. Give it a `PopoverTitle` to name it.
+
+### Placement
+
+`side` chooses the edge (`top`, `right`, `bottom`, `left`) and `align` the alignment along it. Pass `arrow={false}` for a plain panel.
+
+<Demo name="popover/sides" wallpaper height={260} />
+
+### On a phone
+
+iPhone has no room for a floating panel. Pass `presentation="auto"` to the root and it becomes a sheet you can swipe away on small touch screens, while iPad and the Mac keep the popover. The Share example at the top of this page does this: open it on a phone to see the sheet.
+
+## Platform behavior
+
+- **macOS.** Thick material with 12pt corners, 13pt text, and the arrow pointing at the control. It scales up from the trigger on a quick spring and fades out faster than it came in.
+- **iPadOS.** The same shape with larger corners, 17pt text and touch-size controls.
+- **iOS.** Popovers are rare on iPhone; use `presentation="auto"` to get a bottom sheet with a grabber there.
+- The arrow blurs the page behind it just as the panel does, so the two read as one surface.
+
+## Accessibility
+
+- The content has the `dialog` role, named by its title and described by its description.
+- Focus moves into it on open. Escape, a press outside, or focus leaving it closes it, and focus returns to the trigger.
+- `modal` traps focus and makes the page inert when the popover holds a task that shouldn’t be interrupted.
+
+## API
+
+### Popover
+
+Takes every [ui-sdk Popover](https://ui-sdk.dev/docs/components/popover) root prop, like `open`, `onOpenChange`, `modal`, `openOnHover` and `presentation`.
+
+### PopoverContent
+
+<PropsTable
+  rows={[
+    { name: "arrow", type: "boolean", default: "true", description: "Draws the arrow that points at the trigger." },
+    { name: "side", type: '"top" | "right" | "bottom" | "left"', default: '"bottom"', description: "The edge of the trigger it opens on." },
+    { name: "align", type: '"start" | "center" | "end"', default: '"center"', description: "How it lines up along that edge." },
+    { name: "sideOffset", type: "number", default: "12 with an arrow, 6 without", description: "The gap to the trigger." },
+    { name: "arrowPadding", type: "number", default: "14", description: "Keeps the arrow clear of the corners." },
+  ]}
+/>
+
+`PopoverTrigger`, `PopoverTitle`, `PopoverDescription` and `PopoverClose` take ui-sdk’s props. Render a Stardust `Button` with `render={<Button />}`. `createPopoverController` is re-exported from ui-sdk.
+
+| Data attribute | On | Meaning |
+| --- | --- | --- |
+| `data-side`, `data-align` | `.sd-popover`, `.sd-popover-arrow` | Where it landed |
+| `data-arrow` | `.sd-popover` | It has an arrow |
+| `data-presentation` | `.sd-popover` | `popover` or `sheet` |
+| `data-starting-style`, `data-ending-style` | `.sd-popover` | Entering and leaving |
+
+| CSS variable | Default |
+| --- | --- |
+| `--sd-popover-radius` | `--sd-radius-lg` on macOS, `--sd-popup-radius` on touch |
+| `--sd-popover-padding` | 14px on macOS, 16px on touch |
+| `--sd-popover-max-width` | 320px on macOS, 360px on touch |
+| `--transform-origin`, `--arrow-offset` | Set by ui-sdk |

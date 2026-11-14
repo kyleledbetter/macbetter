@@ -1,0 +1,75 @@
+export const metadata = {
+  title: "Secure Field",
+  description: "Enter a password as dots, with an eye button that shows it when you need to read it.",
+}
+
+# Secure Field
+
+<Lead>Enter a password, and show it when you need to read it.</Lead>
+
+<Demo name="secure-field/basic" />
+
+## When to use it
+
+Use a secure field for passwords, PINs and recovery keys. It looks like a [Text Field](/docs/components/text-field) but shows dots, offers the right password to password managers and hides the text again when its form submits.
+
+Set `autoComplete="current-password"` when signing in and `"new-password"` when creating or changing one. Keep the show button unless the value is a PIN typed on a shared screen.
+
+## Usage
+
+```tsx
+import { SecureField, SecureFieldInput, SecureFieldToggle } from "@dreambase/stardust/secure-field"
+```
+
+Form options (`name`, `required`, `disabled`, `readOnly`, `autoComplete`, `value`) go on `SecureField`. `placeholder`, `id`, `autoFocus` and ARIA names go to the input. Pass children to lay out `SecureFieldInput` and `SecureFieldToggle` yourself.
+
+### Shown at first and no toggle
+
+`defaultVisible` starts with the text shown, for something people read aloud or copy, like a Wi-Fi password. `toggle={false}` leaves the eye button out.
+
+<Demo name="secure-field/visible" />
+
+## Platform behavior
+
+- **macOS.** The bordered text field. The eye sits at the trailing edge in secondary gray and turns accent while the password shows. While Caps Lock is on and the field is focused, a ⇪ appears beside it, as in the macOS login window.
+- **iPadOS and iOS.** The filled gray field at 44 points, with a 17-point eye that keeps a 44-point touch target.
+- **Every platform.** Dots are spaced slightly wider than letters, and the caret stays where it was when the password is shown or hidden.
+
+## Accessibility
+
+- The toggle is a real button with `aria-pressed`, named "Show password". Rename it with `toggleLabel`, like "Show recovery key".
+- The toggle is `type="button"`, so Return in the field still submits the form.
+- The text is hidden again when the form submits or the page is hidden, so it isn't left on screen.
+
+## API
+
+### SecureField
+
+<PropsTable
+  rows={[
+    { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Height, padding and type size." },
+    { name: "variant", type: '"auto" | "bordered" | "filled" | "plain"', default: '"auto"', description: "Bordered on macOS and filled on touch, or a fixed look." },
+    { name: "placeholder", type: "string", description: "Passed to the input." },
+    { name: "toggle", type: "boolean", default: "true", description: "Shows the eye button." },
+    { name: "toggleLabel", type: "string", default: '"Show password"', description: "The eye button's name." },
+    { name: "autoComplete", type: '"current-password" | "new-password" | "off"', default: '"current-password"', description: "What password managers offer." },
+    { name: "defaultVisible", type: "boolean", default: "false", description: "Starts with the text shown." },
+    { name: "visible", type: "boolean", description: "Whether the text shows, for a controlled field." },
+    { name: "onVisibleChange", type: "(visible, details) => void", description: "Runs when the text is shown or hidden." },
+  ]}
+/>
+
+`SecureFieldInput` takes the props of an `input`; `SecureFieldToggle` the props of a `button`, and draws eye or eye.slash unless it has children.
+
+### Data attributes
+
+| Attribute | On | Values |
+| --- | --- | --- |
+| `data-size`, `data-variant` | SecureField | As on Text Field |
+| `data-visible` | Every part | Present while the text shows |
+| `data-capslock` | Every part | Present while Caps Lock is on and the field is focused |
+| `data-filled`, `data-disabled`, `data-readonly` | Every part | Field state |
+
+### CSS variables
+
+It reads the Text Field's variables: `--sd-text-field-radius`, `--sd-text-field-padding`, `--sd-text-field-font` and `--sd-text-field-icon`.

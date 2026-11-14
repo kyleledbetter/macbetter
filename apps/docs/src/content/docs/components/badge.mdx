@@ -1,0 +1,89 @@
+export const metadata = {
+  title: "Badge",
+  description: "The red notification count from app icons and tab bars, and small capsule labels in system colors.",
+}
+
+# Badge
+
+<Lead>Count what's new, or label a row with a short status.</Lead>
+
+<Demo name="badge/notification" />
+
+## When to use it
+
+Use a `NotificationBadge` to say how many new things are waiting behind an icon: unread messages, available updates, new notifications. It's always red with white digits, as on app icons, tab bars and the Dock, because people already know what it means. Show a count only for things that need attention; a badge that's always there stops being noticed. With no count, it's a plain dot that says only "something new".
+
+Use a `Badge` to label a row, a card or a title with a word or two: a plan, a state, "New" or "Beta". It isn't a button. If pressing it does something, use a button.
+
+## Usage
+
+```tsx
+import { Badge, BadgeAnchor, NotificationBadge } from "@dreambase/stardust/badge"
+```
+
+### Notification counts
+
+Wrap the icon and the badge in a `BadgeAnchor` to pin the badge to its top trailing corner. Counts above `max` (99 by default) read as "99+". A count of zero renders nothing, so you can pass the number straight through. Pass `label` to say what is being counted.
+
+### Labels
+
+`tinted` is the quiet default. Use `filled` for the one label in a view that should stand out, and `outline` beside other filled content. The text color is adjusted for each hue so it holds 4.5:1 in light and dark.
+
+<Demo name="badge/labels" />
+
+### Sizes and icons
+
+<Demo name="badge/sizes" />
+
+### Status dot
+
+The `dot` variant puts a colored dot beside plain text, for a status in a table or a list where a filled capsule in every row would be loud.
+
+<Demo name="badge/dot" />
+
+## Platform behavior
+
+Labels are 18 points tall with 11-point semibold text on macOS, and 22 points with 13-point text on iOS and iPadOS, so they sit level with each platform's body text. Notification badges are the same on every platform: `sm` for a toolbar icon, `md` for a tab bar or a sidebar row, `lg` for an app icon.
+
+## Accessibility
+
+- The visible digits are hidden from screen readers; a hidden sentence reads instead: "12 unread messages", or "More than 99 updates".
+- A dot with no count reads only its `label`, so give it one, or leave it out when the control's own name already says there's something new.
+- A badge's meaning never rests on color alone: the dot variant and colored labels always carry text.
+
+## API
+
+### Badge
+
+<PropsTable
+  rows={[
+    { name: "variant", type: '"tinted" | "filled" | "outline" | "dot"', default: '"tinted"', description: "How the color is applied." },
+    { name: "color", type: 'SystemColor | "accent" | "gray"', default: '"accent"', description: "Any system color, the theme's accent, or gray." },
+    { name: "size", type: '"sm" | "md"', default: '"md"', description: "`sm` fits inside dense table rows." },
+  ]}
+/>
+
+### NotificationBadge
+
+<PropsTable
+  rows={[
+    { name: "count", type: "number", description: "Leave it out for a dot. Zero renders nothing." },
+    { name: "max", type: "number", default: "99", description: "Counts above this read as `max+`." },
+    { name: "label", type: "string", description: 'What is being counted, read after the number: "unread messages".' },
+    { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "14, 18 or 24 pixels tall." },
+  ]}
+/>
+
+### BadgeAnchor
+
+A `span` that pins a `NotificationBadge` inside it to the top trailing corner of its other content.
+
+### Data attributes and variables
+
+| Attribute or variable | On | Description |
+| --- | --- | --- |
+| `data-variant`, `data-color`, `data-size` | `.sd-badge` | The props. |
+| `data-dot` | `.sd-notification-badge` | Present when there's no count. |
+| `--sd-badge-color` | `.sd-badge` | The hue, for a color outside the palette. |
+| `--sd-badge-fill` | `.sd-badge` | A filled badge's background. Light hues keep their color and take dark text; the rest deepen just enough for white text to hold 4.5:1. |
+| `--sd-notification-badge-color` | `.sd-notification-badge` | The red. |

@@ -1,0 +1,100 @@
+export const metadata = {
+  title: "Gauge",
+  description: "A reading in a range: the macOS level indicator, a linear capacity bar, and the circular gauge from watchOS and iOS widgets.",
+}
+
+# Gauge
+
+<Lead>Show a reading within a known range, and whether it's fine.</Lead>
+
+<Demo name="gauge/level" />
+
+## When to use it
+
+Use a gauge for a value that sits in a range and doesn't finish: storage used, battery level, memory pressure, air quality. For a task that's working toward done, use a [progress bar](/docs/components/progress).
+
+Set thresholds when the reading can be good or bad. With `low`, `high` and `optimum`, the gauge turns green, yellow or red the way an HTML `meter` does, so people can tell at a glance whether to act. Without thresholds, it fills in the accent.
+
+## Usage
+
+```tsx
+import { Gauge, GaugeLabel, GaugeValue } from "@dreambase/stardust/gauge"
+```
+
+Put a `GaugeLabel` and a `GaugeValue` inside a `Gauge`; the track is drawn for you.
+
+### Thresholds
+
+`optimum` says which end is good. Below `low` means lower is better, like CPU load. Above `high` means higher is better, like a battery. Between them, the middle is best and either end is a warning.
+
+| Optimum | Below `low` | Between | Above `high` |
+| --- | --- | --- | --- |
+| below `low` | green | yellow | red |
+| above `high` | red | yellow | green |
+| between | yellow | green | yellow |
+
+### Level indicator
+
+`variant="level"` is macOS's discrete level indicator: segments that light up together, all in the color the thresholds give. Set how many with `segments`.
+
+### Linear
+
+The default variant is a capsule that fills, like the storage bar in System Settings.
+
+<Demo name="gauge/linear" />
+
+### Circular
+
+`variant="circular"` is the open ring from watchOS complications and iOS widgets: 270 degrees, with the value in the middle and the label below.
+
+<Demo name="gauge/circular" />
+
+### Gradient
+
+`gradient` paints the whole ring from green to red, following its curve, and marks the value with a knob. Use it for a scale, like air quality or UV index, where where you are on the scale matters more than how full it is. The gradient runs from the good end to the bad one, so it flips when higher is better.
+
+<Demo name="gauge/gradient" />
+
+## Platform behavior
+
+Level indicators are 14 points tall on macOS and 18 on iOS and iPadOS; circular gauges are 64 and 72 points at the default size. The level indicator is a Mac control: on iOS, prefer the linear or circular gauge.
+
+Linear and level gauges fill from the right in a right-to-left layout. The circular gauge keeps running clockwise.
+
+System yellow is under 3:1 against a white page, so in light mode a `suboptimal` reading gets a darker edge of the same yellow. The hue doesn't change, and dark mode needs no edge.
+
+## Accessibility
+
+- A gauge is a `meter`, named by `GaugeLabel` or `aria-label`, and reads its value. The visible value is hidden from screen readers so it isn't read twice.
+- Color is never the only signal: the value is always read, and should be shown. Add `getValueLabel` when the number needs words, like "Moderate".
+- The circular gauge's ring and the level indicator's segments are hidden from assistive technology.
+
+## API
+
+<PropsTable
+  rows={[
+    { name: "value", type: "number", description: "The reading." },
+    { name: "min", type: "number", default: "0", description: "The start of the range." },
+    { name: "max", type: "number", default: "100", description: "The end of the range." },
+    { name: "variant", type: '"linear" | "level" | "circular"', default: '"linear"', description: "How it's drawn." },
+    { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Thickness, or the ring's diameter." },
+    { name: "low", type: "number", description: "Where the low region ends." },
+    { name: "high", type: "number", description: "Where the high region starts." },
+    { name: "optimum", type: "number", description: "The best value, which says which region is good." },
+    { name: "segments", type: "number", default: "10", description: "How many segments a level indicator draws." },
+    { name: "gradient", type: "boolean", description: "Paints a circular gauge's ring as a gradient with a marker." },
+    { name: "format", type: "Intl.NumberFormatOptions | (value) => string", description: "How the value reads." },
+  ]}
+/>
+
+`GaugeLabel` and `GaugeValue` take ui-sdk's `MeterLabel` and `MeterValue` props.
+
+| Attribute or variable | On | Description |
+| --- | --- | --- |
+| `data-variant`, `data-size` | `.sd-gauge` | The props. |
+| `data-level` | `.sd-gauge` | `optimum`, `suboptimal` or `critical`, when thresholds are set. |
+| `data-lit` | `.sd-gauge-segment` | A lit segment. |
+| `--meter-value` | `.sd-gauge` | The reading as a percentage, from ui-sdk. |
+| `--sd-gauge-good`, `--sd-gauge-fair`, `--sd-gauge-poor` | `.sd-gauge` | The three level colors. |
+| `--sd-gauge-edge` | `.sd-gauge` | The edge drawn around a reading. Transparent except for a `suboptimal` reading in light mode. |
+| `--sd-gauge-ring` | any ancestor | The color that cuts the gradient marker out of the ring. Defaults to `--sd-bg`. |

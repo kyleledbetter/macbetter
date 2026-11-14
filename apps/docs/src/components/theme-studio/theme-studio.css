@@ -1,0 +1,640 @@
+/*
+ * Theme Studio. The shell (inspector, preview bar) uses the site's theme; the
+ * stage inside .ts-stage uses the theme being edited.
+ */
+
+.ts-studio {
+  --ts-inspector-width: 340px;
+
+  display: grid;
+  grid-template-columns: var(--ts-inspector-width) minmax(0, 1fr);
+  grid-template-areas: "inspector preview";
+  height: 100dvh;
+  padding-top: var(--docs-header-height);
+  background: var(--sd-bg);
+  color: var(--sd-label);
+}
+
+/* ── Inspector ───────────────────────────────────────────────────── */
+
+.ts-inspector {
+  grid-area: inspector;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-inline-end: var(--sd-hairline) solid var(--sd-separator-strong);
+  background: var(--sd-bg-sidebar);
+  scrollbar-width: thin;
+}
+
+.ts-inspector-inner {
+  display: grid;
+  gap: var(--sd-space-7);
+  padding: var(--sd-space-7) var(--sd-space-6) var(--sd-space-10);
+}
+
+.ts-intro h1 {
+  margin: 0;
+  font: var(--sd-text-title-1);
+  letter-spacing: var(--sd-tracking-title);
+}
+
+.ts-intro p {
+  margin: var(--sd-space-3) 0 0;
+  font: var(--sd-text-callout);
+  color: var(--sd-label-secondary);
+  text-wrap: pretty;
+}
+
+.ts-section {
+  display: grid;
+  gap: var(--sd-space-3);
+  min-width: 0;
+}
+
+.ts-section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sd-space-4);
+  padding-inline: var(--sd-space-2);
+}
+
+.ts-section-title {
+  margin: 0;
+  font: var(--sd-text-headline);
+  color: var(--sd-label);
+}
+
+.ts-section-aside {
+  font: var(--sd-text-subheadline);
+  color: var(--sd-label-secondary);
+}
+
+.ts-section-footer {
+  margin: 0;
+  padding-inline: var(--sd-space-2);
+  font: var(--sd-text-subheadline);
+  color: var(--sd-label-secondary);
+  text-wrap: pretty;
+}
+
+/* A System Settings group box. */
+.ts-group {
+  display: grid;
+  min-width: 0;
+  border-radius: var(--sd-radius-md);
+  background: light-dark(var(--sd-bg), color-mix(in oklch, var(--sd-ink) 5%, transparent));
+  box-shadow: 0 0 0 var(--sd-hairline) var(--sd-separator);
+}
+
+.ts-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sd-space-5);
+  min-height: 38px;
+  padding: var(--sd-space-3) var(--sd-space-5);
+  font: var(--sd-text-body);
+}
+
+.ts-row + .ts-row::before {
+  content: "";
+  position: absolute;
+  inset: 0 var(--sd-space-5) auto;
+  height: var(--sd-hairline);
+  background: var(--sd-separator);
+}
+
+.ts-row-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ts-row-control {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--sd-space-4);
+}
+
+.ts-row[data-stack] {
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--sd-space-4);
+  padding-block: var(--sd-space-5);
+}
+
+.ts-hex {
+  width: 84px;
+  font-family: var(--sd-font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+.ts-hex[aria-invalid="true"] {
+  color: var(--sd-destructive-text);
+}
+
+.ts-slider-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sd-space-5);
+}
+
+.ts-slider-row > .sd-slider {
+  flex: 1;
+}
+
+.ts-value {
+  min-width: 36px;
+  font-family: var(--sd-font-mono);
+  font-size: 12px;
+  text-align: end;
+  color: var(--sd-label-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Presets ─────────────────────────────────────────────────────── */
+
+.ts-presets {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--sd-space-5) var(--sd-space-4);
+}
+
+.ts-preset {
+  display: grid;
+  justify-items: center;
+  gap: var(--sd-space-3);
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--sd-label-secondary);
+  font: var(--sd-text-subheadline);
+  cursor: default;
+  outline: none;
+}
+
+.ts-preset-swatch {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--sd-radius-md);
+  box-shadow: 0 0 0 var(--sd-hairline) var(--sd-separator-strong), var(--sd-shadow-1);
+  transition: box-shadow var(--sd-duration-fast) var(--sd-ease-out);
+}
+
+.ts-preset-half {
+  position: relative;
+  display: grid;
+  align-content: end;
+  gap: 3px;
+  padding: 6px 5px;
+}
+
+.ts-preset-half > i {
+  display: block;
+  height: 3px;
+  border-radius: 2px;
+}
+
+.ts-preset-half > b {
+  display: block;
+  width: 70%;
+  height: 7px;
+  border-radius: 3px;
+}
+
+.ts-preset[data-checked] {
+  color: var(--sd-label);
+  font-weight: 600;
+}
+
+.ts-preset[data-checked] .ts-preset-swatch {
+  box-shadow: 0 0 0 2px var(--sd-bg-sidebar), 0 0 0 4px var(--sd-accent);
+}
+
+.ts-preset:focus-visible .ts-preset-swatch {
+  box-shadow: 0 0 0 2px var(--sd-bg-sidebar), 0 0 0 calc(2px + var(--sd-focus-ring-width)) var(--sd-focus-ring);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ts-preset:hover:not([data-checked]) .ts-preset-swatch {
+    box-shadow: 0 0 0 var(--sd-hairline) var(--sd-separator-strong), var(--sd-shadow-2);
+  }
+}
+
+/* ── Contrast ────────────────────────────────────────────────────── */
+
+.ts-contrast {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+}
+
+.ts-contrast-head,
+.ts-contrast-row {
+  display: contents;
+}
+
+.ts-contrast-head > span {
+  padding: var(--sd-space-4) var(--sd-space-5) var(--sd-space-2);
+  font: var(--sd-text-subheadline);
+  color: var(--sd-label-secondary);
+  text-align: center;
+}
+
+.ts-contrast-head > span:first-child {
+  text-align: start;
+}
+
+.ts-contrast-row > * {
+  padding-block: var(--sd-space-3);
+  border-top: var(--sd-hairline) solid var(--sd-separator);
+}
+
+.ts-contrast-name {
+  display: grid;
+  padding-inline-start: var(--sd-space-5);
+  min-width: 0;
+}
+
+.ts-contrast-name small {
+  font: var(--sd-text-subheadline);
+  color: var(--sd-label-secondary);
+}
+
+.ts-contrast-cell {
+  display: flex;
+  justify-content: center;
+  padding-inline: var(--sd-space-2);
+}
+
+.ts-contrast-cell:last-child {
+  padding-inline-end: var(--sd-space-5);
+}
+
+.ts-ratio {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 62px;
+  padding: 2px 7px;
+  border-radius: var(--sd-radius-full);
+  font: 500 12px/16px var(--sd-font);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+.ts-ratio[data-pass] {
+  background: color-mix(in oklch, var(--sd-green) 18%, transparent);
+  color: light-dark(oklch(from var(--sd-green) calc(l - 0.12) c h), oklch(from var(--sd-green) calc(l + 0.08) c h));
+}
+
+.ts-ratio[data-fail] {
+  background: color-mix(in oklch, var(--sd-red) 20%, transparent);
+  color: var(--sd-destructive-text);
+}
+
+.ts-ratio svg {
+  width: 12px;
+  height: 12px;
+  flex: none;
+}
+
+/* ── Export ──────────────────────────────────────────────────────── */
+
+.ts-code {
+  position: relative;
+  margin: 0;
+  border-radius: var(--sd-radius-md);
+  background: light-dark(#f7f9f7, #081710);
+  box-shadow: 0 0 0 var(--sd-hairline) var(--sd-separator);
+}
+
+.ts-code pre {
+  max-height: 280px;
+  margin: 0;
+  padding: var(--sd-space-5) var(--sd-space-5) var(--sd-space-5);
+  overflow: auto;
+  font: 400 11.5px/1.6 var(--font-mono);
+  letter-spacing: 0;
+  color: var(--sd-label);
+  tab-size: 2;
+  white-space: pre;
+  scrollbar-width: thin;
+}
+
+.ts-code-copy {
+  background: var(--sd-material-thick);
+  position: absolute;
+  inset-block-start: var(--sd-space-3);
+  inset-inline-end: var(--sd-space-3);
+}
+
+.ts-code .ts-tok-prop { color: var(--sd-accent-text); }
+.ts-code .ts-tok-str { color: light-dark(oklch(from var(--sd-green) calc(l - 0.1) c h), var(--sd-green)); }
+.ts-code .ts-tok-punct { color: var(--sd-label-secondary); }
+
+.ts-code-dot {
+  display: inline-block;
+  width: 0.8em;
+  height: 0.8em;
+  margin-inline-end: 0.3em;
+  vertical-align: -0.08em;
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 0.5px var(--sd-separator-strong);
+}
+
+.ts-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sd-space-4);
+}
+
+/* ── Preview ─────────────────────────────────────────────────────── */
+
+.ts-preview {
+  grid-area: preview;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-width: 0;
+  min-height: 0;
+}
+
+.ts-preview-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sd-space-4) var(--sd-space-6);
+  min-height: 48px;
+  padding: var(--sd-space-3) var(--sd-space-6);
+  border-bottom: var(--sd-hairline) solid var(--sd-separator-strong);
+  background: var(--sd-bg);
+}
+
+.ts-preview-title {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sd-space-4);
+  min-width: 0;
+  margin-inline-end: auto;
+  font: var(--sd-text-headline);
+}
+
+.ts-preview-title span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: var(--sd-text-subheadline);
+  color: var(--sd-label-secondary);
+}
+
+.ts-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  padding: var(--sd-space-9);
+  color: var(--sd-label);
+  /* A wallpaper from the theme's own colors, so materials have something to blur. */
+  background-color: color-mix(in oklch, var(--sd-accent) 14%, var(--sd-bg-secondary));
+  background-image:
+    radial-gradient(60% 75% at 4% 0%, color-mix(in oklch, var(--sd-accent) 78%, transparent), transparent 70%),
+    radial-gradient(55% 70% at 100% 8%, color-mix(in oklch, var(--sd-accent-secondary) 66%, transparent), transparent 70%),
+    radial-gradient(70% 60% at 78% 104%, color-mix(in oklch, var(--sd-accent) 52%, var(--sd-accent-secondary)), transparent 72%),
+    radial-gradient(50% 60% at 18% 100%, color-mix(in oklch, var(--sd-accent-secondary) 40%, transparent), transparent 70%);
+  transition: background-color var(--sd-duration-base) var(--sd-ease-out);
+}
+
+.ts-stage-phones {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+}
+
+/* macOS composition */
+.ts-mac-window {
+  --sd-window-sidebar-width: clamp(176px, 18vw, 220px);
+
+  width: 100%;
+  max-width: 1120px;
+  height: 100%;
+  max-height: 700px;
+}
+
+.ts-mac-body {
+  container-type: inline-size;
+}
+
+.ts-mac-content {
+  display: grid;
+  gap: var(--sd-space-7);
+  padding: var(--sd-space-7) var(--sd-space-8) var(--sd-space-8);
+}
+
+.ts-mac-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sd-space-4);
+}
+
+.ts-mac-heading h2 {
+  margin: 0;
+  font: var(--sd-text-title-1);
+  letter-spacing: var(--sd-tracking-title);
+}
+
+.ts-mac-heading > div:first-child {
+  display: grid;
+  gap: var(--sd-space-2);
+  margin-inline-end: auto;
+}
+
+.ts-mac-heading p {
+  margin: 0;
+  font: var(--sd-text-callout);
+  color: var(--sd-label-secondary);
+}
+
+.ts-cover {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sd-space-5);
+  min-height: 132px;
+  padding: var(--sd-space-6);
+  overflow: hidden;
+  border-radius: var(--sd-radius-lg);
+  background:
+    radial-gradient(60% 120% at 100% 0%, color-mix(in oklch, var(--sd-accent-secondary) 85%, transparent), transparent 70%),
+    linear-gradient(120deg, oklch(from var(--sd-accent) calc(l - 0.16) c h), var(--sd-accent) 70%);
+  color: #ffffff;
+}
+
+.ts-cover strong {
+  display: block;
+  font: var(--sd-text-title-2);
+  letter-spacing: var(--sd-tracking-title);
+  text-shadow: 0 1px 12px rgb(0 0 0 / 0.25);
+}
+
+.ts-cover small {
+  font: var(--sd-text-callout);
+  opacity: 0.92;
+  text-shadow: 0 1px 8px rgb(0 0 0 / 0.25);
+}
+
+.ts-mac-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: var(--sd-space-6);
+  align-items: start;
+}
+
+@container (max-width: 640px) {
+  .ts-mac-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.ts-panel {
+  display: grid;
+  gap: var(--sd-space-6);
+  padding: var(--sd-space-6);
+  border-radius: var(--sd-group-radius);
+  background: var(--sd-bg-secondary);
+  box-shadow: 0 0 0 var(--sd-hairline) var(--sd-separator);
+}
+
+.ts-panel-title {
+  margin: 0;
+  font: var(--sd-text-headline);
+}
+
+.ts-inline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sd-space-4);
+}
+
+.ts-inline[data-end] {
+  justify-content: flex-end;
+}
+
+.ts-stats {
+  display: grid;
+  gap: var(--sd-space-6);
+}
+
+/* iOS composition */
+.ts-phone-content {
+  display: grid;
+  gap: var(--sd-space-6);
+  padding: 0 16px 120px;
+}
+
+.ts-phone-cover {
+  display: grid;
+  align-content: end;
+  min-height: 150px;
+  padding: 16px;
+  border-radius: var(--sd-group-radius);
+  background:
+    radial-gradient(60% 120% at 100% 0%, color-mix(in oklch, var(--sd-accent-secondary) 85%, transparent), transparent 70%),
+    linear-gradient(120deg, oklch(from var(--sd-accent) calc(l - 0.16) c h), var(--sd-accent) 70%);
+  color: #ffffff;
+}
+
+.ts-phone-cover strong {
+  font: var(--sd-text-title-2);
+  text-shadow: 0 1px 12px rgb(0 0 0 / 0.25);
+}
+
+.ts-phone-cover small {
+  font: var(--sd-text-subheadline);
+  text-shadow: 0 1px 8px rgb(0 0 0 / 0.25);
+}
+
+.ts-phone-buttons {
+  display: grid;
+  gap: var(--sd-space-4);
+}
+
+/* iPad composition */
+.ts-ipad {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  height: 100%;
+}
+
+.ts-ipad-sidebar {
+  padding: 32px 12px 20px;
+  background: var(--sd-bg-sidebar);
+  overflow: auto;
+}
+
+.ts-ipad-sidebar h2 {
+  margin: 0 8px 12px;
+  font: var(--sd-text-large-title);
+  letter-spacing: var(--sd-tracking-large-title);
+}
+
+.ts-ipad-main {
+  min-width: 0;
+  overflow: hidden;
+  background: var(--sd-bg);
+}
+
+.ts-ipad-main .ts-phone-content {
+  width: 100%;
+  max-width: 600px;
+  margin-inline: auto;
+  padding-top: 8px;
+}
+
+.ts-mac-heading-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sd-space-4);
+}
+
+/* ── Small screens: preview on top, controls below ───────────────── */
+
+@media (max-width: 899px) {
+  .ts-studio {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "preview" "inspector";
+    height: auto;
+  }
+
+  .ts-inspector {
+    overflow: visible;
+    border-inline-end: 0;
+    border-top: var(--sd-hairline) solid var(--sd-separator-strong);
+  }
+
+  .ts-stage {
+    height: 640px;
+    padding: var(--sd-space-6);
+  }
+
+  .ts-preview-bar {
+    padding-inline: var(--sd-space-6);
+  }
+}

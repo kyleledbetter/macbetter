@@ -1,0 +1,119 @@
+export const metadata = {
+  title: "Built for agents",
+  description: "Stardust components are ui-sdk components, so agents can read and operate them by name. How it works, and how to ask a coding agent to build with Stardust.",
+}
+
+# Built for agents
+
+<Lead>Agents meet Stardust twice: as users of the interfaces you build, and as the engineers building them. Both depend on the same thing, controls with names.</Lead>
+
+## Agents that use your interface
+
+Every interactive Stardust component is a ui-sdk component with a class and some data attributes added. Stardust doesn't replace ui-sdk's behavior, so it doesn't hide anything from ui-sdk's **agent bridge** either.
+
+The bridge comes from `@ui-sdk/react/agent`. Create it once, in the browser:
+
+```ts title="agent.ts"
+import { createAgent } from "@ui-sdk/react/agent"
+
+const agent = createAgent()
+
+export { agent }
+```
+
+It finds the ui-sdk components on the page and registers new ones as they mount. `agent.snapshot()` lists each component with its kind, its accessible name, its state and the actions it supports. For the settings form on the [introduction](/docs/introduction), with just its Wi-Fi `Switch`, the Appearance `SegmentedControl` and the Apply `Button`, it returns:
+
+```json
+[
+  { "ref": "c1", "component": "switch", "label": "Wi-Fi", "checked": true, "value": "on", "actions": ["setChecked"] },
+  {
+    "ref": "c2",
+    "component": "segmented-control",
+    "label": "Appearance",
+    "value": "auto",
+    "items": [
+      { "value": "light", "label": "Light" },
+      { "value": "dark", "label": "Dark" },
+      { "value": "auto", "label": "Auto" }
+    ],
+    "actions": ["setValue"]
+  },
+  { "ref": "c3", "component": "button", "label": "Apply", "actions": ["press"] }
+]
+```
+
+An agent then calls actions by label or ref:
+
+```ts
+await agent.act({
+  steps: [
+    { ref: "Wi-Fi", action: "setChecked", args: [false] },
+    { ref: "Apply", action: "press" },
+  ],
+})
+```
+
+The result reports what each step changed. Actions go through the component's own API, so your `onCheckedChange` or `onValueChange` handler runs as it would for a person, with `details.source === "agent"`, and can refuse the change with `details.cancel()`.
+
+`agent.query()` finds components and the choices inside lists without reading the whole page. `agentTools` describes `snapshot`, `act` and `query` as tool definitions for your own model, and `registerTools()` offers them to a browser agent through WebMCP, in browsers that support it.
+
+The exact state keys and action names depend on each component. Read them from a snapshot rather than guessing, and see [ui-sdk's agent docs](https://ui-sdk.dev/docs) for the full reference.
+
+### What you control
+
+- **Names.** The bridge identifies controls by their accessible names, the same ones a screen reader announces. A `Switch` wrapped in a `<label>`, a `SegmentedControl` with `aria-label`, and a `Button` with text all have one. An icon-only button without `aria-label` doesn't, and neither a person using VoiceOver nor an agent can tell what it does.
+- **Permissions.** `createAgent({ allow })` approves or refuses each requested action, and can return a promise while you ask the person.
+- **Marks.** `data-agent-confirm="…"` on an element makes any action inside it wait for the person. `data-agent-hidden` keeps a region out of snapshots. `data-agent-secret` keeps a field's value redacted. Password, card and one-time-code fields are redacted without a mark.
+
+```tsx
+<Button variant="filled" tone="destructive" data-agent-confirm="Deletes the project and its 14 files">
+  Delete project
+</Button>
+```
+
+Stardust passes every extra prop to the ui-sdk part, so these attributes work on any component.
+
+## Agents that build with Stardust
+
+The repository is set up for coding agents. Its `AGENTS.md` is the working agreement every component follows, and its rules are the ones that keep the system consistent:
+
+- **Wrap ui-sdk, don't reimplement it.** A component is a ui-sdk part plus a class and data attributes. No hand-written `role=` for anything ui-sdk ships.
+- **Classes and variants.** `sd-<component>` and `sd-<component>-<part>`; variants as `data-variant`, `data-size` and `data-tone`.
+- **Tokens only.** Every color, radius, shadow, duration and font is a `--sd-*` token, written to work in light and dark and on every platform.
+- **Platforms nest.** Per-platform numbers are inherited variables; per-platform rules use `@scope … to (:scope [data-platform])`.
+- **Name every control**, in demos and in app code.
+- **Look at it.** A change is checked in a real browser, in light and dark, on macOS and iOS.
+
+### A prompt for your agent
+
+Paste this into a coding agent working in an app that uses Stardust:
+
+```text
+This app uses Stardust (@dreambase/stardust), a design system built on ui-sdk
+that renders macOS, iPadOS and iOS from one set of React components.
+
+Before writing UI:
+1. Read node_modules/@ui-sdk/react/docs/llms.txt for how ui-sdk components behave,
+   and follow the ui-sdk skill if it's installed.
+2. Read the Stardust component you're about to use in
+   node_modules/@dreambase/stardust/src/components/<name>.tsx.
+
+When you write UI:
+- Import components from their own entries, like @dreambase/stardust/button.
+- Use Stardust components for anything interactive. Don't hand-write role= for
+  something ui-sdk or Stardust already ships.
+- Give every control an accessible name: visible text, a <label>, or aria-label.
+- Style your own layout with Stardust's tokens (var(--sd-space-*), --sd-label-*,
+  --sd-bg-*, --sd-radius-*), never raw hex colors or pixel font sizes.
+- Size things with platform tokens (--sd-control-height, --sd-row-height,
+  --sd-hit-target, --sd-text-*) so the layout adapts to macOS, iPadOS and iOS.
+- Wrap hover styles in @media (hover: hover) and (pointer: fine).
+- Check the result in a browser in light and dark, with data-platform set to
+  macos and to ios.
+```
+
+Install the ui-sdk skill if your agent supports skills:
+
+```bash
+npx skills add vercel-labs/ui --skill ui-sdk
+```

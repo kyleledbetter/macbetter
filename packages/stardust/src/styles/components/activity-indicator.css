@@ -1,0 +1,71 @@
+/* Activity indicator — eight tapered spokes that step around, as on every Apple platform. */
+
+:where(:root, [data-platform="macos"]) {
+  --sd-activity-indicator-size-sm: 12px;
+  --sd-activity-indicator-size: 16px;
+  --sd-activity-indicator-size-lg: 32px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --sd-activity-indicator-size-sm: 16px;
+  --sd-activity-indicator-size: 20px;
+  --sd-activity-indicator-size-lg: 37px;
+}
+
+.sd-activity-indicator {
+  --sd-activity-indicator-current: var(--sd-activity-indicator-size);
+
+  display: inline-flex;
+  flex: none;
+  width: var(--sd-activity-indicator-current);
+  height: var(--sd-activity-indicator-current);
+  vertical-align: middle;
+  color: inherit;
+}
+
+.sd-activity-indicator[data-size="sm"] {
+  --sd-activity-indicator-current: var(--sd-activity-indicator-size-sm);
+}
+
+.sd-activity-indicator[data-size="lg"] {
+  --sd-activity-indicator-current: var(--sd-activity-indicator-size-lg);
+}
+
+.sd-activity-indicator-spokes {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+/* Stepped, not smooth: the lit spoke jumps to the next one, ten times a second like the real one. */
+.sd-activity-indicator-fan {
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+  animation: sd-activity-indicator-step 0.8s steps(8, end) infinite;
+}
+
+@keyframes sd-activity-indicator-step {
+  to {
+    rotate: 360deg;
+  }
+}
+
+/*
+ * Reduced motion: no turning. The spokes hold still and the whole indicator
+ * breathes, slowly. It lives on the unclassed <g> so base.css's reduced-motion
+ * reset (which wins over component layers, even with !important) leaves it alone.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .sd-activity-indicator-fan {
+    animation: sd-activity-indicator-breathe 1.6s var(--sd-ease-in-out) infinite alternate;
+  }
+}
+
+@keyframes sd-activity-indicator-breathe {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.35;
+  }
+}

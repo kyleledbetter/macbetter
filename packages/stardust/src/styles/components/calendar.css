@@ -1,0 +1,287 @@
+/*
+ * Calendar — Apple's graphical date picker: a month title with chevrons, a
+ * weekday row, circular days. Today is accent text, the pick an accent circle,
+ * a range a continuous band between two circles.
+ */
+
+:where(:root, [data-platform="macos"]) {
+  --sd-calendar-cell-width: 32px;
+  --sd-calendar-cell-height: 30px;
+  --sd-calendar-circle: 26px;
+  --sd-calendar-day-font: 400 13px/1 var(--sd-font);
+  --sd-calendar-heading-font: 600 13px/16px var(--sd-font);
+  --sd-calendar-weekday-font: 500 11px/14px var(--sd-font);
+  --sd-calendar-weekday-color: var(--sd-label-secondary);
+  --sd-calendar-step-size: 22px;
+  --sd-calendar-step-icon: 11px;
+  --sd-calendar-step-color: var(--sd-label-secondary);
+  --sd-calendar-gap: 8px;
+
+  --sd-calendar-cell-width-sm: 26px;
+  --sd-calendar-cell-height-sm: 24px;
+  --sd-calendar-circle-sm: 21px;
+  --sd-calendar-day-font-sm: 400 12px/1 var(--sd-font);
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --sd-calendar-cell-width: 46px;
+  --sd-calendar-cell-height: 44px;
+  --sd-calendar-circle: 40px;
+  --sd-calendar-day-font: 400 20px/1 var(--sd-font);
+  --sd-calendar-heading-font: 600 17px/22px var(--sd-font);
+  --sd-calendar-weekday-font: 600 13px/18px var(--sd-font);
+  /* UIKit's tertiary label is under 4.5:1 at 13pt; secondary keeps the quiet look and passes. */
+  --sd-calendar-weekday-color: var(--sd-label-secondary);
+  --sd-calendar-step-size: 44px;
+  --sd-calendar-step-icon: 20px;
+  --sd-calendar-step-color: var(--sd-accent-text);
+  --sd-calendar-gap: 6px;
+
+  --sd-calendar-cell-width-sm: 42px;
+  --sd-calendar-cell-height-sm: 40px;
+  --sd-calendar-circle-sm: 36px;
+  --sd-calendar-day-font-sm: 400 17px/1 var(--sd-font);
+}
+
+.sd-calendar {
+  --sd-calendar-w: var(--sd-calendar-cell-width);
+  --sd-calendar-h: var(--sd-calendar-cell-height);
+  --sd-calendar-d: var(--sd-calendar-circle);
+  --sd-calendar-font: var(--sd-calendar-day-font);
+  --sd-calendar-band: color-mix(in oklch, var(--sd-accent) light-dark(20%, 30%), transparent);
+
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--sd-calendar-gap);
+  color: var(--sd-label);
+  font: var(--sd-text-body);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.sd-calendar[data-size="sm"] {
+  --sd-calendar-w: var(--sd-calendar-cell-width-sm);
+  --sd-calendar-h: var(--sd-calendar-cell-height-sm);
+  --sd-calendar-d: var(--sd-calendar-circle-sm);
+  --sd-calendar-font: var(--sd-calendar-day-font-sm);
+}
+
+.sd-calendar[data-disabled] {
+  opacity: 0.45;
+}
+
+.sd-calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: var(--sd-calendar-step-size);
+  padding-inline-start: calc((var(--sd-calendar-w) - var(--sd-calendar-d)) / 2 + 2px);
+}
+
+.sd-calendar-heading {
+  margin: 0;
+  color: var(--sd-label);
+  font: var(--sd-calendar-heading-font);
+  letter-spacing: var(--sd-tracking-body);
+  font-variant-numeric: tabular-nums;
+}
+
+.sd-calendar-nav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.sd-calendar-step {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--sd-calendar-step-size);
+  height: var(--sd-calendar-step-size);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--sd-radius-sm);
+  background: transparent;
+  color: var(--sd-calendar-step-color);
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--sd-duration-fast) var(--sd-ease-out),
+    opacity var(--sd-duration-fast) var(--sd-ease-out);
+}
+
+.sd-calendar-chevron {
+  width: var(--sd-calendar-step-icon);
+  height: var(--sd-calendar-step-icon);
+}
+
+.sd-calendar-step::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: max(100%, var(--sd-hit-target));
+  height: max(100%, var(--sd-hit-target));
+  translate: -50% -50%;
+}
+
+:where([dir="rtl"]) .sd-calendar-chevron {
+  scale: -1 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .sd-calendar-step:hover {
+    background: var(--sd-fill-tertiary);
+    color: var(--sd-label);
+  }
+}
+
+.sd-calendar-step:active {
+  background: var(--sd-fill-secondary);
+  transition-duration: 0ms;
+}
+
+.sd-calendar-step[data-disabled] {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .sd-calendar-step:active {
+    background: transparent;
+    opacity: 0.4;
+  }
+}
+
+.sd-calendar-months {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.sd-calendar-grid {
+  border-collapse: collapse;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+
+.sd-calendar-weekday {
+  width: var(--sd-calendar-w);
+  height: calc(var(--sd-calendar-h) * 0.7);
+  padding: 0;
+  color: var(--sd-calendar-weekday-color);
+  font: var(--sd-calendar-weekday-font);
+  letter-spacing: var(--sd-tracking-caption);
+  text-align: center;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+.sd-calendar-day {
+  position: relative;
+  z-index: 0;
+  width: var(--sd-calendar-w);
+  height: var(--sd-calendar-h);
+  padding: 0;
+  text-align: center;
+  vertical-align: middle;
+  color: var(--sd-label);
+  cursor: default;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sd-calendar-day-label {
+  display: inline-grid;
+  place-items: center;
+  width: var(--sd-calendar-d);
+  height: var(--sd-calendar-d);
+  border-radius: 50%;
+  font: var(--sd-calendar-font);
+  font-variant-numeric: tabular-nums;
+  transition:
+    background-color var(--sd-duration-fast) var(--sd-ease-out),
+    color var(--sd-duration-fast) var(--sd-ease-out),
+    scale var(--sd-spring-snappy-duration) var(--sd-spring-snappy);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .sd-calendar-day:not([data-disabled], [data-selected]):hover .sd-calendar-day-label {
+    background: var(--sd-fill-tertiary);
+  }
+}
+
+.sd-calendar-day:not([data-disabled]):active .sd-calendar-day-label {
+  scale: 0.9;
+  transition-duration: 0ms, 0ms, var(--sd-duration-instant);
+}
+
+.sd-calendar-day[data-today] .sd-calendar-day-label {
+  color: var(--sd-accent-text);
+  font-weight: 600;
+}
+
+.sd-calendar-day[data-outside] {
+  color: var(--sd-label-quaternary);
+}
+
+.sd-calendar-day[data-disabled] {
+  color: var(--sd-label-quaternary);
+}
+
+.sd-calendar-day[data-unavailable] {
+  color: var(--sd-label-quaternary);
+}
+
+/* The pick: a filled accent circle. A range's ends are picks too; its middle is the band. */
+.sd-calendar-day[data-selected]:not([data-range-middle]) .sd-calendar-day-label,
+.sd-calendar-day:is([data-range-start], [data-range-end]) .sd-calendar-day-label {
+  background: var(--sd-accent);
+  color: var(--sd-on-accent);
+  font-weight: 600;
+}
+
+.sd-calendar-day:is([data-range-start], [data-range-middle], [data-range-end])::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset-block: calc((var(--sd-calendar-h) - var(--sd-calendar-d)) / 2);
+  inset-inline: 0;
+  background: var(--sd-calendar-band);
+}
+
+.sd-calendar-day[data-preview]:is([data-range-start], [data-range-middle], [data-range-end])::before {
+  background: color-mix(in oklch, var(--sd-accent) light-dark(11%, 16%), transparent);
+}
+
+.sd-calendar-day[data-range-start]::before {
+  inset-inline-start: 50%;
+}
+
+.sd-calendar-day[data-range-end]::before {
+  inset-inline-end: 50%;
+}
+
+.sd-calendar-day[data-range-start][data-range-end]::before {
+  display: none;
+}
+
+/* The band rounds off where a week wraps. */
+.sd-calendar-day[data-range-middle]:first-child::before {
+  inset-inline-start: calc((var(--sd-calendar-w) - var(--sd-calendar-d)) / 2);
+  border-start-start-radius: var(--sd-radius-full);
+  border-end-start-radius: var(--sd-radius-full);
+}
+
+.sd-calendar-day[data-range-middle]:last-child::before {
+  inset-inline-end: calc((var(--sd-calendar-w) - var(--sd-calendar-d)) / 2);
+  border-start-end-radius: var(--sd-radius-full);
+  border-end-end-radius: var(--sd-radius-full);
+}
+
+.sd-calendar-day:focus-visible .sd-calendar-day-label {
+  outline: var(--sd-focus-ring-width) solid var(--sd-focus-ring);
+  outline-offset: 1px;
+}

@@ -1,0 +1,103 @@
+export const metadata = {
+  title: "Typography",
+  description: "Apple's text styles for macOS, iPadOS and iOS as tokens and classes, with the font stacks and how to change them.",
+}
+
+# Typography
+
+<Lead>Stardust uses Apple's text styles, from Large Title to Caption. Each is a single token that changes with the platform, so a headline is 13px on macOS and 17px on iPhone without you writing either number.</Lead>
+
+## Text styles
+
+Pick a platform in the preview. The size, line height, weight and tracking under each name are read from the page as it renders.
+
+<Demo name="foundations/type-ramp" hideCode />
+
+The full ramp, in px (size/line height):
+
+| Style | macOS | iPadOS and iOS | Weight |
+| --- | --- | --- | --- |
+| Large Title | 26/32 | 34/41 | Semibold on macOS, bold on touch |
+| Title 1 | 22/26 | 28/34 | Semibold on macOS, bold on touch |
+| Title 2 | 17/22 | 22/28 | Semibold on macOS, bold on touch |
+| Title 3 | 15/20 | 20/25 | Semibold |
+| Headline | 13/16 | 17/22 | Semibold |
+| Body | 13/16 | 17/22 | Regular |
+| Callout | 12/15 | 16/21 | Regular |
+| Subheadline | 11/14 | 15/20 | Regular |
+| Footnote | 10/13 | 13/18 | Regular |
+| Caption | 10/13 | 12/16 | Regular |
+
+Tracking is set per group. On macOS, large titles are −0.022em, titles −0.016em, body −0.003em and captions +0.006em. On iPadOS and iOS, large titles are −0.021em, titles −0.018em, body −0.025em and captions 0.
+
+## Using the styles
+
+Each style is a class that sets `font` and `letter-spacing` together:
+
+```tsx
+<h1 className="sd-text-large-title">Library</h1>
+<p className="sd-text-body sd-label-secondary">Your playlists sync to every device.</p>
+```
+
+The classes are `sd-text-large-title`, `sd-text-title-1`, `sd-text-title-2`, `sd-text-title-3`, `sd-text-headline`, `sd-text-body`, `sd-text-callout`, `sd-text-subheadline`, `sd-text-footnote` and `sd-text-caption`. Two more change only the family: `sd-text-mono` and `sd-text-rounded`.
+
+In your own CSS, use the tokens. `--sd-text-*` is a full `font` shorthand, and the tracking is separate:
+
+```css
+.inspector-title {
+  font: var(--sd-text-headline);
+  letter-spacing: var(--sd-tracking-body);
+}
+```
+
+| Tracking token | Used with |
+| --- | --- |
+| `--sd-tracking-large-title` | Large Title |
+| `--sd-tracking-title` | Title 1 to 3 |
+| `--sd-tracking-body` | Headline to Subheadline |
+| `--sd-tracking-caption` | Footnote and Caption |
+
+Controls have their own font tokens, `--sd-control-font`, `--sd-control-font-sm` and `--sd-control-font-lg`: 13px medium on macOS and 17px medium on touch for the default size.
+
+The body style is the default. `[data-stardust]` and every `[data-platform]` element set `font: var(--sd-text-body)`, so plain text inside picks up the platform's size.
+
+## Fonts
+
+Four seed tokens hold the families:
+
+| Token | Default |
+| --- | --- |
+| `--sd-font` | `-apple-system`, `BlinkMacSystemFont`, SF Pro Text, SF Pro Display, `system-ui`, Inter, Helvetica Neue, Segoe UI |
+| `--sd-font-display` | `var(--sd-font)` |
+| `--sd-font-rounded` | `ui-rounded`, SF Pro Rounded, then `--sd-font` |
+| `--sd-font-mono` | `ui-monospace`, SF Mono, Geist Mono, Menlo, Consolas |
+
+On Apple devices the stack resolves to San Francisco, which switches between its Text and Display cuts by size on its own. Elsewhere it falls back to the system UI font.
+
+Titles use `--sd-font-display`, from Title 3 up on iPadOS and iOS and from Title 2 up on macOS. Set it to a different family to give headings a voice without changing body text.
+
+### Change the fonts
+
+Set the seeds in a theme. Load the font yourself, then name it first in the stack:
+
+```css
+[data-theme="harbor"] {
+  --sd-font: "Inter", system-ui, sans-serif;
+  --sd-font-display: "Inter Display", "Inter", system-ui, sans-serif;
+}
+```
+
+Or with `createTheme()`, using the `font`, `fontDisplay` and `fontMono` options. The text style tokens are computed where `data-platform` is set, so a font change takes effect on that element and below. If you change fonts on a nested element, add `data-platform` to it as well; see [Theming](/docs/theming#scope-a-theme-to-a-subtree).
+
+Pick a font with a large x-height and open shapes at small sizes. macOS body text is 13px, and a display face that looks fine at 34px may not hold up there.
+
+## Size and legibility
+
+Stardust doesn't implement Dynamic Type: the text styles are fixed pixel sizes per platform, and they don't follow the iOS text size setting. Browser zoom scales everything, and the layout tokens scale with it.
+
+To keep text readable when people zoom or enlarge text:
+
+- **Use text styles, not pixel sizes.** Then the hierarchy stays consistent and one change of token moves everything.
+- **Let rows grow.** Use `min-height: var(--sd-row-height)` rather than `height`, so a row with wrapped or enlarged text gets taller instead of clipping.
+- **Don't truncate what people need.** Wrap labels in forms and settings; truncate only where the full text is available elsewhere, like a file name with a details view.
+- **Keep the hierarchy small.** Most screens need a title, body and one secondary style. Use weight and label color for emphasis before size.

@@ -1,0 +1,160 @@
+/*
+ * Listbox — a list that stays on screen. On the Mac it's a bordered table:
+ * the selection is a solid accent fill that turns gray when the list loses
+ * focus. On iOS and iPadOS it's an inset grouped list with a trailing checkmark.
+ */
+
+:where(:root, [data-platform="macos"]) {
+  --sd-listbox-padding: 5px;
+  --sd-listbox-radius: var(--sd-control-radius);
+  --sd-listbox-row-height: var(--sd-menu-item-height);
+  --sd-listbox-row-padding: 8px;
+  --sd-listbox-row-radius: var(--sd-radius-xs);
+  --sd-listbox-check-display: none;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --sd-listbox-padding: 0px;
+  --sd-listbox-radius: var(--sd-group-radius);
+  --sd-listbox-row-height: var(--sd-row-height);
+  --sd-listbox-row-padding: var(--sd-row-padding);
+  --sd-listbox-row-radius: 0px;
+  --sd-listbox-check-display: inline-flex;
+}
+
+.sd-listbox {
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  max-height: 100%;
+  margin: 0;
+  padding: var(--sd-listbox-padding);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-radius: var(--sd-listbox-radius);
+  background: var(--sd-bg-field);
+  box-shadow: 0 0 0 var(--sd-hairline) var(--sd-control-border);
+  color: var(--sd-label);
+  font: var(--sd-text-body);
+  letter-spacing: var(--sd-tracking-body);
+  outline: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.sd-listbox[data-orientation="horizontal"] {
+  flex-direction: row;
+  overflow-x: auto;
+}
+
+.sd-listbox-item {
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  min-height: var(--sd-listbox-row-height);
+  padding-inline: var(--sd-listbox-row-padding);
+  border-radius: var(--sd-listbox-row-radius);
+  white-space: nowrap;
+  outline: none;
+  cursor: default;
+  touch-action: manipulation;
+}
+
+.sd-listbox-item[data-selected] {
+  background: var(--sd-accent);
+  color: var(--sd-on-accent);
+}
+
+/* The Mac's unemphasized selection: gray while another control has focus. */
+.sd-listbox:not(:focus-within) .sd-listbox-item[data-selected] {
+  background: var(--sd-fill);
+  color: var(--sd-label);
+}
+
+.sd-listbox-item[data-highlighted]:not([data-selected]) {
+  background: var(--sd-fill-quaternary);
+}
+
+.sd-listbox:focus-within .sd-listbox-item[data-highlighted]:focus-visible {
+  outline: 2px solid var(--sd-focus-ring);
+  outline-offset: -2px;
+}
+
+.sd-listbox-item[data-disabled] {
+  color: var(--sd-label-tertiary);
+}
+
+.sd-listbox-item-icon {
+  display: inline-flex;
+  flex: none;
+  width: var(--sd-menu-icon-size, 16px);
+  height: var(--sd-menu-icon-size, 16px);
+}
+
+.sd-listbox-item-icon :where(svg) {
+  width: 100%;
+  height: 100%;
+}
+
+.sd-listbox-item-indicator {
+  display: var(--sd-listbox-check-display);
+  flex: none;
+  width: 15px;
+  height: 15px;
+  margin-inline-start: auto;
+  color: var(--sd-accent-text);
+}
+
+.sd-listbox-item-indicator :where(svg) {
+  width: 100%;
+  height: 100%;
+}
+
+.sd-listbox-item-indicator:not([data-selected]) {
+  visibility: hidden;
+}
+
+.sd-listbox-group-label {
+  padding: 8px var(--sd-listbox-row-padding) 3px;
+  color: var(--sd-label-secondary);
+  font: var(--sd-text-subheadline);
+  font-weight: 600;
+}
+
+.sd-listbox-separator {
+  height: 1px;
+  margin: 4px var(--sd-listbox-row-padding);
+  background: var(--sd-separator);
+}
+
+/* iOS: selection is the checkmark, rows are divided by inset hairlines, and a tap darkens the row. */
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .sd-listbox {
+    background: var(--sd-bg-grouped-secondary);
+    box-shadow: 0 0 0 var(--sd-hairline) var(--sd-separator);
+  }
+
+  .sd-listbox-item[data-selected],
+  .sd-listbox:not(:focus-within) .sd-listbox-item[data-selected] {
+    background: transparent;
+    color: var(--sd-label);
+  }
+
+  .sd-listbox-item + .sd-listbox-item::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto var(--sd-listbox-row-padding);
+    height: var(--sd-hairline);
+    background: var(--sd-separator);
+  }
+
+  .sd-listbox-item[data-highlighted]:not([data-selected]) {
+    background: transparent;
+  }
+
+  .sd-listbox-item:active:not([data-disabled]) {
+    background: var(--sd-fill-tertiary);
+  }
+}

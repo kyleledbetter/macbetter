@@ -1,0 +1,64 @@
+export const metadata = {
+  title: "Hover Card",
+  description: "Preview where a link goes when the pointer rests on it, without leaving the page.",
+}
+
+# Hover Card
+
+<Lead>Preview where a link goes when the pointer rests on it.</Lead>
+
+<Demo name="hover-card/basic" platforms={["macos", "ipados"]} wallpaper height={420} />
+
+## When to use it
+
+Use a hover card for a link preview: a page, a person’s profile, a document. It only appears for someone who pauses on the link, so everything in it must also be on the page the link goes to. For a hint on a button, use a [Tooltip](/docs/components/tooltip); for content that opens on a press, a [Popover](/docs/components/popover).
+
+## Usage
+
+```tsx
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@dreambase/stardust/hover-card"
+```
+
+`HoverCardTrigger` is a real link: give it an `href`, and pressing it navigates. The card waits 600ms before it opens and stays 300ms after the pointer leaves, so the pointer can cross onto it. Media placed first in the card takes the card’s top corners.
+
+For a feed with many links, connect them all to one card with `createHoverCardController()` and a `payload` per link.
+
+## Platform behavior
+
+- **macOS and iPadOS with a pointer.** Thick material with 16pt (macOS) or 22pt (iPadOS) corners, growing out of the link on a quick spring. No arrow by default, like Safari’s link previews; pass `arrow` to add one.
+- **Touch.** There’s no hover: a tap follows the link. People can still reach the card’s content on the destination page.
+
+## Accessibility
+
+- The trigger stays a link with its own name; the card is a preview, not a dialog.
+- Keyboard focus resting on the link opens the card, Tab moves into it when it has links of its own, and Escape closes it.
+
+## API
+
+### HoverCard
+
+Takes every [ui-sdk Hover Card](https://ui-sdk.dev/docs/components/hover-card) root prop.
+
+<PropsTable
+  rows={[
+    { name: "delay", type: "number", default: "600", description: "Milliseconds the pointer or focus rests before it opens." },
+    { name: "closeDelay", type: "number", default: "300", description: "Milliseconds it stays after the pointer leaves." },
+    { name: "disabled", type: "boolean", default: "false", description: "Leaves a plain link." },
+  ]}
+/>
+
+### HoverCardContent
+
+<PropsTable
+  rows={[
+    { name: "arrow", type: "boolean", default: "false", description: "Draws an arrow that points at the link." },
+    { name: "side", type: '"top" | "right" | "bottom" | "left"', default: '"bottom"', description: "The edge of the link it opens on." },
+    { name: "sideOffset", type: "number", default: "8, or 12 with an arrow", description: "The gap to the link." },
+  ]}
+/>
+
+| Data attribute | On | Meaning |
+| --- | --- | --- |
+| `data-open` | `.sd-hover-card-trigger` | Its card is showing |
+| `data-side` | `.sd-hover-card`, `.sd-hover-card-arrow` | Where it landed |
+| `data-starting-style`, `data-ending-style` | `.sd-hover-card` | Entering and leaving |

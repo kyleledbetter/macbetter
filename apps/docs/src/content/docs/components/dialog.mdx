@@ -1,0 +1,106 @@
+export const metadata = {
+  title: "Dialog",
+  description: "Give a focused task its own space: a centered panel on the Mac, a form sheet on iPad and a page sheet on iPhone.",
+}
+
+# Dialog
+
+<Lead>Give a focused task its own space over the page.</Lead>
+
+<Demo name="dialog/basic" wallpaper height={420} />
+
+## When to use it
+
+Use a dialog for a short, self-contained task that people finish or cancel before going back: creating an event, renaming a project, editing a few settings. If the task needs one answer to a question, use an [Alert](/docs/components/alert). If it’s quick and belongs to a control, use a [Popover](/docs/components/popover). If people should keep using the page while it’s open, use a [Sheet](/docs/components/sheet) inspector.
+
+- Give it a short noun or verb-phrase title (“New Event”), not a sentence.
+- Offer a clear way out (Cancel) and one primary action that finishes the task.
+
+## Usage
+
+```tsx
+import {
+  Dialog,
+  DialogBody,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@dreambase/stardust/dialog"
+```
+
+Write the dialog once. `DialogHeader` holds the title, `DialogBody` the content and `DialogFooter` the buttons. Mark the footer’s buttons with `variant="cancel"` and `variant="primary"`: on the Mac they line up at the bottom right; on iPhone and iPad they move into the navigation bar as Cancel and Done, around the title. `DialogContent` brings its own dimmed backdrop.
+
+### Sizes
+
+`size` sets the width on the Mac and iPad: `sm` (360pt on Mac), `md` (480pt) or `lg` (640pt). iPhone always fills the width of the screen.
+
+### Presentation
+
+`Dialog` defaults to `presentation="auto"`: on a phone it becomes a real sheet you can swipe down to dismiss; everywhere else it’s a centered panel. Pass `"dialog"` or `"sheet"` to choose. A dialog with unsaved changes can pass `dismissible={false}` and ask in `onDismissAttempt`; a swipe then springs back.
+
+## Platform behavior
+
+- **macOS.** A centered panel of thick material, a bold 13pt title, and push buttons at the bottom right: the primary one filled with the accent. It eases in from slightly smaller and above.
+- **iPadOS.** A form sheet: an opaque 540pt card with large corners and a navigation bar of Cancel, the title and Done.
+- **iOS.** An opaque page sheet that rises from the bottom edge and stops just below the status bar, with the same navigation bar. On a phone it can be swiped down.
+- The page behind dims with the scrim; the Mac uses a lighter veil, since macOS doesn’t dim a window behind a panel. Reduced motion fades instead of sliding or scaling.
+
+## Accessibility
+
+- The content has the `dialog` role and `aria-modal`, is named by `DialogTitle` and described by `DialogDescription`.
+- Focus moves inside on open, Tab stays inside, and Escape or a press on the dimmed page closes it and returns focus to the trigger.
+- Cancel and Done stay real buttons in the navigation bar, in the same Tab order as the footer they come from.
+
+## API
+
+### Dialog
+
+Takes every [ui-sdk Dialog](https://ui-sdk.dev/docs/components/dialog) root prop.
+
+<PropsTable
+  rows={[
+    { name: "presentation", type: '"auto" | "dialog" | "sheet"', default: '"auto"', description: "auto presents a swipeable sheet on small touch screens." },
+    { name: "open / defaultOpen", type: "boolean", description: "Controls or starts the dialog open." },
+    { name: "dismissible", type: "boolean", default: "true", description: "Whether Escape, an outside press or a swipe can close it." },
+    { name: "onOpenChange", type: "(open, details) => void", description: "details.returnValue is the value of the DialogClose that closed it." },
+  ]}
+/>
+
+### DialogContent
+
+<PropsTable
+  rows={[
+    { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "The panel's width on macOS and iPadOS." },
+    { name: "initialFocus / finalFocus", type: "DialogInitialFocus / PopupFocusTarget", description: "Where focus goes on open and close." },
+  ]}
+/>
+
+### DialogClose
+
+<PropsTable
+  rows={[
+    { name: "variant", type: '"default" | "primary" | "cancel"', default: '"default"', description: "primary and cancel become the navigation bar's Done and Cancel on touch." },
+    { name: "tone", type: '"accent" | "destructive"', default: '"accent"', description: "destructive turns it red." },
+    { name: "value", type: "string", description: "Reported as returnValue." },
+  ]}
+/>
+
+`DialogTrigger`, `DialogHeader`, `DialogTitle`, `DialogDescription`, `DialogBody` and `DialogFooter` take their element’s props. `createDialogController` is re-exported from ui-sdk.
+
+| Data attribute | On | Meaning |
+| --- | --- | --- |
+| `data-size` | `.sd-dialog` | Its width |
+| `data-presentation` | `.sd-dialog` | `dialog` or `sheet`, decided each time it opens |
+| `data-starting-style`, `data-ending-style` | `.sd-dialog`, `.sd-dialog-backdrop` | Entering and leaving |
+| `data-variant`, `data-tone` | `.sd-dialog-close` | Its role and color |
+
+| CSS variable | Default |
+| --- | --- |
+| `--sd-dialog-width-sm`, `--sd-dialog-width`, `--sd-dialog-width-lg` | 360/480/640px on macOS, 420/540/704px on iPadOS |
+| `--sd-dialog-radius` | `--sd-popup-radius` on macOS, `--sd-sheet-radius` on touch |
+| `--sd-dialog-height` | 620px form sheet on iPadOS |
+| `--sd-dialog-scrim` | A lighter `--sd-scrim` on macOS, `--sd-scrim` on touch |

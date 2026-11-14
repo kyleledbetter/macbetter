@@ -1,0 +1,71 @@
+export const metadata = {
+  title: "Page Control",
+  description: "Show how many pages there are and which one is on screen, as a row of dots.",
+}
+
+# Page Control
+
+<Lead>Show how many pages there are and which one is on screen.</Lead>
+
+<Demo name="page-control/basic" platforms={["ios", "ipados", "macos"]} height={380} />
+
+## When to use it
+
+Use a page control under a set of flat, equal pages that people swipe through, like the screens of an onboarding flow or the photos in a carousel. The dots say how many pages there are and where you are; they're a secondary way to move, not the main one.
+
+Keep the set short. Past about ten pages the dots stop being countable at a glance, and a page count or a list reads better. Center the control under the content it belongs to, and don't use it for pages that have an order people need to follow step by step; use a stepper or a progress indicator there.
+
+## Usage
+
+```tsx
+import { PageControl } from "@dreambase/stardust/page-control"
+```
+
+### Plain
+
+Pass `pageCount`, then control the page with `page` and `onPageChange`, or start one with `defaultPage`. Keep the content and the dots in step.
+
+<Demo name="page-control/basic" platforms={["ios", "ipados", "macos"]} height={380} />
+
+### Glass
+
+`variant="glass"` puts the dots on a capsule of glass with white dots, so they stay legible over photos and busy backgrounds.
+
+<Demo name="page-control/glass" platforms={["ios", "ipados", "macos"]} wallpaper height={500} />
+
+## Platform behavior
+
+- **iOS and iPadOS**: 8pt dots on a 17pt pitch, with a tap target that reaches the full height of the control.
+- **macOS**: slightly smaller 7px dots, with a hover state under the pointer.
+- The current dot is the label color, the others 30% of it, so the control follows light and dark and any theme.
+
+## Accessibility
+
+- The control is a `navigation` landmark with a list of buttons, from ui-sdk Pagination. Name it with `aria-label`, like "Welcome pages".
+- Each dot is named "Page 2 of 4", and the current one has `aria-current="page"`.
+- Enter or Space on a focused dot goes to its page. Each dot is a tab stop, so keep the count small.
+
+## API
+
+### PageControl
+
+<PropsTable
+  rows={[
+    { name: "pageCount", type: "number", description: "How many pages there are. Required." },
+    { name: "page", type: "number", description: "The current page, from 1, to control it." },
+    { name: "defaultPage", type: "number", default: "1", description: "The page it starts on, when uncontrolled." },
+    { name: "onPageChange", type: "(page, details) => void", description: "Runs when a dot is pressed. `details.cancel()` keeps the page." },
+    { name: "variant", type: '"plain" | "glass"', default: '"plain"', description: "Bare dots, or dots on a glass capsule." },
+    { name: "getHref", type: "(page) => string", description: "Makes each dot a link to its page's URL." },
+  ]}
+/>
+
+### Data attributes and CSS variables
+
+| Attribute or variable | On | Meaning |
+| --- | --- | --- |
+| `data-variant` | `.sd-page-control` | `plain` or `glass` |
+| `data-current` | `.sd-page-control-dot` | The dot of the page on screen |
+| `--sd-page-control-dot` | inherited | Diameter of a dot |
+| `--sd-page-control-spacing` | inherited | Distance between dot centers |
+| `--sd-page-control-current`, `--sd-page-control-other` | `.sd-page-control` | Colors of the current and other dots |

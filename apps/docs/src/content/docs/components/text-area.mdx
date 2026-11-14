@@ -1,0 +1,72 @@
+export const metadata = {
+  title: "Text Area",
+  description: "Enter several lines of text in a field that grows as you type.",
+}
+
+# Text Area
+
+<Lead>Enter several lines of text, in a field that grows as you type.</Lead>
+
+<Demo name="text-area/basic" />
+
+## When to use it
+
+Use a text area for notes, descriptions, messages and anything else that can run past one line. It starts at `minRows` and grows with the text up to `maxRows`, then scrolls, so a short note stays small and a long one stays readable.
+
+For one line use a [Text Field](/docs/components/text-field). For text mixed with people or tags use a [Token Field](/docs/components/token-field).
+
+## Usage
+
+```tsx
+import { TextArea } from "@dreambase/stardust/text-area"
+```
+
+`TextArea` is a native `textarea`. It grows by default; pass `autoResize={false}` to keep it at `minRows`.
+
+### Rows and sending
+
+A reply box starts at one row. `submitShortcut="enter"` sends its form on Return and starts a new line on Shift-Return, as in Messages; `"mod+enter"` sends on Command-Return instead.
+
+<Demo name="text-area/rows" />
+
+## Platform behavior
+
+- **macOS.** The bordered field with 13-point text on 16-point lines and the accent halo while editing.
+- **iPadOS and iOS.** The filled gray field with 17-point text on 22-point lines. A `plain` text area fills a list row with no chrome.
+- **Every platform.** There's no resize handle: the field sizes itself, natively where the browser supports `field-sizing`.
+
+## Accessibility
+
+- It stays a native `textarea`, with standard editing, selection and spell checking.
+- Name it with a Field label or `aria-label`; put limits like a character count in the Field's description so they're read with it.
+
+## API
+
+### TextArea
+
+<PropsTable
+  rows={[
+    { name: "minRows", type: "number", default: "3", description: "The fewest lines it shows." },
+    { name: "maxRows", type: "number", default: "10", description: "The most lines it grows to before it scrolls." },
+    { name: "autoResize", type: "boolean", default: "true", description: "Grows and shrinks with the text." },
+    { name: "variant", type: '"auto" | "bordered" | "filled" | "plain"', default: '"auto"', description: "Bordered on macOS and filled on touch, or a fixed look." },
+    { name: "submitShortcut", type: '"enter" | "mod+enter"', description: "Which keys submit its form." },
+    { name: "onValueChange", type: "(value, details) => void", description: "Runs on typing, a reset or a controller." },
+  ]}
+/>
+
+### Data attributes
+
+| Attribute | On | Values |
+| --- | --- | --- |
+| `data-variant` | TextArea | `auto`, `bordered`, `filled`, `plain` |
+| `data-filled`, `data-disabled`, `data-readonly`, `data-required` | TextArea | Field state |
+| `data-invalid` | TextArea | Present inside an invalid Field |
+
+### CSS variables
+
+| Variable | macOS | iOS | What it sets |
+| --- | --- | --- | --- |
+| `--sd-text-area-line` | `16px` | `22px` | Line height, which the row limits multiply |
+| `--sd-text-area-pad-block` | `5px` | `11px` | Top and bottom padding |
+| `--sd-text-area-min-rows`, `--sd-text-area-max-rows` | From props | From props | Row limits |

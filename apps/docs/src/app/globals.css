@@ -1,0 +1,811 @@
+@layer ui-sdk, theme, base, stardust, components, utilities;
+
+@import "tailwindcss";
+@import "@dreambase/stardust/styles.css";
+
+@source "../../../../packages/stardust/src";
+
+@theme inline {
+  --font-sans: var(--sd-font);
+  --font-mono: var(--font-geist-mono), var(--sd-font-mono);
+  --color-bg: var(--sd-bg);
+  --color-bg-secondary: var(--sd-bg-secondary);
+  --color-bg-tertiary: var(--sd-bg-tertiary);
+  --color-bg-elevated: var(--sd-bg-elevated);
+  --color-bg-sidebar: var(--sd-bg-sidebar);
+  --color-label: var(--sd-label);
+  --color-label-secondary: var(--sd-label-secondary);
+  --color-label-tertiary: var(--sd-label-tertiary);
+  --color-label-quaternary: var(--sd-label-quaternary);
+  --color-fill: var(--sd-fill);
+  --color-fill-secondary: var(--sd-fill-secondary);
+  --color-fill-tertiary: var(--sd-fill-tertiary);
+  --color-fill-quaternary: var(--sd-fill-quaternary);
+  --color-separator: var(--sd-separator);
+  --color-accent: var(--sd-accent);
+  --color-accent-text: var(--sd-accent-text);
+  --color-accent-soft: var(--sd-accent-soft);
+  --color-on-accent: var(--sd-on-accent);
+  --color-accent-secondary: var(--sd-accent-secondary);
+  --radius-sd-sm: var(--sd-radius-sm);
+  --radius-sd-md: var(--sd-radius-md);
+  --radius-sd-lg: var(--sd-radius-lg);
+  --radius-sd-xl: var(--sd-radius-xl);
+  --radius-sd-2xl: var(--sd-radius-2xl);
+  --radius-sd-3xl: var(--sd-radius-3xl);
+}
+
+:root {
+  --font-geist-mono: ui-monospace;
+  --sd-font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
+  --docs-header-height: 52px;
+  --docs-sidebar-width: 264px;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--docs-header-height) + 24px);
+  background: var(--sd-bg);
+  text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  min-height: 100dvh;
+}
+
+/* The docs are a reading surface: one type scale on every device. */
+.docs-prose {
+  font-size: 16px;
+  line-height: 1.65;
+  letter-spacing: -0.011em;
+  color: var(--sd-label-secondary);
+}
+
+/* Prose rules stop at a demo, so examples keep their own type. */
+@scope (.docs-prose) to (.not-prose) {
+  :where(h1, h2, h3, h4) {
+    color: var(--sd-label);
+    font-family: var(--sd-font-display);
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    line-height: 1.08;
+    letter-spacing: -0.032em;
+    font-weight: 700;
+  }
+
+  h2 {
+    margin-top: 2.6em;
+    margin-bottom: 0.6em;
+    font-size: 1.5rem;
+    line-height: 1.2;
+    letter-spacing: -0.022em;
+    font-weight: 650;
+  }
+
+  h3 {
+    margin-top: 2em;
+    margin-bottom: 0.5em;
+    font-size: 1.125rem;
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+    font-weight: 600;
+  }
+
+  :where(h2, h3) a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  p {
+    margin: 0.9em 0;
+    text-wrap: pretty;
+  }
+
+  .docs-lead {
+    margin-top: 0.6em;
+    font-size: 1.25rem;
+    line-height: 1.45;
+    letter-spacing: -0.018em;
+    color: var(--sd-label-secondary);
+  }
+
+  :where(p, li, td) a {
+    color: var(--sd-accent-text);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in oklch, var(--sd-accent-text) 40%, transparent);
+    text-underline-offset: 3px;
+    transition: text-decoration-color var(--sd-duration-fast) var(--sd-ease-out);
+  }
+
+  :where(p, li, td) a:hover {
+    text-decoration-color: currentColor;
+  }
+
+  strong {
+    color: var(--sd-label);
+    font-weight: 600;
+  }
+
+  :where(ul, ol) {
+    margin: 0.9em 0;
+    padding-inline-start: 1.3em;
+  }
+
+  ul {
+    list-style: disc;
+  }
+
+  ol {
+    list-style: decimal;
+  }
+
+  li {
+    margin: 0.35em 0;
+  }
+
+  li::marker {
+    color: var(--sd-label-tertiary);
+  }
+
+  :not(pre) > code {
+    padding: 0.14em 0.4em;
+    border-radius: 6px;
+    background: var(--sd-fill-tertiary);
+    color: var(--sd-label);
+    font-family: var(--font-mono);
+    font-size: 0.86em;
+    letter-spacing: 0;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+
+  hr {
+    margin: 2.5em 0;
+    border: 0;
+    border-top: 1px solid var(--sd-separator);
+  }
+
+  blockquote {
+    margin: 1.4em 0;
+    padding: 0.2em 1.1em;
+    border-inline-start: 3px solid var(--sd-accent);
+    color: var(--sd-label);
+  }
+}
+
+.docs-table-wrap {
+  margin: 1.4em 0;
+  overflow-x: auto;
+  border: 1px solid var(--sd-separator);
+  border-radius: 14px;
+}
+
+@scope (.docs-prose) to (.not-prose) {
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  th {
+    padding: 10px 14px;
+    background: var(--sd-fill-quaternary);
+    color: var(--sd-label);
+    font-weight: 600;
+    text-align: start;
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 10px 14px;
+    border-top: 1px solid var(--sd-separator);
+    vertical-align: top;
+  }
+
+  td:first-child code {
+    white-space: nowrap;
+  }
+}
+
+/* Code */
+.docs-code {
+  position: relative;
+  margin: 1.4em 0;
+  border: 1px solid var(--sd-separator);
+  border-radius: 14px;
+  background: light-dark(#f7f9f7, #081710);
+  overflow: hidden;
+}
+
+.docs-code pre {
+  margin: 0;
+  padding: 16px 18px;
+  overflow-x: auto;
+  background: transparent !important;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.65;
+  letter-spacing: 0;
+  tab-size: 2;
+}
+
+.docs-code code {
+  font-family: inherit;
+}
+
+.docs-code .shiki,
+.docs-code .shiki span {
+  color: light-dark(var(--shiki-light), var(--shiki-dark)) !important;
+  background-color: transparent !important;
+}
+
+/* Wallpaper: what the previews float over, so materials have something to blur. */
+.docs-wallpaper {
+  background-color: light-dark(#e9f1ec, #07140d);
+  /* Color runs through the middle, not just the corners, so a material placed anywhere has something to blur. */
+  background-image:
+    radial-gradient(38% 46% at 50% 54%, color-mix(in oklch, var(--sd-accent) 46%, transparent), transparent 72%),
+    radial-gradient(30% 40% at 30% 66%, color-mix(in oklch, var(--sd-accent-secondary) 55%, transparent), transparent 70%),
+    radial-gradient(28% 36% at 72% 38%, color-mix(in oklch, var(--sd-yellow) 34%, transparent), transparent 70%),
+    radial-gradient(60% 80% at 8% 4%, color-mix(in oklch, var(--sd-accent) 42%, transparent), transparent 70%),
+    radial-gradient(55% 75% at 96% 12%, color-mix(in oklch, var(--sd-accent-secondary) 48%, transparent), transparent 70%),
+    radial-gradient(70% 60% at 62% 112%, color-mix(in oklch, var(--sd-accent) 30%, transparent), transparent 70%),
+    repeating-linear-gradient(
+      115deg,
+      transparent 0 34px,
+      light-dark(rgb(255 255 255 / 0.22), rgb(255 255 255 / 0.035)) 34px 35px
+    );
+}
+
+.docs-grid {
+  background-image:
+    linear-gradient(var(--sd-separator) 1px, transparent 1px),
+    linear-gradient(90deg, var(--sd-separator) 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-position: -1px -1px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 78%);
+}
+
+/* ── Chrome: toolbar ──────────────────────────────────────────── */
+
+.docs-header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: var(--docs-header-height);
+  padding-inline: max(12px, env(safe-area-inset-left)) max(12px, env(safe-area-inset-right));
+  background: var(--sd-material-chrome);
+  -webkit-backdrop-filter: var(--sd-material-filter);
+  backdrop-filter: var(--sd-material-filter);
+  box-shadow: inset 0 -0.5px 0 var(--sd-separator);
+  color: var(--sd-label);
+}
+
+@media (min-width: 768px) {
+  .docs-header {
+    padding-inline: 20px;
+  }
+}
+
+.docs-header-home {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  margin-inline: 4px 12px;
+  padding-inline: 4px;
+  border-radius: 8px;
+  outline-offset: 2px;
+}
+
+.docs-header-home:focus-visible,
+.docs-main-nav-link:focus-visible,
+.docs-sidebar-link:focus-visible,
+.docs-pager:focus-visible,
+.docs-quiet-link:focus-visible,
+.docs-component-card:focus-visible,
+.docs-anchor:focus-visible {
+  outline: var(--sd-focus-ring-width) solid var(--sd-focus-ring);
+}
+
+.docs-main-nav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.docs-main-nav-link {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding-inline: 10px;
+  border-radius: 7px;
+  color: var(--sd-label-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.003em;
+  transition: background-color var(--sd-duration-fast) var(--sd-ease-out), color var(--sd-duration-fast) var(--sd-ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .docs-main-nav-link:hover {
+    background: var(--sd-fill-quaternary);
+    color: var(--sd-label);
+  }
+}
+
+.docs-main-nav-link[aria-current="page"] {
+  background: var(--sd-fill-tertiary);
+  color: var(--sd-label);
+}
+
+/* In the navigation drawer the main links stack as a short list above the docs. */
+.docs-main-nav[data-orientation="vertical"] {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1px;
+  padding: 4px 12px 12px;
+  border-bottom: 0.5px solid var(--sd-separator);
+}
+
+.docs-main-nav[data-orientation="vertical"] .docs-main-nav-link {
+  height: 36px;
+  padding-inline: 10px;
+  font-size: 15px;
+}
+
+/* The search trigger: a field in the toolbar on wide windows, a magnifier on narrow ones. */
+.docs-search-trigger.sd-command-palette-trigger {
+  min-width: 0;
+  width: 240px;
+  height: 30px;
+  padding-inline: 9px 5px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+@media (max-width: 1023px) {
+  .docs-search-trigger.sd-command-palette-trigger {
+    width: 168px;
+  }
+}
+
+@media (max-width: 639px) {
+  .docs-search-trigger.sd-command-palette-trigger {
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border-radius: 999px;
+    background: transparent;
+    box-shadow: none;
+    color: var(--sd-label);
+  }
+
+  .docs-search-trigger .sd-command-palette-trigger-label,
+  .docs-search-trigger .sd-command-palette-trigger-shortcut {
+    display: none;
+  }
+
+  .docs-search-trigger.sd-command-palette-trigger > svg {
+    width: 17px;
+    height: 17px;
+  }
+}
+
+.docs-theme-trigger.sd-button {
+  gap: 7px;
+  padding-inline: 9px;
+}
+
+/* ── Command palette ─────────────────────────────────────────── */
+
+.docs-palette .sd-command-list {
+  max-height: min(460px, 56dvh);
+}
+
+.docs-palette .sd-command-item {
+  gap: 10px;
+}
+
+.docs-palette-label {
+  flex: none;
+  max-width: 60%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.docs-palette-label mark {
+  background: none;
+  color: inherit;
+  font-weight: 650;
+}
+
+.docs-palette-detail {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--sd-label-secondary);
+  font-size: 0.9em;
+}
+
+.sd-command-item[data-highlighted] .docs-palette-detail {
+  color: inherit;
+  opacity: 0.78;
+}
+
+.docs-palette .sd-command-item-icon {
+  color: var(--sd-label-secondary);
+}
+
+.docs-palette .sd-command-item[data-highlighted] .sd-command-item-icon {
+  color: inherit;
+}
+
+.docs-palette .sd-command-empty:not(:empty) {
+  padding-block: 28px 32px;
+}
+
+.docs-palette-footer {
+  display: flex;
+  flex: none;
+  gap: 16px;
+  padding: 8px 16px;
+  border-top: 0.5px solid var(--sd-separator);
+  color: var(--sd-label-tertiary);
+  font-size: 11.5px;
+}
+
+.docs-palette-footer kbd {
+  display: inline-grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  margin-inline-end: 3px;
+  padding-inline: 4px;
+  border-radius: 5px;
+  background: var(--sd-fill-tertiary);
+  color: var(--sd-label-secondary);
+  font: 500 11px/1 var(--sd-font);
+}
+
+@media (pointer: coarse) {
+  .docs-palette-footer {
+    display: none;
+  }
+}
+
+/* ── Chrome: sidebar ─────────────────────────────────────────── */
+
+.docs-sidebar-pane {
+  border-inline-end: 0.5px solid var(--sd-separator);
+  scrollbar-width: thin;
+  scrollbar-color: var(--sd-fill) transparent;
+}
+
+.docs-sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 30px;
+  padding: 5px 10px;
+  border-radius: 7px;
+  color: var(--sd-label-secondary);
+  font-size: 13.5px;
+  line-height: 1.3;
+  letter-spacing: -0.006em;
+  scroll-margin-block: 48px;
+  transition: background-color var(--sd-duration-fast) var(--sd-ease-out), color var(--sd-duration-fast) var(--sd-ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .docs-sidebar-link:hover {
+    background: var(--sd-fill-quaternary);
+    color: var(--sd-label);
+  }
+}
+
+/* A Mac source list: the selected row is a solid fill, not a faint tint. */
+.docs-sidebar-link[aria-current="page"] {
+  background: var(--sd-accent-soft);
+  color: var(--sd-accent-text);
+  font-weight: 600;
+}
+
+.docs-sidebar-badge {
+  margin-inline-start: auto;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--sd-fill-tertiary);
+  color: var(--sd-label-secondary);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* The navigation drawer on narrow windows. */
+.docs-nav-sheet.sd-sheet {
+  width: min(320px, calc(100vw - 48px));
+}
+
+.docs-nav-sheet-header.sd-sheet-header {
+  padding-bottom: 4px;
+}
+
+.docs-nav-sheet-body.sd-sheet-body {
+  padding: 4px 0 calc(16px + env(safe-area-inset-bottom));
+}
+
+.docs-nav-sheet .docs-sidebar {
+  padding-inline: 12px;
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to ([data-platform="macos"]) {
+  .docs-sidebar-link {
+    min-height: 40px;
+    font-size: 16px;
+  }
+}
+
+/* ── Doc pages ───────────────────────────────────────────────── */
+
+.docs-anchor {
+  position: relative;
+  border-radius: 4px;
+}
+
+.docs-anchor-glyph {
+  display: inline-block;
+  width: 0.7em;
+  height: 0.7em;
+  margin-inline-start: 0.35em;
+  vertical-align: 0.05em;
+  color: var(--sd-label-tertiary);
+  opacity: 0;
+  transition: opacity var(--sd-duration-fast) var(--sd-ease-out);
+}
+
+:is(h2, h3):hover > .docs-anchor .docs-anchor-glyph,
+.docs-anchor:focus-visible .docs-anchor-glyph {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .docs-anchor-glyph {
+    display: none;
+  }
+}
+
+.docs-quiet-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 6px;
+  color: var(--sd-label-secondary);
+  transition: color var(--sd-duration-fast) var(--sd-ease-out);
+}
+
+.docs-quiet-link:hover {
+  color: var(--sd-accent-text);
+}
+
+.docs-pager {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 16px;
+  border: 0.5px solid var(--sd-separator);
+  border-radius: 14px;
+  background: var(--sd-fill-quaternary);
+  transition: background-color var(--sd-duration-fast) var(--sd-ease-out), border-color var(--sd-duration-fast) var(--sd-ease-out);
+}
+
+.docs-pager:hover {
+  background: var(--sd-fill-tertiary);
+}
+
+.docs-pager-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--sd-label-tertiary);
+  font-size: 12px;
+}
+
+.docs-pager-title {
+  color: var(--sd-label);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* Tables and code scroll inside themselves; the page never scrolls sideways. */
+.docs-prose {
+  overflow-wrap: break-word;
+}
+
+.docs-table-wrap,
+.docs-code {
+  max-width: 100%;
+}
+
+.docs-table-wrap {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+}
+
+.docs-table-wrap table {
+  min-width: 640px;
+}
+
+.docs-table-wrap td:nth-child(2) {
+  min-width: 200px;
+}
+
+.docs-code pre {
+  overscroll-behavior-x: contain;
+}
+
+.docs-code .shiki code {
+  display: block;
+  width: max-content;
+  min-width: 100%;
+}
+
+/* ── Stage: the live preview ─────────────────────────────────── */
+
+.docs-stage {
+  position: relative;
+  margin-block: 1.5rem;
+  overflow: hidden;
+  border-radius: 18px;
+  background: var(--sd-bg);
+  box-shadow:
+    0 0 0 0.5px var(--sd-separator),
+    0 1px 2px rgb(0 0 0 / 0.06),
+    0 12px 32px -16px rgb(0 0 0 / 0.28);
+  isolation: isolate;
+}
+
+.docs-stage-bar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  height: 44px;
+  padding-inline: 8px 6px;
+  background: linear-gradient(var(--sd-fill-quaternary), var(--sd-fill-quaternary)), var(--sd-bg);
+  box-shadow: inset 0 -0.5px 0 var(--sd-separator), inset 0 0.5px 0 rgb(255 255 255 / 0.04);
+}
+
+.docs-stage-only,
+.docs-stage-size {
+  padding-inline: 6px;
+  color: var(--sd-label-secondary);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.docs-stage-size {
+  color: var(--sd-label-tertiary);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 479px) {
+  .docs-stage-size {
+    display: none;
+  }
+}
+
+.docs-stage-canvas {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.docs-stage-canvas:not(.docs-wallpaper) {
+  background:
+    radial-gradient(120% 80% at 50% 0%, color-mix(in oklch, var(--sd-accent) 5%, transparent), transparent 60%),
+    var(--sd-bg);
+}
+
+.docs-stage-canvas .docs-grid {
+  opacity: 0.55;
+}
+
+/* The screen is a Stardust root, which paints --sd-bg; the canvas behind it is the surface here. */
+.docs-stage-screen {
+  background: transparent;
+}
+
+/* iPhone and iPad widths: the screen is a column with visible edges. */
+.docs-stage-screen[data-device] {
+  background: var(--sd-bg);
+  box-shadow: -0.5px 0 0 var(--sd-separator), 0.5px 0 0 var(--sd-separator);
+}
+
+.docs-wallpaper .docs-stage-screen[data-device] {
+  background: transparent;
+  box-shadow: -0.5px 0 0 rgb(255 255 255 / 0.18), 0.5px 0 0 rgb(255 255 255 / 0.18);
+}
+
+.docs-stage:fullscreen {
+  display: flex;
+  flex-direction: column;
+  border-radius: 0;
+}
+
+.docs-stage:fullscreen .docs-stage-canvas {
+  flex: 1 1 auto;
+  overflow: auto;
+}
+
+.docs-stage:fullscreen .docs-stage-screen {
+  min-height: 100% !important;
+}
+
+/* ── Component index ─────────────────────────────────────────── */
+
+.docs-component-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 16px;
+  background: var(--sd-bg-secondary);
+  box-shadow: 0 0 0 0.5px var(--sd-separator);
+  transition: box-shadow var(--sd-duration-fast) var(--sd-ease-out), translate var(--sd-spring-snappy-duration) var(--sd-spring-snappy);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .docs-component-card:hover {
+    box-shadow: 0 0 0 1px color-mix(in oklch, var(--sd-accent) 55%, transparent), 0 10px 28px -14px rgb(0 0 0 / 0.35);
+  }
+}
+
+.docs-component-card:active {
+  translate: 0 1px;
+}
+
+.docs-component-preview {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 128px;
+  overflow: hidden;
+  background:
+    radial-gradient(100% 90% at 50% 0%, color-mix(in oklch, var(--sd-accent) 7%, transparent), transparent 70%),
+    var(--sd-bg);
+  box-shadow: inset 0 -0.5px 0 var(--sd-separator);
+  pointer-events: none;
+}
+
+.docs-component-preview .docs-grid {
+  opacity: 0.4;
+}
+
+.docs-component-glyph {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: var(--sd-material-regular);
+  box-shadow: var(--sd-glass-rim), 0 6px 18px -8px rgb(0 0 0 / 0.4);
+  color: var(--sd-accent-text);
+}

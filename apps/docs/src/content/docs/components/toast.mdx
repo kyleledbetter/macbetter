@@ -1,0 +1,121 @@
+export const metadata = {
+  title: "Notification",
+  description: "Tell people something happened: macOS notifications at the top right, banners at the top of the screen on iPhone and iPad.",
+}
+
+# Notification
+
+<Lead>Tell people something happened, without stopping what they’re doing.</Lead>
+
+<Demo name="toast/basic" platforms={["macos"]} height={200} />
+
+## When to use it
+
+Use a notification for news that doesn’t need an answer: a message arrived, an export finished, a sync failed in the background. It appears, waits a few seconds and goes. Don’t notify about something people just did themselves and can already see. Anything people must act on belongs in an [Alert](/docs/components/alert) or on the page.
+
+- Lead with who or what (“Hollis Grant”, “Export complete”) and keep the description to a sentence.
+- Offer at most one action, like Undo.
+
+## Usage
+
+Mount `Toaster` once, near the root of your app, then call `toast()` from anywhere: an event handler, a server action’s result, a store.
+
+```tsx
+// app/layout.tsx
+import { Toaster } from "@dreambase/stardust/toast"
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body>
+        {children}
+        <Toaster />
+      </body>
+    </html>
+  )
+}
+```
+
+```tsx
+import { toast } from "@dreambase/stardust/toast"
+
+toast("Hollis Grant", { description: "Can you review the Q3 roadmap?", data: { icon: <img src="/icon.png" alt="" /> } })
+```
+
+`data.icon` is the app icon; `data.time` replaces “now”. Each notification shows for five seconds; hovering or focusing the stack pauses it.
+
+### Types
+
+`toast.success`, `.warning`, `.error`, `.info` and `.loading` give a notification a colored glyph when you don’t pass an icon. `toast.promise()` shows a loading notification and turns it into the result.
+
+<Demo name="toast/types" platforms={["macos"]} height={200} />
+
+### Action
+
+Pass an `action` for one follow-up, like Undo.
+
+<Demo name="toast/action" platforms={["macos"]} height={200} />
+
+### More than one host
+
+`createToaster()` makes a separate queue for a `Toaster` of its own, like the phone preview below.
+
+<Demo name="toast/banner" platforms={["ios", "ipados", "macos"]} wallpaper height={240} />
+
+## Platform behavior
+
+- **macOS.** A 344pt card of thick material at the top right: app icon, bold title, the time at the trailing edge, and up to four lines of description. It slides in from the edge it’s aligned to: the right, or the left in a right-to-left layout. Newer notifications stack on top, with older ones peeking out below; hover the stack to spread it out. A close button appears on the card’s corner on hover.
+- **iOS and iPadOS.** A banner that drops from the top of the screen, centered, with larger corners and 15pt text. Swipe it up to dismiss it. The close button stays hidden unless you reach it with the keyboard.
+- `Toaster` reads the platform where it’s mounted, so a host inside a phone preview behaves like a phone and drops its banners from the top of that preview rather than the window. Reduced motion fades notifications in place instead of sliding them.
+
+## Accessibility
+
+- Each notification is announced once through a live region: politely, or right away for errors. The region doesn’t take focus.
+- F6 moves focus into the stack and back. Tab moves between notifications and their buttons; Escape dismisses the focused one.
+- The close button is named “Close”. Timers pause while the pointer or focus is in the stack, and while the page is hidden.
+
+## API
+
+### Toaster
+
+Takes every [ui-sdk Toast Region](https://ui-sdk.dev/docs/components/toast) prop.
+
+<PropsTable
+  rows={[
+    { name: "toaster", type: "Toaster", default: "the shared toast", description: "The queue it shows. createToaster() makes another." },
+    { name: "side", type: '"top" | "bottom"', default: '"top"', description: "The edge of the screen." },
+    { name: "align", type: '"start" | "center" | "end"', default: "end on macOS, center on touch", description: "Where along that edge." },
+    { name: "maxVisible", type: "number", default: "3", description: "How many show at once; the rest wait." },
+    { name: "expanded", type: "boolean", description: "Keeps the stack spread out." },
+    { name: "children", type: "(toast, item) => ReactNode", description: "Renders each notification yourself, with Toast and its parts." },
+  ]}
+/>
+
+### toast(title, options)
+
+<PropsTable
+  rows={[
+    { name: "description", type: "ReactNode", description: "More detail under the title." },
+    { name: "data", type: "{ icon?: ReactNode; time?: ReactNode }", description: "The app icon and the time shown at the trailing edge." },
+    { name: "action", type: "{ label, onAction }", description: "One button, like Undo." },
+    { name: "duration", type: "number", default: "5000", description: "Milliseconds it shows. Infinity keeps it until dismissed." },
+    { name: "priority", type: '"polite" | "assertive"', description: "How screen readers announce it." },
+  ]}
+/>
+
+`toast.success`, `.info`, `.warning`, `.error`, `.loading`, `.promise`, `.update` and `.dismiss` come from ui-sdk. For your own layout, `Toast`, `ToastIcon`, `ToastTitle`, `ToastDescription`, `ToastAction` and `ToastClose` are exported with Stardust’s classes.
+
+| Data attribute | On | Meaning |
+| --- | --- | --- |
+| `data-side`, `data-align` | `.sd-toaster` | Where the stack sits |
+| `data-expanded` | `.sd-toaster`, `.sd-toast` | The stack is spread out |
+| `data-front` | `.sd-toast` | The newest notification |
+| `data-type` | `.sd-toast`, `.sd-toast-icon` | `default`, `success`, `error`, `info`, `warning` or `loading` |
+| `data-swiping`, `data-swipe-direction` | `.sd-toast` | Being swiped, and which way it left |
+
+| CSS variable | Default |
+| --- | --- |
+| `--sd-toast-width` | 344px on macOS, 400px on touch |
+| `--sd-toast-radius` | `--sd-popup-radius` on macOS, `--sd-radius-2xl` on touch |
+| `--sd-toast-icon-size` | 32px on macOS, 38px on touch |
+| `--sd-toast-peek` | How far each card behind the front one shows |

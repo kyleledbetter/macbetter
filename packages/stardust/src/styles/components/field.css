@@ -1,0 +1,175 @@
+/* Field — a control with its label, description and error. Stacked, or label beside control as in macOS forms. */
+
+:where(:root, [data-platform="macos"]) {
+  --sd-field-gap: 6px;
+  --sd-field-group-gap: 14px;
+  --sd-field-column-gap: 8px;
+  --sd-field-label-font: 400 13px/16px var(--sd-font);
+  --sd-field-label-color: var(--sd-label);
+  --sd-field-label-inset: 0px;
+  --sd-field-label-align: end;
+  --sd-field-note-font: var(--sd-text-subheadline);
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --sd-field-gap: 7px;
+  --sd-field-group-gap: 20px;
+  --sd-field-column-gap: 16px;
+  --sd-field-label-font: var(--sd-text-footnote);
+  --sd-field-label-color: var(--sd-label-secondary);
+  --sd-field-label-inset: var(--sd-text-field-padding, 12px);
+  --sd-field-label-align: start;
+  --sd-field-note-font: var(--sd-text-footnote);
+}
+
+.sd-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sd-field-gap);
+  min-width: 0;
+}
+
+.sd-field-label {
+  color: var(--sd-field-label-color);
+  font: var(--sd-field-label-font);
+  letter-spacing: var(--sd-tracking-body);
+  padding-inline: var(--sd-field-label-inset);
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.sd-field-label[data-disabled] {
+  color: var(--sd-label-tertiary);
+}
+
+.sd-field-description,
+.sd-field-error {
+  margin: 0;
+  padding-inline: var(--sd-field-label-inset);
+  color: var(--sd-label-secondary);
+  font: var(--sd-field-note-font);
+  letter-spacing: var(--sd-tracking-caption);
+  text-wrap: pretty;
+}
+
+.sd-field-error {
+  color: var(--sd-destructive-text);
+}
+
+.sd-field-description[data-disabled] {
+  color: var(--sd-label-tertiary);
+}
+
+/* A field whose label follows its control, like a checkbox or a switch, reads as one row. */
+.sd-field:has(> .sd-field-label:not(:first-child)):not([data-layout="horizontal"]) {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: var(--sd-field-column-gap);
+  row-gap: 2px;
+}
+
+.sd-field:has(> .sd-field-label:not(:first-child)):not([data-layout="horizontal"]) > :not(:first-child) {
+  grid-column: 2;
+  padding-inline: 0;
+}
+
+/* Horizontal: the label sits in its own column, lined up with the control's first line. */
+.sd-field[data-layout="horizontal"],
+.sd-field-group[data-layout="horizontal"] > .sd-field:not([data-layout="stacked"]) {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  align-items: start;
+  column-gap: var(--sd-field-column-gap);
+  row-gap: 4px;
+}
+
+.sd-field-group[data-layout="horizontal"] > .sd-field:not([data-layout="stacked"]) {
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+}
+
+:is(.sd-field[data-layout="horizontal"], .sd-field-group[data-layout="horizontal"] > .sd-field:not([data-layout="stacked"]))
+  > .sd-field-label {
+  grid-column: 1;
+  display: flex;
+  align-items: center;
+  justify-content: var(--sd-field-label-align);
+  min-height: var(--sd-control-height);
+  padding-inline: 0;
+  color: var(--sd-label);
+  font: var(--sd-text-body);
+  text-align: var(--sd-field-label-align);
+}
+
+:is(.sd-field[data-layout="horizontal"], .sd-field-group[data-layout="horizontal"] > .sd-field:not([data-layout="stacked"]))
+  > :not(.sd-field-label) {
+  grid-column: 2;
+  min-width: 0;
+}
+
+:is(.sd-field[data-layout="horizontal"], .sd-field-group[data-layout="horizontal"] > .sd-field:not([data-layout="stacked"]))
+  > :is(.sd-field-description, .sd-field-error) {
+  padding-inline: 0;
+}
+
+/* A horizontal field's control takes its natural width; a text field fills the column. */
+:is(.sd-field[data-layout="horizontal"], .sd-field-group[data-layout="horizontal"] > .sd-field:not([data-layout="stacked"]))
+  > :not(.sd-field-label, .sd-field-description, .sd-field-error) {
+  justify-self: start;
+}
+
+:is(.sd-field[data-layout="horizontal"], .sd-field-group[data-layout="horizontal"] > .sd-field:not([data-layout="stacked"]))
+  > :is(.sd-text-field, .sd-text-field-group, .sd-search-field, .sd-secure-field, .sd-text-area, .sd-token-field) {
+  justify-self: stretch;
+}
+
+.sd-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sd-field-group-gap);
+  min-width: 0;
+}
+
+.sd-field-group[data-layout="horizontal"] {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  column-gap: var(--sd-field-column-gap);
+  row-gap: calc(var(--sd-field-group-gap) - 4px);
+}
+
+.sd-field-group[data-layout="horizontal"] > :not(.sd-field) {
+  grid-column: 2;
+}
+
+.sd-field-group[data-layout="horizontal"] > .sd-field[data-layout="stacked"] {
+  grid-column: 2;
+}
+
+.sd-field-set {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sd-field-gap);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.sd-field-legend {
+  margin-block-end: 6px;
+  padding: 0;
+  padding-inline: var(--sd-field-label-inset);
+  color: var(--sd-label);
+  font: var(--sd-text-headline);
+  letter-spacing: var(--sd-tracking-body);
+}
+
+.sd-field-set > .sd-field-description {
+  margin-block-end: 6px;
+}
+
+.sd-field-set[data-disabled] .sd-field-legend {
+  color: var(--sd-label-tertiary);
+}

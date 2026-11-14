@@ -1,0 +1,100 @@
+/* Card — a content container: a macOS group box, or an iOS grouped cell or widget. */
+
+:where(:root, [data-platform="macos"]) {
+  --sd-card-padding: 16px;
+  --sd-card-gap: 12px;
+  --sd-card-radius: var(--sd-radius-lg);
+  --sd-card-title-font: 600 13px/16px var(--sd-font);
+  --sd-card-description-font: 400 12px/15px var(--sd-font);
+  --sd-card-grouped-bg: var(--sd-fill-quaternary);
+  --sd-card-grouped-edge: var(--sd-separator);
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --sd-card-padding: 16px;
+  --sd-card-gap: 14px;
+  --sd-card-radius: var(--sd-group-radius);
+  --sd-card-title-font: 600 17px/22px var(--sd-font);
+  --sd-card-description-font: 400 15px/20px var(--sd-font);
+  --sd-card-grouped-bg: var(--sd-bg-grouped-secondary);
+  --sd-card-grouped-edge: transparent;
+}
+
+.sd-card {
+  --sd-card-bg: var(--sd-card-grouped-bg);
+
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sd-card-gap);
+  min-width: 0;
+  padding: var(--sd-card-padding);
+  border-radius: var(--sd-card-radius);
+  background: var(--sd-card-bg);
+  color: var(--sd-label);
+  box-shadow: inset 0 0 0 var(--sd-hairline) var(--sd-card-grouped-edge);
+}
+
+/* Apple's corners are continuous: the curve eases into the straight edge. */
+@supports (corner-shape: squircle) {
+  .sd-card {
+    border-radius: calc(var(--sd-card-radius) * 1.6);
+    corner-shape: squircle;
+  }
+}
+
+.sd-card[data-variant="elevated"] {
+  --sd-card-bg: var(--sd-bg-elevated);
+  box-shadow:
+    0 0 0 var(--sd-hairline) var(--sd-glass-border),
+    var(--sd-shadow-2);
+}
+
+.sd-card[data-variant="material"] {
+  --sd-card-bg: var(--sd-material-regular);
+  -webkit-backdrop-filter: var(--sd-material-filter);
+  backdrop-filter: var(--sd-material-filter);
+  box-shadow: var(--sd-glass-rim), 0 0 0 var(--sd-hairline) var(--sd-glass-border), var(--sd-shadow-2);
+}
+
+.sd-card[data-variant="outline"] {
+  --sd-card-bg: transparent;
+  box-shadow: inset 0 0 0 1px var(--sd-separator-strong);
+}
+
+.sd-card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.sd-card-title {
+  margin: 0;
+  color: var(--sd-label);
+  font: var(--sd-card-title-font);
+  letter-spacing: var(--sd-tracking-body);
+}
+
+.sd-card-description {
+  margin: 0;
+  color: var(--sd-label-secondary);
+  font: var(--sd-card-description-font);
+  letter-spacing: var(--sd-tracking-caption);
+  text-wrap: pretty;
+}
+
+.sd-card-content {
+  min-width: 0;
+  font: var(--sd-text-body);
+  letter-spacing: var(--sd-tracking-body);
+}
+
+.sd-card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--sd-space-4);
+}

@@ -1,0 +1,87 @@
+export const metadata = {
+  title: "Motion",
+  description: "Spring curves as CSS tokens, durations and easings, and the principles that make motion feel like Apple's.",
+}
+
+# Motion
+
+<Lead>Motion in Stardust explains what changed and responds the moment you touch something. Most of it is springs, written as CSS easing curves so they run in plain transitions.</Lead>
+
+## Try the springs
+
+Each track animates the same shape with a different token. Play it, then press again before it lands.
+
+<Demo name="foundations/motion-playground" hideCode />
+
+## Spring tokens
+
+Apple describes a spring with two numbers: **damping**, how quickly the motion settles (1 settles without overshooting; lower values bounce), and **response**, roughly how long it takes to get there. Stardust bakes those springs into `linear()` easing curves, sampled from the spring's motion, and pairs each with the duration it takes to settle.
+
+| Token | Duration | Character | Use it for |
+| --- | --- | --- | --- |
+| `--sd-spring-snappy` | `--sd-spring-snappy-duration`, 380ms | No overshoot, quick start | Controls: switch thumbs, segment indicators, press feedback |
+| `--sd-spring-smooth` | `--sd-spring-smooth-duration`, 600ms | No overshoot, longer settle | Larger moves: panels, reflowing layout |
+| `--sd-spring-bouncy` | `--sd-spring-bouncy-duration`, 520ms | Overshoots about 3% | Only after a gesture that carried momentum |
+| `--sd-spring-sheet` | `--sd-spring-sheet-duration`, 570ms | Overshoots under 1% | Sheets settling after a drag or presentation |
+
+Use the curve and its duration together:
+
+```css
+.drawer {
+  transition: translate var(--sd-spring-smooth-duration) var(--sd-spring-smooth);
+}
+```
+
+A `linear()` spring has the spring's shape but not its physics. A CSS transition that's interrupted starts again from the current position with a new duration; it doesn't carry the velocity it had. For drag-driven motion that has to inherit the pointer's speed, use a JavaScript spring and these tokens' durations as a guide.
+
+## Durations and easings
+
+For things that fade or change color rather than move, use a plain easing:
+
+| Token | Value | Use it for |
+| --- | --- | --- |
+| `--sd-duration-instant` | 80ms | Press feedback |
+| `--sd-duration-fast` | 140ms | Hover, color and background changes |
+| `--sd-duration-base` | 220ms | Fades, small popups |
+| `--sd-duration-slow` | 360ms | Larger fades and cross-dissolves |
+| `--sd-ease-out` | `cubic-bezier(0.22, 1, 0.36, 1)` | Anything entering or responding |
+| `--sd-ease-in-out` | `cubic-bezier(0.65, 0, 0.35, 1)` | Something moving from one place on screen to another |
+| `--sd-ease-ios` | `cubic-bezier(0.32, 0.72, 0, 1)` | iOS-style drawer and sheet curves when a spring isn't available |
+
+## Principles
+
+### Feedback on press
+
+Respond on pointer-down, not on release. Stardust styles pressed states with `:active` and removes the transition delay while pressed, so a button darkens the instant a finger lands. On iOS and iPadOS, buttons also scale to 97%. Don't wait for a click handler to show that something happened.
+
+### Interruptible
+
+People change their minds mid-gesture. Animate with transitions, which pick up from wherever the element is, rather than keyframe animations that restart from the beginning. In the playground above, pressing Play twice turns the shape around in place.
+
+### Exits are faster than entrances
+
+An entrance shows where something came from and deserves a little time. An exit is the person dismissing it, so get out of the way. Stardust's popups enter from `data-starting-style` and leave on `data-ending-style`, with the exit shorter than the entrance and scaling toward the element that opened them.
+
+### Animate the cheap properties
+
+Animate `transform`, `translate`, `scale` and `opacity`, and `filter` sparingly. Animating width, height, top or left makes the browser lay out the page on every frame and stutters on slower devices.
+
+### Use motion with a reason
+
+Motion should explain a change in place or state. A sheet slides up because it came from the bottom edge; a switch thumb slides because it moved. Don't animate things that didn't move.
+
+## Reduced motion
+
+When someone turns on Reduce Motion (`prefers-reduced-motion: reduce`), `base.css` shortens every transition and animation on Stardust's elements to effectively zero, and turns off the press scale on buttons. State changes still happen; they just don't travel.
+
+If you write your own motion, respect the same setting. Where a slide would now jump, replace it with a short fade:
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  .drawer {
+    transition: opacity var(--sd-duration-fast) var(--sd-ease-out);
+  }
+}
+```
+
+The reduced-motion rule in `base.css` targets elements with an `sd-` class only, so your own classes need their own rule.

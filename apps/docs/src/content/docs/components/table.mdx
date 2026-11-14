@@ -1,0 +1,113 @@
+export const metadata = {
+  title: "Table",
+  description: "Rows of data in columns, with sortable headers and row selection, like a macOS table view.",
+}
+
+# Table
+
+<Lead>Rows of data in columns, with sortable headers and row selection, like a macOS table view.</Lead>
+
+<Demo name="table/files" platforms={["macos", "ipados"]} />
+
+## When to use it
+
+Use a table when people compare several attributes across many items: files by date and size, devices by software version. Each row is one item; each column is one attribute, and a column header can sort by it.
+
+- Put the attribute people identify an item by in the first column.
+- Right-align numbers, like sizes, so their digits line up.
+- Use a [List](/docs/components/list) when each item has one or two attributes, and an [Outline](/docs/components/outline) when items nest.
+
+## Usage
+
+```tsx
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableColumn,
+  TableHeader,
+  TableRow,
+} from "@dreambase/stardust/table"
+```
+
+### Sorting
+
+Give a column a `value` to make it sortable. Its header becomes a button; pressing it sorts by that column, and pressing it again reverses the order. The table reports `{ column, direction }` through `onSortChange` and sets `aria-sort` on the header; you sort the rows. A chevron shows on the sorted column: up for ascending, down for descending.
+
+### Selection
+
+`selectionMode="single"` or `"multiple"` lets people select rows, held in `value` (an array of row values) with `onValueChange`. A selected row fills with the accent while the table has focus, and turns gray when focus moves elsewhere, the way macOS shows an inactive selection. `onAction` runs on a double-click or Enter, like opening a file.
+
+### A plain table
+
+Without `selectionMode`, the table is a native `<table>` with no keyboard behavior of its own, for data people only read.
+
+<Demo name="table/plain" />
+
+### Alternating rows and frames
+
+`alternating` shades every other row, as Finder's list view does. To scroll a long table under a sticky header, put it in a [Scroll View](/docs/components/scroll-view); `variant="bordered"` gives the view the hairline frame of a macOS table.
+
+## Platform behavior
+
+- **macOS.** Rows are 24 points tall with 13-point text, the header is 28 points with 11-point labels and hairline dividers between columns, and the selection is a rounded fill inset from the table's edges. Adjacent selected rows join into one block.
+- **iOS and iPadOS.** The table reads like a plain list: 44-point rows with 17-point text, hairline separators between rows, and no column dividers. On iPhone, keep it to two or three short columns, or use a List.
+- In right-to-left layouts the columns run from the right, the first column's inset and the sort chevron mirror, and a Scroll View puts its scroll bar on the left.
+
+## Accessibility
+
+- A table without selection keeps native table semantics. With selection it becomes a grid: each row is in one tab stop, and the row with focus takes the arrows.
+- **Up and Down Arrow** move between rows and select, as in a macOS table. **Shift** with an arrow extends the selection. **Command** or **Control** with an arrow moves focus without selecting, and the focused row shows a ring. **Space** toggles the focused row, **Command-A** or **Control-A** selects every row (pressing it again keeps them selected), and **Enter** runs `onAction`.
+- The focus ring follows the row's rounded selection shape. Inside a block of selected rows it's drawn in the selection's text color so it stays visible on the accent.
+- Click selects a row; Shift-click extends from the last row chosen; Command-click or Control-click toggles one.
+- Sortable headers are buttons inside the column header, which carries `aria-sort`.
+- Name the table with `aria-label`, or a caption.
+
+## API
+
+### Table
+
+<PropsTable
+  rows={[
+    { name: "selectionMode", type: '"none" | "single" | "multiple"', default: '"none"', description: "How many rows can be selected." },
+    { name: "value / defaultValue", type: "string[]", description: "The selected rows' values." },
+    { name: "onValueChange", type: "(value, details) => void", description: "Runs when the selection wants to change." },
+    { name: "sort / defaultSort", type: "{ column: string; direction: \"ascending\" | \"descending\" } | null", description: "The column the rows are sorted by." },
+    { name: "onSortChange", type: "(sort, details) => void", description: "Runs when a sortable header is pressed." },
+    { name: "onAction", type: "(value) => void", description: "Runs on a double-click or Enter on a row." },
+    { name: "alternating", type: "boolean", default: "false", description: "Shades every other row." },
+  ]}
+/>
+
+### TableColumn
+
+<PropsTable
+  rows={[
+    { name: "value", type: "string", description: "Identifies the column in `sort`. Set it to make the column sortable." },
+    { name: "align", type: '"start" | "center" | "end"', default: '"start"', description: "Aligns the header, and should match its cells." },
+  ]}
+/>
+
+### TableRow and TableCell
+
+<PropsTable
+  rows={[
+    { name: "value", type: "string", description: "TableRow: identifies the row in the selection." },
+    { name: "align", type: '"start" | "center" | "end"', default: '"start"', description: "TableCell: aligns the cell's content." },
+    { name: "secondary", type: "boolean", default: "false", description: "TableCell: draws the text in the secondary label color." },
+  ]}
+/>
+
+`TableHeader` renders a `thead` with its row, and `TableBody` a `tbody`.
+
+### Data attributes and CSS variables
+
+| Attribute or variable | On | Meaning |
+| --- | --- | --- |
+| `data-selection-mode` | `.sd-table` | `none`, `single` or `multiple`. |
+| `data-alternating` | `.sd-table` | Every other row is shaded. |
+| `data-selected` | `.sd-table-row` | The row is selected. |
+| `data-sorted` | `.sd-table-column` | `ascending` or `descending` on the sorted column. |
+| `data-align` | `.sd-table-column`, `.sd-table-cell` | The cell's alignment. |
+| `--sd-table-row-height`, `--sd-table-header-height` | platform | Row and header heights. |
+| `--sd-table-inset`, `--sd-table-row-radius` | platform | How far the selection sits from the edges, and its corners. |

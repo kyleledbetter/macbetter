@@ -1,0 +1,90 @@
+export const metadata = { title: "Switch", description: "Turn a setting on or off." }
+
+# Switch
+
+<Lead>Turn a setting on or off.</Lead>
+
+<Demo name="switch/basic" />
+
+## When to use it
+
+Use a switch for a setting that takes effect the moment it changes, like turning on Wi-Fi or Low Power Mode. If the change only applies when someone presses Save or OK, use a [Checkbox](/docs/components/checkbox) instead.
+
+- Name what the switch controls, not its state: "Bluetooth", not "Turn Bluetooth on".
+- On macOS, prefer a checkbox for most settings in a window. Use a switch for a setting that controls a whole group or a major feature, as System Settings does.
+- On iOS and iPadOS, a switch is the standard way to show a binary setting in a list row.
+
+## Usage
+
+```tsx
+import { Switch } from "@dreambase/stardust/switch"
+```
+
+### In a settings row
+
+Put the switch in a [Field](/docs/components/field) with a `FieldLabel`, and the label names it and toggles it when clicked. A `FieldDescription` is read with it.
+
+<Demo name="switch/settings-row" />
+
+### Sizes
+
+`size="sm"` is macOS's mini switch, for dense inspectors and tables. On touch, it's a smaller switch for compact rows.
+
+<Demo name="switch/sizes" />
+
+### Disabled
+
+A disabled switch keeps its state visible but can't be focused or changed. Say why nearby, when it isn't obvious.
+
+<Demo name="switch/disabled" />
+
+## Platform behavior
+
+- **macOS.** A 38 × 22 point capsule. The thumb stretches toward where it's going while it's held, then springs across.
+- **iPadOS and iOS.** The 51 × 31 point UISwitch with a wider stretch, so it feels right under a thumb.
+- **Every platform.** On is green (`--sd-green`), as it is everywhere in Apple's platforms, whatever the theme's accent. The hit area is extended to the platform minimum.
+
+## Accessibility
+
+- Renders a button with the `switch` role and `aria-checked`, plus a hidden native checkbox for forms.
+- Space toggles it; Enter submits its form and never toggles it.
+- Name it with a `FieldLabel` or `aria-label`. The label stays the same in both states.
+- The on state is a fill, not only a color: the thumb also moves to the trailing side.
+
+## API
+
+<PropsTable
+  rows={[
+    { name: "size", type: '"sm" | "md"', default: '"md"', description: "md is the standard switch; sm is the mini switch." },
+    { name: "checked", type: "boolean", description: "Whether it's on. Pass it to control the switch." },
+    { name: "defaultChecked", type: "boolean", default: "false", description: "Whether it's on at first, when uncontrolled." },
+    { name: "onCheckedChange", type: "(checked, details) => void", description: "Runs when it wants to change." },
+    { name: "disabled", type: "boolean", default: "false", description: "Can't be focused or changed, and isn't submitted." },
+    { name: "readOnly", type: "boolean", default: "false", description: "Focusable and submitted, but doesn't change." },
+    { name: "name", type: "string", description: "The name it submits under." },
+    { name: "children", type: "ReactNode", description: "Replaces the built-in thumb, if you need a custom one." },
+  ]}
+/>
+
+### SwitchThumb
+
+The thumb `Switch` renders for you. Render it yourself, as the switch's child, only to put something inside it or give it your own class. It takes the props of ui-sdk's `SwitchThumb`.
+
+### Data attributes
+
+| Attribute | Values |
+| --- | --- |
+| `data-size` | `sm`, `md` |
+| `data-checked` / `data-unchecked` | Present for the current state |
+| `data-disabled`, `data-readonly`, `data-invalid` | Present in those states |
+
+### CSS variables
+
+| Variable | macOS | iOS | What it sets |
+| --- | --- | --- | --- |
+| `--sd-switch-width` | `38px` | `51px` | Track width |
+| `--sd-switch-height` | `22px` | `31px` | Track height |
+| `--sd-switch-width-sm` | `26px` | `42px` | Small track width |
+| `--sd-switch-height-sm` | `15px` | `26px` | Small track height |
+| `--sd-switch-thumb-stretch` | `3px` | `6px` | How far the thumb stretches while held |
+| `--sd-switch-on` | `--sd-green` | `--sd-green` | The on color, set on the switch |

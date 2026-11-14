@@ -1,0 +1,131 @@
+export const metadata = {
+  title: "List",
+  description: "Rows of settings, navigation and choices, grouped the way iOS Settings and macOS System Settings group them.",
+}
+
+# List
+
+<Lead>Rows of settings, navigation and choices, grouped the way iOS Settings and macOS System Settings group them.</Lead>
+
+<Demo name="list/settings" platforms={["ios", "macos", "ipados"]} fill />
+
+## When to use it
+
+Use a list for settings and for navigating into more detail: each row names one thing, shows its current value at the trailing edge, and either holds its own control (a switch) or takes you somewhere (a chevron). Group related rows into sections, and use a section footer to explain what a setting does rather than a long row title.
+
+Use a [Table](/docs/components/table) when people compare several attributes of many items, and an [Outline](/docs/components/outline) when the items nest.
+
+- Keep row titles short, in title case, and start with the noun people scan for.
+- Put the current value in `ListRowValue`, not in the title.
+- A row that navigates gets a disclosure chevron. A row that acts right away, like Sign Out, doesn't.
+
+## Usage
+
+```tsx
+import {
+  List,
+  ListRow,
+  ListRowAccessory,
+  ListRowIcon,
+  ListRowSubtitle,
+  ListRowTitle,
+  ListRowValue,
+  ListSection,
+} from "@dreambase/stardust/list"
+```
+
+### Rows that navigate, act or hold a control
+
+A row with `href` is a link, and with `render` it's your router's link component: `render={<Link href="/wi-fi" />}`. A row with `onClick` is a button. A row with neither is static, which is what a row holding its own control needs: a Switch inside a button would be a button inside a button. Name the control after the row's title.
+
+### Icon tiles
+
+`ListRowIcon` draws the rounded, colored tile from Settings. Its `color` is a system color (`red`, `orange`, `yellow`, `green`, `mint`, `teal`, `cyan`, `blue`, `indigo`, `purple`, `pink`, `brown`, `gray`) or `accent`. Put a white glyph inside; the tile is hidden from screen readers, so the title names the row.
+
+### Subtitles
+
+<Demo name="list/subtitles" platforms={["ios", "macos", "ipados"]} fill />
+
+### Choices
+
+A checkmark marks the chosen row in a short list of options. Mark the chosen row with `aria-pressed` so it's announced, or use a Radio group when the options belong to a form.
+
+<Demo name="list/choices" platforms={["ios", "macos", "ipados"]} fill />
+
+### Styles
+
+`inset-grouped`, the default, floats rounded groups inside the margins. `grouped` runs the groups edge to edge between hairlines. `plain` drops the groups and pins each section header to the top while its rows scroll, like Contacts. Inside a [navigation stack](/docs/components/navigation-bar) the headers pin just below the bar, using the `--sd-content-inset-top` the stack sets.
+
+<Demo name="list/variants" platforms={["ios", "macos"]} fill />
+
+## Platform behavior
+
+- **iOS and iPadOS.** 17-point text, rows at least 48 points tall, and a 30-point icon tile. The list paints the grouped background and the groups sit on it in the secondary grouped color. Separators start under the title, past an icon tile, artwork or avatar, and run to the trailing edge, as UIKit draws them. Section headers are secondary footnote text, not capitals. A pressed row fills edge to edge and the hairlines around it step aside.
+- **macOS.** The System Settings look: 13-point text, rows 36 points tall (40 with an icon), a 20-point icon tile, and groups drawn as a faint box with a hairline edge on the window background. Separators are inset from both edges and don't skip the icon. Section headers are 13-point semibold in the primary label color, as System Settings sets them.
+- Disclosure chevrons, checkmarks and the info glyph are drawn at each platform's size and weight; checkmarks and the info glyph take the accent color.
+
+## Accessibility
+
+- Rows are real links and buttons, so Tab reaches them and Enter (and Space, for buttons) activates them. Static rows aren't focusable; the control inside them is.
+- A row's accessible name is its text: title, subtitle and value read together, like "Wi-Fi, Dreambase HQ".
+- Icon tiles and accessory glyphs are `aria-hidden`.
+- A disabled row's button can't be pressed and its contents dim.
+- Keyboard focus draws the accent ring inside the row, so the group's rounded corners don't clip it.
+
+## API
+
+### List
+
+<PropsTable
+  rows={[
+    { name: "variant", type: '"inset-grouped" | "grouped" | "plain"', default: '"inset-grouped"', description: "How the sections are drawn." },
+    { name: "...props", type: 'ComponentProps<"div">', description: "Passed to the element." },
+  ]}
+/>
+
+### ListSection
+
+<PropsTable
+  rows={[
+    { name: "header", type: "ReactNode", description: "Text above the group." },
+    { name: "footer", type: "ReactNode", description: "Text below the group that explains its settings." },
+  ]}
+/>
+
+### ListRow
+
+<PropsTable
+  rows={[
+    { name: "href", type: "string", description: "Makes the row a link." },
+    { name: "render", type: "ReactElement | function", description: "Renders the row as another element, like a router link. Makes the row interactive." },
+    { name: "onClick", type: "(event) => void", description: "Makes the row a button." },
+    { name: "disabled", type: "boolean", default: "false", description: "Dims the row and stops presses." },
+  ]}
+/>
+
+### ListRowIcon, ListRowAccessory
+
+<PropsTable
+  rows={[
+    { name: "color", type: "SystemColor | \"gray\" | \"accent\"", default: '"gray"', description: "ListRowIcon: the tile's color." },
+    { name: "type", type: '"disclosure" | "checkmark" | "info"', description: "ListRowAccessory: a standard glyph. Leave it out and pass a control as children." },
+  ]}
+/>
+
+`ListRowTitle`, `ListRowSubtitle` and `ListRowValue` take the props of a `span`.
+
+### Data attributes and CSS variables
+
+| Attribute or variable | On | Meaning |
+| --- | --- | --- |
+| `data-variant` | `.sd-list` | `inset-grouped`, `grouped` or `plain`. |
+| `data-interactive` | `.sd-list-row` | The row is a link or a button. |
+| `data-disabled` | `.sd-list-item` | The row is disabled. |
+| `data-color` | `.sd-list-row-icon` | The tile's color. |
+| `data-type` | `.sd-list-row-accessory` | `disclosure`, `checkmark` or `info`. |
+| `--sd-list-row-height`, `--sd-list-row-height-icon` | platform | Minimum row heights. |
+| `--sd-list-row-padding-inline` | platform | Leading and trailing padding, which the headers and footers share. |
+| `--sd-list-icon-size`, `--sd-list-icon-radius`, `--sd-list-icon-gap` | platform | The icon tile. |
+| `--sd-list-separator-start`, `--sd-list-separator-start-icon`, `--sd-list-separator-end` | platform | Where hairlines start and end on macOS, and on iOS rows without a `ListRowTitle`. |
+| `--sd-content-inset-top` | inherited | Where a plain list's headers pin. Set by `NavigationStack`; 0 otherwise. |
+| `--sd-list-bg`, `--sd-list-group-bg`, `--sd-list-pressed` | platform | Surfaces and the pressed fill. |

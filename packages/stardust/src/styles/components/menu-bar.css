@@ -1,0 +1,94 @@
+/* Menu Bar — the Mac's translucent strip of menu titles; iPadOS shows it when you pull down from the top. */
+
+:where(:root, [data-platform="macos"]) {
+  --sd-menu-bar-height: 24px;
+  --sd-menu-bar-item-height: 22px;
+  --sd-menu-bar-item-padding: 9px;
+  --sd-menu-bar-padding: 6px;
+  --sd-menu-bar-font: 400 13px/16px var(--sd-font);
+  --sd-menu-bar-radius: var(--sd-radius-xs);
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --sd-menu-bar-height: 44px;
+  --sd-menu-bar-item-height: 34px;
+  --sd-menu-bar-item-padding: 12px;
+  --sd-menu-bar-padding: 10px;
+  --sd-menu-bar-font: 400 17px/22px var(--sd-font);
+  --sd-menu-bar-radius: var(--sd-radius-full);
+}
+
+.sd-menu-bar {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  height: var(--sd-menu-bar-height);
+  padding-inline: var(--sd-menu-bar-padding);
+  background: var(--sd-material-chrome);
+  -webkit-backdrop-filter: var(--sd-material-filter);
+  backdrop-filter: var(--sd-material-filter);
+  box-shadow: inset 0 calc(var(--sd-hairline) * -1) 0 var(--sd-glass-border);
+  color: var(--sd-label);
+  font: var(--sd-menu-bar-font);
+  letter-spacing: var(--sd-tracking-body);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.sd-menu-bar[data-orientation="vertical"] {
+  flex-direction: column;
+  align-items: stretch;
+  height: auto;
+  padding: var(--sd-menu-bar-padding) 4px;
+}
+
+.sd-menu-bar-trigger {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 6px;
+  height: var(--sd-menu-bar-item-height);
+  margin: 0;
+  padding: 0 var(--sd-menu-bar-item-padding);
+  border: 0;
+  border-radius: var(--sd-menu-bar-radius);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  white-space: nowrap;
+  cursor: default;
+  outline: none;
+}
+
+.sd-menu-bar-trigger :where(svg) {
+  width: 15px;
+  height: 15px;
+}
+
+.sd-menu-bar-trigger[data-app] {
+  font-weight: 700;
+}
+
+.sd-menu-bar-trigger[data-open] {
+  background: var(--sd-fill);
+}
+
+.sd-menu-bar-trigger:focus-visible {
+  outline: var(--sd-focus-ring-width) solid var(--sd-focus-ring);
+  outline-offset: -1px;
+}
+
+.sd-menu-bar-trigger[aria-disabled="true"],
+.sd-menu-bar-trigger:disabled {
+  color: var(--sd-label-tertiary);
+}
+
+/* Menus hang from the bar; they don't grow out of it. */
+.sd-menu-content.sd-menu-bar-content[data-starting-style] {
+  scale: 1;
+}
+
+.sd-menu-content.sd-menu-bar-content[data-ending-style] {
+  scale: 1;
+}

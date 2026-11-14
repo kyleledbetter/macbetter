@@ -1,0 +1,122 @@
+export const metadata = {
+  title: "Sheet",
+  description: "The iOS bottom sheet with a grabber and detents, and inspector panels along the edge on iPad and Mac.",
+}
+
+# Sheet
+
+<Lead>Slide a panel in from the edge of the screen, and let people drag it.</Lead>
+
+<Demo name="sheet/detents" platforms={["ios", "ipados", "macos"]} wallpaper height={420} />
+
+## When to use it
+
+Use a bottom sheet on iPhone for supporting content that people look at alongside the page: results on a map, share options, a quick form. With detents, it can rest at half height so the page stays in view, and expand when people need more. Use a side sheet as an inspector on iPad and the Mac, for properties of the selection.
+
+For a task that should take over until it’s done, use a [Dialog](/docs/components/dialog). For a short choice, an [Alert](/docs/components/alert) action sheet.
+
+## Usage
+
+```tsx
+import {
+  Sheet,
+  SheetBody,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetOutlet,
+  SheetTitle,
+  SheetTrigger,
+} from "@dreambase/stardust/sheet"
+```
+
+`SheetContent` brings its backdrop and the grabber. The sheet follows the finger one to one while it’s dragged, and a flick carries momentum: fast enough and it dismisses, or skips a detent. Long content goes in `SheetBody`, which scrolls first and hands the drag to the sheet once it reaches the top.
+
+### Detents
+
+`detents={["medium", "large"]}` opens the sheet at half height and lets people drag it to nearly full height. With more than one detent, the grabber is a button: pressing it steps to the next detent, and arrow keys, Home and End choose one. With a single detent it’s a plain bar. For other resting points, pass ui-sdk’s `snapPoints` (fractions, pixels or `"content"`).
+
+### Inspectors
+
+`side="end"` (or `"start"`) slides a panel in from the trailing edge. On the Mac and iPad it floats inset from the edge with rounded corners. Pass `modal={false}` to keep the page usable beside it.
+
+<Demo name="sheet/inspector" platforms={["macos", "ipados"]} wallpaper height={420} />
+
+### The page behind
+
+Wrap the page in `SheetOutlet` and it recedes as a large sheet rises, scaling down and rounding its corners as iOS does. Its `keyframes` run from closed to fully expanded.
+
+<Demo name="sheet/outlet" platforms={["ios"]} fill height={420} />
+
+## Platform behavior
+
+- **iOS.** The sheet spans the screen, with 30pt corners and a 36×5pt grabber. The large detent stops just under the status bar. A sheet holding a grouped [List](/docs/components/list) takes the grouped background from edge to edge, as Settings-style sheets do.
+- **iPadOS.** A bottom sheet is a centered 620pt card; inspectors float 10pt in from the edge.
+- **macOS.** Inspectors float 8pt in from the window edge with 16pt corners; a bottom sheet is a centered 560pt panel.
+- A sheet opened from inside another pushes the first one back with the `--sd-spring-sheet` spring. Reduced motion fades sheets in and out instead of sliding them.
+
+## Accessibility
+
+- The content is a `dialog`, named by `SheetTitle` and described by `SheetDescription`. While modal, it keeps Tab inside and makes the page inert.
+- Escape and a press on the dimmed page close it, and focus returns to the trigger.
+- Opening moves focus to the first control in the content. The grabber, when it’s a button, comes last in the Tab order, is named “Resize sheet” and works with Enter, Space, the arrow keys, Home and End.
+
+## API
+
+### Sheet
+
+Takes every [ui-sdk Drawer](https://ui-sdk.dev/docs/components/drawer) root prop.
+
+<PropsTable
+  rows={[
+    { name: "side", type: '"bottom" | "top" | "start" | "end"', default: '"bottom"', description: "The edge it comes from." },
+    { name: "detents", type: '("medium" | "large")[]', description: "Where it rests: medium is half the screen, large nearly all of it." },
+    { name: "snapPoints", type: "SnapPoint[]", description: "Resting points of your own. Wins over detents." },
+    { name: "modal", type: 'boolean | "trap-focus"', default: "true", description: "false leaves the page usable beside it." },
+    { name: "modalAbove", type: "SnapPoint", description: "Modal only above this detent, like Maps." },
+    { name: "dismissible", type: "boolean", default: "true", description: "Whether a swipe, Escape or an outside press can close it." },
+  ]}
+/>
+
+### SheetContent
+
+<PropsTable
+  rows={[
+    { name: "grabber", type: "boolean", default: "true", description: "Shows the grabber on a bottom sheet." },
+  ]}
+/>
+
+### SheetClose
+
+<PropsTable
+  rows={[
+    { name: "variant", type: '"default" | "primary"', default: '"default"', description: "primary is bold, like Done." },
+    { name: "value", type: "string", description: "Reported as returnValue." },
+  ]}
+/>
+
+### SheetOutlet
+
+<PropsTable
+  rows={[
+    { name: "keyframes", type: "SheetKeyframes", default: '{ scale: [1, 0.94], borderRadius: ["0px", "12px"] }', description: "What the page does as the sheet expands." },
+  ]}
+/>
+
+`SheetTrigger`, `SheetHeader`, `SheetTitle`, `SheetDescription` and `SheetBody` take their element’s props. `createSheetController` is ui-sdk’s `createDrawerController`.
+
+| Data attribute | On | Meaning |
+| --- | --- | --- |
+| `data-side` | `.sd-sheet` | The physical edge, with start and end resolved |
+| `data-snap-point` | `.sd-sheet` | The detent it rests on |
+| `data-expanded` | `.sd-sheet` | Resting at its largest detent |
+| `data-dragging` | `.sd-sheet` | Being dragged |
+| `data-large` | `.sd-sheet` | Has a large detent, so it's sized to nearly fill the screen |
+
+| CSS variable | Default |
+| --- | --- |
+| `--sd-sheet-width` | 560px macOS, 620px iPadOS, 440px iOS |
+| `--sd-sheet-inspector-width` | 300px macOS, 340px iPadOS |
+| `--sd-sheet-top-gap` | The space left above a large sheet |
+| `--drawer-progress`, `--drawer-expand`, `--drawer-stack` | Set by ui-sdk while it moves |

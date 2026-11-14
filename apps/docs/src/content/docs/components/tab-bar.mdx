@@ -1,0 +1,101 @@
+export const metadata = {
+  title: "Tab Bar",
+  description: "Switch between the top-level sections of an iOS or iPadOS app.",
+}
+
+# Tab Bar
+
+<Lead>Switch between the top-level sections of an iPhone or iPad app.</Lead>
+
+<Demo name="tab-bar/floating" platforms={["ios"]} wallpaper height={720} />
+
+## When to use it
+
+Use a tab bar for an app's two to five top-level sections, like Home, Library and Search. Each tab keeps its own place: switching away and back returns to the screen you left.
+
+- Use tabs to navigate, never to run an action. A button that composes or adds belongs in a navigation bar or toolbar.
+- Label every tab with a short noun, and pair it with a symbol people know.
+- Keep the tab bar visible on every screen of the hierarchy below it. Hide it only for a modal task.
+- On macOS, use a [sidebar](/docs/components/sidebar) or [tabs](/docs/components/tabs) instead.
+
+## Usage
+
+```tsx
+import { TabBar, TabBarItem, TabBarList, TabBarPanel } from "@dreambase/stardust/tab-bar"
+```
+
+`TabBar` holds a `TabBarPanel` per section and the `TabBarList` of items. Give each item and its panel the same `value`, and name the list with `aria-label`. The bar floats over the panels; it sets `--sd-content-inset-bottom` so a [navigation stack](/docs/components/navigation-bar) inside a panel scrolls its last row clear of it.
+
+### Floating
+
+The default is the floating glass capsule of iOS 26. The selected tab takes the accent color, and a glass pill slides to it, with a little give under the finger.
+
+### Classic
+
+`variant="classic"` is the full-width translucent bar of earlier iOS versions, with a hairline along its top. Use it when the app's design follows iOS 18.
+
+<Demo name="tab-bar/classic" platforms={["ios"]} wallpaper height={720} />
+
+### iPad
+
+On iPadOS, the floating tab bar moves to the top of the screen as a compact capsule of labels, centered in the navigation bar's row. The capsule takes the bar's center, so give those screens a large title: an inline title steps out of sight under a top tab bar (it stays the heading for screen readers).
+
+<Demo name="tab-bar/ipad" platforms={["ipados"]} wallpaper height={560} />
+
+## Platform behavior
+
+- **iOS.** The floating bar is 62 points tall, inset 20 points from the screen's sides and sitting just above the home indicator. Labels are 10-point semibold under 24-point symbols. The classic bar is 49 points plus the home indicator's safe area, with 10-point medium labels.
+- **iPadOS.** The floating bar is a 44-point capsule at the top, labels only, centered in the 50-point navigation bar row. The classic bar stays at the bottom, as it was before iPadOS 18.
+- **Safe area.** The bar reads `--sd-safe-bottom` (and `--sd-safe-top` on iPad), which default to the device's `env(safe-area-inset-*)` and which a [device frame](/docs/components/device-frame) sets for its screen.
+- **macOS.** Mac apps don't use tab bars. Use a sidebar for an app's sections.
+- The tab bar has no hover state on touch. With a pointer, unselected tabs dim slightly on hover.
+
+## Accessibility
+
+`TabBar` is built on ui-sdk Tabs, so it follows the WAI-ARIA tabs pattern:
+
+- The list is a `tablist`, each item a `tab` that controls its panel, and each panel is labelled by its tab.
+- Tab moves focus into the bar at the selected item. Left and Right Arrow move between items and select them; Home and End go to the first and last.
+- Icons sit in `TabsTabIcon`, out of the tab's name, so the label is what's announced.
+- Under `prefers-reduced-transparency` the glass turns opaque, and under `prefers-reduced-motion` the pill moves without bouncing.
+- In right-to-left layouts the items run right to left, so the first tab sits at the right edge, as on iOS.
+
+## API
+
+### TabBar
+
+ui-sdk `Tabs`: `value`, `defaultValue`, `onValueChange`, `activation` and the rest.
+
+### TabBarList
+
+<PropsTable
+  rows={[
+    { name: "variant", type: '"floating" | "classic"', default: '"floating"', description: "The iOS 26 glass capsule, or the full-width translucent bar." },
+  ]}
+/>
+
+### TabBarItem
+
+<PropsTable
+  rows={[
+    { name: "value", type: "string", description: "Pairs the item with its panel." },
+    { name: "icon", type: "ReactNode", description: "The symbol above the label. Decorative." },
+    { name: "disabled", type: "boolean", default: "false", description: "Keeps the item focusable but unselectable." },
+  ]}
+/>
+
+### TabBarPanel
+
+ui-sdk `TabsPanel`: `value` and `keepMounted`.
+
+### Data attributes and variables
+
+| Attribute or variable | On | Meaning |
+| --- | --- | --- |
+| `data-variant` | `.sd-tab-bar-list` | `floating` or `classic`. |
+| `data-selected` | `.sd-tab-bar-item`, `.sd-tab-bar-panel` | The selected tab and its panel. |
+| `--sd-tab-bar-height` | `.sd-tab-bar` | The bar's height, without the safe area. |
+| `--sd-tab-bar-margin` | `.sd-tab-bar` | The floating bar's distance from the bottom edge. |
+| `--sd-content-inset-bottom` | `.sd-tab-bar` | The space content leaves for the bar. A `NavigationStack` inside a panel pads its end by it. |
+| `--sd-safe-top`, `--sd-safe-bottom` | inherited | The device's safe area, from `env()` or a device frame. |
+| `--active-tab-left`, `--active-tab-width` | `.sd-tab-bar-indicator` | The selected tab's box, from ui-sdk. |

@@ -1,0 +1,294 @@
+/*
+ * Text Field — macOS: a white rounded rectangle with a hairline edge and the
+ * accent halo while editing. iOS: a filled gray field, or no chrome at all in a
+ * list row. The --sd-text-field-* variables are shared by every text control.
+ */
+
+:where(:root, [data-platform="macos"]) {
+  --sd-text-field-radius-sm: 5px;
+  --sd-text-field-radius: var(--sd-radius-sm);
+  --sd-text-field-radius-lg: var(--sd-radius-md);
+  --sd-text-field-padding-sm: 6px;
+  --sd-text-field-padding: 8px;
+  --sd-text-field-padding-lg: 10px;
+  --sd-text-field-font-sm: 400 11px/14px var(--sd-font);
+  --sd-text-field-font: 400 13px/16px var(--sd-font);
+  --sd-text-field-font-lg: 400 15px/20px var(--sd-font);
+  --sd-text-field-icon: 14px;
+  --sd-text-field-gap: 5px;
+  /* What "auto" draws: the bordered field on a Mac. */
+  --sd-text-field-auto-bg: var(--sd-bg-field);
+  --sd-text-field-auto-edge: inset 0 0 0 var(--sd-hairline) var(--sd-control-border),
+    inset 0 0.5px 1px light-dark(rgb(0 0 0 / 0.07), rgb(0 0 0 / 0.2));
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --sd-text-field-radius-sm: var(--sd-radius-md);
+  --sd-text-field-radius: 10px;
+  --sd-text-field-radius-lg: var(--sd-radius-lg);
+  --sd-text-field-padding-sm: 10px;
+  --sd-text-field-padding: 12px;
+  --sd-text-field-padding-lg: 14px;
+  --sd-text-field-font-sm: 400 15px/20px var(--sd-font);
+  --sd-text-field-font: 400 17px/22px var(--sd-font);
+  --sd-text-field-font-lg: 400 17px/22px var(--sd-font);
+  --sd-text-field-icon: 17px;
+  --sd-text-field-gap: 6px;
+  /* …and the filled gray field on touch. */
+  --sd-text-field-auto-bg: var(--sd-fill-tertiary);
+  --sd-text-field-auto-edge: inset 0 0 0 0 transparent;
+}
+
+/*
+ * --sd-placeholder (tertiary label) reads 3.7:1 on a filled field in light mode;
+ * every text control uses this darker prompt so it holds 4.5:1.
+ */
+:is(.sd-text-field, .sd-text-field-group, .sd-search-field, .sd-secure-field, .sd-text-area, .sd-token-field) {
+  --sd-field-placeholder: light-dark(
+    color-mix(in oklch, var(--sd-ink) 64%, transparent),
+    color-mix(in oklch, var(--sd-ink) 60%, transparent)
+  );
+}
+
+.sd-text-field,
+.sd-text-field-group {
+  --sd-text-field-h: var(--sd-control-height);
+  --sd-text-field-r: var(--sd-text-field-radius);
+  --sd-text-field-pad: var(--sd-text-field-padding);
+  --sd-text-field-bg: var(--sd-text-field-auto-bg);
+  --sd-text-field-edge: var(--sd-text-field-auto-edge);
+  --sd-text-field-ring: var(--sd-focus-ring);
+
+  position: relative;
+  box-sizing: border-box;
+  min-width: 0;
+  height: var(--sd-text-field-h);
+  margin: 0;
+  padding: 0 var(--sd-text-field-pad);
+  border: 0;
+  border-radius: var(--sd-text-field-r);
+  background: var(--sd-text-field-bg);
+  box-shadow: var(--sd-text-field-edge);
+  color: var(--sd-label);
+  font: var(--sd-text-field-font);
+  letter-spacing: var(--sd-tracking-body);
+  caret-color: var(--sd-accent);
+  outline: var(--sd-focus-ring-width) solid transparent;
+  outline-offset: 2px;
+  transition:
+    outline-color var(--sd-duration-fast) var(--sd-ease-out),
+    outline-offset var(--sd-duration-fast) var(--sd-ease-out),
+    background-color var(--sd-duration-fast) var(--sd-ease-out),
+    box-shadow var(--sd-duration-fast) var(--sd-ease-out);
+}
+
+.sd-text-field {
+  display: block;
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  text-overflow: ellipsis;
+}
+
+.sd-text-field-group {
+  display: flex;
+  align-items: center;
+  gap: var(--sd-text-field-gap);
+  width: 100%;
+  cursor: text;
+}
+
+:is(.sd-text-field, .sd-text-field-group)[data-size="sm"] {
+  --sd-text-field-h: var(--sd-control-height-sm);
+  --sd-text-field-r: var(--sd-text-field-radius-sm);
+  --sd-text-field-pad: var(--sd-text-field-padding-sm);
+  font: var(--sd-text-field-font-sm);
+}
+
+:is(.sd-text-field, .sd-text-field-group)[data-size="lg"] {
+  --sd-text-field-h: var(--sd-control-height-lg);
+  --sd-text-field-r: var(--sd-text-field-radius-lg);
+  --sd-text-field-pad: var(--sd-text-field-padding-lg);
+  font: var(--sd-text-field-font-lg);
+}
+
+:is(.sd-text-field, .sd-text-field-group)[data-variant="bordered"] {
+  --sd-text-field-bg: var(--sd-bg-field);
+  --sd-text-field-edge: inset 0 0 0 var(--sd-hairline) var(--sd-control-border),
+    inset 0 0.5px 1px light-dark(rgb(0 0 0 / 0.07), rgb(0 0 0 / 0.2));
+}
+
+:is(.sd-text-field, .sd-text-field-group)[data-variant="filled"] {
+  --sd-text-field-bg: var(--sd-fill-tertiary);
+  --sd-text-field-edge: inset 0 0 0 0 transparent;
+}
+
+:is(.sd-text-field, .sd-text-field-group)[data-variant="plain"] {
+  --sd-text-field-bg: transparent;
+  --sd-text-field-edge: inset 0 0 0 0 transparent;
+  --sd-text-field-pad: 0px;
+}
+
+.sd-text-field::placeholder {
+  color: var(--sd-field-placeholder);
+  opacity: 1;
+}
+
+/* macOS draws the halo the moment a field starts editing, by mouse or keyboard. */
+.sd-text-field:focus,
+.sd-text-field-group:has(.sd-text-field:focus) {
+  outline-color: var(--sd-text-field-ring);
+  outline-offset: 0px;
+}
+
+.sd-text-field-group .sd-text-field:focus {
+  outline: none;
+}
+
+/* Invalid: the edge and the halo turn red, as on every Apple platform. */
+:is(.sd-text-field, .sd-text-field-group):is([data-invalid], [aria-invalid="true"]),
+.sd-text-field-group:has(.sd-text-field:is([data-invalid], [aria-invalid="true"])) {
+  --sd-text-field-edge: inset 0 0 0 1px var(--sd-destructive);
+  --sd-text-field-ring: color-mix(in oklch, var(--sd-destructive) 80%, transparent);
+}
+
+:is(.sd-text-field, .sd-text-field-group)[data-variant="plain"]:is([data-invalid], [aria-invalid="true"]),
+.sd-text-field-group[data-variant="plain"]:has(.sd-text-field:is([data-invalid], [aria-invalid="true"])) {
+  --sd-text-field-edge: inset 0 0 0 0 transparent;
+  color: var(--sd-destructive-text);
+}
+
+:is(.sd-text-field, .sd-text-field-group):is([data-disabled], :disabled) {
+  color: var(--sd-label-tertiary);
+  cursor: default;
+}
+
+:is(.sd-text-field, .sd-text-field-group):is([data-disabled], :disabled):not([data-variant="plain"]) {
+  --sd-text-field-bg: var(--sd-fill-quaternary);
+  --sd-text-field-edge: inset 0 0 0 var(--sd-hairline) var(--sd-separator);
+}
+
+/* Inside a group the input is only the text: the group draws the field around it. */
+.sd-text-field-group .sd-text-field {
+  flex: 1 1 auto;
+  width: auto;
+  height: 100%;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  outline: none;
+  transition: none;
+}
+
+.sd-text-field-adornment {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 4px;
+  color: var(--sd-label-secondary);
+  white-space: nowrap;
+  /* "https://" keeps its own direction in a right-to-left field. */
+  unicode-bidi: plaintext;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.sd-text-field-adornment :where(svg) {
+  width: var(--sd-text-field-icon);
+  height: var(--sd-text-field-icon);
+}
+
+/* The clear button is xmark.circle.fill: a tertiary glyph that grows a pointer target. */
+.sd-text-field-clear,
+.sd-search-field-clear {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--sd-text-field-icon);
+  height: var(--sd-text-field-icon);
+  margin: 0;
+  margin-inline-end: -2px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--sd-label-tertiary);
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    color var(--sd-duration-fast) var(--sd-ease-out),
+    scale var(--sd-spring-snappy-duration) var(--sd-spring-snappy),
+    opacity var(--sd-duration-fast) var(--sd-ease-out);
+}
+
+@starting-style {
+  .sd-text-field-clear,
+  .sd-search-field-clear {
+    scale: 0.5;
+    opacity: 0;
+  }
+}
+
+.sd-text-field-clear::after,
+.sd-search-field-clear::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: var(--sd-hit-target);
+  height: var(--sd-hit-target);
+  translate: -50% -50%;
+}
+
+.sd-text-field-clear :where(svg),
+.sd-search-field-clear :where(svg) {
+  width: 100%;
+  height: 100%;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .sd-text-field-clear:hover,
+  .sd-search-field-clear:hover {
+    color: var(--sd-label-secondary);
+  }
+}
+
+.sd-text-field-clear:active,
+.sd-search-field-clear:active {
+  color: var(--sd-label);
+  scale: 0.9;
+  transition-duration: 0ms;
+}
+
+.sd-text-field-clear:focus-visible,
+.sd-search-field-clear:focus-visible {
+  outline: 2px solid var(--sd-focus-ring);
+  outline-offset: 1px;
+}
+
+/* Touch: a plain field in a list row shows its caret, not a halo. */
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  :is(.sd-text-field, .sd-text-field-group)[data-variant="plain"]:focus,
+  .sd-text-field-group[data-variant="plain"]:has(.sd-text-field:focus) {
+    outline-color: transparent;
+  }
+}
+
+/*
+ * A filled field is a faint fill with no edge, as on iOS. Under Increase
+ * Contrast it gains an edge that holds 3:1 against the surface.
+ */
+@media (prefers-contrast: more) {
+  :where([data-platform="ios"], [data-platform="ipados"]) {
+    --sd-text-field-auto-edge: inset 0 0 0 1px var(--sd-control-border);
+  }
+
+  :is(.sd-text-field, .sd-text-field-group)[data-variant="filled"] {
+    --sd-text-field-edge: inset 0 0 0 1px var(--sd-control-border);
+  }
+}

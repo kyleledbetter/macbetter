@@ -1,0 +1,64 @@
+export const metadata = { title: "Command Palette", description: "Search for an app, a document or a command and run it from the keyboard." }
+
+# Command Palette
+
+<Lead>Search for an app, a document or a command and run it from the keyboard.</Lead>
+
+<Demo name="command-palette/basic" wallpaper height={300} />
+
+## When to use it
+
+A command palette is Spotlight for your app: one field that finds any command, page or document, and runs it without a mouse. It's for people who know what they want and would rather type than browse.
+
+- Make it an addition, never the only way to a command.
+- Group results by kind, put the best match first, and show each command's shortcut so people learn it.
+- Open it with ⌘K, and close it as soon as a command runs.
+
+## Usage
+
+```tsx
+import {
+  Command,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandPalette,
+  CommandPaletteContent,
+  CommandPaletteTrigger,
+} from "@dreambase/stardust/command-palette"
+```
+
+`CommandPalette` is a dialog. `CommandPaletteTrigger` is a search-field-shaped button that also listens for ⌘K, and `CommandPaletteContent` is the floating panel. Inside it, `Command` holds a `CommandInput`, which draws its own magnifier, and a `CommandList` of groups and items. Close the palette from `onAction`.
+
+### On its own
+
+`Command` also works inline, as a panel of its own, for a search page or a sidebar.
+
+<Demo name="command-palette/inline" wallpaper height={540} />
+
+## Platform behavior
+
+- **macOS**: a large translucent panel near the top of the screen, like Spotlight, with a 22-point search field, a hairline under it, and results whose highlighted row fills with the accent. Shortcuts sit at the trailing edge.
+- **iOS and iPadOS**: a rounded card with a capsule search field and 48-point rows. The highlight is gray, as touch highlights are. iOS hides shortcuts; iPadOS shows them.
+
+## Accessibility
+
+The palette is a modal dialog named by `title`, and focus starts in the search field. Arrow keys move the highlight while focus stays in the field, Enter runs the highlighted command, Escape clears the search and then closes the palette, and focus returns to the trigger. Result counts are announced after typing pauses.
+
+## API
+
+<PropsTable
+  rows={[
+    { name: "CommandPalette", type: "open, onOpenChange", description: "The dialog root." },
+    { name: "CommandPaletteTrigger", type: "shortcut", default: '"mod+k"', description: "Opens the palette. Shows the shortcut on the Mac and iPad." },
+    { name: "CommandPaletteContent", type: "title", default: '"Search"', description: "The panel. `title` names it for screen readers." },
+    { name: "Command", type: "onAction, filter, autoHighlight", description: "The search and its results." },
+    { name: "CommandInput", type: "input props", description: "The search field, with its magnifier." },
+    { name: "CommandItem", type: "value, label, keywords, shortcut, disabled", description: "A result. Put a CommandShortcut inside to show its keys." },
+    { name: "CommandItemIcon", type: "—", description: "A 22-point icon (28 on touch) before the label." },
+    { name: "CommandGroup, CommandGroupLabel, CommandSeparator", type: "—", description: "Organize results. Empty groups disappear." },
+    { name: "CommandEmpty, CommandStatus", type: "—", description: "What shows when nothing matches, and loading or error messages." },
+    { name: "--sd-command-width", type: "length", default: "680px", description: "The panel's width on the Mac." },
+    { name: "--sd-command-highlight", type: "color", default: "accent · gray", description: "The highlighted row's fill." },
+  ]}
+/>

@@ -1,0 +1,84 @@
+export const metadata = {
+  title: "Token Field",
+  description: "Enter people, tags or addresses as rounded tokens tinted with the accent, as in Mail's address fields.",
+}
+
+# Token Field
+
+<Lead>Enter a list of people, tags or addresses as tokens.</Lead>
+
+<Demo name="token-field/basic" />
+
+## When to use it
+
+Use a token field when each entry is a thing of its own: recipients in a message, tags on a board, email domains on an allow list. Each entry becomes a token that moves, selects and deletes as one piece, and the text around it stays editable.
+
+Type an entry and a comma, or press Return, and it becomes a token. Leaving the field does the same for what's left. Backspace after a token removes it.
+
+## Usage
+
+```tsx
+import { TokenField } from "@dreambase/stardust/token-field"
+```
+
+The value is an array of text and tokens. A token has a `type`, a `value` for your app and a `label` people read. Give the field a `name` and it submits the tokens as text.
+
+### Tags with remove buttons
+
+`removable` draws a remove button on each token, for touch screens and for people who don't think of Backspace. `createToken` turns typed text into a token, or returns `null` to leave it as text, which is where you'd check an email address or look up a person.
+
+<Demo name="token-field/tags" />
+
+For suggestions as people type, put a Trigger Menu from `@ui-sdk/react/trigger-menu` inside the field as a child.
+
+## Platform behavior
+
+- **macOS.** The bordered field with 12-point tokens on a soft accent tint with a hairline edge and 4-point corners. A selected token fills with the accent, like a selected row.
+- **iPadOS and iOS.** The filled gray field with 28-point capsule tokens and 16-point text.
+- **Every platform.** Tokens wrap onto new lines as the field fills, and the field grows with them.
+
+## Accessibility
+
+- The editor is a text box; each token reads as its label and kind, and inserting or removing one is announced.
+- Arrow keys cross a token in one press. Backspace and Delete remove the token beside the caret; Command-Z brings it back.
+- Name the field with a Field label or `aria-label`. Remove buttons are hidden from assistive technology, since Backspace does the same thing.
+
+## API
+
+### TokenField
+
+<PropsTable
+  rows={[
+    { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Minimum height and type size." },
+    { name: "variant", type: '"auto" | "bordered" | "filled"', default: '"auto"', description: "Bordered on macOS and filled on touch, or a fixed look." },
+    { name: "placeholder", type: "string", description: "Shown while the field is empty." },
+    { name: "tokenizeOn", type: "string[] | false", default: '[","]', description: "Characters that turn the text before them into a token. Return and leaving the field do too." },
+    { name: "createToken", type: "(text) => Token | null", description: "Makes a token from typed text, or leaves it as text." },
+    { name: "removable", type: "boolean", default: "false", description: "Draws a remove button on each token." },
+    { name: "renderToken", type: "(token) => ReactNode", description: "Your own token content, usually a TokenFieldToken." },
+    { name: "defaultValue", type: "TokenInputValue", description: "Text and tokens it starts with." },
+    { name: "onValueChange", type: "(value, details) => void", description: "Runs on typing, paste, undo or a token change." },
+    { name: "controller", type: "TokenInputController", description: "Inserts, updates and removes tokens from code." },
+    { name: "editorProps", type: "object", description: "More props for the element that draws the field." },
+  ]}
+/>
+
+`TokenFieldToken` and `TokenFieldTokenRemove` take the props of a `span`, for use inside `renderToken`.
+
+### Data attributes
+
+| Attribute | On | Values |
+| --- | --- | --- |
+| `data-size`, `data-variant` | Field | As above |
+| `data-empty` | Field | Present while it holds nothing |
+| `data-selected` | Token | Present while the token is selected |
+| `data-pending`, `data-unresolved` | Token | Loading, or needs the person's attention |
+| `data-token-type` | Token | The token's `type` |
+
+### CSS variables
+
+| Variable | macOS | iOS | What it sets |
+| --- | --- | --- | --- |
+| `--sd-token-field-token-height` | `18px` | `28px` | Token height |
+| `--sd-token-field-token-radius` | `4px` | Capsule | Token corners |
+| `--sd-token-field-tint` | Accent | Accent | What tokens are tinted with |

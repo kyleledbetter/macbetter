@@ -1,0 +1,102 @@
+export const metadata = {
+  title: "Device Frame",
+  description: "Present an iPhone or iPad layout inside a page.",
+}
+
+# Device Frame
+
+<Lead>Present an iPhone or iPad layout inside a page.</Lead>
+
+<Demo name="device-frame/iphone" platforms={["ios"]} wallpaper height={720} />
+
+## When to use it
+
+Use a device frame to show an iPhone or iPad layout on a page people read on a computer: a product tour, a design review, or a live preview beside a settings panel. The screen inside the frame switches to the iOS or iPadOS platform, so every Stardust component in it takes the touch metrics on its own.
+
+The frame is presentation, not emulation. It draws the hardware and publishes its safe areas; it doesn't rotate, scroll or respond to the home indicator. On a real phone, render your layout without a frame: the same safe-area tokens then read the device's own insets.
+
+To present a Mac app, use a [window](/docs/components/window).
+
+## Usage
+
+```tsx
+import { DeviceFrame } from "@dreambase/stardust/device-frame"
+```
+
+### iPhone
+
+The default is an iPhone 16: a 393 × 852 point screen with the Dynamic Island, status bar and home indicator. Its child fills the screen. Use `scale` to fit it into a column; `0.78` fits it into a 390 point preview.
+
+<Demo name="device-frame/iphone" platforms={["ios"]} wallpaper height={720} />
+
+### iPad
+
+Set `device="ipad"` for an 11-inch iPad Air, landscape by default. Its status bar shows the date beside the time. Set `orientation="portrait"` to turn it.
+
+<Demo name="device-frame/ipad" platforms={["ipados"]} wallpaper height={520} />
+
+### Safe areas
+
+The screen publishes how much of each edge the hardware covers, as the same `--sd-safe-*` tokens that read `env(safe-area-inset-*)` on a real device. Pad your content with them and it clears the status bar and home indicator both inside a frame and on a phone:
+
+```css
+.screen-header {
+  padding-top: calc(var(--sd-safe-top) + 8px);
+}
+
+.screen-footer {
+  padding-bottom: var(--sd-safe-bottom);
+}
+```
+
+Stardust's bars do this for you, and leave insets of their own for the content beneath them:
+
+| Variable | Set by | Read by |
+| --- | --- | --- |
+| `--sd-safe-top`, `--sd-safe-bottom`, `--sd-safe-left`, `--sd-safe-right` | `tokens.css` (from `env()`), overridden by the device frame's screen | Navigation bar, tab bar, sheets, your own layouts |
+| `--sd-content-inset-top` | `NavigationStack` | List section headers, which stick below the bar instead of under it |
+| `--sd-content-inset-bottom` | `TabBar` | Navigation stack and scrolling content, which leave room for the bar |
+
+The screen also sets `--sd-safe-area-top` and `--sd-safe-area-bottom` to the same values for code written before the shared tokens. Use `--sd-safe-*` in new code.
+
+## Platform behavior
+
+- **iPhone**: the screen nests `data-platform="ios"`. The top inset is 59 points (the status bar and Dynamic Island), the bottom 34 (the home indicator).
+- **iPad**: the screen nests `data-platform="ipados"`. The top inset is 24 points and the bottom 20.
+- The frame draws the same on every page platform, so an iPhone preview can sit inside a Mac page with the right type sizes, touch targets and controls.
+
+## Accessibility
+
+- The status bar, Dynamic Island and home indicator are hidden from assistive technology.
+- Give the frame `role="group"` and an `aria-label` such as "Mail on iPhone", so people know the content inside is a preview. It matters most when a page has several.
+- `scale` uses CSS `zoom`, so text inside stays crisp and hit targets scale with it.
+
+## API
+
+### DeviceFrame
+
+<PropsTable
+  rows={[
+    { name: "device", type: '"iphone" | "ipad"', default: '"iphone"', description: "Which device to draw. Its screen nests the iOS or iPadOS platform." },
+    { name: "orientation", type: '"portrait" | "landscape"', default: "portrait on iPhone, landscape on iPad", description: "The iPad's orientation. iPhone frames are portrait." },
+    { name: "scale", type: "number", default: "1", description: "Scales the whole device. 1 is actual size in points." },
+    { name: "time", type: "string", default: '"9:41"', description: "The status bar's clock." },
+    { name: "date", type: "string", default: '"Mon Jun 9"', description: "The date beside the clock on iPad." },
+    { name: "statusBar", type: "boolean", default: "true", description: "Shows the time, signal, Wi-Fi and battery." },
+    { name: "homeIndicator", type: "boolean", default: "true", description: "Shows the home indicator." },
+  ]}
+/>
+
+It also takes the props of a `div`.
+
+### Data attributes and CSS variables
+
+| Name | On | Description |
+| --- | --- | --- |
+| `data-device` | `.sd-device-frame` | `iphone` or `ipad`. |
+| `data-orientation` | `.sd-device-frame` | `portrait` or `landscape`. |
+| `--sd-device-scale` | `.sd-device-frame` | Set by `scale`. |
+| `--sd-device-screen-width`, `--sd-device-screen-height` | `.sd-device-frame` | The screen's size in points. Override both to draw another model. |
+| `--sd-device-screen-radius` | `.sd-device-frame` | The screen's corner radius. |
+| `--sd-device-safe-top`, `--sd-device-safe-bottom` | `.sd-device-frame` | The hardware insets the screen publishes. |
+| `--sd-safe-top`, `--sd-safe-bottom`, `--sd-safe-left`, `--sd-safe-right` | `.sd-device-frame-screen` | The shared safe-area tokens, set from the device. |

@@ -1,0 +1,140 @@
+export const metadata = {
+  title: "Toggle",
+  description: "A button that stays pressed until you press it again, alone or in a group.",
+}
+
+# Toggle
+
+<Lead>A button that stays pressed until you press it again, alone or in a group.</Lead>
+
+<Demo name="toggle/basic" />
+
+## When to use it
+
+Use a toggle for a button whose state is part of what it shows: Bold in a formatting bar, a sidebar button in a toolbar, a favorite star. It changes something right away, like a switch, but looks like a button because it lives among buttons.
+
+- Keep the label or icon the same in both states. The pressed fill says it's on; screen readers say "pressed".
+- Group toggles that belong together in a `ToggleGroup`. With `multiple`, several can be pressed, like Bold and Italic. Without it, one at a time, like text alignment.
+- For a setting in a list or form, use a [Switch](/docs/components/switch) or [Checkbox](/docs/components/checkbox). For switching views, use a [Segmented Control](/docs/components/segmented-control).
+
+## Usage
+
+```tsx
+import { Toggle, ToggleGroup, ToggleIcon } from "@dreambase/stardust/toggle"
+```
+
+Wrap icons in `ToggleIcon`, which hides them from screen readers. An icon-only toggle needs an `aria-label`.
+
+### Group
+
+A `ToggleGroup` has one tab stop, and the arrow keys move between its toggles. `variant="bezeled"` joins them into one raised control, like a "select any" segmented control on macOS.
+
+<Demo name="toggle/group" />
+
+### One at a time
+
+Leave out `multiple` and pressing one toggle releases the others. `deselectable={false}` keeps one pressed, which suits choices like text alignment that always have a value.
+
+<Demo name="toggle/single" />
+
+### In a toolbar
+
+The default `plain` variant is a toolbar button: no bezel until it's hovered or pressed. `tone="accent"` tints the pressed icon with the accent, as Xcode's panel buttons do.
+
+<Demo name="toggle/toolbar" />
+
+### With a label
+
+Put text after the icon. Bare text is wrapped for you, so the toggle gets the right padding.
+
+<Demo name="toggle/label" />
+
+### Sizes
+
+`size` is `sm`, `md` or `lg`. Set it on a group to size every toggle inside.
+
+<Demo name="toggle/sizes" />
+
+### Controlled
+
+Pass `pressed` and `onPressedChange` to keep the state yourself. In a group, use the group's `value` and `onValueChange`, which list the pressed toggles' values.
+
+<Demo name="toggle/controlled" />
+
+## Platform behavior
+
+- **macOS.** Toolbar-style: a pressed toggle sinks into a gray fill, and its icon turns from secondary to primary label color. Bezeled toggles look like push buttons and darken when on, with an inner shadow. A bezeled group draws hairline dividers between toggles.
+- **iPadOS and iOS.** Capsules, and a pressed toggle is tinted with the accent: an accent-colored label on a light accent fill, in semibold. A bezeled group becomes a gray capsule with tinted capsules inside. Presses give a small, springy scale.
+- **Every platform.** Toggles smaller than the touch minimum still answer presses across the full target.
+
+## Accessibility
+
+- Renders a native button with `aria-pressed`. Enter and Space press it.
+- A group follows the toolbar keyboard pattern: Tab enters on the pressed toggle (or the first), the arrow keys move, Home and End jump to the ends. It has the `group` role, so name it with `aria-label`.
+- Inside a group, a disabled toggle stays focusable with `aria-disabled`, so arrow keys still reach it.
+- The pressed state is a fill, not only a color, and pressed text keeps 4.5:1 contrast on its tint.
+- Bezeled edges are as soft as AppKit's; with Increase Contrast on (`prefers-contrast: more`) they darken to 3:1.
+
+## API
+
+### Toggle
+
+<PropsTable
+  rows={[
+    { name: "variant", type: '"plain" | "bezeled"', default: '"plain"', description: "A toolbar button, or a push-on/push-off button. In a group, the group's." },
+    { name: "tone", type: '"neutral" | "accent"', default: '"neutral"', description: "accent tints the pressed content on macOS. Touch always tints." },
+    { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "In a group, the group's." },
+    { name: "pressed", type: "boolean", description: "Whether it's pressed. Pass it to control the toggle." },
+    { name: "defaultPressed", type: "boolean", default: "false", description: "Whether it's pressed at first." },
+    { name: "onPressedChange", type: "(pressed, details) => void", description: "Runs when a press wants to change it." },
+    { name: "value", type: "string", description: "Identifies the toggle inside a group." },
+    { name: "disabled", type: "boolean", default: "false", description: "Stops presses." },
+  ]}
+/>
+
+### ToggleGroup
+
+<PropsTable
+  rows={[
+    { name: "variant", type: '"plain" | "bezeled"', default: '"plain"', description: "Separate toolbar buttons, or one joined control." },
+    { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Sizes every toggle inside." },
+    { name: "value", type: "string[]", description: "The pressed toggles' values. Pass it to control the group." },
+    { name: "defaultValue", type: "string[]", description: "The toggles pressed at first." },
+    { name: "onValueChange", type: "(value, details) => void", description: "Runs when a toggle wants to change." },
+    { name: "multiple", type: "boolean", default: "false", description: "Lets several toggles stay pressed." },
+    { name: "deselectable", type: "boolean", default: "true", description: "With false, one toggle stays pressed once any is." },
+    { name: "orientation", type: '"horizontal" | "vertical"', default: '"horizontal"', description: "Which arrow keys move between toggles." },
+    { name: "disabled", type: "boolean", default: "false", description: "Disables every toggle." },
+  ]}
+/>
+
+### ToggleIcon
+
+<PropsTable
+  rows={[{ name: "mirror", type: "boolean", default: "false", description: "Flips the icon in right-to-left text, for icons that point a way." }]}
+/>
+
+### Data attributes
+
+| Attribute | On | Values |
+| --- | --- | --- |
+| `data-variant` | Toggle, ToggleGroup | `plain`, `bezeled` |
+| `data-tone` | Toggle | `neutral`, `accent` |
+| `data-size` | Toggle, ToggleGroup | `sm`, `md`, `lg` |
+| `data-pressed` | Toggle | Present while pressed |
+| `data-has-icon` | Toggle | Present when it holds a `ToggleIcon` |
+| `data-orientation` | ToggleGroup | `horizontal`, `vertical` |
+| `data-disabled` | Both | Present when disabled |
+
+### CSS variables
+
+Set these on a toggle or a group.
+
+| Variable | Default | What it sets |
+| --- | --- | --- |
+| `--sd-toggle-height` | `--sd-control-height` | Height, and the width of an icon-only toggle |
+| `--sd-toggle-padding` | `--sd-control-padding` | Inline padding of a labeled toggle |
+| `--sd-toggle-radius` | `--sd-control-radius` | Corner radius |
+| `--sd-toggle-bg-pressed` | Per platform | The pressed fill |
+| `--sd-toggle-fg-pressed` | Per platform | The pressed label and icon color |
+| `--sd-toggle-edge` | A soft ink hairline | The edge of a bezeled toggle or group |

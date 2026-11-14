@@ -1,0 +1,67 @@
+/* Tooltip — the macOS help tag: small, quiet, no arrow, a beat after the pointer rests. */
+
+:where(:root, [data-platform="macos"]) {
+  --sd-tooltip-font: 400 11px/14px var(--sd-font);
+  --sd-tooltip-padding: 3px 7px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --sd-tooltip-font: 400 13px/18px var(--sd-font);
+  --sd-tooltip-padding: 5px 9px;
+}
+
+.sd-tooltip {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  max-width: min(280px, var(--available-width, 100vw));
+  margin: 0;
+  padding: var(--sd-tooltip-padding);
+  overflow: visible;
+  border: var(--sd-hairline) solid var(--sd-glass-border);
+  border-radius: var(--sd-radius-sm);
+  background: var(--sd-material-thick);
+  -webkit-backdrop-filter: var(--sd-material-filter);
+  backdrop-filter: var(--sd-material-filter);
+  background-clip: padding-box;
+  box-shadow: var(--sd-glass-rim), var(--sd-shadow-2);
+  color: var(--sd-label);
+  font: var(--sd-tooltip-font);
+  letter-spacing: var(--sd-tracking-caption);
+  text-wrap: pretty;
+  pointer-events: none;
+  transform-origin: var(--transform-origin);
+  transition:
+    opacity var(--sd-duration-fast) var(--sd-ease-out),
+    scale var(--sd-duration-fast) var(--sd-ease-out);
+}
+
+.sd-tooltip:is([data-starting-style], [data-ending-style]) {
+  opacity: 0;
+  scale: 0.97;
+}
+
+.sd-tooltip[data-ending-style] {
+  transition-duration: var(--sd-duration-instant);
+}
+
+/* Moving along a toolbar, the next tag replaces the last without animating. */
+.sd-tooltip[data-instant] {
+  transition: none;
+}
+
+.sd-tooltip-shortcut {
+  color: var(--sd-label-secondary);
+  font-feature-settings: "tnum";
+  white-space: nowrap;
+}
+
+.sd-tooltip-shortcut:empty {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sd-tooltip:is([data-starting-style], [data-ending-style]) {
+    scale: none;
+  }
+}

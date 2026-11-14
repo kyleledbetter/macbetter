@@ -1,0 +1,106 @@
+export const metadata = {
+  title: "Segmented Control",
+  description: "Choose one of a few closely related options, or switch between views.",
+}
+
+# Segmented Control
+
+<Lead>Choose one of a few closely related options, or switch between views.</Lead>
+
+<Demo name="segmented-control/basic" />
+
+## When to use it
+
+Use a segmented control to pick one option from two to five, when every option fits on screen at once: a calendar's Day, Week, Month and Year, or Finder's view modes. The choice should change what's shown right away.
+
+- Keep labels short and of similar length, all text or all icons. Mixing the two in one control is hard to scan.
+- For more than five options, use a [Pop-Up Button](/docs/components/select). For settings in a form, use [Radio](/docs/components/radio) buttons. For navigating between unrelated sections, use [Tabs](/docs/components/tabs).
+
+## Usage
+
+```tsx
+import { SegmentedControl, SegmentedControlItem } from "@dreambase/stardust/segmented-control"
+```
+
+### With icons
+
+Give an icon-only item an `aria-label`. An icon beside text is hidden from screen readers.
+
+<Demo name="segmented-control/icons" />
+
+### Block
+
+`block` stretches the control across its container and makes every segment the same width, like the control under an iOS navigation bar.
+
+<Demo name="segmented-control/block" platforms={["ios", "ipados", "macos"]} />
+
+### Sizes
+
+`size` is `sm`, `md` or `lg`, from the platform's control heights.
+
+<Demo name="segmented-control/sizes" />
+
+### Controlled
+
+Pass `value` and `onValueChange` to keep the choice in your state. The value is `null` only when nothing is checked.
+
+<Demo name="segmented-control/controlled" />
+
+## Platform behavior
+
+- **macOS.** A recessed rounded rectangle with a raised, white pill behind the choice (a lighter fill in dark mode). Hovering an unchosen segment shows a faint fill.
+- **iPadOS and iOS.** A capsule with a capsule pill, sized like UIKit's: 32 points tall with 13-point text (28 and 40 for `sm` and `lg`). Each segment still answers touches across a 44-point height. The pill gives a little under the finger before it slides.
+- **Every platform.** The pill slides to the new choice on a snappy spring. The chosen label turns semibold, so the selection reads without color.
+- **Increase Contrast.** The track and the pill get 3:1 edges, as they do in macOS and iOS with Increase Contrast on.
+
+## Accessibility
+
+- A segmented control is a radio group: one tab stop, and the arrow keys move and check. Space checks the focused item; Enter submits its form.
+- Name the control with `aria-label` or `aria-labelledby`, and every icon-only item with `aria-label`.
+- The sliding pill is presentational; screen readers hear the checked radio.
+
+## API
+
+### SegmentedControl
+
+<PropsTable
+  rows={[
+    { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Height and type size." },
+    { name: "block", type: "boolean", default: "false", description: "Fills the container with equal-width segments." },
+    { name: "value", type: "string | null", description: "The checked item's value. Pass it to control the control." },
+    { name: "defaultValue", type: "string | null", description: "The checked item at first, when uncontrolled." },
+    { name: "onValueChange", type: "(value, details) => void", description: "Runs when the choice wants to change." },
+    { name: "disabled", type: "boolean", default: "false", description: "Disables every item." },
+    { name: "orientation", type: '"horizontal" | "vertical"', default: '"horizontal"', description: "Which way the items run." },
+    { name: "name", type: "string", description: "The name the value submits under." },
+  ]}
+/>
+
+### SegmentedControlItem
+
+<PropsTable
+  rows={[
+    { name: "value", type: "string", description: "What the value becomes when this item is checked." },
+    { name: "disabled", type: "boolean", default: "false", description: "Skips the item." },
+  ]}
+/>
+
+### Data attributes
+
+| Attribute | On | Values |
+| --- | --- | --- |
+| `data-size` | SegmentedControl | `sm`, `md`, `lg` |
+| `data-block` | SegmentedControl | Present when `block` is set |
+| `data-orientation` | SegmentedControl, indicator | `horizontal`, `vertical` |
+| `data-checked` / `data-unchecked` | SegmentedControlItem | The item's state |
+| `data-disabled` | Both | Present when disabled |
+
+### CSS variables
+
+| Variable | Default | What it sets |
+| --- | --- | --- |
+| `--sd-segmented-height` | 28px on macOS, 32pt on touch (per `size`) | Height of the control |
+| `--sd-segmented-padding` | `--sd-control-padding` on macOS, `14px` on touch | Inline padding of each segment |
+| `--sd-segmented-icon-size` | `--sd-icon-size` on macOS, `18px` on touch | Size of icons in segments |
+| `--sd-segmented-inset` | `2px` | Space between the track and the pill |
+| `--sd-segmented-radius` | `--sd-control-radius` | Corner radius of the track |

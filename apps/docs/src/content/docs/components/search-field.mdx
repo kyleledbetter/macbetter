@@ -1,0 +1,74 @@
+export const metadata = {
+  title: "Search Field",
+  description: "Search a list, a board or the whole app with Apple's search field: magnifier, prompt and clear button.",
+}
+
+# Search Field
+
+<Lead>Search a list, a board or the whole app.</Lead>
+
+<Demo name="search-field/basic" />
+
+## When to use it
+
+Use a search field when typing narrows what's on screen or finds something in the app. On macOS, put it at the trailing end of the toolbar; on iOS, at the top of the list it searches. Keep the prompt short: "Search" or "Search Datasets", never a sentence.
+
+Filter as people type when the results are local and fast. When a search costs a request, run it on Return and keep the results where they are until then.
+
+## Usage
+
+```tsx
+import { SearchField } from "@dreambase/stardust/search-field"
+```
+
+`SearchField` renders the magnifier, a native `type="search"` input and a clear button. Props go to the input: `value`, `onValueChange`, `placeholder` (`"Search"` by default) and `name`. `groupClassName` styles the field's box.
+
+### Sizes
+
+`sm` fits a dense toolbar or a table's filter row, `lg` a page whose main job is search.
+
+<Demo name="search-field/sizes" />
+
+## Platform behavior
+
+- **macOS.** A rounded rectangle on the field background with a hairline edge, 28 points tall at `md`. The accent halo shows while it's focused.
+- **iPadOS and iOS.** A gray capsule, 36 points tall, with a 16-point magnifier and 17-point text, as in a navigation bar's search.
+- **Every platform.** The clear button appears with a small spring once there's text, and the browser's own cancel button is hidden so there's only one.
+
+## Accessibility
+
+- The input has the `searchbox` role and asks touch keyboards for a Search key.
+- Give it an `aria-label` that says what it searches, like "Search boards". The clear button is named "Clear search"; change it with `clearLabel`.
+- Clearing returns focus to the input.
+
+## API
+
+### SearchField
+
+<PropsTable
+  rows={[
+    { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Height and type size." },
+    { name: "placeholder", type: "string", default: '"Search"', description: "The prompt." },
+    { name: "clearLabel", type: "string", default: '"Clear search"', description: "The clear button's name." },
+    { name: "groupClassName", type: "string", description: "A class for the box that holds the glyph, input and clear button." },
+    { name: "value", type: "string", description: "The query, for a controlled field." },
+    { name: "onValueChange", type: "(value, details) => void", description: "Runs on typing and on a clear press (reason clear-press)." },
+  ]}
+/>
+
+### Data attributes
+
+| Attribute | On | Values |
+| --- | --- | --- |
+| `data-size` | `.sd-search-field` | `sm`, `md`, `lg` |
+| `data-filled` | Box, input, clear | Present while there's a query |
+| `data-disabled` | Box | Present when disabled |
+
+### CSS variables
+
+| Variable | macOS | iOS | What it sets |
+| --- | --- | --- | --- |
+| `--sd-search-field-height` | `28px` | `36px` | Height at `md` |
+| `--sd-search-field-radius` | `6px` | Capsule | Corner radius |
+| `--sd-search-field-bg` | Field white | Tertiary fill | Background |
+| `--sd-search-field-glyph` | `13px` | `16px` | Magnifier size |

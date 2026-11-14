@@ -1,0 +1,103 @@
+export const metadata = {
+  title: "Outline",
+  description: "Browse a hierarchy in rows that expand, like Finder's list view.",
+}
+
+# Outline
+
+<Lead>Browse a hierarchy in rows that expand, like Finder's list view.</Lead>
+
+<Demo name="outline/files" />
+
+## When to use it
+
+Use an outline when items nest: folders and files, groups and their members, sections of a document. Each branch has a disclosure triangle that turns to show its children, and the rows stay in one column so people can scan them.
+
+- Keep a leading icon for each row so folders and files are told apart at a glance.
+- Put a short detail, like a size or an item count, at the trailing edge.
+- Use a [Table](/docs/components/table) when people compare several attributes of flat items, and a [Disclosure](/docs/components/disclosure) to hide a few sections of content.
+
+## Usage
+
+```tsx
+import {
+  Outline,
+  OutlineGroup,
+  OutlineItem,
+  OutlineItemDetail,
+  OutlineItemIcon,
+  OutlineItemLabel,
+  OutlineItemText,
+} from "@dreambase/stardust/outline"
+```
+
+An `OutlineItem` with an `OutlineGroup` inside it is a branch. `OutlineItemLabel` is the row, and draws the disclosure triangle for you; leaves keep its space so their icons line up under their parent's.
+
+### Indentation guides
+
+Guides are off by default, as in Finder. Turn them on with `guides` to draw a hairline down each open branch, which helps in a deep tree.
+
+<Demo name="outline/guides" />
+
+### Selection and actions
+
+Selection is single by default, and it follows the arrow keys as in Finder; pass `activation="manual"` to move focus without selecting until Enter or Space. `mode="multiple"` allows Command-click and Shift-click ranges. `onAction` runs when a row is pressed or Enter is pressed on it, like opening a file. Set `expandOnPress={false}` so a click selects a folder without opening it, leaving that to the triangle and the arrows.
+
+## Platform behavior
+
+- **macOS.** 24-point rows with 13-point text, a 16-point indent per level and a small chevron for the triangle. The selection is the accent while the outline has focus and turns gray when focus leaves, as in Finder. Adjacent selected rows join into one block.
+- **iOS and iPadOS.** 44-point rows with 17-point text, a 20-point indent, and a pressed state on rows. The disclosure chevron sits at the trailing edge in the accent color and turns down when open, as UIKit's outline disclosure does. Consider a [List](/docs/components/list) that navigates into each folder on iPhone, where nesting is hard to read.
+- In right-to-left layouts the rows, indent and triangle mirror: a closed triangle points left and turns down when open.
+- The triangle turns with the system's snappy spring, and a branch's rows slide open as its height animates. Reduced motion skips the slide.
+
+## Accessibility
+
+The outline is a WAI-ARIA tree, from ui-sdk. It has one tab stop.
+
+| Key | Action |
+| --- | --- |
+| Down / Up Arrow | Move to the next or previous visible row and select it. |
+| Right Arrow | Expand a branch, or move into its first child. |
+| Left Arrow | Collapse a branch, or move to its parent. |
+| Option+Right / Option+Left | Expand or collapse a branch and everything in it. |
+| Home / End | Move to the first or last visible row. |
+| Enter | Run `onAction` on the row. |
+| Typing | Move to the next row whose label starts with the text. |
+
+Give the outline a name with `aria-label`. Icons are `aria-hidden`, so a row is named by its text and detail. Pass `label` to an item when its text isn't plain, so typing finds it.
+
+## API
+
+### Outline
+
+Takes every prop of ui-sdk's [Tree](https://ui-sdk.dev/docs/react/components/tree), including `mode`, `value`, `defaultValue`, `expanded`, `defaultExpanded`, `onAction` and `expandOnPress`, plus:
+
+<PropsTable
+  rows={[
+    { name: "guides", type: "boolean", default: "false", description: "Draws a hairline down each open branch." },
+    { name: "activation", type: '"automatic" | "manual"', default: '"automatic"', description: "Whether the arrow keys select as they move, in single selection." },
+  ]}
+/>
+
+### OutlineItem
+
+<PropsTable
+  rows={[
+    { name: "value", type: "string", description: "Identifies the item. Unique in the outline." },
+    { name: "label", type: "string", description: "The text typing matches, when the row's text isn't plain." },
+    { name: "branch", type: "boolean", description: "Makes it a branch whose children load later. Set for you when it holds an OutlineGroup." },
+    { name: "disabled", type: "boolean", default: "false", description: "Stops it from being selected or expanded." },
+  ]}
+/>
+
+`OutlineItemLabel`, `OutlineGroup`, `OutlineItemIcon`, `OutlineItemText` and `OutlineItemDetail` take the props of the element they render.
+
+### Data attributes and CSS variables
+
+| Attribute or variable | On | Meaning |
+| --- | --- | --- |
+| `data-guides` | `.sd-outline` | Indentation guides are on. |
+| `data-selected`, `data-expanded`, `data-branch`, `data-disabled` | `.sd-outline-row` | The row's state, from ui-sdk. |
+| `--sd-outline-row-height`, `--sd-outline-indent` | platform | Row height and the indent per level. |
+| `--sd-outline-icon-color` | `.sd-outline` | The icons' color. Defaults to the accent. |
+| `--sd-outline-indicator-order`, `--sd-outline-indicator-color` | platform | `0` leads the row with the triangle (macOS), `1` trails it (iOS); and its color. |

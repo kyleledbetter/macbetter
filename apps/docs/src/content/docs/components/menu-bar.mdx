@@ -1,0 +1,47 @@
+export const metadata = { title: "Menu Bar", description: "Every command in your app, in menus along the top of the screen." }
+
+# Menu Bar
+
+<Lead>Every command in your app, in menus along the top of the screen.</Lead>
+
+<Demo name="menu-bar/basic" wallpaper fill height={380} platforms={["macos", "ipados"]} />
+
+## When to use it
+
+The menu bar is where people look for any command on the Mac, so every action your app offers should be reachable from it. Use it for a full desktop app; a single page or a phone layout doesn't need one.
+
+- Start with the app menu, titled with the app's name, then File, Edit, View, any app-specific menus, Window and Help, in that order.
+- Keep the menus and their items stable. Disable an item that doesn't apply instead of hiding it.
+- Give every frequently used command a keyboard shortcut and follow the standard ones (⌘N, ⌘S, ⌘Z).
+
+## Usage
+
+```tsx
+import { MenuBar, MenuBarContent, MenuBarTrigger } from "@dreambase/stardust/menu-bar"
+import { Menu, MenuItem } from "@dreambase/stardust/menu"
+```
+
+Put one `Menu` per title inside `MenuBar`, with a `MenuBarTrigger` and a `MenuBarContent`. Mark the app menu's trigger `app` to set it in bold. The items are the [Menu](/docs/components/menu) parts.
+
+## Platform behavior
+
+- **macOS**: a 24-point translucent bar with 13-point titles. The open title gets a rounded fill, and its menu hangs straight from the bar without scaling. With one menu open, moving the pointer across the bar opens each menu in turn.
+- **iPadOS**: the menu bar people pull down from the top of the screen, with taller titles, capsule highlights and iPad-sized menus.
+- **iOS**: there's no menu bar. Put the commands in toolbars and pull-down buttons.
+
+## Accessibility
+
+The bar is one tab stop with `role="menubar"`; name it with `aria-label`. Left and Right move between titles, Down or Enter opens a menu, Left and Right in an open menu move to the next one, and Escape closes it and returns focus to its title.
+
+## API
+
+<PropsTable
+  rows={[
+    { name: "MenuBar", type: "orientation, loop, disabled, modal", description: "The bar. Takes the ui-sdk Menubar's props." },
+    { name: "MenuBarTrigger", type: "app?: boolean", description: "A title. `app` sets the application menu's title in bold." },
+    { name: "MenuBarContent", type: "sideOffset", default: "3", description: "A menu that hangs from the bar." },
+    { name: "data-open", type: "bar and title", description: "On the bar while any menu is open, and on the open title." },
+    { name: "--sd-menu-bar-height", type: "length", default: "24px · 44px", description: "Mac · iPad." },
+    { name: "--sd-menu-bar-radius", type: "length", default: "4px · capsule", description: "The open title's fill." },
+  ]}
+/>

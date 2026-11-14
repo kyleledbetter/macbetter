@@ -1,0 +1,121 @@
+export const metadata = {
+  title: "Checkbox",
+  description: "Turn an option on or off, or choose several from a list.",
+}
+
+# Checkbox
+
+<Lead>Turn an option on or off, or choose several from a list.</Lead>
+
+<Demo name="checkbox/basic" />
+
+## When to use it
+
+Use a checkbox for an option that's either on or off, especially in a window or form whose changes apply together, and for choosing any number of items from a list. Use a [Switch](/docs/components/switch) for a setting that takes effect the moment it changes, and [Radio](/docs/components/radio) buttons when only one choice is allowed.
+
+- Write the title so that checked means yes: "Show hidden files", not "Hide hidden files".
+- Use the mixed state only for a parent that summarizes a group, like "Select all".
+- On iOS and iPadOS, checkboxes appear as selection circles, as in Reminders and Mail. Most iOS settings are switches instead.
+
+## Usage
+
+```tsx
+import { Checkbox, CheckboxGroup } from "@dreambase/stardust/checkbox"
+```
+
+Pass the title as children and the checkbox and its text become one label: clicking the text toggles the box. Without children it renders the box alone, for a table cell or a [Field](/docs/components/field).
+
+### Description
+
+`description` adds a line of secondary text under the title. It's part of the label.
+
+<Demo name="checkbox/description" />
+
+### Group
+
+`CheckboxGroup` keeps one list of checked values. Give each checkbox a `value` and name the group.
+
+<Demo name="checkbox/group" />
+
+### Select all
+
+A checkbox with `parent` checks or unchecks the whole group, and shows the mixed state when only some are checked. Pass `allValues` so it renders right on the server.
+
+<Demo name="checkbox/parent" />
+
+### Disabled
+
+<Demo name="checkbox/disabled" />
+
+### Controlled
+
+Pass `checked` and `onCheckedChange`. The value is `true`, `false` or `"indeterminate"`.
+
+<Demo name="checkbox/controlled" />
+
+## Platform behavior
+
+- **macOS.** A 14-point rounded square with a hairline edge. Checked, it fills with the accent and a checkmark draws itself in, stroke first. Mixed shows a dash.
+- **iPadOS and iOS.** iOS has no square checkbox, so Stardust draws the 22-point selection circle: an outlined ring that fills with the accent and a checkmark, with a small pop. Titles use 17-point body text and the rows space out for touch.
+- **Every platform.** The checkmark uses the theme's on-accent color, so it reads on any accent. The hit area extends to the platform minimum.
+
+## Accessibility
+
+- Renders a button with the `checkbox` role and `aria-checked` (`mixed` for indeterminate), plus a hidden native checkbox for forms.
+- Space toggles it. Its title, or `aria-label` without one, names it; the description is part of the label.
+- A parent checkbox points at the boxes it controls with `aria-controls`.
+- Checked is shown by a fill and a mark, not color alone.
+
+## API
+
+### Checkbox
+
+<PropsTable
+  rows={[
+    { name: "children", type: "ReactNode", description: "The title. With it, the box and the text form one label." },
+    { name: "description", type: "ReactNode", description: "Secondary text under the title." },
+    { name: "checked", type: 'boolean | "indeterminate"', description: "The state. Pass it to control the checkbox." },
+    { name: "defaultChecked", type: 'boolean | "indeterminate"', default: "false", description: "The state at first, when uncontrolled." },
+    { name: "onCheckedChange", type: "(checked, details) => void", description: "Runs when it wants to change." },
+    { name: "value", type: "string", description: "What it submits, and its value inside a group." },
+    { name: "parent", type: "boolean", default: "false", description: "Checks or unchecks every checkbox in its group." },
+    { name: "disabled", type: "boolean", default: "false", description: "Can't be focused or changed." },
+    { name: "readOnly", type: "boolean", default: "false", description: "Focusable and submitted, but doesn't change." },
+    { name: "required", type: "boolean", default: "false", description: "Blocks form submission until it's checked." },
+    { name: "name", type: "string", description: "The name it submits under." },
+  ]}
+/>
+
+### CheckboxGroup
+
+<PropsTable
+  rows={[
+    { name: "value", type: "string[]", description: "The checked values. Pass it to control the group." },
+    { name: "defaultValue", type: "string[]", description: "The values checked at first." },
+    { name: "onValueChange", type: "(value, details) => void", description: "Runs when the checked values want to change." },
+    { name: "allValues", type: "string[]", description: "Every value a parent checkbox checks." },
+    { name: "disabled", type: "boolean", default: "false", description: "Disables every checkbox." },
+    { name: "name", type: "string", description: "The name every checkbox submits under." },
+  ]}
+/>
+
+`CheckboxIndicator` is exported too, for a checkbox you compose yourself; it draws the checkmark and the dash.
+
+### Data attributes
+
+| Attribute | On | Values |
+| --- | --- | --- |
+| `data-checked` / `data-unchecked` | Checkbox, indicator | The state |
+| `data-indeterminate` | Checkbox, indicator | Present while mixed |
+| `data-disabled`, `data-readonly`, `data-required` | Checkbox | Present in those states |
+| `data-starting-style`, `data-ending-style` | Indicator | Present while the mark animates in or out |
+
+### CSS variables
+
+| Variable | macOS | iOS | What it sets |
+| --- | --- | --- | --- |
+| `--sd-checkbox-size` | `14px` | `22px` | The box |
+| `--sd-checkbox-radius` | `3.5px` | Full | Its corners |
+| `--sd-checkbox-stroke` | `2.1` | `1.7` | Checkmark weight, in a 16-unit box |
+| `--sd-checkbox-label-gap` | `6px` | `12px` | Between the box and its title |
+| `--sd-checkbox-group-gap` | `6px` | `16px` | Between checkboxes in a group |

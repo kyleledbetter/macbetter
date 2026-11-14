@@ -1,0 +1,404 @@
+/*
+ * Toast — Apple notifications. macOS: cards that slide in at the top right
+ * and stack. iOS and iPadOS: banners that drop from the top and swipe up.
+ * ui-sdk measures the stack (--toast-*); this file lays it out.
+ */
+
+:where(:root, [data-platform="macos"]) {
+  --sd-toast-width: 344px;
+  --sd-toast-radius: var(--sd-popup-radius);
+  --sd-toast-padding: 12px;
+  --sd-toast-icon-size: 32px;
+  --sd-toast-title-font: 600 13px/16px var(--sd-font);
+  --sd-toast-body-font: 400 13px/16px var(--sd-font);
+  --sd-toast-time-font: 400 11px/16px var(--sd-font);
+  --sd-toast-inset: 12px;
+  --sd-toast-gap: 8px;
+  --sd-toast-peek: 8px;
+  /* Cards slide in sideways, from the edge the stack is aligned to. */
+  --sd-toast-slide: 1;
+  --sd-toast-enter-y: 0px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --sd-toast-width: 400px;
+  --sd-toast-radius: var(--sd-radius-2xl);
+  --sd-toast-padding: 14px;
+  --sd-toast-icon-size: 38px;
+  --sd-toast-title-font: 600 15px/20px var(--sd-font);
+  --sd-toast-body-font: 400 15px/20px var(--sd-font);
+  --sd-toast-time-font: 400 13px/20px var(--sd-font);
+  --sd-toast-inset: 8px;
+  --sd-toast-gap: 8px;
+  --sd-toast-peek: 9px;
+  /* Banners drop from above the top edge. */
+  --sd-toast-slide: 0;
+  --sd-toast-enter-y: calc(-100% - var(--sd-toast-inset) - 40px);
+}
+
+/*
+ * The region is a popover in the top layer; undo the UA's centered box.
+ * --sd-toaster-* are the screen's distances from the viewport edges: zero
+ * normally, a nested preview's box when Toaster is mounted inside one.
+ */
+.sd-toaster {
+  position: fixed;
+  inset: auto;
+  inset-block-start: calc(var(--sd-toaster-top, 0px) + var(--sd-toast-inset) + env(safe-area-inset-top));
+  width: min(var(--sd-toast-width), calc(var(--sd-toaster-screen-width, 100vw) - var(--sd-toast-inset) * 2));
+  height: var(--toast-front-height, 0px);
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  background: transparent;
+  color: var(--sd-label);
+  transition: height var(--sd-spring-smooth-duration) var(--sd-spring-smooth);
+}
+
+.sd-toaster[data-side="bottom"] {
+  inset-block: auto calc(var(--sd-toaster-bottom, 0px) + var(--sd-toast-inset) + env(safe-area-inset-bottom));
+}
+
+.sd-toaster[data-align="end"] {
+  inset-inline-end: calc(var(--sd-toaster-inline-end, 0px) + var(--sd-toast-inset));
+}
+
+.sd-toaster[data-align="start"] {
+  inset-inline-start: calc(var(--sd-toaster-inline-start, 0px) + var(--sd-toast-inset));
+}
+
+.sd-toaster[data-align="center"] {
+  inset-inline: var(--sd-toaster-inline-start, 0px) var(--sd-toaster-inline-end, 0px);
+  margin-inline: auto;
+  translate: none;
+}
+
+/* Which way "the edge" is: end is right in left-to-right, left in right-to-left. */
+.sd-toaster[data-align="end"] {
+  --sd-toast-enter-dir: 1;
+}
+
+.sd-toaster[data-align="start"] {
+  --sd-toast-enter-dir: -1;
+}
+
+/* Not :dir(rtl): the CSS build rewrites it as a :lang() list, which misses dir="rtl". */
+:where([dir="rtl"]) .sd-toaster[data-align="end"] {
+  --sd-toast-enter-dir: -1;
+}
+
+:where([dir="rtl"]) .sd-toaster[data-align="start"] {
+  --sd-toast-enter-dir: 1;
+}
+
+.sd-toaster[data-expanded] {
+  height: calc(var(--toast-stack-height, 0px) + (var(--toast-count, 1) - 1) * var(--sd-toast-gap));
+}
+
+/* ui-sdk wraps the toasts in a list. */
+.sd-toaster > :where(ol, ul) {
+  position: relative;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sd-toast {
+  --sd-toast-enter-x: calc(var(--sd-toast-slide) * var(--sd-toast-enter-dir, 0) * (100% + var(--sd-toast-inset) + 24px));
+  --sd-toast-y: calc(var(--toast-index, 0) * var(--sd-toast-peek));
+
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  z-index: calc(100 - var(--toast-index, 0));
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 10px;
+  height: var(--toast-height);
+  padding: var(--sd-toast-padding);
+  overflow: hidden;
+  border-radius: var(--sd-toast-radius);
+  background: var(--sd-material-thick);
+  -webkit-backdrop-filter: var(--sd-material-filter);
+  backdrop-filter: var(--sd-material-filter);
+  box-shadow: var(--sd-glass-rim), 0 0 0 var(--sd-hairline) var(--sd-glass-border), var(--sd-shadow-3);
+  color: var(--sd-label);
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: default;
+  transform-origin: 50% 100%;
+  translate: var(--toast-swipe-x, 0px) calc(var(--sd-toast-y) + var(--toast-swipe-y, 0px));
+  scale: calc(1 - var(--toast-index, 0) * 0.05);
+  transition:
+    translate var(--sd-spring-smooth-duration) var(--sd-spring-smooth),
+    scale var(--sd-spring-smooth-duration) var(--sd-spring-smooth),
+    height var(--sd-spring-smooth-duration) var(--sd-spring-smooth),
+    opacity var(--sd-duration-base) var(--sd-ease-out);
+}
+
+.sd-toast:not(:has(> .sd-toast-icon)) {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+/* Behind the front card, only its edge peeks out. */
+.sd-toast:not([data-front], [data-expanded]) {
+  height: var(--toast-front-height);
+}
+
+.sd-toast:not([data-front], [data-expanded]) > * {
+  opacity: 0;
+}
+
+.sd-toast > * {
+  transition: opacity var(--sd-duration-base) var(--sd-ease-out);
+}
+
+.sd-toast[data-expanded] {
+  --sd-toast-y: calc(var(--toast-offset, 0px) + var(--toast-index, 0) * var(--sd-toast-gap));
+  scale: 1;
+}
+
+.sd-toast[data-starting-style] {
+  translate: var(--sd-toast-enter-x) var(--sd-toast-enter-y);
+}
+
+.sd-toast[data-starting-style]:not([data-front]) {
+  opacity: 0;
+}
+
+.sd-toast[data-ending-style] {
+  opacity: 0;
+  transition-duration: var(--sd-duration-base);
+  transition-timing-function: var(--sd-ease-in-out);
+}
+
+/* Leaving the front, a notification goes back the way it came; a swipe throws it that way. */
+.sd-toast[data-ending-style][data-front]:not([data-swipe-direction]) {
+  opacity: 1;
+  translate: var(--sd-toast-enter-x) var(--sd-toast-enter-y);
+}
+
+.sd-toast[data-ending-style][data-swipe-direction="up"] {
+  translate: 0 calc(-100% - 40px);
+}
+
+.sd-toast[data-ending-style][data-swipe-direction="down"] {
+  translate: 0 calc(100% + 40px);
+}
+
+.sd-toast[data-ending-style][data-swipe-direction="right"] {
+  translate: calc(100% + 40px) var(--sd-toast-y);
+}
+
+.sd-toast[data-ending-style][data-swipe-direction="left"] {
+  translate: calc(-100% - 40px) var(--sd-toast-y);
+}
+
+.sd-toast[data-swiping] {
+  transition: none;
+}
+
+.sd-toast:focus-visible {
+  outline: var(--sd-focus-ring-width) solid var(--sd-focus-ring);
+  outline-offset: 2px;
+}
+
+.sd-toast-icon {
+  display: grid;
+  place-items: center;
+  align-self: start;
+  width: var(--sd-toast-icon-size);
+  height: var(--sd-toast-icon-size);
+  overflow: hidden;
+  /* An app icon's continuous corner, approximated. */
+  border-radius: 22.5%;
+}
+
+.sd-toast-icon > :where(img, svg) {
+  width: 100%;
+  height: 100%;
+}
+
+.sd-toast-icon[data-type] {
+  background: var(--sd-toast-icon-tone, var(--sd-fill));
+  color: #ffffff;
+}
+
+.sd-toast-icon[data-type] > svg {
+  width: 62%;
+  height: 62%;
+}
+
+.sd-toast-icon[data-type="success"] { --sd-toast-icon-tone: var(--sd-green); }
+.sd-toast-icon[data-type="error"] { --sd-toast-icon-tone: var(--sd-red); }
+.sd-toast-icon[data-type="warning"] { --sd-toast-icon-tone: var(--sd-yellow); color: rgb(0 0 0 / 0.85); }
+.sd-toast-icon[data-type="info"] { --sd-toast-icon-tone: var(--sd-blue); }
+.sd-toast-icon[data-type="loading"] { --sd-toast-icon-tone: var(--sd-fill-secondary); color: var(--sd-label); }
+
+.sd-toast-spinner {
+  width: 50%;
+  height: 50%;
+  border: 2px solid color-mix(in oklch, currentColor 25%, transparent);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: sd-toast-spin 0.8s linear infinite;
+}
+
+@keyframes sd-toast-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+.sd-toast-content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.sd-toast-header {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.sd-toast-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: var(--sd-toast-title-font);
+  letter-spacing: var(--sd-tracking-body);
+}
+
+.sd-toast-time {
+  flex: none;
+  color: var(--sd-label-secondary);
+  font: var(--sd-toast-time-font);
+  letter-spacing: var(--sd-tracking-caption);
+}
+
+.sd-toast-description {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  color: var(--sd-label);
+  font: var(--sd-toast-body-font);
+  letter-spacing: var(--sd-tracking-body);
+}
+
+.sd-toast-action {
+  position: relative;
+  align-self: center;
+  height: var(--sd-control-height-sm);
+  margin: 0;
+  padding: 0 var(--sd-control-padding-sm);
+  border: 0;
+  border-radius: var(--sd-control-radius-sm);
+  background: var(--sd-fill-secondary);
+  color: var(--sd-label);
+  font: var(--sd-control-font-sm);
+  white-space: nowrap;
+  cursor: default;
+  transition: background-color var(--sd-duration-fast) var(--sd-ease-out);
+}
+
+.sd-toast-action::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: max(100%, var(--sd-hit-target));
+  height: max(100%, var(--sd-hit-target));
+  translate: -50% -50%;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .sd-toast-action:hover {
+    background: var(--sd-fill);
+  }
+}
+
+.sd-toast-action:active {
+  background: var(--sd-fill);
+  opacity: 0.8;
+}
+
+.sd-toast-action:focus-visible,
+.sd-toast-close:focus-visible {
+  outline: var(--sd-focus-ring-width) solid var(--sd-focus-ring);
+  outline-offset: var(--sd-focus-ring-offset);
+}
+
+/* The Mac's close button sits on the card's top-leading corner and shows on hover. */
+.sd-toast-close {
+  position: absolute;
+  inset-block-start: 6px;
+  inset-inline-start: 6px;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--sd-bg-elevated);
+  box-shadow: 0 0 0 var(--sd-hairline) var(--sd-separator-strong), var(--sd-shadow-1);
+  color: var(--sd-label-secondary);
+  opacity: 0;
+  scale: 0.8;
+  cursor: default;
+  transition:
+    opacity var(--sd-duration-fast) var(--sd-ease-out),
+    scale var(--sd-duration-fast) var(--sd-ease-out);
+}
+
+.sd-toast-close > svg {
+  width: 10px;
+  height: 10px;
+}
+
+/* Kept at two classes' weight so the touch rule below, scoped closer, wins. */
+.sd-toast:where([data-front], [data-expanded]):where(:focus-within) .sd-toast-close {
+  opacity: 1;
+  scale: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .sd-toast:where([data-front], [data-expanded]):where(:hover) .sd-toast-close {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+/*
+ * Touch dismisses with a swipe; there's no close button to aim for. It stays
+ * in the tab order (hidden, not removed) so a keyboard can still reach it.
+ */
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .sd-toast-close:not(:focus-visible) {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* A swipe still follows the finger; only the slides become fades. */
+  .sd-toast[data-starting-style],
+  .sd-toast[data-ending-style][data-front]:not([data-swipe-direction]) {
+    translate: 0 var(--sd-toast-y);
+  }
+
+  .sd-toast[data-starting-style] {
+    opacity: 0;
+  }
+
+  .sd-toast[data-ending-style][data-front] {
+    opacity: 0;
+  }
+}

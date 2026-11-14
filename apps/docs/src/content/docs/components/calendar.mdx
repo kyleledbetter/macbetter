@@ -1,0 +1,92 @@
+export const metadata = {
+  title: "Calendar",
+  description: "Apple's graphical date picker: a month title with chevrons, a weekday row and circular days, for one date or a range.",
+}
+
+# Calendar
+
+<Lead>Pick a date or a range from a month that stays on screen.</Lead>
+
+<Demo name="calendar/basic" height={460} />
+
+## When to use it
+
+Use a calendar when the month itself helps: choosing a delivery day, seeing which days are free, picking a reporting period. It stays on the page; for a field that opens a calendar only when asked, use a [Date Picker](/docs/components/date-picker).
+
+Today is marked in accent text. The chosen day fills with the accent. Days that can't be picked are dimmed, and stay focusable so keyboard users hear why.
+
+## Usage
+
+```tsx
+import { Calendar } from "@dreambase/stardust/calendar"
+```
+
+Values are ISO strings like `"2026-11-20"`. With no children, `Calendar` draws its header and a grid for each month. To change one part, write the parts out: `CalendarHeader`, `CalendarHeading`, `CalendarPrevious`, `CalendarNext` and `CalendarGrid`, which draws its own weekday row and days.
+
+### Ranges and two months
+
+`mode="range"` picks a start and an end. Moving the pointer previews the range, and the days between the two circles join into one continuous band that rounds off where a week wraps. `months={2}` shows two months side by side.
+
+<Demo name="calendar/range" height={420} />
+
+### Compact
+
+`size="sm"` is the dense month of a macOS popover or sidebar, with single-letter weekdays. `unavailable` takes dates, ranges, weekdays or a function.
+
+<Demo name="calendar/compact" />
+
+## Platform behavior
+
+- **macOS.** 13-point days in 26-point circles, a 13-point semibold month title, and small gray chevrons that highlight under the pointer.
+- **iPadOS and iOS.** 20-point days in 40-point circles, a 17-point semibold title, uppercase weekday abbreviations, and accent chevrons with 44-point touch targets, as in the iOS graphical date picker.
+- **Every platform.** Pressing a day gives a small, instant squeeze. Days from neighboring months are hidden unless you pass `showOutsideDays`.
+
+## Accessibility
+
+- The month is a `grid` named by its title, and the title is announced as it changes.
+- Arrow keys move by day and week, Home and End to the week's ends, Page Up and Page Down by month. Enter or Space picks the focused day; Escape cancels an unfinished range.
+- Previous and Next are named "Previous month" and "Next month"; pass `aria-label` in another language.
+
+## API
+
+### Calendar
+
+<PropsTable
+  rows={[
+    { name: "size", type: '"sm" | "md"', default: '"md"', description: "Compact popover month, or the full graphical picker." },
+    { name: "mode", type: '"single" | "multiple" | "range"', default: '"single"', description: "One date, any number, or a start and an end." },
+    { name: "value", type: "string | string[] | [string, string] | null", description: "The selection, for a controlled calendar." },
+    { name: "defaultValue", type: "string | string[] | [string, string] | null", description: "The selection it starts with." },
+    { name: "onValueChange", type: "(value, details) => void", description: "Runs when a day is picked, or a range's end." },
+    { name: "months", type: "number", default: "1", description: "How many months show side by side." },
+    { name: "min", type: "string", description: "The earliest date that can be picked." },
+    { name: "max", type: "string", description: "The latest date that can be picked." },
+    { name: "unavailable", type: "DateMatchers", description: "Dates that can't be picked." },
+    { name: "weekdayFormat", type: '"narrow" | "short" | "long"', default: '"short", or "narrow" at sm', description: "How weekday headers are written." },
+    { name: "showOutsideDays", type: "boolean", default: "false", description: "Shows the neighboring months' days at the edges." },
+    { name: "today", type: "string", description: "Today's date, when it isn't the device's." },
+  ]}
+/>
+
+`CalendarHeader` takes the props of a `div`. `CalendarGrid` takes an `offset` for the month it shows. `CalendarDay` draws its number in a circle unless it has children.
+
+### Data attributes
+
+| Attribute | On | Values |
+| --- | --- | --- |
+| `data-size` | Calendar | `sm`, `md` |
+| `data-selected` | Day | Present on picked days; in a range, every day from start to end |
+| `data-today` | Day | Present on today |
+| `data-range-start`, `data-range-middle`, `data-range-end` | Day | Where the day sits in a range |
+| `data-preview` | Day | Present on days of a range being picked |
+| `data-unavailable`, `data-disabled` | Day | Can't be picked |
+
+### CSS variables
+
+| Variable | macOS | iOS | What it sets |
+| --- | --- | --- | --- |
+| `--sd-calendar-cell-width` | `32px` | `46px` | Column width |
+| `--sd-calendar-cell-height` | `30px` | `44px` | Row height |
+| `--sd-calendar-circle` | `26px` | `40px` | Day circle |
+| `--sd-calendar-day-font` | 13px | 20px | Day numbers |
+| `--sd-calendar-band` | Accent tint | Accent tint | A range's band, set on the root |

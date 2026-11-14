@@ -1,0 +1,97 @@
+export const metadata = {
+  title: "Rating",
+  description: "Give a score from a row of stars, or show one.",
+}
+
+# Rating
+
+<Lead>Give a score from a row of stars, or show one.</Lead>
+
+<Demo name="rating/basic" />
+
+## When to use it
+
+Use a rating to collect a quick score, like how much you liked a recipe, or to show an average, like an app's ratings. Five stars is the convention people know; keep it unless your scale means something different.
+
+- Show the number beside a read-only rating, and how many ratings it's based on.
+- Let people clear their score with `deselectable` when no score is a valid answer.
+
+## Usage
+
+```tsx
+import { Rating } from "@dreambase/stardust/rating"
+```
+
+`Rating` draws its own stars. Name it with `aria-label` or a [Field](/docs/components/field) label.
+
+### Half stars
+
+`step={0.5}` splits each star in two. Pressing the first half of a star picks the half score.
+
+<Demo name="rating/half" />
+
+### Read-only
+
+`readOnly` shows any score, like an average of 4.6, as an image named by `getValueLabel`. Its empty stars are solid and quieter, so it doesn't look pressable.
+
+<Demo name="rating/read-only" />
+
+### Sizes
+
+<Demo name="rating/sizes" />
+
+### Controlled
+
+<Demo name="rating/controlled" />
+
+## Platform behavior
+
+- **macOS.** 16-point stars. Moving the pointer over them previews the score in a lighter accent; moving away shows the chosen score again.
+- **iPadOS and iOS.** 24-point stars with more room between them. Touch has no preview: a tap picks the score at once, and the star gives a little under the finger.
+- **Every platform.** Stars fill with the accent from the leading edge, so half and partial stars mirror in right-to-left text.
+
+## Accessibility
+
+- A rating is a radio group: one tab stop, and the arrow keys move and pick a score. Each star's radio is named "3 stars", or by `getValueLabel`.
+- A read-only rating has the `img` role and one name for the whole score.
+- The focus ring goes around the focused star.
+
+## API
+
+<PropsTable
+  rows={[
+    { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Star size." },
+    { name: "value", type: "number | null", description: "The score. Pass it to control the rating." },
+    { name: "defaultValue", type: "number | null", description: "The score at first." },
+    { name: "onValueChange", type: "(value, details) => void", description: "Runs when the score wants to change." },
+    { name: "max", type: "number", default: "5", description: "How many stars." },
+    { name: "step", type: "number", default: "1", description: "The smallest change, as a fraction of a star." },
+    { name: "deselectable", type: "boolean", default: "false", description: "Lets a press on the checked star clear the score." },
+    { name: "readOnly", type: "boolean", default: "false", description: "Shows the score as an image." },
+    { name: "getValueLabel", type: "(value, max) => string", description: "Names a score, for each star and for a read-only rating." },
+    { name: "disabled", type: "boolean", default: "false", description: "Can't be focused or changed." },
+    { name: "name", type: "string", description: "The name the score submits under." },
+    { name: "children", type: "ReactNode", description: "A RatingItem with your own symbol, repeated once per star." },
+  ]}
+/>
+
+### Data attributes
+
+| Attribute | On | Values |
+| --- | --- | --- |
+| `data-size` | Rating | `sm`, `md`, `lg` |
+| `data-filled` | RatingItem | Present on stars the score covers whole |
+| `data-partial` | RatingItem | Present on the star the score ends partway through |
+| `data-checked` | RatingItem | Present on the star the score ends in |
+| `data-highlighted` | RatingItem | Present on stars up to a previewed score |
+| `data-readonly`, `data-disabled` | Both | Present in those states |
+
+### CSS variables
+
+| Variable | macOS | iOS | What it sets |
+| --- | --- | --- | --- |
+| `--sd-rating-size` | `16px` | `24px` | Star size |
+| `--sd-rating-size-sm` / `-lg` | `12px` / `22px` | `14px` / `32px` | Small and large stars |
+| `--sd-rating-gap` | `2px` | `4px` | Space between stars |
+| `--sd-rating-color` | `--sd-accent` | `--sd-accent` | Filled stars, set on the rating |
+| `--rating-fill` | | | From ui-sdk: how much of each star is filled, 0 to 1 |

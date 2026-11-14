@@ -1,0 +1,210 @@
+/* Checkbox — macOS's small rounded square that fills with the accent; on touch, the circular
+   checkmark Reminders and Mail use for selection, since iOS has no square checkbox. */
+
+:where(:root, [data-platform="macos"]) {
+  --sd-checkbox-size: 14px;
+  --sd-checkbox-radius: calc(var(--sd-radius-xs) - 0.5px);
+  --sd-checkbox-stroke: 2.1;
+  --sd-checkbox-label-gap: var(--sd-space-3);
+  --sd-checkbox-group-gap: var(--sd-space-3);
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --sd-checkbox-size: 22px;
+  --sd-checkbox-radius: var(--sd-radius-full);
+  --sd-checkbox-stroke: 1.7;
+  --sd-checkbox-label-gap: var(--sd-space-5);
+  --sd-checkbox-group-gap: var(--sd-space-6);
+}
+
+.sd-checkbox {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--sd-checkbox-size);
+  height: var(--sd-checkbox-size);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--sd-checkbox-radius);
+  background: var(--sd-bg-control);
+  box-shadow:
+    inset 0 0 0 var(--sd-hairline) var(--sd-control-border),
+    0 0.5px 1px var(--sd-shadow-color);
+  color: var(--sd-on-accent);
+  font: inherit;
+  cursor: default;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--sd-duration-fast) var(--sd-ease-out),
+    box-shadow var(--sd-duration-fast) var(--sd-ease-out),
+    scale var(--sd-spring-snappy-duration) var(--sd-spring-snappy);
+}
+
+.sd-checkbox::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: max(100%, var(--sd-hit-target));
+  height: max(100%, var(--sd-hit-target));
+  translate: -50% -50%;
+}
+
+.sd-checkbox:is([data-checked], [data-indeterminate]) {
+  background: var(--sd-accent);
+  box-shadow:
+    inset 0 0 0 var(--sd-hairline) color-mix(in oklch, var(--sd-accent-pressed), transparent 30%),
+    inset 0 0.5px 0 rgb(255 255 255 / 0.28),
+    0 0.5px 1px var(--sd-shadow-color);
+}
+
+.sd-checkbox:active:not([data-disabled], [data-readonly]) {
+  background: color-mix(in oklch, var(--sd-bg-control), var(--sd-ink) 12%);
+  transition-duration: 0ms;
+}
+
+.sd-checkbox:is([data-checked], [data-indeterminate]):active:not([data-disabled], [data-readonly]) {
+  background: var(--sd-accent-pressed);
+}
+
+.sd-checkbox[data-disabled] {
+  opacity: 0.4;
+}
+
+.sd-checkbox[data-invalid] {
+  box-shadow: inset 0 0 0 1.5px var(--sd-destructive);
+}
+
+.sd-checkbox-indicator {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: opacity var(--sd-duration-fast) var(--sd-ease-out);
+}
+
+.sd-checkbox-indicator[data-ending-style] {
+  opacity: 0;
+  transition-duration: var(--sd-duration-instant);
+}
+
+.sd-checkbox-glyph {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--sd-checkbox-stroke);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The check draws itself in, stroke first, like a pen. */
+.sd-checkbox-check {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset var(--sd-duration-base) var(--sd-ease-out) 30ms;
+}
+
+.sd-checkbox-indicator[data-starting-style] .sd-checkbox-check {
+  stroke-dashoffset: 1;
+}
+
+.sd-checkbox-dash,
+.sd-checkbox-indicator[data-indeterminate] .sd-checkbox-check {
+  display: none;
+}
+
+.sd-checkbox-indicator[data-indeterminate] .sd-checkbox-dash {
+  display: inline;
+}
+
+/* A checkbox with a title. */
+.sd-checkbox-label {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--sd-checkbox-label-gap);
+  color: var(--sd-label);
+  font: var(--sd-text-body);
+  letter-spacing: var(--sd-tracking-body);
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Centers the box on the first line, so a long title wraps under its text. */
+.sd-checkbox-label > .sd-checkbox {
+  margin-block-start: calc((1lh - var(--sd-checkbox-size)) / 2);
+}
+
+.sd-checkbox-label:has(> .sd-checkbox[data-disabled]) {
+  color: var(--sd-label-tertiary);
+}
+
+.sd-checkbox-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sd-space-1);
+  min-width: 0;
+}
+
+.sd-checkbox-description {
+  color: var(--sd-label-secondary);
+  font: var(--sd-text-callout);
+}
+
+.sd-checkbox-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sd-checkbox-group-gap);
+}
+
+.sd-checkbox-group[data-disabled] .sd-checkbox-label {
+  color: var(--sd-label-tertiary);
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .sd-checkbox {
+    background: transparent;
+    box-shadow: inset 0 0 0 1.5px var(--sd-control-border);
+  }
+
+  .sd-checkbox:is([data-checked], [data-indeterminate]) {
+    background: var(--sd-accent);
+    box-shadow: none;
+  }
+
+  .sd-checkbox:active:not([data-disabled], [data-readonly]) {
+    background: var(--sd-fill-tertiary);
+    scale: 0.92;
+  }
+
+  .sd-checkbox:is([data-checked], [data-indeterminate]):active:not([data-disabled], [data-readonly]) {
+    background: var(--sd-accent-pressed);
+  }
+
+  /* The circle pops a little as it fills. */
+  .sd-checkbox-indicator {
+    transition:
+      opacity var(--sd-duration-fast) var(--sd-ease-out),
+      scale var(--sd-spring-snappy-duration) var(--sd-spring-snappy);
+  }
+
+  .sd-checkbox-indicator[data-starting-style] {
+    scale: 0.6;
+  }
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  @media (prefers-reduced-motion: reduce) {
+    .sd-checkbox:active:not([data-disabled], [data-readonly]) {
+      scale: none;
+    }
+  }
+}
+
+.sd-checkbox-group:has(.sd-checkbox-description) {
+  gap: calc(var(--sd-checkbox-group-gap) + var(--sd-space-3));
+}

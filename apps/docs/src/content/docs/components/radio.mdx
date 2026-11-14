@@ -1,0 +1,105 @@
+export const metadata = {
+  title: "Radio",
+  description: "Choose one option from a small set of mutually exclusive choices.",
+}
+
+# Radio
+
+<Lead>Choose one option from a small set of mutually exclusive choices.</Lead>
+
+<Demo name="radio/basic" />
+
+## When to use it
+
+Use radio buttons for two to about five choices where exactly one applies and people benefit from seeing them all at once, like a backup schedule. For more choices, use a [Pop-Up Button](/docs/components/select). For a choice that switches what's on screen, use a [Segmented Control](/docs/components/segmented-control). For a single on/off option, use a [Checkbox](/docs/components/checkbox).
+
+- Start with a sensible default checked, so the group always has a value.
+- Keep titles short and parallel. Put details in a description.
+- On iOS, the familiar form is a list of rows with a checkmark on the chosen one. Use `variant="list"`.
+
+## Usage
+
+```tsx
+import { Radio, RadioGroup } from "@dreambase/stardust/radio"
+```
+
+Give each `Radio` a `value` and its title as children. Name the group with `aria-label`, `aria-labelledby` or a [Field](/docs/components/field) label.
+
+### Description
+
+<Demo name="radio/description" />
+
+### List
+
+`variant="list"` draws each choice as a row in an inset group, with a checkmark at the trailing edge of the chosen one, as in iOS Settings.
+
+<Demo name="radio/list" platforms={["ios", "ipados", "macos"]} />
+
+### Disabled
+
+Disable a single radio to show a choice that isn't available now, or the group to disable all of them.
+
+<Demo name="radio/disabled" />
+
+### Controlled
+
+<Demo name="radio/controlled" />
+
+## Platform behavior
+
+- **macOS.** A 14-point circle with a hairline edge. Checked, it fills with the accent around a dot that springs in: white on the system blue, or the theme's on-accent color, so the dot holds 3:1 on any accent.
+- **iPadOS and iOS.** A larger, 22-point circle with an outlined ring, and the same accent fill and dot. The list variant uses 48-point rows, inset separators and an accent checkmark.
+- **Every platform.** The hit area extends to the platform minimum, and the whole label is pressable.
+
+## Accessibility
+
+- The group has the `radiogroup` role and is one tab stop: Tab enters on the checked radio, and the arrow keys move and check. Space checks the focused radio.
+- Each radio renders a button with the `radio` role, plus a hidden native radio for forms.
+- In the list variant, the focus ring goes around the whole row.
+
+## API
+
+### RadioGroup
+
+<PropsTable
+  rows={[
+    { name: "variant", type: '"default" | "list"', default: '"default"', description: "Circles beside titles, or rows with a trailing checkmark." },
+    { name: "value", type: "string | null", description: "The checked radio's value. Pass it to control the group." },
+    { name: "defaultValue", type: "string | null", description: "The radio checked at first." },
+    { name: "onValueChange", type: "(value, details) => void", description: "Runs when the choice wants to change." },
+    { name: "disabled", type: "boolean", default: "false", description: "Disables every radio." },
+    { name: "readOnly", type: "boolean", default: "false", description: "Focusable and submitted, but doesn't change." },
+    { name: "required", type: "boolean", default: "false", description: "Blocks form submission until a radio is checked." },
+    { name: "name", type: "string", description: "The name the value submits under." },
+    { name: "loop", type: "boolean", description: "Whether arrow keys wrap from the last radio to the first." },
+  ]}
+/>
+
+### Radio
+
+<PropsTable
+  rows={[
+    { name: "value", type: "string", description: "What the group's value becomes when this radio is checked." },
+    { name: "children", type: "ReactNode", description: "The title. With it, the radio and the text form one label." },
+    { name: "description", type: "ReactNode", description: "Secondary text under the title." },
+    { name: "disabled", type: "boolean", default: "false", description: "Skips this radio." },
+  ]}
+/>
+
+### Data attributes
+
+| Attribute | On | Values |
+| --- | --- | --- |
+| `data-variant` | RadioGroup | `default`, `list` |
+| `data-checked` / `data-unchecked` | Radio, indicator | The state |
+| `data-disabled`, `data-readonly`, `data-required` | Both | Present in those states |
+| `data-invalid` | RadioGroup | Present while a `Field` shows the group as invalid; its unchecked radios get a red edge |
+
+### CSS variables
+
+| Variable | macOS | iOS | What it sets |
+| --- | --- | --- | --- |
+| `--sd-radio-size` | `14px` | `22px` | The circle |
+| `--sd-radio-dot` | `6px` | `9px` | The dot |
+| `--sd-radio-label-gap` | `6px` | `12px` | Between the circle and its title |
+| `--sd-radio-group-gap` | `6px` | `16px` | Between radios |

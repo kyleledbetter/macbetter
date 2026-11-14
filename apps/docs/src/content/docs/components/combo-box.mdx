@@ -1,0 +1,76 @@
+export const metadata = { title: "Combo Box", description: "Type a value or choose one from a list of suggestions." }
+
+# Combo Box
+
+<Lead>Type a value or choose one from a list of suggestions.</Lead>
+
+<Demo name="combo-box/basic" wallpaper height={420} />
+
+## When to use it
+
+A combo box is a text field with a list attached. Use it when the list is long enough that typing finds an item faster than scrolling, like a city or a font size.
+
+- Use `Combobox` when the value must be one of the items; what people type only filters the list.
+- Use `Autocomplete` when anything typed is valid and the list only suggests, like a search or a destination.
+- For a short list that doesn't need typing, use a [pop-up button](/docs/components/select).
+
+## Usage
+
+```tsx
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxControl,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxLabel,
+  ComboboxList,
+  ComboboxTrigger,
+} from "@dreambase/stardust/combo-box"
+```
+
+`ComboboxControl` holds the input and places the trigger and the clear button at its trailing edge. `ComboboxTrigger` and `ComboboxClear` draw their own glyphs; name both with `aria-label`. `ComboboxItem` renders a checkmark beside the selected item.
+
+### Groups and clearing
+
+Groups that filtering leaves empty disappear with their separators. `ComboboxClear` appears while there's a value or text.
+
+<Demo name="combo-box/groups" wallpaper height={460} />
+
+### Autocomplete
+
+The `Autocomplete` parts share the look, without the check column.
+
+<Demo name="combo-box/autocomplete" wallpaper height={360} />
+
+### On a phone
+
+Set `presentation="auto"` on the root to show the list as a bottom sheet on small touch screens. The input moves into the sheet's header, so there's still one field and one query.
+
+<Demo name="combo-box/sheet" wallpaper height={360} />
+
+## Platform behavior
+
+- **macOS**: a text field with an accent cap holding a chevron, like a pop-up button's. The list is a Mac menu, at least as wide as the field.
+- **iOS and iPadOS**: a filled, rounded field with a quiet chevron, and the roomy iOS menu. `presentation="auto"` on the root shows the list as a sheet on small screens.
+
+## Accessibility
+
+The input has the combobox role and keeps focus while the arrow keys move the highlight through the list. Enter chooses, Escape closes the list and restores the previous value, and results are announced when typing pauses. The field shows its focus ring whenever it's editing, as text fields do on the Mac.
+
+## API
+
+<PropsTable
+  rows={[
+    { name: "ComboboxControl", type: "div props", description: "The field. Positions the trigger and clear button." },
+    { name: "ComboboxTrigger", type: "aria-label", description: "Shows every item. Renders a chevron." },
+    { name: "ComboboxClear", type: "aria-label", description: "Clears the value and text. Renders a clear glyph." },
+    { name: "ComboboxContent", type: "sideOffset", default: "4", description: "The list's popup." },
+    { name: "ComboboxItem", type: "value, label, disabled", description: "A choice. Renders its own checkmark." },
+    { name: "ComboboxItemText", type: "—", description: "Bolds the part of the label that matched." },
+    { name: "ComboboxEmpty, ComboboxStatus", type: "—", description: "What shows when nothing matches, and loading or error messages." },
+    { name: "Combobox", type: "value, defaultValue, multiple, presentation", description: "The root. presentation is popover, sheet or auto." },
+    { name: "Autocomplete…", type: "—", description: "The same parts for free text: Input, Trigger, Clear, Content, List, Item, Group, Empty." },
+    { name: "--sd-combo-box-width", type: "length", default: "240px · 300px", description: "The field's width on the Mac · on touch." },
+  ]}
+/>

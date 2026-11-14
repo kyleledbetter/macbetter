@@ -1,0 +1,74 @@
+export const metadata = {
+  title: "Carousel",
+  description: "Page through cards that snap into place, with the next one peeking in.",
+}
+
+# Carousel
+
+<Lead>Page through cards that snap into place, with the next one peeking in.</Lead>
+
+<Demo name="carousel/featured" />
+
+## When to use it
+
+Use a carousel for a short row of peers people browse rather than read in order: featured stories, photos, product shelves. The next card peeks in from the edge, so it's clear there's more.
+
+- Keep it to a handful of cards. Content people must see shouldn't be on the third page.
+- Don't rotate on a timer unless the content is decorative; if you do, keep the play toggle.
+- Use a horizontal [Scroll View](/docs/components/scroll-view) when items needn't snap to pages.
+
+## Usage
+
+```tsx
+import {
+  Carousel,
+  CarouselContent,
+  CarouselIndicator,
+  CarouselIndicatorGroup,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+  CarouselViewport,
+} from "@dreambase/stardust/carousel"
+```
+
+Put the cards in `CarouselItem`s inside the viewport and content. `CarouselPrevious` and `CarouselNext` draw their chevrons and are named "Previous" and "Next" unless you pass your own `aria-label`. Write one `CarouselIndicator` per card, each named after its card; dots past the page count hide themselves.
+
+### Layout
+
+`layout="peek"`, the default, sizes each card to most of the view so the next one peeks in, like the App Store. `layout="full"` shows one page at a time. To size cards yourself, set `--sd-carousel-item-size`.
+
+## Platform behavior
+
+- **macOS.** About two cards to a view, and glass arrow buttons that appear while the pointer is over the carousel. Trackpad swipes and the scroll wheel page it too.
+- **iOS.** One card to a view, inset 16 points with the next card peeking in, and no arrows: you swipe. The page dots sit under the cards.
+- **iPadOS.** Two cards to a view, with arrows when a pointer is connected.
+- The arrows use the regular material, so they turn opaque under Reduce Transparency. In right-to-left layouts the cards run from the right and the arrows mirror.
+- Arrows show only on devices with a fine pointer that hovers. Slides snap with the browser's scroll snapping, which follows the platform's own momentum.
+
+## Accessibility
+
+- The carousel follows the WAI-ARIA carousel pattern, from ui-sdk. Name it with `aria-label`, like "Featured stories".
+- The viewport takes focus, and **Left** and **Right Arrow** page through it. Cards out of view are inert, so Tab doesn't wander into them.
+- The page dots are tabs: one tab stop on the current page, arrows to move between them, Home and End for the ends.
+- Previous and Next stay focusable at the ends and report `aria-disabled`.
+
+## API
+
+### Carousel
+
+Takes every prop of ui-sdk's [Carousel](https://ui-sdk.dev/docs/react/components/carousel), including `page`, `defaultPage`, `onPageChange`, `align`, `slidesPerPage`, `loop` and `controller`, plus:
+
+<PropsTable rows={[{ name: "layout", type: '"peek" | "full"', default: '"peek"', description: "Whether the next card peeks in, or one page shows at a time." }]} />
+
+`CarouselViewport`, `CarouselContent`, `CarouselItem`, `CarouselPrevious`, `CarouselNext`, `CarouselIndicatorGroup` and `CarouselIndicator` wrap the ui-sdk parts of the same names.
+
+### Data attributes and CSS variables
+
+| Attribute or variable | On | Meaning |
+| --- | --- | --- |
+| `data-layout` | `.sd-carousel` | `peek` or `full`. |
+| `data-disabled` | `.sd-carousel-button` | No page that way. |
+| `data-selected` | `.sd-carousel-indicator` | The current page's dot. |
+| `--sd-carousel-item-size` | platform | Each card's width. |
+| `--sd-carousel-gap`, `--sd-carousel-inset` | platform | Space between cards, and the inset before the first. |

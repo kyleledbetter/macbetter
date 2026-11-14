@@ -1,0 +1,130 @@
+export const metadata = {
+  title: "Slider",
+  description: "Choose a value, or a range, from a continuous or stepped scale.",
+}
+
+# Slider
+
+<Lead>Choose a value, or a range, from a continuous or stepped scale.</Lead>
+
+<Demo name="slider/basic" />
+
+## When to use it
+
+Use a slider when the exact number matters less than the position, like volume, brightness or a price range, and when seeing the effect while dragging helps. When people need a precise number, pair the slider with a [Number Field](/docs/components/stepper) or use one instead.
+
+- Put icons or labels at the ends that say what each end means, like a small and a large speaker.
+- Fill the track from the minimum with the accent, so the value reads at a glance.
+- Use tick marks only when there are a few meaningful steps, like a key repeat rate.
+
+## Usage
+
+```tsx
+import { Slider, SliderControl, SliderValue } from "@dreambase/stardust/slider"
+```
+
+`Slider` draws its own track, fill and thumb. Name the thumb with `thumbLabel`, or put the slider in a [Field](/docs/components/field) whose label names it.
+
+### With a label and value
+
+Compose the parts to place a `FieldLabel` and a `SliderValue` above the track. `format` takes `Intl.NumberFormat` options and sets both the shown value and what screen readers hear.
+
+<Demo name="slider/field" />
+
+### Range
+
+Pass an array for a range, and the slider draws a thumb per value with the accent fill between them. Name each thumb.
+
+<Demo name="slider/range" />
+
+### Tick marks
+
+`ticks` draws marks under the track: `true` puts one at every step, or pass a count. The thumb snaps to `step`.
+
+<Demo name="slider/ticks" />
+
+### Vertical
+
+`orientation="vertical"` runs the slider bottom to top, 160 points tall by default. Set a `height` to change it.
+
+<Demo name="slider/vertical" />
+
+### Sizes
+
+`size="sm"` is a smaller thumb and thinner track for inspectors.
+
+<Demo name="slider/sizes" />
+
+### Disabled
+
+<Demo name="slider/disabled" />
+
+### Controlled
+
+Pass `value` and `onValueChange`, which runs on every step of a drag. Use `onValueCommit` to save once the drag ends.
+
+<Demo name="slider/controlled" />
+
+## Platform behavior
+
+- **macOS.** A thin, 4-point track and a 20-point white knob with a soft shadow. The knob dims slightly while held, as AppKit's does.
+- **iPadOS and iOS.** A 6-point track and the 28-point UISlider thumb, which grows a little under the finger while you drag.
+- **Every platform.** The track is inset by half a thumb, so the thumb never hangs past the ends, and the control is at least as tall as the platform's touch target. Tick marks line up with the steps they mark.
+
+## Accessibility
+
+- Each thumb is a native range input, so the arrow keys, Page Up and Page Down, Home and End work, and screen readers on phones adjust it with their own gestures.
+- Name every thumb, with `thumbLabel`, a `FieldLabel` or `aria-label` on a `SliderThumb`. In a range, name each end.
+- The focus ring goes around the thumb whose input has focus.
+
+## API
+
+### Slider
+
+<PropsTable
+  rows={[
+    { name: "thumbLabel", type: "string | string[]", description: "Names the thumbs the slider draws: one name, or one per thumb of a range." },
+    { name: "ticks", type: "boolean | number", description: "Tick marks under the track: true for one per step, or a count." },
+    { name: "size", type: '"sm" | "md"', default: '"md"', description: "Thumb and track size." },
+    { name: "value", type: "number | number[]", description: "The value. Pass it to control the slider." },
+    { name: "defaultValue", type: "number | number[]", description: "The value at first. An array makes a range." },
+    { name: "onValueChange", type: "(value, details) => void", description: "Runs on every step of a drag or a key." },
+    { name: "onValueCommit", type: "(value, details) => void", description: "Runs once an interaction ends. For saving." },
+    { name: "min", type: "number", default: "0", description: "The lowest value." },
+    { name: "max", type: "number", default: "100", description: "The highest value." },
+    { name: "step", type: "number", default: "1", description: "How far one step moves." },
+    { name: "minStepsBetweenThumbs", type: "number", default: "0", description: "How many steps apart a range's thumbs stay." },
+    { name: "orientation", type: '"horizontal" | "vertical"', default: '"horizontal"', description: "The axis. Vertical grows upward." },
+    { name: "format", type: "Intl.NumberFormatOptions | (value) => string", description: "How values read, on screen and to screen readers." },
+    { name: "disabled", type: "boolean", default: "false", description: "Can't be focused or moved." },
+  ]}
+/>
+
+### SliderControl
+
+Draws the track, the accent fill and one thumb per value when it has no children. Takes `thumbLabel` and `ticks` (a count).
+
+### Other parts
+
+`SliderValue` shows the formatted value. `SliderTrack`, `SliderIndicator`, `SliderThumb` and `SliderTicks` are exported for a slider you compose yourself.
+
+### Data attributes
+
+| Attribute | On | Values |
+| --- | --- | --- |
+| `data-size` | Slider | `sm`, `md` |
+| `data-orientation` | Every part | `horizontal`, `vertical` |
+| `data-dragging` | Every part | Present while a thumb is dragged |
+| `data-index` | SliderThumb | Which value the thumb shows |
+| `data-disabled` | Every part | Present when disabled |
+
+### CSS variables
+
+| Variable | macOS | iOS | What it sets |
+| --- | --- | --- | --- |
+| `--sd-slider-track` | `4px` | `6px` | Track thickness |
+| `--sd-slider-thumb` | `20px` | `28px` | Thumb diameter |
+| `--sd-slider-track-sm` | `3px` | `4px` | Small track |
+| `--sd-slider-thumb-sm` | `14px` | `22px` | Small thumb |
+| `--sd-slider-thumb-grow` | `1` | `1.12` | Thumb scale while dragged |
+| `--sd-slider-tick` | `6px` | `8px` | Tick mark length |

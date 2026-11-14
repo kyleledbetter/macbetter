@@ -1,0 +1,76 @@
+export const metadata = {
+  title: "Card",
+  description: "Group related content in a container: a macOS group box, or an iOS widget-like card.",
+}
+
+# Card
+
+<Lead>Group related content in a container: a macOS group box, or an iOS widget-like card.</Lead>
+
+<Demo name="card/variants" />
+
+## When to use it
+
+Use a card to set a small amount of related content apart from what's around it: a summary with an action, a status, a preview that leads somewhere. On the Mac, a grouped card is the group box that frames related settings.
+
+- Keep a card to one subject. If it needs a scroll bar, it's a page.
+- Give it a title, and at most one prominent action in the footer.
+- Use a [List](/docs/components/list) for rows of settings, not a stack of cards.
+
+## Usage
+
+```tsx
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@dreambase/stardust/card"
+```
+
+`CardTitle` is an `h3` and `CardDescription` a paragraph. `CardFooter` lines its buttons up at the trailing edge.
+
+### Variants
+
+- `grouped`, the default: the secondary grouped background. On the Mac it's a faint fill with a hairline edge, which reads on any window. On iOS it's the white (or raised dark) cell color, meant to sit on a grouped background.
+- `elevated`: a raised surface with a soft shadow, for a card that floats above the page.
+- `material`: a translucent material that blurs what's behind it, for a card over a photo or a wallpaper. Never put it on another material.
+- `outline`: a hairline edge and no fill, for a quiet container.
+
+<Demo name="card/material" wallpaper />
+
+## Platform behavior
+
+- **macOS.** 13-point semibold titles, 16-point padding and a 12-point corner radius, like a group box in System Settings.
+- **iOS and iPadOS.** 17-point semibold titles and a 22-point corner radius, like a widget or an inset grouped cell. A grouped card is white in light appearance, so put it on `--sd-bg-grouped`, as Settings does; on a white page use `elevated` or `outline`.
+- Corners are continuous where the browser supports `corner-shape`, so the curve eases into the straight edge as Apple's do. Elsewhere they're round.
+- Under Reduce Transparency or Increase Contrast, the material card turns opaque.
+
+## Accessibility
+
+- A card is a plain container. It adds no role: its title is a heading, so people using screen readers can find it.
+- If the whole card should be pressable, make its title a link or put a button in the footer rather than turning the card into a button around other controls.
+- Text on a material card keeps its contrast because the material is mostly opaque; check it over your own imagery.
+
+## API
+
+### Card
+
+<PropsTable
+  rows={[
+    { name: "variant", type: '"grouped" | "elevated" | "material" | "outline"', default: '"grouped"', description: "The card's surface." },
+    { name: "...props", type: 'ComponentProps<"div">', description: "Passed to the element." },
+  ]}
+/>
+
+`CardHeader`, `CardContent` and `CardFooter` render a `div`, `CardTitle` an `h3`, and `CardDescription` a `p`.
+
+### CSS variables
+
+| Variable | Meaning |
+| --- | --- |
+| `--sd-card-padding`, `--sd-card-gap` | Padding and the space between parts. |
+| `--sd-card-radius` | The corner radius. |
+| `--sd-card-grouped-bg`, `--sd-card-grouped-edge` | The grouped surface and its edge. |

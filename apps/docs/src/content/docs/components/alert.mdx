@@ -1,0 +1,148 @@
+export const metadata = {
+  title: "Alert",
+  description: "Ask a question that needs an answer before work continues: the system alert and the iOS action sheet.",
+}
+
+# Alert
+
+<Lead>Ask a question that needs an answer before work continues.</Lead>
+
+<Demo name="alert/basic" wallpaper height={380} />
+
+## When to use it
+
+Use an alert when someone has to decide before anything else can happen: confirming something that can’t be undone, or choosing what happens to unsaved work. Alerts interrupt, so keep them rare. Don’t use one to report that something went well; a [Notification](/docs/components/toast) or an inline status does that without stopping anyone.
+
+- Write the title as the question (“Delete this photo?”), and use the message for the consequence, in a sentence or two.
+- Label buttons with verbs that answer the question (“Empty Trash”, “Don’t Save”), never “Yes” and “No”.
+- Mark the action people usually want as `primary`. When the action destroys something, give it `tone="destructive"`, and consider making Cancel the default instead.
+
+## Usage
+
+```tsx
+import {
+  Alert,
+  AlertAction,
+  AlertActions,
+  AlertContent,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
+  AlertTrigger,
+} from "@dreambase/stardust/alert"
+```
+
+`AlertContent` brings its own dimmed backdrop. `AlertAction` closes the alert and reports its `value`; `value="confirm"` is the agreeing answer that `createConfirm()` resolves `true` for. Put the least destructive action first in the markup, since the alert opens with focus on it.
+
+Mark an action that destroys something with `data-agent-confirm`, so an AI agent driving the page has to ask the person before it presses it.
+
+### Three choices
+
+Two actions sit side by side; three or more stack, with the `cancel` action at the bottom. Set `orientation` on `AlertActions` to force either layout.
+
+<Demo name="alert/stacked" wallpaper height={420} />
+
+### Action sheet
+
+On iPhone, a destructive choice that follows a tap usually rises from the bottom as an action sheet. Pass `variant="sheet"` to `AlertContent`: the choices sit in one card and Cancel stands apart below it. On the Mac and iPad the same markup shows a regular alert.
+
+<Demo name="alert/action-sheet" platforms={["ios"]} wallpaper height={420} />
+
+### Asking from code
+
+Create a confirm function with `createConfirm()`, pass its `controller` to an `Alert`, and `await` the answer from any handler. It resolves `true` when the `value="confirm"` action closes the alert.
+
+```tsx
+const [confirmDelete] = useState(() => createConfirm<{ name: string }>())
+
+async function remove(name: string) {
+  if (await confirmDelete({ name })) deleteProject(name)
+}
+
+<Alert controller={confirmDelete.controller}>
+  <AlertContent<{ name: string }>>
+    {(state) => (
+      <>
+        <AlertTitle>Delete “{state.payload?.name}”?</AlertTitle>
+        <AlertActions>
+          <AlertAction variant="cancel">Cancel</AlertAction>
+          <AlertAction tone="destructive" value="confirm">Delete</AlertAction>
+        </AlertActions>
+      </>
+    )}
+  </AlertContent>
+</Alert>
+```
+
+## Platform behavior
+
+- **macOS.** A 260pt panel of thick material with the app icon on top, a bold 13pt title and an 11pt message. Buttons are full width; the primary one is filled with the accent. It scales in from slightly smaller, without a bounce.
+- **iOS and iPadOS.** The 270pt alert: no icon, a 17pt semibold title, a 13pt message and full-bleed text buttons divided by hairlines. The primary action is bold and destructive ones are red. It settles in from slightly larger, as the system alert does.
+- **Action sheet.** iPhone only. On iPad, where an action sheet would be a popover, and on the Mac, `variant="sheet"` shows the alert.
+- iOS and iPadOS dim the page with the scrim. macOS doesn’t dim the window behind an alert, so the Mac gets a lighter veil, just enough to show the page is blocked. The alert’s material is denser than a menu’s so the message reads over any backdrop. Reduced motion drops the scale; reduced transparency makes the material opaque.
+
+## Accessibility
+
+- The alert has the `alertdialog` role, is named by its title and described by its message.
+- It opens with focus on the first action, keeps Tab inside, and makes the rest of the page inert. Pressing outside never closes it.
+- Escape closes it and returns focus to the trigger, like Cancel.
+- In a stack, the cancel action moves to the bottom visually but keeps its place in the Tab order, first.
+
+## API
+
+### Alert
+
+Takes every [ui-sdk Alert Dialog](https://ui-sdk.dev/docs/components/alert-dialog) root prop.
+
+<PropsTable
+  rows={[
+    { name: "open / defaultOpen", type: "boolean", description: "Controls or starts the alert open." },
+    { name: "onOpenChange", type: "(open, details) => void", description: "details.returnValue is the value of the action that closed it." },
+    { name: "controller", type: "AlertDialogController", description: "From createConfirm() or createAlertDialogController(), to open it from code." },
+  ]}
+/>
+
+### AlertContent
+
+<PropsTable
+  rows={[
+    { name: "variant", type: '"alert" | "sheet"', default: '"alert"', description: "sheet docks an action sheet to the bottom on iPhone." },
+    { name: "initialFocus / finalFocus", type: "DialogInitialFocus / PopupFocusTarget", description: "Where focus goes on open and close." },
+  ]}
+/>
+
+### AlertActions
+
+<PropsTable
+  rows={[
+    { name: "orientation", type: '"auto" | "horizontal" | "vertical"', default: '"auto"', description: "auto puts two buttons side by side and stacks one or three and more." },
+  ]}
+/>
+
+### AlertAction
+
+<PropsTable
+  rows={[
+    { name: "variant", type: '"default" | "primary" | "cancel"', default: '"default"', description: "primary is the default action; cancel sinks to the bottom of a stack and stands apart in an action sheet." },
+    { name: "tone", type: '"accent" | "destructive"', default: '"accent"', description: "destructive turns it red." },
+    { name: "value", type: "string", description: 'Reported as returnValue. "confirm" is the agreeing answer.' },
+    { name: "action", type: "(event, details) => unknown", description: "Runs before the alert closes; a Promise keeps it open and the button pending." },
+  ]}
+/>
+
+`AlertTrigger`, `AlertTitle`, `AlertDescription` and `AlertIcon` take their element’s props. `createConfirm`, `confirm` and `createAlertDialogController` are re-exported from ui-sdk.
+
+| Data attribute | On | Meaning |
+| --- | --- | --- |
+| `data-variant` | `.sd-alert` | `alert` or `sheet` |
+| `data-orientation` | `.sd-alert-actions` | The layout you asked for |
+| `data-variant`, `data-tone` | `.sd-alert-action` | Its role and color |
+| `data-starting-style`, `data-ending-style` | `.sd-alert`, `.sd-alert-backdrop` | Entering and leaving |
+| `data-pending` | `.sd-alert-action` | Its action is running |
+
+| CSS variable | Default |
+| --- | --- |
+| `--sd-alert-width` | 260px on macOS, 270px on iOS and iPadOS |
+| `--sd-alert-radius` | `--sd-popup-radius` on macOS, 14pt on touch |
+| `--sd-alert-enter-scale` | 0.92 on macOS, 1.12 on touch |
+| `--sd-alert-scrim` | A lighter `--sd-scrim` on macOS, `--sd-scrim` on touch |

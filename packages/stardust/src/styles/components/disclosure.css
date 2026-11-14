@@ -1,0 +1,188 @@
+/* Disclosure — SwiftUI's DisclosureGroup: a row whose chevron turns to show what's inside. */
+
+:where(:root, [data-platform="macos"]) {
+  --sd-disclosure-row-height: 28px;
+  --sd-disclosure-row-height-grouped: 36px;
+  --sd-disclosure-padding-inline: 10px;
+  --sd-disclosure-font: 400 13px/16px var(--sd-font);
+  --sd-disclosure-chevron-width: 5.5px;
+  --sd-disclosure-chevron-height: 10px;
+  --sd-disclosure-chevron-stroke: 1.7;
+  --sd-disclosure-chevron-color: var(--sd-label-secondary);
+  --sd-disclosure-chevron-order: 0;
+  --sd-disclosure-gap: 8px;
+  /* The content lines up with the label, past the leading chevron. */
+  --sd-disclosure-content-indent: calc(var(--sd-disclosure-chevron-height) + var(--sd-disclosure-gap));
+  --sd-disclosure-radius: var(--sd-radius-md);
+  --sd-disclosure-group-bg: var(--sd-fill-quaternary);
+  --sd-disclosure-group-edge: var(--sd-separator);
+  --sd-disclosure-pressed: var(--sd-fill-tertiary);
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --sd-disclosure-row-height: 44px;
+  --sd-disclosure-row-height-grouped: 48px;
+  --sd-disclosure-padding-inline: 16px;
+  --sd-disclosure-font: 400 17px/22px var(--sd-font);
+  --sd-disclosure-chevron-width: 7px;
+  --sd-disclosure-chevron-height: 12.5px;
+  --sd-disclosure-chevron-stroke: 2.1;
+  --sd-disclosure-chevron-color: var(--sd-accent-text);
+  --sd-disclosure-chevron-order: 1;
+  --sd-disclosure-gap: 8px;
+  --sd-disclosure-content-indent: 0px;
+  --sd-disclosure-radius: var(--sd-group-radius);
+  --sd-disclosure-group-bg: var(--sd-bg-grouped-secondary);
+  --sd-disclosure-group-edge: transparent;
+  --sd-disclosure-pressed: var(--sd-fill);
+}
+
+.sd-disclosure-group,
+.sd-disclosure {
+  --sd-disclosure-height: var(--sd-disclosure-row-height);
+
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  color: var(--sd-label);
+  font: var(--sd-disclosure-font);
+  letter-spacing: var(--sd-tracking-body);
+}
+
+.sd-disclosure-group[data-variant="grouped"],
+.sd-disclosure[data-variant="grouped"] {
+  --sd-disclosure-height: var(--sd-disclosure-row-height-grouped);
+  overflow: hidden;
+  border-radius: var(--sd-disclosure-radius);
+  background: var(--sd-disclosure-group-bg);
+  box-shadow: inset 0 0 0 var(--sd-hairline) var(--sd-disclosure-group-edge);
+}
+
+.sd-disclosure-item {
+  position: relative;
+}
+
+.sd-disclosure-group[data-variant="grouped"] .sd-disclosure-item + .sd-disclosure-item::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset-block-start: 0;
+  inset-inline: var(--sd-disclosure-padding-inline) 0;
+  height: var(--sd-hairline);
+  background: var(--sd-separator);
+}
+
+.sd-disclosure-header {
+  margin: 0;
+  font: inherit;
+}
+
+.sd-disclosure-trigger {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--sd-disclosure-gap);
+  width: 100%;
+  min-height: var(--sd-disclosure-height);
+  margin: 0;
+  padding: 0 var(--sd-disclosure-padding-inline);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: start;
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: background-color var(--sd-duration-base) var(--sd-ease-out);
+}
+
+.sd-disclosure-group[data-variant="plain"] .sd-disclosure-trigger,
+.sd-disclosure[data-variant="plain"] .sd-disclosure-trigger {
+  padding-inline: 0;
+}
+
+.sd-disclosure-group[data-variant="grouped"] .sd-disclosure-trigger:active,
+.sd-disclosure[data-variant="grouped"] .sd-disclosure-trigger:active {
+  background: var(--sd-disclosure-pressed);
+  transition-duration: 0ms;
+}
+
+.sd-disclosure-trigger:focus-visible {
+  outline: var(--sd-focus-ring-width) solid var(--sd-focus-ring);
+  outline-offset: calc(var(--sd-focus-ring-width) * -1);
+  border-radius: var(--sd-radius-sm);
+}
+
+.sd-disclosure-group[data-variant="grouped"] .sd-disclosure-trigger:focus-visible {
+  border-radius: 0;
+}
+
+.sd-disclosure-label {
+  flex: 1;
+  min-width: 0;
+  padding-block: 4px;
+}
+
+.sd-disclosure-chevron {
+  flex: none;
+  order: var(--sd-disclosure-chevron-order);
+  box-sizing: content-box;
+  width: var(--sd-disclosure-chevron-width);
+  height: var(--sd-disclosure-chevron-height);
+  /* A square box, so the turn pivots on the chevron's center. */
+  padding-inline: calc((var(--sd-disclosure-chevron-height) - var(--sd-disclosure-chevron-width)) / 2);
+  overflow: visible;
+  fill: none;
+  stroke: var(--sd-disclosure-chevron-color);
+  stroke-width: var(--sd-disclosure-chevron-stroke);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: rotate var(--sd-spring-snappy-duration) var(--sd-spring-snappy);
+}
+
+.sd-disclosure-trigger[data-open] .sd-disclosure-chevron {
+  rotate: 90deg;
+}
+
+/* In right to left the closed chevron points left, so it turns the other way to point down. */
+:where([dir="rtl"]) .sd-disclosure-chevron {
+  scale: -1 1;
+}
+
+:where([dir="rtl"]) .sd-disclosure-trigger[data-open] .sd-disclosure-chevron {
+  rotate: -90deg;
+}
+
+.sd-disclosure-panel {
+  height: var(--accordion-panel-height, var(--collapsible-panel-height, auto));
+  overflow: hidden;
+  transition: height var(--sd-spring-smooth-duration) var(--sd-spring-smooth);
+}
+
+.sd-disclosure-panel:is([data-starting-style], [data-ending-style]) {
+  height: 0;
+}
+
+.sd-disclosure-panel[data-ending-style] {
+  transition-duration: var(--sd-duration-slow);
+  transition-timing-function: var(--sd-ease-out);
+}
+
+.sd-disclosure-content {
+  text-wrap: pretty;
+  padding-block: 2px 12px;
+  padding-inline: calc(var(--sd-disclosure-padding-inline) + var(--sd-disclosure-content-indent))
+    var(--sd-disclosure-padding-inline);
+}
+
+.sd-disclosure-group[data-variant="plain"] .sd-disclosure-content,
+.sd-disclosure[data-variant="plain"] .sd-disclosure-content {
+  padding-inline: var(--sd-disclosure-content-indent) 0;
+}
+

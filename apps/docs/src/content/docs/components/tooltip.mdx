@@ -1,0 +1,84 @@
+export const metadata = {
+  title: "Tooltip",
+  description: "The macOS help tag: a few words about a control when the pointer rests on it.",
+}
+
+# Tooltip
+
+<Lead>Name a control or add a short hint when the pointer rests on it.</Lead>
+
+<Demo name="tooltip/basic" platforms={["macos"]} wallpaper height={240} />
+
+## When to use it
+
+On the Mac, a help tag names an icon-only button or says briefly what a control does. Keep it to a few words, and describe the action, not the icon (“Bold”, not “B button”). Never put anything in a tooltip that people need: it only appears for someone who pauses with a pointer.
+
+Touch screens have no hover, so on iPhone and iPad tooltips don’t appear at all. Label controls there with text, or use a [Popover](/docs/components/popover) for a longer explanation.
+
+## Usage
+
+```tsx
+import { Tooltip, TooltipContent, TooltipShortcut, TooltipTrigger } from "@dreambase/stardust/tooltip"
+```
+
+The help tag waits 800ms before it appears, as the Mac does, and appears at once on keyboard focus. Once one is showing, moving to the next control shows its tag straight away, without the delay or the fade, so moving along a toolbar reads as one tag following the pointer.
+
+### Keyboard shortcuts
+
+Give the root a `shortcut` and put `TooltipShortcut` in the content to show it, formatted for the platform (⌘B on Apple devices).
+
+### Info buttons on touch
+
+For a button whose only job is the hint, `toggleable` opens and closes the tooltip on press, so it works with a finger too.
+
+<Demo name="tooltip/toggleable" />
+
+## Platform behavior
+
+- **macOS.** A small rectangle of thick material with 6pt corners and 11pt text, below the control, with no arrow. It fades in quickly and out faster.
+- **iOS and iPadOS.** No hover, so a plain tooltip never opens. A `toggleable` one opens on tap with 13pt text.
+
+## Accessibility
+
+- The tooltip names a trigger that has no name of its own, like an icon button, and describes any other. Set `type` to choose.
+- It opens when keyboard focus reaches the trigger and Escape closes it without moving focus.
+- It can’t be focused, so never put links or buttons in it.
+
+## API
+
+### Tooltip
+
+Takes every [ui-sdk Tooltip](https://ui-sdk.dev/docs/components/tooltip) root prop.
+
+<PropsTable
+  rows={[
+    { name: "delay", type: "number", default: "800", description: "Milliseconds the pointer rests before it opens." },
+    { name: "closeDelay", type: "number", default: "0", description: "Milliseconds it stays after the pointer leaves." },
+    { name: "shortcut", type: "string", description: "The trigger's keyboard shortcut, like mod+b, shown by TooltipShortcut." },
+    { name: "toggleable", type: "boolean", default: "false", description: "Pressing the trigger opens and closes it, for touch." },
+    { name: "type", type: '"label" | "description"', description: "Whether it names or describes its trigger." },
+  ]}
+/>
+
+### TooltipContent
+
+<PropsTable
+  rows={[
+    { name: "side", type: '"top" | "right" | "bottom" | "left"', default: '"bottom"', description: "Below the control, as macOS places help tags." },
+    { name: "sideOffset", type: "number", default: "6", description: "The gap to the trigger." },
+    { name: "collisionPadding", type: "number", default: "8", description: "Space kept from the window edges." },
+  ]}
+/>
+
+`TooltipTrigger` and `TooltipShortcut` take ui-sdk’s props. `createTooltipController` is re-exported.
+
+| Data attribute | On | Meaning |
+| --- | --- | --- |
+| `data-side`, `data-align` | `.sd-tooltip` | Where it landed |
+| `data-instant` | `.sd-tooltip` | Opened at once after another tag; skips the fade |
+| `data-starting-style`, `data-ending-style` | `.sd-tooltip` | Entering and leaving |
+
+| CSS variable | Default |
+| --- | --- |
+| `--sd-tooltip-font` | 11px on macOS, 13px on touch |
+| `--sd-tooltip-padding` | 3px 7px on macOS |

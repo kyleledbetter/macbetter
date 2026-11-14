@@ -1,0 +1,80 @@
+export const metadata = {
+  title: "Separator",
+  description: "A hairline between groups of content, horizontal or vertical, with an optional label.",
+}
+
+# Separator
+
+<Lead>Divide groups of content with a hairline.</Lead>
+
+<Demo name="separator/basic" />
+
+## When to use it
+
+Use a separator between groups that a reader should take as separate, like a profile's name and its bio, or between links in a row. Apple's separators are thin and quiet: one physical pixel in a translucent gray, so they divide without drawing the eye.
+
+Prefer space and grouping first. Inset grouped lists, cards and sections already separate content; add a line only when space alone doesn't.
+
+## Usage
+
+```tsx
+import { Separator, SeparatorLabel } from "@dreambase/stardust/separator"
+```
+
+### Vertical
+
+Set `orientation="vertical"` between items in a row. It stretches to the row's height.
+
+<Demo name="separator/vertical" />
+
+### Inset
+
+`inset="leading"` starts the line at the row's text instead of its edge, as between the rows of an iOS list. `inset` alone insets both ends. Both use the platform's row padding; set `--sd-separator-inset` to line up with text that sits after an icon.
+
+<Demo name="separator/inset" />
+
+### With a label
+
+`SeparatorLabel` puts a short word between two lines. The word carries the meaning, so the lines are hidden from screen readers.
+
+<Demo name="separator/label" />
+
+## Platform behavior
+
+The line is the same hairline everywhere. Its inset follows the platform's row padding: 10 points on macOS and 16 on iOS and iPadOS, so an inset separator lines up with list text on each.
+
+## Accessibility
+
+- A separator is announced with the `separator` role and its orientation, so a screen reader hears the groups as separate. It never takes focus.
+- Pass `decorative` when the surrounding content already shows the division; the separator gets `role="none"`.
+- In Increase Contrast, the separator token darkens on its own.
+
+## API
+
+### Separator
+
+<PropsTable
+  rows={[
+    { name: "orientation", type: '"horizontal" | "vertical"', default: '"horizontal"', description: "Which way the line runs." },
+    { name: "inset", type: 'boolean | "leading"', description: "`leading` insets the start by the row padding; `true` insets both ends." },
+    { name: "decorative", type: "boolean", default: "false", description: "Hides the line from assistive technology." },
+  ]}
+/>
+
+### SeparatorLabel
+
+<PropsTable
+  rows={[
+    { name: "children", type: "ReactNode", description: 'The label, like "or".' },
+    { name: "inset", type: "boolean", description: "Insets both ends by the row padding." },
+  ]}
+/>
+
+### Data attributes and variables
+
+| Attribute or variable | On | Description |
+| --- | --- | --- |
+| `data-orientation` | `.sd-separator` | `horizontal` or `vertical`, from ui-sdk. |
+| `data-inset` | `.sd-separator` | `both` or `leading`. |
+| `--sd-separator-color` | `.sd-separator` | The line's color. Defaults to `--sd-separator`. |
+| `--sd-separator-inset` | `.sd-separator` | How far an inset line starts from the edge. |

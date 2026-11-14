@@ -1,0 +1,139 @@
+export const metadata = {
+  title: "Button",
+  description: "Run an action. Bezeled, filled, tinted, plain and glass push buttons for every platform.",
+}
+
+# Button
+
+<Lead>Run an action with a click, a tap or the keyboard.</Lead>
+
+<Demo name="button/variants" />
+
+## When to use it
+
+Use a button for an action that happens now: save, share, delete, send. Label it with a verb, in title case on macOS and iOS ("Save Draft", not "Draft saving").
+
+- **Filled** marks the one default action in a view, the button Return presses in a macOS dialog or the main action at the bottom of an iOS sheet. Use one per view.
+- **Bezeled** is the standard push button. It's the default, and most buttons should be this one.
+- **Tinted** is a quieter alternative to filled that still carries the accent, for a secondary action that should stand out from the plain ones.
+- **Plain** is text alone, for toolbars, navigation bars and actions inside content.
+- **Glass** floats over photos, maps and video. Use it only over content, never on another material.
+
+To go somewhere rather than do something, render the button as a link. To turn something on and off, use a [Toggle](/docs/components/toggle) or a [Switch](/docs/components/switch) instead.
+
+## Usage
+
+```tsx
+import { Button, ButtonSpinner } from "@dreambase/stardust/button"
+```
+
+### Tones
+
+`tone` sets the color a variant uses: `accent` (the default), `neutral` for actions that shouldn't draw the eye, and `destructive` for actions that delete or can't be undone. Destructive is always a choice you make for the person, not decoration.
+
+<Demo name="button/tones" />
+
+### Sizes
+
+`size` is `sm`, `md` or `lg`. The heights come from the platform: 22, 28 and 36 points on macOS, 34, 44 and 52 on iOS. Use `sm` in inspectors and dense toolbars, and `lg` for the main action of a sheet or an onboarding screen.
+
+<Demo name="button/sizes" />
+
+### Shapes
+
+`shape="auto"` follows the platform: a rounded rectangle on macOS and a capsule on touch. `capsule` forces the capsule everywhere, and `circle` makes a round button for a single icon.
+
+<Demo name="button/shapes" />
+
+### Icons
+
+Put an icon before the label, hidden from screen readers with `aria-hidden`. A button with only an icon needs an `aria-label` that says what it does.
+
+<Demo name="button/icons" />
+
+### Pending
+
+Return a Promise from `onClick` and the button stays pending until it settles: it ignores further presses, keeps focus and tells assistive technology it's busy. Put a `ButtonSpinner` inside to show it, and mark an icon `data-show="idle"` to hide it while the spinner turns. Keep the label the same so the button's name doesn't change while it's focused.
+
+<Demo name="button/pending" />
+
+### Block
+
+`block` stretches the button to its container, like the stacked actions at the bottom of an iOS sheet or onboarding screen.
+
+<Demo name="button/block" platforms={["ios", "ipados", "macos"]} />
+
+### Glass
+
+`variant="glass"` blurs and brightens what's behind it, with a bright rim. It's for controls over media, like playback buttons over album art.
+
+<Demo name="button/glass" wallpaper />
+
+### As a link
+
+Pass a link as `render` and the button becomes that link, keeping its look and its focus behavior. Use it when the action is navigation.
+
+<Demo name="button/link" />
+
+## Platform behavior
+
+- **macOS.** Bezeled buttons are raised, with a hairline edge and a soft shadow in light and a lit top edge in dark; filled buttons use the accent. Corners are rounded rectangles that scale with the size. Hover brightens a button slightly, and press darkens it at once.
+- **iPadOS and iOS.** Buttons are capsules. A bezeled button becomes a gray fill with accent-colored text, as in UIKit's gray configuration. There's no hover; a press dims plain buttons and gives every button a small, springy scale.
+- **Every platform.** A button smaller than the platform's minimum touch target (24 points on macOS, 44 on touch) still answers presses across the full target, so `sm` buttons stay easy to hit.
+
+## Accessibility
+
+- Renders a native `button`, so Enter and Space press it and it joins the tab order. As a link, Enter follows it.
+- Name icon-only buttons with `aria-label`. Hide decorative icons with `aria-hidden="true"`.
+- While pending, the button sets `aria-busy` and `aria-disabled`, and after a second announces `pendingAnnouncement` ("Loading" by default) in a polite live region.
+- `disabled` removes the button from the tab order. Use `focusableWhenDisabled` when it should keep focus, for example to show a tooltip that explains why.
+- Focus shows the accent halo. Text keeps 4.5:1 contrast in every variant, light and dark: the destructive fill is deepened and tinted text is adjusted where the stock system red or accent would fall short.
+- The label identifies a button, so a bezeled button's edge stays as soft as AppKit's. With Increase Contrast on (`prefers-contrast: more`) the edge darkens to 3:1.
+- With Reduce Motion on, the pending spinner keeps turning, more slowly, so it still says something is happening.
+
+## API
+
+### Button
+
+<PropsTable
+  rows={[
+    { name: "variant", type: '"bezeled" | "filled" | "tinted" | "plain" | "glass"', default: '"bezeled"', description: "How prominent the button is." },
+    { name: "tone", type: '"accent" | "neutral" | "destructive"', default: '"accent"', description: "The color the variant uses." },
+    { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Height, padding and type size, from the platform's metrics." },
+    { name: "shape", type: '"auto" | "capsule" | "circle"', default: '"auto"', description: "Rounded rectangle on macOS and capsule on touch, or a fixed shape." },
+    { name: "block", type: "boolean", default: "false", description: "Stretches the button to the container's width." },
+    { name: "onClick", type: "(event, details) => unknown", description: "Runs the action. Return a Promise to keep the button pending until it settles." },
+    { name: "pendingAnnouncement", type: "string", default: '"Loading"', description: "What screen readers hear once the button has been pending for a second." },
+    { name: "disabled", type: "boolean", default: "false", description: "Stops presses and leaves the tab order." },
+    { name: "focusableWhenDisabled", type: "boolean", default: "false", description: "Keeps a disabled button focusable with aria-disabled." },
+    { name: "render", type: "ReactElement | (props, state) => ReactElement", description: "Renders another element, like a link, in the button's place." },
+  ]}
+/>
+
+### ButtonSpinner
+
+A spinning ring that shows only while the button is pending. It takes the props of a `span`.
+
+### Data attributes
+
+| Attribute | On | Values |
+| --- | --- | --- |
+| `data-variant` | Button | `bezeled`, `filled`, `tinted`, `plain`, `glass` |
+| `data-tone` | Button | `accent`, `neutral`, `destructive` |
+| `data-size` | Button | `sm`, `md`, `lg` |
+| `data-shape` | Button | `auto`, `capsule`, `circle` |
+| `data-block` | Button | Present when `block` is set |
+| `data-pending` | Button | Present while the action runs |
+| `data-disabled` | Button | Present when disabled |
+| `data-show` | Content | `idle` or `pending`: shows the element only in that state |
+
+### CSS variables
+
+| Variable | Default | What it sets |
+| --- | --- | --- |
+| `--sd-button-height` | `--sd-control-height` | Height, and the width of a circle |
+| `--sd-button-padding` | `--sd-control-padding` | Inline padding |
+| `--sd-button-radius` | `--sd-control-radius` | Corner radius |
+| `--sd-button-bg` | Per variant | Background |
+| `--sd-button-fg` | Per variant | Text and icon color |
+| `--sd-button-edge` | A soft ink hairline | The bezeled button's edge |

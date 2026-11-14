@@ -1,0 +1,99 @@
+export const metadata = { title: "Menu", description: "Show a list of commands and settings from a button." }
+
+# Menu
+
+<Lead>Show a list of commands and settings from a button.</Lead>
+
+<Demo name="menu/basic" wallpaper height={520} />
+
+## When to use it
+
+Use a menu, or pull-down button, when a button stands for several related commands: what you can do to a note, how to sort a list, where to share a file. Every command in it should also be somewhere permanent, such as the menu bar on the Mac, because a menu hides what it holds until someone opens it.
+
+- Keep menus short. Group related items with separators and put the most used ones first.
+- Name items with verbs or nouns in title case, and end an item that asks for more input with an ellipsis (Share…).
+- Put destructive items last, on their own, and mark them `destructive`.
+- Show keyboard shortcuts on the Mac. People learn them from menus.
+
+## Usage
+
+```tsx
+import { Menu, MenuContent, MenuItem, MenuTrigger } from "@dreambase/stardust/menu"
+```
+
+`MenuTrigger` is a Stardust [button](/docs/components/button) with a pull-down chevron, and takes the button's `variant`, `tone`, `size` and `shape`. Turn the chevron off with `indicator={false}` for an icon-only trigger, and name it with `aria-label`.
+
+### Icons, shortcuts and submenus
+
+Put an icon in `MenuItemIcon` so screen readers and typeahead skip it. On the Mac icons sit before the label, and labels line up when only some items have one. On iOS and iPadOS they move to the trailing edge. `shortcut="mod+shift+s"` shows the keys, right-aligned in the secondary label color, and sets `aria-keyshortcuts`; your app still owns the key handler. `MenuSub`, `MenuSubTrigger` and `MenuSubContent` add another level, and the sub trigger draws its own chevron.
+
+### Checkboxes, radio groups and section labels
+
+`MenuCheckboxItem` and `MenuRadioItem` render their own checkmark. The menu reserves a leading check column only when it has something to check, as the Mac does, so plain menus stay compact. `MenuGroupLabel` titles a group.
+
+<Demo name="menu/settings" wallpaper height={380} />
+
+### Presentation
+
+Menus open as a popover on every platform, which is how pull-down menus look on iOS too. `presentation="sheet"` slides the menu up from the bottom of the screen instead, and `presentation="auto"` does that only on small touch screens. Reach for it when a menu is long; a short action list reads better as a popover next to its button. In a sheet, a submenu replaces the list, and Escape or a swipe down goes back.
+
+<Demo name="menu/presentation" wallpaper height={420} />
+
+Open this page on a phone to see the sheet; on a larger screen the same menu opens as a popover.
+
+## Platform behavior
+
+- **macOS**: 24-point rows in a translucent menu material with 5 points of padding. The material is denser than a popover's, so text stays legible over any window. The highlighted row is a solid accent fill with the on-accent color for its text, icon and shortcut. The menu fades and scales in slightly from the trigger; submenus appear in place.
+- **iOS and iPadOS**: the pull-down menu. Rows are 44 points tall with 17-point text, flush to the edges, with hairlines between rows and a thick band between groups. Icons trail the label, a pressed row turns gray instead of accent, and the menu grows out of its button without bouncing. iOS hides shortcuts; iPadOS keeps them for hardware keyboards.
+- **As a sheet**: the menu rises from the bottom edge with a grabber and dims the page. A submenu expands in place under its row, and its chevron turns to point down.
+
+## Accessibility
+
+The menu follows the WAI-ARIA menu button pattern. Enter, Space and the arrow keys open it with focus on an item; arrows move, typing jumps to an item by name, Enter runs it, and Escape closes the menu and returns focus to the trigger. Disabled items stay focusable so people can find them. Icons and checkmarks are hidden from screen readers, and shortcuts are announced through `aria-keyshortcuts`.
+
+## API
+
+Every part takes the props of its ui-sdk part. Stardust adds the following.
+
+### MenuTrigger
+
+<PropsTable
+  rows={[
+    { name: "variant", type: '"bezeled" | "filled" | "tinted" | "plain" | "glass"', default: '"bezeled"', description: "The button style." },
+    { name: "tone", type: '"accent" | "neutral" | "destructive"', default: '"accent"', description: "The button's color." },
+    { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "The button's size." },
+    { name: "shape", type: '"auto" | "capsule" | "circle"', default: '"auto"', description: "Rounded rectangle on the Mac, capsule on touch." },
+    { name: "indicator", type: "boolean", default: "true", description: "Shows the pull-down chevron after the label." },
+  ]}
+/>
+
+### Other parts
+
+<PropsTable
+  rows={[
+    { name: "MenuContent", type: "sideOffset", default: "4", description: "The popup. Submenus use MenuSubContent, which defaults to 0." },
+    { name: "MenuItem", type: "destructive, shortcut, disabled", description: "A command. Destructive items are red." },
+    { name: "MenuCheckboxItem / MenuRadioItem", type: "—", description: "Render their own checkmark in the leading column." },
+    { name: "MenuItemIndicator", type: "keepMounted", default: "true", description: "The checkmark, if you compose items yourself." },
+    { name: "MenuSubTrigger", type: "—", description: "Renders its own trailing chevron." },
+    { name: "MenuContextTrigger", type: "—", description: "An area that opens the menu on right-click or long press. See Context Menu." },
+  ]}
+/>
+
+### Styling hooks
+
+<PropsTable
+  rows={[
+    { name: "data-highlighted", type: "item", description: "The row under the pointer or keyboard focus." },
+    { name: "data-checked / data-unchecked", type: "checkbox and radio items", description: "Whether the item is on." },
+    { name: "data-destructive", type: "item", description: "Set by `destructive`." },
+    { name: "data-has-icons", type: "content", description: "Some item has an icon; the rest line up with it." },
+    { name: "data-presentation", type: "content", description: "`popover` or `sheet`: how the menu is showing this time." },
+    { name: "--sd-menu-row-padding", type: "length", default: "9px · 16px", description: "Row inset on the Mac · on touch." },
+    { name: "--sd-menu-gutter", type: "length", default: "13px · 24px", description: "Width of the check column." },
+    { name: "--sd-menu-highlight", type: "color", default: "accent · gray", description: "The highlighted row's fill." },
+    { name: "--sd-menu-min-width", type: "length", default: "180px · 250px", description: "The narrowest a menu gets." },
+    { name: "--sd-menu-material", type: "color", default: "thick material, denser", description: "The popup's background. Turns opaque with Reduce Transparency." },
+    { name: "--sd-menu-destructive-text", type: "color", default: "destructive text, lifted in dark", description: "The color of destructive items." },
+  ]}
+/>

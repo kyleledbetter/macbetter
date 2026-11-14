@@ -1,0 +1,126 @@
+export const metadata = {
+  title: "Installation",
+  description: "Add Stardust to a React 19 app: install the packages, import the stylesheet and set the platform before first paint.",
+}
+
+# Installation
+
+<Lead>Add Stardust to a React app in four steps. You need React 19 or newer.</Lead>
+
+<Steps>
+
+### Install the packages
+
+Stardust's components wrap ui-sdk's, so install ui-sdk next to it. Installing both packages yourself keeps one copy of ui-sdk's core in your app.
+
+```bash
+pnpm add @dreambase/stardust @ui-sdk/react @ui-sdk/core
+```
+
+### Import the stylesheet
+
+Import `@dreambase/stardust/styles.css` once, in your global stylesheet. Everything in it sits in a cascade layer named `stardust`, so any rule you write outside a layer wins without `!important`.
+
+Declare the layer order at the top of the file. ui-sdk's layer comes first and Stardust's sits above it. If you use Tailwind CSS v4, list Tailwind's layers around them and import Tailwind before Stardust, as this site does:
+
+```css title="app/globals.css"
+@layer ui-sdk, theme, base, stardust, components, utilities;
+
+@import "tailwindcss";
+@import "@dreambase/stardust/styles.css";
+```
+
+With that order, Tailwind's utilities override Stardust's component styles, and Stardust's tokens override Tailwind's preflight. Without Tailwind, the first line is just:
+
+```css
+@layer ui-sdk, stardust;
+```
+
+### Set the platform and theme
+
+Render `<StardustScript />` at the top of `<body>` in your root layout. It's a small inline script that sets `data-platform` on `<html>` before the page paints: `macos` for a fine pointer, and `ios` or `ipados` for touch, split at 744px wide.
+
+Put `data-theme` on `<html>` to choose a theme, and `data-stardust` on `<body>` to give the page Stardust's background, text color and font.
+
+```tsx title="app/layout.tsx"
+import { StardustScript } from "@dreambase/stardust"
+import "./globals.css"
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" data-theme="dreambase" suppressHydrationWarning>
+      <body data-stardust="">
+        <StardustScript />
+        {children}
+      </body>
+    </html>
+  )
+}
+```
+
+`suppressHydrationWarning` is there because the script changes an attribute on `<html>` before React hydrates.
+
+Colors follow the system's light or dark setting. To pin one, add `data-scheme="light"` or `data-scheme="dark"` to any element. ui-sdk's `createColorScheme` writes `data-color-scheme`, which Stardust reads the same way.
+
+### Use a component
+
+Import each component from its own entry.
+
+```tsx
+import { Button } from "@dreambase/stardust/button"
+import { Switch } from "@dreambase/stardust/switch"
+
+export function Example() {
+  return (
+    <>
+      <label>
+        Wi-Fi
+        <Switch defaultChecked />
+      </label>
+      <Button variant="filled">Join network</Button>
+    </>
+  )
+}
+```
+
+</Steps>
+
+## Next.js
+
+Stardust ships its TypeScript source rather than compiled JavaScript. Next.js needs to compile it, so add it to `transpilePackages`:
+
+```ts title="next.config.ts"
+import type { NextConfig } from "next"
+
+const nextConfig: NextConfig = {
+  transpilePackages: ["@dreambase/stardust"],
+}
+
+export default nextConfig
+```
+
+With another bundler, make sure it compiles TypeScript and JSX from dependencies too.
+
+## Imports
+
+| Import | What it gives you |
+| --- | --- |
+| `@dreambase/stardust/<component>` | One component and its parts, like `@dreambase/stardust/segmented-control` |
+| `@dreambase/stardust` | Every component, plus `StardustScript`, `resolvePlatform`, `cx` and the theme helpers |
+| `@dreambase/stardust/styles.css` | The whole stylesheet: tokens, platforms, themes, base, materials and components |
+| `@dreambase/stardust/themes/<name>.css` | One built-in theme's stylesheet on its own |
+| `@dreambase/stardust/theme` | `createTheme`, `themeVariables`, `contrastRatio` and their types |
+
+Prefer the per-component entries in app code: they make it obvious what a file uses.
+
+## StardustScript options
+
+<PropsTable
+  rows={[
+    { name: "platform", type: '"macos" | "ipados" | "ios" | "auto"', default: '"auto"', description: "The platform to render. auto follows the device." },
+    { name: "storageKey", type: "string", description: "A localStorage key that holds a saved platform choice, if you let people pick one. The saved value wins over platform." },
+    { name: "nonce", type: "string", description: "Passed to the script tag for a Content Security Policy." },
+  ]}
+/>
+
+To resolve the platform in your own code, call `resolvePlatform()` from `@dreambase/stardust`. It applies the same rule as the script.

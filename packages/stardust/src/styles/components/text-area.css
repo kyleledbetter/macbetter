@@ -1,0 +1,94 @@
+/* Text Area — the text field, several lines tall, growing with what's typed. */
+
+:where(:root, [data-platform="macos"]) {
+  --sd-text-area-pad-block: 5px;
+  --sd-text-area-line: 16px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --sd-text-area-pad-block: 11px;
+  --sd-text-area-line: 22px;
+}
+
+.sd-text-area {
+  --sd-text-area-bg: var(--sd-text-field-auto-bg);
+  --sd-text-area-edge: var(--sd-text-field-auto-edge);
+  --sd-text-area-ring: var(--sd-focus-ring);
+
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: calc(var(--sd-text-area-min-rows, 3) * var(--sd-text-area-line) + var(--sd-text-area-pad-block) * 2);
+  max-height: calc(var(--sd-text-area-max-rows, 10) * var(--sd-text-area-line) + var(--sd-text-area-pad-block) * 2);
+  margin: 0;
+  padding: var(--sd-text-area-pad-block) var(--sd-text-field-padding);
+  border: 0;
+  border-radius: var(--sd-text-field-radius);
+  background: var(--sd-text-area-bg);
+  box-shadow: var(--sd-text-area-edge);
+  color: var(--sd-label);
+  font: var(--sd-text-field-font);
+  line-height: var(--sd-text-area-line);
+  letter-spacing: var(--sd-tracking-body);
+  caret-color: var(--sd-accent);
+  resize: none;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  appearance: none;
+  outline: var(--sd-focus-ring-width) solid transparent;
+  outline-offset: 2px;
+  transition:
+    outline-color var(--sd-duration-fast) var(--sd-ease-out),
+    outline-offset var(--sd-duration-fast) var(--sd-ease-out);
+}
+
+.sd-text-area[data-variant="bordered"] {
+  --sd-text-area-bg: var(--sd-bg-field);
+  --sd-text-area-edge: inset 0 0 0 var(--sd-hairline) var(--sd-control-border),
+    inset 0 0.5px 1px light-dark(rgb(0 0 0 / 0.07), rgb(0 0 0 / 0.2));
+}
+
+.sd-text-area[data-variant="filled"] {
+  --sd-text-area-bg: var(--sd-fill-tertiary);
+  --sd-text-area-edge: inset 0 0 0 0 transparent;
+}
+
+.sd-text-area[data-variant="plain"] {
+  --sd-text-area-bg: transparent;
+  --sd-text-area-edge: inset 0 0 0 0 transparent;
+  padding-inline: 0;
+}
+
+.sd-text-area::placeholder {
+  color: var(--sd-field-placeholder);
+  opacity: 1;
+}
+
+.sd-text-area:focus {
+  outline-color: var(--sd-text-area-ring);
+  outline-offset: 0px;
+}
+
+.sd-text-area:is([data-invalid], [aria-invalid="true"]) {
+  --sd-text-area-edge: inset 0 0 0 1px var(--sd-destructive);
+  --sd-text-area-ring: color-mix(in oklch, var(--sd-destructive) 80%, transparent);
+}
+
+.sd-text-area:is([data-disabled], :disabled) {
+  --sd-text-area-bg: var(--sd-fill-quaternary);
+  --sd-text-area-edge: inset 0 0 0 var(--sd-hairline) var(--sd-separator);
+  color: var(--sd-label-tertiary);
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .sd-text-area[data-variant="plain"]:focus {
+    outline-color: transparent;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .sd-text-area[data-variant="filled"] {
+    --sd-text-area-edge: inset 0 0 0 1px var(--sd-control-border);
+  }
+}

@@ -1,0 +1,85 @@
+export const metadata = {
+  title: "Accessibility",
+  description: "What ui-sdk and Stardust handle for you, what's left to you, and how to test it.",
+}
+
+# Accessibility
+
+<Lead>Stardust splits the work with ui-sdk. ui-sdk makes each control behave correctly for the keyboard and assistive technology; Stardust makes it look right, legible and responsive to system settings. A few things only you can do.</Lead>
+
+## What ui-sdk handles
+
+Every interactive Stardust component wraps a ui-sdk part, and ui-sdk owns its behavior:
+
+- **Keyboard.** Arrow keys move through segmented controls, menus, lists and tabs; Space and Enter activate; Escape dismisses popups. Each component's page lists its keys.
+- **Focus.** Focus moves into a dialog or menu when it opens, stays inside while it's modal, and returns to the trigger when it closes.
+- **ARIA.** Roles, states and relationships (`aria-checked`, `aria-expanded`, `aria-controls` and the rest) are written for you and kept in sync with state.
+- **Right to left.** Components read the direction from the page; there's no provider to set up. Left and Right arrows swap on horizontal controls.
+
+Because Stardust doesn't hand-write roles or key handling, these behaviors are the same ones ui-sdk tests.
+
+## What Stardust handles
+
+- **The focus halo.** Keyboard focus shows a 3px ring in a translucent accent color on `:focus-visible`, as on macOS. Pointer clicks don't show it. Text fields show it whenever they're focused, including by pointer.
+- **Contrast.** The built-in themes are tuned so text reaches 4.5:1, and control edges, focus rings and selected fills reach 3:1, in light and dark. The table below checks the seed pairs.
+- **Hit targets.** Controls respond to at least `--sd-hit-target`: 24px on macOS and 44px on touch, even when they look smaller.
+- **Reduced motion.** Under `prefers-reduced-motion: reduce`, transitions and animations on Stardust elements shorten to almost nothing, and buttons stop scaling on press.
+- **Reduced transparency.** Under `prefers-reduced-transparency: reduce`, materials and glass become opaque and lose their blur.
+- **Increased contrast.** Under `prefers-contrast: more`, secondary and tertiary labels, separators and control borders get stronger, and materials become opaque.
+- **No stuck hover.** Hover styles only apply to devices with a fine pointer.
+- **Logical properties.** Component CSS uses `padding-inline`, `inset-inline-start` and friends, so layouts mirror in right-to-left languages.
+
+## Contrast in the built-in themes
+
+These ratios are computed with `contrastRatio()` from each theme's seed colors. A ✕ marks a pair below its target.
+
+<Demo name="foundations/contrast" hideCode />
+
+The System theme uses Apple's own blue, and white text on it falls short of 4.5:1 in both schemes. If you need to meet WCAG AA for filled buttons, use another built-in theme or a darker accent in your own.
+
+## What's left to you
+
+### Name every control
+
+ui-sdk can tell a screen reader that something is a switch and that it's on. Only you can say what it switches. Give every control an accessible name:
+
+```tsx
+<label>
+  Wi-Fi
+  <Switch defaultChecked />
+</label>
+
+<SegmentedControl aria-label="View" defaultValue="list">…</SegmentedControl>
+
+<Button shape="circle" aria-label="Add to favorites">
+  <HeartIcon aria-hidden="true" />
+</Button>
+```
+
+- Prefer visible text. Use `aria-label` only when there's no room for it, as with icon-only buttons.
+- Mark decorative icons `aria-hidden="true"`.
+- Keep a switch's or checkbox's label the same in both states. The control already says whether it's on.
+
+The same names are how agents find controls, so naming serves both. See [Built for agents](/docs/agents).
+
+### Don't rely on color alone
+
+A red border doesn't tell everyone a field has an error. Pair color with text or an icon: an error message under the field, a symbol in a status badge, a label next to a colored dot.
+
+### Write content that fits
+
+Stardust can't stop a label from truncating. Let text wrap where it matters, use `min-height` rather than `height` for rows, and test with long translations.
+
+### Check your own colors
+
+Anything you color yourself, from a chart to a custom badge, is outside the themes' checks. Use the semantic tokens where you can, and test what you can't.
+
+## Testing
+
+- **Keyboard first.** Unplug the mouse. Tab through the page: every control should be reachable, in a sensible order, with a visible halo. Operate each one with the keyboard alone.
+- **A screen reader.** Turn on VoiceOver (Command-F5 on a Mac, or Settings → Accessibility on an iPhone) and move through the page. Every control should announce a name, a role and its state.
+- **System settings.** Turn on Reduce Motion, Reduce Transparency and Increase Contrast, in light and dark. In Chrome DevTools you can emulate each under Rendering.
+- **Zoom.** Zoom the browser to 200%. Nothing should be clipped or overlap.
+- **Right to left.** Set `dir="rtl"` on `<html>` and check that layouts and arrow keys mirror.
+- **Contrast in a real browser.** Translucent tokens depend on what's behind them, so measure the rendered colors, not the token values.
+- **In tests.** Query by role and name, as a person would: `getByRole("switch", { name: "Wi-Fi" })`. If that query can't find your control, neither can a screen reader. jsdom can't see color, so check contrast in a browser.

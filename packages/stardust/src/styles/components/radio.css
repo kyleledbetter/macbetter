@@ -1,0 +1,267 @@
+/* Radio — one choice from a few. macOS: a small circle that fills with the accent around a white dot.
+   Touch: a larger circle, or a list of rows with a trailing checkmark, as in iOS Settings. */
+
+:where(:root, [data-platform="macos"]) {
+  --sd-radio-size: 14px;
+  --sd-radio-dot: 6px;
+  --sd-radio-label-gap: var(--sd-space-3);
+  --sd-radio-group-gap: var(--sd-space-3);
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --sd-radio-size: 22px;
+  --sd-radio-dot: 9px;
+  --sd-radio-label-gap: var(--sd-space-5);
+  --sd-radio-group-gap: var(--sd-space-6);
+}
+
+.sd-radio-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sd-radio-group-gap);
+}
+
+.sd-radio {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--sd-radio-size);
+  height: var(--sd-radio-size);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--sd-radius-full);
+  background: var(--sd-bg-control);
+  box-shadow:
+    inset 0 0 0 var(--sd-hairline) var(--sd-control-border),
+    0 0.5px 1px var(--sd-shadow-color);
+  font: inherit;
+  cursor: default;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--sd-duration-fast) var(--sd-ease-out),
+    box-shadow var(--sd-duration-fast) var(--sd-ease-out),
+    scale var(--sd-spring-snappy-duration) var(--sd-spring-snappy);
+}
+
+.sd-radio::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: max(100%, var(--sd-hit-target));
+  height: max(100%, var(--sd-hit-target));
+  translate: -50% -50%;
+}
+
+.sd-radio[data-checked] {
+  background: var(--sd-accent);
+  box-shadow:
+    inset 0 0 0 var(--sd-hairline) color-mix(in oklch, var(--sd-accent-pressed), transparent 30%),
+    inset 0 0.5px 0 rgb(255 255 255 / 0.28),
+    0 0.5px 1px var(--sd-shadow-color);
+}
+
+.sd-radio:active:not([data-disabled], [data-readonly]) {
+  background: color-mix(in oklch, var(--sd-bg-control), var(--sd-ink) 12%);
+  transition-duration: 0ms;
+}
+
+.sd-radio[data-checked]:active:not([data-disabled], [data-readonly]) {
+  background: var(--sd-accent-pressed);
+}
+
+.sd-radio[data-disabled] {
+  opacity: 0.4;
+}
+
+/* ui-sdk marks the group, not each radio, when a Field shows it invalid. */
+.sd-radio-group[data-invalid]:not([data-variant="list"]) .sd-radio:not([data-checked]) {
+  box-shadow: inset 0 0 0 1.5px var(--sd-destructive);
+}
+
+.sd-radio-indicator {
+  display: block;
+  width: var(--sd-radio-dot);
+  height: var(--sd-radio-dot);
+  border-radius: var(--sd-radius-full);
+  /* White on the system blue, as AppKit draws it; a brand whose accent needs dark ink gets a dark dot. */
+  background: var(--sd-on-accent);
+  box-shadow: 0 0.5px 1px rgb(0 0 0 / 0.18);
+  scale: 0;
+  transition: scale var(--sd-spring-snappy-duration) var(--sd-spring-snappy);
+}
+
+.sd-radio-indicator[data-checked] {
+  scale: 1;
+}
+
+.sd-radio-check {
+  display: none;
+}
+
+/* A radio with a title. */
+.sd-radio-label {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--sd-radio-label-gap);
+  color: var(--sd-label);
+  font: var(--sd-text-body);
+  letter-spacing: var(--sd-tracking-body);
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.sd-radio-label > .sd-radio {
+  margin-block-start: calc((1lh - var(--sd-radio-size)) / 2);
+}
+
+.sd-radio-label:has(> .sd-radio[data-disabled]) {
+  color: var(--sd-label-tertiary);
+}
+
+.sd-radio-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sd-space-1);
+  min-width: 0;
+}
+
+.sd-radio-description {
+  color: var(--sd-label-secondary);
+  font: var(--sd-text-callout);
+}
+
+/* List: rows in an inset group, the chosen one marked with a checkmark at the end. */
+.sd-radio-group[data-variant="list"] {
+  align-items: stretch;
+  gap: 0;
+  min-width: min(100%, 280px);
+  padding: 0;
+  border-radius: var(--sd-group-radius);
+  background: var(--sd-bg-grouped-secondary);
+  box-shadow: 0 0 0 var(--sd-hairline) var(--sd-separator);
+  overflow: clip;
+}
+
+.sd-radio-group[data-variant="list"] .sd-radio-label {
+  position: relative;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-between;
+  min-height: var(--sd-row-height);
+  padding: var(--sd-space-3) var(--sd-row-padding);
+  transition: background-color var(--sd-duration-fast) var(--sd-ease-out);
+}
+
+.sd-radio-group[data-variant="list"] .sd-radio-label + .sd-radio-label::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto var(--sd-row-padding);
+  border-top: var(--sd-hairline) solid var(--sd-separator);
+}
+
+.sd-radio-group[data-variant="list"] .sd-radio-label:active {
+  background: var(--sd-fill-tertiary);
+  transition-duration: 0ms;
+}
+
+.sd-radio-group[data-variant="list"] .sd-radio-label:has(.sd-radio:focus-visible) {
+  outline: var(--sd-focus-ring-width) solid var(--sd-focus-ring);
+  outline-offset: calc(var(--sd-focus-ring-width) * -1);
+  border-radius: inherit;
+}
+
+.sd-radio-group[data-variant="list"] .sd-radio,
+.sd-radio-group[data-variant="list"] .sd-radio[data-checked]:active {
+  width: var(--sd-icon-size);
+  height: var(--sd-icon-size);
+  margin: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--sd-accent-text);
+}
+
+.sd-radio-group[data-variant="list"] .sd-radio:focus-visible {
+  outline: none;
+}
+
+.sd-radio-group[data-variant="list"] .sd-radio-indicator {
+  width: 100%;
+  height: 100%;
+  background: none;
+  box-shadow: none;
+  scale: 1;
+  opacity: 0;
+  transition: opacity var(--sd-duration-instant) var(--sd-ease-out);
+}
+
+.sd-radio-group[data-variant="list"] .sd-radio-indicator[data-checked] {
+  opacity: 1;
+}
+
+.sd-radio-group[data-variant="list"] .sd-radio-check {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .sd-radio-group[data-variant="list"] .sd-radio-label:hover {
+    background: var(--sd-fill-quaternary);
+  }
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .sd-radio {
+    background: transparent;
+    box-shadow: inset 0 0 0 1.5px var(--sd-control-border);
+  }
+
+  .sd-radio[data-checked] {
+    background: var(--sd-accent);
+    box-shadow: none;
+  }
+
+  .sd-radio:active:not([data-disabled], [data-readonly]) {
+    background: var(--sd-fill-tertiary);
+    scale: 0.92;
+  }
+
+  .sd-radio[data-checked]:active:not([data-disabled], [data-readonly]) {
+    background: var(--sd-accent-pressed);
+  }
+
+  .sd-radio-group[data-variant="list"] .sd-radio,
+  .sd-radio-group[data-variant="list"] .sd-radio[data-checked]:active {
+    background: transparent;
+    box-shadow: none;
+    scale: 1;
+  }
+
+  .sd-radio-group[data-variant="list"] .sd-radio-check {
+    stroke-width: 2.2;
+  }
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  @media (prefers-reduced-motion: reduce) {
+    .sd-radio:active:not([data-disabled], [data-readonly]) {
+      scale: none;
+    }
+  }
+}
+
+/* Choices with descriptions need more room between them to stay distinct. */
+.sd-radio-group:not([data-variant="list"]):has(.sd-radio-description) {
+  gap: calc(var(--sd-radio-group-gap) + var(--sd-space-3));
+}

@@ -1,0 +1,115 @@
+export const metadata = {
+  title: "Window",
+  description: "Frame a Mac app in a window with a title bar, traffic lights, sidebar and toolbar.",
+}
+
+# Window
+
+<Lead>Frame a Mac app in a window with a title bar, traffic lights, sidebar and toolbar.</Lead>
+
+<Demo name="window/finder" platforms={["macos"]} wallpaper height={560} />
+
+## When to use it
+
+Use a window to present a Mac app inside a web page: a product tour, a marketing screenshot that people can use, or an app that runs in the browser and should feel like it belongs on the desktop. The title bar, traffic lights and toolbar tell people at a glance what kind of app it is.
+
+To present an iPhone or iPad layout, use a [device frame](/docs/components/device-frame).
+
+A window isn't window management. A window doesn't move, resize or close by itself: wire the traffic lights to your own handlers if they should do something.
+
+## Usage
+
+```tsx
+import {
+  Window,
+  WindowBody,
+  WindowSidebar,
+  WindowTitle,
+  WindowTitlebar,
+  WindowTrafficLights,
+} from "@dreambase/stardust/window"
+```
+
+### Title-only windows
+
+A compact title bar holds the traffic lights and a centered title, like a utility window or About This Mac. Set `inactive` to draw a window behind the key window: its traffic lights turn gray and its title dims.
+
+<Demo name="window/basic" platforms={["macos"]} wallpaper height={300} />
+
+### Sidebar and toolbar
+
+Put a `WindowSidebar` first and it becomes a pane of glass inset from the window's edges, spanning the full height. Place the traffic lights at its top. The title bar and body take the column beside it, and a [Toolbar](/docs/components/toolbar) in the title bar becomes the unified toolbar. A [Sidebar](/docs/components/sidebar) inside drops its own material, so glass never sits on glass.
+
+When the window gets narrow, the toolbar's search field folds into a magnifying glass before anything else gives way, and below 540 points the sidebar hides, as a Mac window does when you drag it small.
+
+<Demo name="window/finder" platforms={["macos"]} wallpaper height={560} />
+
+### Window controls
+
+Pass `onClose`, `onMinimize` or `onZoom` to `WindowTrafficLights` and each light becomes a button. Their glyphs appear when the pointer is over the group or a light has keyboard focus.
+
+<Demo name="window/controls" platforms={["macos"]} wallpaper height={300} />
+
+## Platform behavior
+
+A window is a macOS idiom, and it draws the same whatever platform the page is on. Its title bar is 52 points tall when it holds a toolbar and 28 points when it only holds a title, and it keeps Apple's red, yellow and green traffic lights in every theme, because they're system chrome rather than brand color.
+
+In a right-to-left language the window mirrors, as macOS does: the traffic lights and the sidebar move to the right edge, with Close nearest the corner.
+
+## Accessibility
+
+- `Window` is a group. Name it with `aria-label`, usually the app's or the document's name.
+- Without handlers, the traffic lights are decorative and hidden from assistive technology. Pass `onClose`, `onMinimize` or `onZoom` and each becomes a real button named Close, Minimize or Zoom, in a group named Window controls. Their glyphs show when the pointer is over the group or a light has keyboard focus.
+
+## API
+
+### Window
+
+<PropsTable
+  rows={[
+    { name: "inactive", type: "boolean", default: "false", description: "Draws the window behind the key window: gray traffic lights, dimmed title, gray sidebar selection." },
+    { name: "aria-label", type: "string", description: "Names the window." },
+  ]}
+/>
+
+### WindowTitlebar
+
+<PropsTable
+  rows={[
+    { name: "variant", type: '"unified" | "compact"', default: '"unified"', description: "Unified is 52 points and holds a toolbar. Compact is 28 points and holds a title." },
+    { name: "bordered", type: "boolean", default: "true", description: "Draws the hairline between the title bar and the content." },
+  ]}
+/>
+
+### WindowTitle
+
+<PropsTable
+  rows={[
+    { name: "align", type: '"leading" | "center"', default: '"leading"', description: "Center for title-only windows, leading beside a toolbar." },
+    { name: "subtitle", type: "ReactNode", description: "A second, smaller line, like an item count." },
+  ]}
+/>
+
+### WindowTrafficLights
+
+<PropsTable
+  rows={[
+    { name: "onClose", type: "MouseEventHandler", description: "Makes the red light a Close button." },
+    { name: "onMinimize", type: "MouseEventHandler", description: "Makes the yellow light a Minimize button." },
+    { name: "onZoom", type: "MouseEventHandler", description: "Makes the green light a Zoom button." },
+  ]}
+/>
+
+`WindowSidebar` and `WindowBody` take the props of a `div`.
+
+### Data attributes and CSS variables
+
+| Name | On | Description |
+| --- | --- | --- |
+| `data-inactive` | `.sd-window` | The window is behind the key window. |
+| `data-variant` | `.sd-window-titlebar` | `unified` or `compact`. |
+| `data-light` | `.sd-window-traffic-light` | `close`, `minimize` or `zoom`. |
+| `--sd-window-radius` | `.sd-window` | Corner radius. 16 points. |
+| `--sd-window-sidebar-width` | `.sd-window` | Width of the inset sidebar. 220 points. |
+| `--sd-window-titlebar-height` | `.sd-window` | Height of the unified title bar. |
+| `--sd-window-sidebar-inset` | `.sd-window` | The gap between the sidebar's glass and the window's edges. 6 points. |

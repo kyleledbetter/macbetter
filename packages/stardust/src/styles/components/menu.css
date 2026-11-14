@@ -1,0 +1,438 @@
+/*
+ * Menu — compact rows with a solid accent highlight on macOS; the roomy
+ * pull-down menu with trailing icons and row separators on iOS and iPadOS.
+ * Select, Combo Box and Context Menu popups reuse these parts.
+ */
+
+:where(:root, [data-platform="macos"]) {
+  --sd-menu-inset: var(--sd-menu-padding);
+  --sd-menu-row-padding: 9px;
+  --sd-menu-row-padding-block: 2px;
+  --sd-menu-row-radius: var(--sd-row-radius);
+  --sd-menu-gutter: 13px;
+  --sd-menu-icon-size: 15px;
+  --sd-menu-icon-gap: 7px;
+  --sd-menu-icon-align: 1;
+  --sd-menu-min-width: 180px;
+  --sd-menu-label-font: 600 11px/14px var(--sd-font);
+  --sd-menu-label-padding: 6px 9px 3px;
+  --sd-menu-check-size: 11px;
+  --sd-menu-chevron-size: 11px;
+  --sd-menu-highlight: var(--sd-accent);
+  --sd-menu-on-highlight: var(--sd-on-accent);
+  --sd-menu-enter-scale: 0.98;
+  --sd-menu-enter-duration: var(--sd-duration-fast);
+  --sd-menu-enter-easing: var(--sd-ease-out);
+  --sd-menu-exit-duration: var(--sd-duration-instant);
+  --sd-menu-exit-scale: 1;
+  --sd-menu-nested-enter-scale: 1;
+  --sd-menu-shortcut-display: inline;
+  /*
+   * Menus open over anything, so they run denser than the thick material to keep
+   * text and the highlight legible. Mixing toward the opaque surface keeps the
+   * reduced-transparency collapse intact.
+   */
+  --sd-menu-material: color-mix(in oklch, var(--sd-material-thick) 50%, var(--sd-bg-elevated));
+  /* A dark menu over a white window greys out; lift destructive red enough to hold 4.5:1. */
+  --sd-menu-destructive-text: light-dark(
+    var(--sd-destructive-text),
+    oklch(from var(--sd-destructive-text) max(l, 0.76) c h)
+  );
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --sd-menu-inset: 0px;
+  --sd-menu-row-padding: 16px;
+  --sd-menu-row-padding-block: 11px;
+  --sd-menu-row-radius: 0px;
+  --sd-menu-gutter: 24px;
+  --sd-menu-icon-size: 20px;
+  --sd-menu-icon-gap: 12px;
+  --sd-menu-icon-align: 0;
+  --sd-menu-min-width: 250px;
+  --sd-menu-label-font: 400 13px/18px var(--sd-font);
+  --sd-menu-label-padding: 11px 16px 8px;
+  --sd-menu-check-size: 15px;
+  --sd-menu-chevron-size: 15px;
+  --sd-menu-highlight: light-dark(
+    color-mix(in oklch, var(--sd-ink) 14%, transparent),
+    color-mix(in oklch, var(--sd-ink) 20%, transparent)
+  );
+  --sd-menu-on-highlight: var(--sd-label);
+  /* The menu grows out of its button on a critically damped spring: menus don't bounce. */
+  --sd-menu-enter-scale: 0.5;
+  --sd-menu-enter-duration: var(--sd-spring-snappy-duration);
+  --sd-menu-enter-easing: var(--sd-spring-snappy);
+  --sd-menu-exit-duration: var(--sd-duration-fast);
+  --sd-menu-exit-scale: 0.9;
+  --sd-menu-nested-enter-scale: 0.6;
+  --sd-menu-thick-separator: light-dark(rgb(0 0 0 / 0.08), rgb(0 0 0 / 0.3));
+}
+
+:where([data-platform="ipados"]) {
+  --sd-menu-shortcut-display: inline;
+}
+
+:where([data-platform="ios"]) {
+  --sd-menu-shortcut-display: none;
+}
+
+/* ── The popup ───────────────────────────────────────────────── */
+
+.sd-menu-content {
+  --sd-menu-lead: var(--sd-menu-row-padding);
+  --sd-menu-icon-space: 0px;
+
+  box-sizing: border-box;
+  min-width: var(--sd-menu-min-width);
+  max-width: calc(100vw - 16px);
+  max-height: var(--available-height);
+  margin: 0;
+  padding: var(--sd-menu-inset);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 0;
+  border-radius: var(--sd-menu-radius);
+  background: var(--sd-menu-material);
+  -webkit-backdrop-filter: var(--sd-material-filter);
+  backdrop-filter: var(--sd-material-filter);
+  box-shadow: var(--sd-glass-rim), var(--sd-shadow-menu);
+  color: var(--sd-label);
+  font: var(--sd-menu-font);
+  letter-spacing: var(--sd-tracking-body);
+  outline: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  transform-origin: var(--transform-origin);
+  transition:
+    opacity var(--sd-duration-fast) var(--sd-ease-out),
+    scale var(--sd-menu-enter-duration) var(--sd-menu-enter-easing);
+}
+
+/* The leading check column appears only in a menu that has something to check. */
+.sd-menu-content:has(> .sd-menu-checkable, > :not(.sd-menu-content) > .sd-menu-checkable) {
+  --sd-menu-lead: calc(var(--sd-menu-row-padding) + var(--sd-menu-gutter));
+}
+
+.sd-menu-content[data-has-icons] {
+  --sd-menu-icon-space: calc((var(--sd-menu-icon-size) + var(--sd-menu-icon-gap)) * var(--sd-menu-icon-align));
+}
+
+.sd-menu-content[data-starting-style] {
+  opacity: 0;
+  scale: var(--sd-menu-enter-scale);
+}
+
+.sd-menu-content[data-ending-style] {
+  opacity: 0;
+  scale: var(--sd-menu-exit-scale);
+  transition-duration: var(--sd-menu-exit-duration);
+  transition-timing-function: var(--sd-ease-out);
+}
+
+.sd-menu-content[data-nested][data-starting-style] {
+  scale: var(--sd-menu-nested-enter-scale);
+}
+
+/* As a sheet, ui-sdk slides the menu up and follows the finger; this only shapes it. */
+.sd-menu-content[data-presentation="sheet"] {
+  --sheet-backdrop: var(--sd-scrim);
+
+  width: 100%;
+  max-width: none;
+  max-height: 85dvh;
+  padding: 20px 0 max(8px, env(safe-area-inset-bottom));
+  border-radius: var(--sd-sheet-radius) var(--sd-sheet-radius) 0 0;
+  background: var(--sd-material-thick);
+  box-shadow: var(--sd-glass-rim), var(--sd-shadow-window);
+  transform-origin: 50% 0;
+  /* A sheet opened on top of this one pushes it back. */
+  scale: calc(1 - var(--drawer-stack, 0) * 0.05);
+  transition: scale var(--sd-spring-sheet-duration) var(--sd-spring-sheet);
+}
+
+.sd-menu-content[data-presentation="sheet"]:is([data-starting-style], [data-ending-style]) {
+  opacity: 1;
+  scale: calc(1 - var(--drawer-stack, 0) * 0.05);
+}
+
+/* The grabber. */
+.sd-menu-content[data-presentation="sheet"]:not([data-nested])::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 6px;
+  inset-inline-start: calc(50% - 18px);
+  width: 36px;
+  height: 5px;
+  border-radius: var(--sd-radius-full);
+  background: var(--sd-label-tertiary);
+  pointer-events: none;
+}
+
+/* A submenu opens in place inside the sheet: no second surface, just its rows under the trigger. */
+.sd-menu-content[data-presentation="sheet"][data-nested] {
+  min-width: 0;
+  max-height: none;
+  padding: 0;
+  overflow: visible;
+  border-radius: 0;
+  border-block-start: var(--sd-hairline) solid var(--sd-separator);
+  background: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: none;
+  scale: none;
+}
+
+.sd-menu-content[data-presentation="sheet"] .sd-menu-sub-trigger-indicator {
+  transition: rotate var(--sd-spring-snappy-duration) var(--sd-spring-snappy);
+}
+
+.sd-menu-content[data-presentation="sheet"] .sd-menu-sub-trigger[data-open] .sd-menu-sub-trigger-indicator {
+  rotate: 90deg;
+}
+
+/* The chevron is mirrored in right to left, so it turns the other way to point down. */
+.sd-menu-content[data-presentation="sheet"] .sd-menu-sub-trigger[data-open] .sd-menu-sub-trigger-indicator:where([dir="rtl"] *) {
+  rotate: -90deg;
+}
+
+.sd-menu-content[data-presentation="sheet"] .sd-menu-sub-trigger[data-open]:not([data-highlighted]) {
+  background: none;
+}
+
+/* ── Rows ───────────────────────────────────────────────────── */
+
+.sd-menu-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--sd-menu-icon-gap);
+  min-height: var(--sd-menu-item-height);
+  margin: 0;
+  padding-block: var(--sd-menu-row-padding-block);
+  padding-inline: var(--sd-menu-lead) var(--sd-menu-row-padding);
+  border-radius: var(--sd-menu-row-radius);
+  color: var(--sd-label);
+  white-space: nowrap;
+  outline: none;
+  cursor: default;
+  scroll-margin-block: var(--sd-menu-inset);
+  touch-action: manipulation;
+}
+
+.sd-menu-item:not([data-has-icon]) {
+  padding-inline-start: calc(var(--sd-menu-lead) + var(--sd-menu-icon-space));
+}
+
+.sd-menu-item:focus-visible {
+  outline: none;
+}
+
+.sd-menu-item[data-highlighted]:not([data-disabled]),
+.sd-menu-sub-trigger[data-open]:not([data-disabled]) {
+  background: var(--sd-menu-highlight);
+  color: var(--sd-menu-on-highlight);
+}
+
+.sd-menu-item[data-disabled] {
+  color: var(--sd-label-tertiary);
+}
+
+.sd-menu-item[data-destructive] {
+  color: var(--sd-menu-destructive-text);
+}
+
+.sd-menu-item[data-destructive][data-highlighted]:not([data-disabled]) {
+  --sd-menu-highlight: var(--sd-destructive);
+  --sd-menu-on-highlight: var(--sd-on-destructive);
+}
+
+.sd-menu-item[data-pending] {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.sd-menu-item-icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--sd-menu-icon-size);
+  height: var(--sd-menu-icon-size);
+}
+
+.sd-menu-item-icon :where(svg) {
+  width: 100%;
+  height: 100%;
+}
+
+.sd-menu-item-icon[data-mirror]:where([dir="rtl"] *) {
+  scale: -1 1;
+}
+
+.sd-menu-item-indicator {
+  position: absolute;
+  inset-inline-start: calc(var(--sd-menu-row-padding) - 1px);
+  top: 50%;
+  display: flex;
+  width: var(--sd-menu-check-size);
+  height: var(--sd-menu-check-size);
+  translate: 0 -50%;
+}
+
+.sd-menu-item-indicator :where(svg) {
+  width: 100%;
+  height: 100%;
+}
+
+.sd-menu-item-indicator[data-unchecked] {
+  visibility: hidden;
+}
+
+.sd-menu-item > :is(.sd-menu-shortcut, [data-slot="menu-shortcut"]) {
+  display: var(--sd-menu-shortcut-display);
+  margin-inline-start: auto;
+  padding-inline-start: 24px;
+  color: var(--sd-label-secondary);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+.sd-menu-item[data-highlighted]:not([data-disabled]) > :is(.sd-menu-shortcut, [data-slot="menu-shortcut"]) {
+  color: inherit;
+}
+
+.sd-menu-item[data-disabled] > :is(.sd-menu-shortcut, [data-slot="menu-shortcut"]) {
+  color: var(--sd-label-quaternary);
+}
+
+.sd-menu-sub-trigger-indicator {
+  display: inline-flex;
+  flex: none;
+  width: var(--sd-menu-chevron-size);
+  height: var(--sd-menu-chevron-size);
+  margin-inline: auto -2px;
+  padding-inline-start: 0;
+  color: var(--sd-label-secondary);
+}
+
+.sd-menu-sub-trigger-indicator :where(svg) {
+  width: 100%;
+  height: 100%;
+}
+
+.sd-menu-sub-trigger-indicator:where([dir="rtl"] *) {
+  scale: -1 1;
+}
+
+.sd-menu-sub-trigger:is([data-highlighted], [data-open]):not([data-disabled]) .sd-menu-sub-trigger-indicator {
+  color: inherit;
+}
+
+/* ── Groups and separators ──────────────────────────────────── */
+
+.sd-menu-group {
+  display: block;
+}
+
+.sd-menu-group-label {
+  padding: var(--sd-menu-label-padding);
+  padding-inline-start: calc(var(--sd-menu-lead) + var(--sd-menu-icon-space));
+  color: var(--sd-label-secondary);
+  font: var(--sd-menu-label-font);
+  letter-spacing: var(--sd-tracking-caption);
+  white-space: nowrap;
+}
+
+.sd-menu-separator {
+  height: 1px;
+  margin: 5px var(--sd-menu-row-padding);
+  background: var(--sd-separator);
+}
+
+/* ── iOS and iPadOS: flush rows, hairlines between them, a thick band between groups ── */
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .sd-menu-item::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: var(--sd-hairline);
+    background: var(--sd-separator);
+    pointer-events: none;
+  }
+
+  .sd-menu-content > .sd-menu-item:first-child::before,
+  .sd-menu-content > .sd-menu-group:first-child > .sd-menu-item:first-child::before,
+  .sd-menu-separator + .sd-menu-item::before,
+  .sd-menu-separator + .sd-menu-group > .sd-menu-item:first-child::before,
+  .sd-menu-item[data-highlighted]::before,
+  .sd-menu-item[data-highlighted] + .sd-menu-item::before {
+    content: none;
+  }
+
+  .sd-menu-separator {
+    height: 8px;
+    margin: 0;
+    background: var(--sd-menu-thick-separator);
+  }
+
+  .sd-menu-item-icon {
+    order: 3;
+    margin-inline-start: auto;
+    padding-inline-start: 16px;
+    box-sizing: content-box;
+  }
+
+  .sd-menu-item-icon ~ .sd-menu-sub-trigger-indicator {
+    order: 4;
+    margin-inline-start: 0;
+  }
+
+  .sd-menu-item[data-destructive] .sd-menu-item-icon {
+    color: var(--sd-menu-destructive-text);
+  }
+
+  .sd-menu-item:active:not([data-disabled]) {
+    background: var(--sd-menu-highlight);
+  }
+}
+
+/* ── The pull-down button ───────────────────────────────────── */
+
+.sd-menu-trigger-indicator {
+  display: inline-flex;
+  flex: none;
+  width: calc(var(--sd-icon-size) * 0.7);
+  height: calc(var(--sd-icon-size) * 0.7);
+  margin-inline-end: -2px;
+  opacity: 0.8;
+}
+
+.sd-menu-trigger-indicator svg {
+  width: 100%;
+  height: 100%;
+}
+
+.sd-menu-trigger[data-open][data-variant="bezeled"] {
+  --sd-button-bg: color-mix(in oklch, var(--sd-bg-control), var(--sd-ink) 10%);
+}
+
+.sd-menu-trigger[data-open][data-variant="plain"] {
+  --sd-button-bg: var(--sd-fill-tertiary);
+}
+
+.sd-menu-trigger[data-open][data-variant="filled"] {
+  --sd-button-bg: var(--sd-accent-pressed);
+}
+
+/* ── Context areas ──────────────────────────────────────────── */
+
+.sd-menu-context-trigger {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}

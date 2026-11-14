@@ -1,0 +1,66 @@
+export const metadata = {
+  title: "Activity Indicator",
+  description: "The Apple spinner: eight spokes that step around while something loads.",
+}
+
+# Activity Indicator
+
+<Lead>Show that something is happening when there's nothing to measure.</Lead>
+
+<Demo name="activity-indicator/basic" />
+
+## When to use it
+
+Use an activity indicator for a short wait whose length you can't tell: loading a list, signing in, fetching a preview. If you know how far along the work is, use a [progress bar](/docs/components/progress) instead, because a bar tells people how long to wait.
+
+Keep it near what's loading, and say what's happening beside it when there's room. Remove it as soon as the content arrives, and don't show one for waits under about a second; a flash of a spinner reads as a glitch.
+
+## Usage
+
+```tsx
+import { ActivityIndicator } from "@dreambase/stardust/activity-indicator"
+```
+
+It draws in `currentColor`, so it matches the text around it. Apple's is gray: put it in secondary label color, as in these demos.
+
+### With a label
+
+When text beside it already says what's loading, give the indicator the same words as its `aria-label` and hide the text from screen readers, so it's read once.
+
+<Demo name="activity-indicator/inline" />
+
+### Color
+
+On a dark overlay, or in the accent, set the color on a parent.
+
+<Demo name="activity-indicator/color" />
+
+## Platform behavior
+
+The sizes follow each platform's native ones. On macOS, `sm`, `md` and `lg` are 12, 16 and 32 points, the mini, small and regular spinning indicators. On iOS and iPadOS they're 16, 20 and 37 points, `UIActivityIndicatorView`'s medium and large.
+
+The spokes are capsules, as on iOS 13 and later and macOS 11 and later. Like the real one, it doesn't spin smoothly: the brightest spoke jumps to the next, ten times a second. With Reduce Motion on, the spokes hold still and the whole indicator fades in and out slowly, so it still says "working" without turning.
+
+## Accessibility
+
+- It's an indeterminate `progressbar`, named "Loading" unless you give it an `aria-label`. Name it for what's loading when that helps: "Loading messages".
+- It never takes focus.
+- If the loading region should be announced as busy, set `aria-busy` on that region.
+
+## API
+
+<PropsTable
+  rows={[
+    { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "The platform's mini, small and regular sizes." },
+    { name: "aria-label", type: "string", default: '"Loading"', description: "What's loading." },
+  ]}
+/>
+
+It takes ui-sdk `Progress` props other than `value`.
+
+| Attribute or variable | On | Description |
+| --- | --- | --- |
+| `data-indeterminate` | `.sd-activity-indicator` | Always present, from ui-sdk. |
+| `data-size` | `.sd-activity-indicator` | The size. |
+| `data-motion="essential"` | `.sd-activity-indicator-fan` | Keeps the slow Reduce Motion animation running past the global motion reset. |
+| `--sd-activity-indicator-size-sm`, `--sd-activity-indicator-size`, `--sd-activity-indicator-size-lg` | any ancestor | The three sizes. |

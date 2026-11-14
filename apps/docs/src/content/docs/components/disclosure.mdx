@@ -1,0 +1,89 @@
+export const metadata = {
+  title: "Disclosure",
+  description: "Show and hide content under a row whose chevron turns, like SwiftUI's DisclosureGroup.",
+}
+
+# Disclosure
+
+<Lead>Show and hide content under a row whose chevron turns, like SwiftUI's DisclosureGroup.</Lead>
+
+<Demo name="disclosure/grouped" />
+
+## When to use it
+
+Use a disclosure to keep secondary content out of the way until someone asks for it: advanced settings, details behind a summary, answers under their questions. The row always shows; its chevron points at the content when it's closed and turns down when it's open.
+
+- Write the row's label as the name of what's inside, like "Advanced", not as an instruction.
+- Don't hide something people need to finish the task.
+- Use an [Outline](/docs/components/outline) for a hierarchy people browse, and a [Sheet](/docs/components/sheet) for a task.
+
+## Usage
+
+```tsx
+import {
+  Disclosure,
+  DisclosureButton,
+  DisclosureContent,
+  DisclosureGroup,
+  DisclosureHeader,
+  DisclosureItem,
+  DisclosurePanel,
+  DisclosureTrigger,
+} from "@dreambase/stardust/disclosure"
+```
+
+### A group
+
+`DisclosureGroup` holds several disclosures, from ui-sdk's Accordion. One opens at a time unless you pass `multiple`. Each trigger sits in a `DisclosureHeader`, an `h3` by default, so screen reader users can move between them by heading. The trigger draws its chevron for you.
+
+### One on its own
+
+`Disclosure`, from ui-sdk's Collapsible, is a single row and its content, like "Advanced" under a form.
+
+<Demo name="disclosure/plain" />
+
+### Styles
+
+`variant="grouped"` draws the rows in an inset grouped box, like a Settings list, and is the default for a group. On iOS the box is white in light appearance, so put it on `--sd-bg-grouped` as Settings does, or it disappears into a white page. `plain` draws bare rows, and is the default for a single disclosure.
+
+## Platform behavior
+
+- **macOS.** The chevron is small, secondary and leads the label, as in a SwiftUI form on the Mac. Content lines up with the label, past the chevron. Rows are 28 points tall, or 36 in a grouped box.
+- **iOS and iPadOS.** The chevron trails the label in the accent color, as SwiftUI draws it in an iOS list, and rows are 44 points tall (48 in a grouped box). A pressed row fills.
+- In right-to-left layouts the chevron mirrors: closed, it points left, and it turns down when open.
+- On every platform the chevron turns 90 degrees on the snappy spring and the content's height animates open on the smooth spring. Closing is quicker than opening. Reduced motion skips the height animation.
+
+## Accessibility
+
+- Triggers are buttons with `aria-expanded` and `aria-controls`; Enter and Space open and close them. Tab moves between triggers.
+- Pick the heading level that fits your page with `render` on `DisclosureHeader`, like `render={<h2 />}`.
+- The chevron is `aria-hidden`; the label names the button.
+- Closed content leaves the page, so find in page can't reach it. Pass `hiddenUntilFound` to keep it findable.
+
+## API
+
+### DisclosureGroup
+
+Takes every prop of ui-sdk's [Accordion](https://ui-sdk.dev/docs/react/components/accordion), including `value`, `defaultValue`, `onValueChange`, `multiple` and `hiddenUntilFound`, plus:
+
+<PropsTable rows={[{ name: "variant", type: '"grouped" | "plain"', default: '"grouped"', description: "How the rows are drawn." }]} />
+
+`DisclosureItem` takes a `value` and `disabled`. `DisclosureHeader`, `DisclosureTrigger` and `DisclosurePanel` wrap ui-sdk's `AccordionHeader`, `AccordionTrigger` and `AccordionPanel`.
+
+### Disclosure
+
+Takes every prop of ui-sdk's [Collapsible](https://ui-sdk.dev/docs/react/components/collapsible), including `open`, `defaultOpen` and `onOpenChange`, plus:
+
+<PropsTable rows={[{ name: "variant", type: '"grouped" | "plain"', default: '"plain"', description: "How the row is drawn." }]} />
+
+`DisclosureButton` and `DisclosureContent` wrap ui-sdk's `CollapsibleTrigger` and `CollapsiblePanel`.
+
+### Data attributes and CSS variables
+
+| Attribute or variable | On | Meaning |
+| --- | --- | --- |
+| `data-variant` | `.sd-disclosure-group`, `.sd-disclosure` | `grouped` or `plain`. |
+| `data-open`, `data-closed` | `.sd-disclosure-trigger`, `.sd-disclosure-panel` | Whether the content is showing. |
+| `--sd-disclosure-chevron-order` | platform | `0` puts the chevron before the label, `1` after it. |
+| `--sd-disclosure-chevron-color` | platform | The chevron's color. |
+| `--sd-disclosure-row-height`, `--sd-disclosure-row-height-grouped` | platform | Row heights. |

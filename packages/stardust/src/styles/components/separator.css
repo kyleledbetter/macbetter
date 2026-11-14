@@ -1,0 +1,62 @@
+/* Separator — the HIG hairline between groups of content. */
+
+.sd-separator {
+  --sd-separator-color: var(--sd-separator);
+  --sd-separator-inset: var(--sd-row-padding);
+
+  flex: none;
+  margin: 0;
+  border: 0 solid var(--sd-separator-color);
+  background: none;
+}
+
+/* Borders round to whole device pixels, so a 0.5px hairline is one physical pixel on any screen. */
+.sd-separator[data-orientation="horizontal"] {
+  align-self: stretch;
+  height: 0;
+  border-block-start-width: var(--sd-hairline);
+}
+
+.sd-separator[data-orientation="vertical"] {
+  align-self: stretch;
+  width: 0;
+  min-height: 1em;
+  border-inline-start-width: var(--sd-hairline);
+}
+
+.sd-separator[data-orientation="horizontal"][data-inset="both"] {
+  margin-inline: var(--sd-separator-inset);
+}
+
+.sd-separator[data-orientation="horizontal"][data-inset="leading"] {
+  margin-inline-start: var(--sd-separator-inset);
+}
+
+.sd-separator[data-orientation="vertical"][data-inset] {
+  margin-block: var(--sd-space-2);
+}
+
+.sd-separator-labeled {
+  display: flex;
+  align-items: center;
+  gap: var(--sd-space-5);
+  align-self: stretch;
+  min-width: 0;
+}
+
+.sd-separator-labeled[data-inset="both"] {
+  padding-inline: var(--sd-row-padding);
+}
+
+.sd-separator-labeled > .sd-separator {
+  flex: 1 1 0;
+  align-self: center;
+}
+
+.sd-separator-label {
+  flex: none;
+  font: var(--sd-text-footnote);
+  letter-spacing: var(--sd-tracking-caption);
+  color: var(--sd-label-secondary);
+  white-space: nowrap;
+}

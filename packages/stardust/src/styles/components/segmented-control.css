@@ -1,0 +1,183 @@
+/* Segmented Control — a recessed track with a raised pill that slides to the choice. */
+
+/* macOS sizes it like a push button. UIKit's segmented control is shorter than a
+   touch button (32pt, 13pt type); the items' hit areas still reach 44pt. */
+:where(:root, [data-platform="macos"]) {
+  --sd-segmented-height-sm: var(--sd-control-height-sm);
+  --sd-segmented-height-md: var(--sd-control-height);
+  --sd-segmented-height-lg: var(--sd-control-height-lg);
+  --sd-segmented-font-sm: var(--sd-control-font-sm);
+  --sd-segmented-font-md: var(--sd-control-font);
+  --sd-segmented-font-lg: var(--sd-control-font);
+  --sd-segmented-padding: var(--sd-control-padding);
+  --sd-segmented-icon-size: var(--sd-icon-size);
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --sd-segmented-height-sm: 28px;
+  --sd-segmented-height-md: 32px;
+  --sd-segmented-height-lg: 40px;
+  --sd-segmented-font-sm: 500 13px/16px var(--sd-font);
+  --sd-segmented-font-md: 500 13px/16px var(--sd-font);
+  --sd-segmented-font-lg: 500 15px/20px var(--sd-font);
+  --sd-segmented-padding: 14px;
+  --sd-segmented-icon-size: 18px;
+}
+
+.sd-segmented-control {
+  --sd-segmented-height: var(--sd-segmented-height-md);
+  --sd-segmented-inset: 2px;
+  --sd-segmented-radius: var(--sd-control-radius);
+
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  flex: none;
+  align-items: stretch;
+  height: var(--sd-segmented-height);
+  padding: var(--sd-segmented-inset);
+  border-radius: var(--sd-segmented-radius);
+  background: var(--sd-fill-tertiary);
+  box-shadow: inset 0 0 0 var(--sd-hairline) var(--sd-separator);
+  font: var(--sd-segmented-font-md);
+  letter-spacing: var(--sd-tracking-body);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.sd-segmented-control[data-size="sm"] {
+  --sd-segmented-height: var(--sd-segmented-height-sm);
+  --sd-segmented-radius: var(--sd-control-radius-sm);
+  font: var(--sd-segmented-font-sm);
+}
+
+.sd-segmented-control[data-size="lg"] {
+  --sd-segmented-height: var(--sd-segmented-height-lg);
+  --sd-segmented-radius: var(--sd-control-radius-lg);
+  font: var(--sd-segmented-font-lg);
+}
+
+.sd-segmented-control[data-block] {
+  display: flex;
+  width: 100%;
+}
+
+/* Equal segments share the width; labels give up their padding before the row overflows. */
+.sd-segmented-control[data-block] .sd-segmented-control-item {
+  flex: 1 1 0;
+  min-width: 0;
+  padding-inline: var(--sd-space-2);
+}
+
+.sd-segmented-control-indicator {
+  position: absolute;
+  z-index: -1;
+  top: var(--segmented-control-indicator-top, 0);
+  left: var(--segmented-control-indicator-left, 0);
+  width: var(--segmented-control-indicator-width, 0);
+  height: var(--segmented-control-indicator-height, 0);
+  border-radius: calc(var(--sd-segmented-radius) - var(--sd-segmented-inset));
+  background: light-dark(#ffffff, color-mix(in oklch, var(--sd-tint) 46%, var(--sd-bg)));
+  box-shadow:
+    0 0 0 var(--sd-hairline) var(--sd-separator),
+    0 1px 2px var(--sd-shadow-color),
+    0 2px 6px -2px var(--sd-shadow-color);
+  transition:
+    left var(--sd-spring-snappy-duration) var(--sd-spring-snappy),
+    top var(--sd-spring-snappy-duration) var(--sd-spring-snappy),
+    width var(--sd-spring-snappy-duration) var(--sd-spring-snappy),
+    height var(--sd-spring-snappy-duration) var(--sd-spring-snappy),
+    scale var(--sd-duration-fast) var(--sd-ease-out);
+}
+
+.sd-segmented-control-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sd-control-gap);
+  margin: 0;
+  padding: 0 var(--sd-segmented-padding);
+  border: 0;
+  border-radius: calc(var(--sd-segmented-radius) - var(--sd-segmented-inset));
+  background: transparent;
+  color: var(--sd-label);
+  font: inherit;
+  letter-spacing: inherit;
+  white-space: nowrap;
+  cursor: default;
+  touch-action: manipulation;
+  transition: color var(--sd-duration-fast) var(--sd-ease-out), opacity var(--sd-duration-fast) var(--sd-ease-out);
+}
+
+/* The hit area reaches the platform minimum vertically; neighbors already touch. */
+.sd-segmented-control-item::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 50%;
+  height: max(100%, var(--sd-hit-target));
+  translate: 0 -50%;
+}
+
+.sd-segmented-control-item :where(svg) {
+  flex: none;
+  width: var(--sd-segmented-icon-size);
+  height: var(--sd-segmented-icon-size);
+}
+
+.sd-segmented-control[data-size="sm"] .sd-segmented-control-item {
+  padding: 0 var(--sd-control-padding-sm);
+}
+
+.sd-segmented-control-item[data-checked] {
+  font-weight: 600;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .sd-segmented-control-item[data-unchecked]:hover {
+    background: var(--sd-fill-quaternary);
+  }
+}
+
+.sd-segmented-control-item[data-unchecked]:active {
+  opacity: 0.6;
+}
+
+/* The pill gives a little under the finger, like the real one. */
+.sd-segmented-control:has(.sd-segmented-control-item[data-checked]:active) .sd-segmented-control-indicator {
+  scale: 0.96;
+}
+
+.sd-segmented-control-item:focus-visible {
+  outline: var(--sd-focus-ring-width) solid var(--sd-focus-ring);
+  outline-offset: -1px;
+}
+
+.sd-segmented-control-item[data-disabled] {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.sd-segmented-control[data-orientation="vertical"] {
+  flex-direction: column;
+  height: auto;
+}
+
+.sd-segmented-control[data-orientation="vertical"] .sd-segmented-control-item {
+  min-height: calc(var(--sd-segmented-height) - var(--sd-segmented-inset) * 2);
+}
+
+/* The raised pill is the HIG's selection cue, at about 1.3:1 like AppKit's and UIKit's;
+   bold text carries it too. Increase Contrast draws 3:1 edges on the track and the pill. */
+@media (prefers-contrast: more) {
+  .sd-segmented-control {
+    box-shadow: inset 0 0 0 1px var(--sd-control-border);
+  }
+
+  .sd-segmented-control-indicator {
+    box-shadow:
+      0 0 0 1px var(--sd-control-border),
+      0 1px 2px var(--sd-shadow-color);
+  }
+}
