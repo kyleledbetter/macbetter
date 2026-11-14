@@ -28,7 +28,7 @@ import {
   SheetOutlet,
   SheetTitle,
   SheetTrigger,
-} from "@dreambase/stardust/sheet"
+} from "macbetter/sheet"
 ```
 
 `SheetContent` brings its backdrop and the grabber. The sheet follows the finger one to one while it’s dragged, and a flick carries momentum: fast enough and it dismisses, or skips a detent. Long content goes in `SheetBody`, which scrolls first and hands the drag to the sheet once it reaches the top.
@@ -54,7 +54,7 @@ Wrap the page in `SheetOutlet` and it recedes as a large sheet rises, scaling do
 - **iOS.** The sheet spans the screen, with 30pt corners and a 36×5pt grabber. The large detent stops just under the status bar. A sheet holding a grouped [List](/docs/components/list) takes the grouped background from edge to edge, as Settings-style sheets do.
 - **iPadOS.** A bottom sheet is a centered 620pt card; inspectors float 10pt in from the edge.
 - **macOS.** Inspectors float 8pt in from the window edge with 16pt corners; a bottom sheet is a centered 560pt panel.
-- A sheet opened from inside another pushes the first one back with the `--sd-spring-sheet` spring. Reduced motion fades sheets in and out instead of sliding them.
+- A sheet opened from inside another pushes the first one back with the `--mb-spring-sheet` spring. Reduced motion fades sheets in and out instead of sliding them.
 
 ## Accessibility
 
@@ -108,15 +108,15 @@ Takes every [ui-sdk Drawer](https://ui-sdk.dev/docs/components/drawer) root prop
 
 | Data attribute | On | Meaning |
 | --- | --- | --- |
-| `data-side` | `.sd-sheet` | The physical edge, with start and end resolved |
-| `data-snap-point` | `.sd-sheet` | The detent it rests on |
-| `data-expanded` | `.sd-sheet` | Resting at its largest detent |
-| `data-dragging` | `.sd-sheet` | Being dragged |
-| `data-large` | `.sd-sheet` | Has a large detent, so it's sized to nearly fill the screen |
+| `data-side` | `.mb-sheet` | The physical edge, with start and end resolved |
+| `data-snap-point` | `.mb-sheet` | The detent it rests on |
+| `data-expanded` | `.mb-sheet` | Resting at its largest detent |
+| `data-dragging` | `.mb-sheet` | Being dragged |
+| `data-large` | `.mb-sheet` | Has a large detent, so it's sized to nearly fill the screen |
 
 | CSS variable | Default |
 | --- | --- |
-| `--sd-sheet-width` | 560px macOS, 620px iPadOS, 440px iOS |
-| `--sd-sheet-inspector-width` | 300px macOS, 340px iPadOS |
-| `--sd-sheet-top-gap` | The space left above a large sheet |
+| `--mb-sheet-width` | 560px macOS, 620px iPadOS, 440px iOS |
+| `--mb-sheet-inspector-width` | 300px macOS, 340px iPadOS |
+| `--mb-sheet-top-gap` | The space left above a large sheet |
 | `--drawer-progress`, `--drawer-expand`, `--drawer-stack` | Set by ui-sdk while it moves |

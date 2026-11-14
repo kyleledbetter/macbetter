@@ -1,6 +1,6 @@
 "use client"
 
-import { Button } from "@dreambase/stardust/button"
+import { Button } from "macbetter/button"
 import {
   Command,
   CommandEmpty,
@@ -12,8 +12,8 @@ import {
   CommandList,
   CommandPalette,
   CommandPaletteContent,
-} from "@dreambase/stardust/command-palette"
-import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from "@dreambase/stardust/context-menu"
+} from "macbetter/command-palette"
+import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from "macbetter/context-menu"
 import {
   Dialog,
   DialogBody,
@@ -22,7 +22,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@dreambase/stardust/dialog"
+} from "macbetter/dialog"
 import {
   List,
   ListRow,
@@ -30,19 +30,19 @@ import {
   ListRowTitle,
   ListRowValue,
   ListSection,
-} from "@dreambase/stardust/list"
-import { Listbox, ListboxItem } from "@dreambase/stardust/listbox"
-import { Menu, MenuContent, MenuItem, MenuItemIcon, MenuTrigger } from "@dreambase/stardust/menu"
+} from "macbetter/list"
+import { Listbox, ListboxItem } from "macbetter/listbox"
+import { Menu, MenuContent, MenuItem, MenuItemIcon, MenuTrigger } from "macbetter/menu"
 import {
   NavigationBar,
   NavigationBarBackButton,
   NavigationBarTrailing,
   NavigationStack,
-} from "@dreambase/stardust/navigation-bar"
-import { SearchField } from "@dreambase/stardust/search-field"
-import { Sidebar, SidebarItem, SidebarSection } from "@dreambase/stardust/sidebar"
-import { SplitView, SplitViewDivider, SplitViewPane } from "@dreambase/stardust/split-view"
-import { toast } from "@dreambase/stardust/toast"
+} from "macbetter/navigation-bar"
+import { SearchField } from "macbetter/search-field"
+import { Sidebar, SidebarItem, SidebarSection } from "macbetter/sidebar"
+import { SplitView, SplitViewDivider, SplitViewPane } from "macbetter/split-view"
+import { toast } from "macbetter/toast"
 import {
   Toolbar,
   ToolbarButton,
@@ -51,8 +51,8 @@ import {
   ToolbarSpacer,
   ToolbarTitle,
   ToolbarToggle,
-} from "@dreambase/stardust/toolbar"
-import { Window, WindowBody, WindowSidebar, WindowTitlebar, WindowTrafficLights } from "@dreambase/stardust/window"
+} from "macbetter/toolbar"
+import { Window, WindowBody, WindowSidebar, WindowTitlebar, WindowTrafficLights } from "macbetter/window"
 import {
   ArchiveIcon,
   ChevronDownIcon,

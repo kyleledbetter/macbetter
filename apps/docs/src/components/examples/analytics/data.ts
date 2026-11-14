@@ -74,10 +74,10 @@ const tables = [
 
 /** `color` is a chart color for the canvas; `css` is the same color for the legend swatch. */
 const storage: { label: string; value: number; color: ChartColor; css: string }[] = [
-  { label: "public", value: 46, color: "accent", css: "var(--sd-accent)" },
-  { label: "analytics", value: 28, color: "accentSecondary", css: "var(--sd-accent-secondary)" },
-  { label: "auth", value: 14, color: "blue", css: "var(--sd-blue)" },
-  { label: "storage", value: 12, color: "purple", css: "var(--sd-purple)" },
+  { label: "public", value: 46, color: "accent", css: "var(--mb-accent)" },
+  { label: "analytics", value: 28, color: "accentSecondary", css: "var(--mb-accent-secondary)" },
+  { label: "auth", value: 14, color: "blue", css: "var(--mb-blue)" },
+  { label: "storage", value: 12, color: "purple", css: "var(--mb-purple)" },
 ]
 
 type Status = "healthy" | "stale" | "failed" | "syncing"

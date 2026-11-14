@@ -99,10 +99,10 @@ export default function RestingHeartRateTrend() {
       />
       <ChartLegend
         items={[
-          { label: "7-day average", color: "var(--sd-pink)", shape: "line" },
-          { label: "Daily", color: "color-mix(in oklch, var(--sd-pink) 50%, transparent)" },
-          { label: `Typical range, ${typical[0]}–${typical[1]}`, color: "color-mix(in oklch, var(--sd-pink) 20%, transparent)", shape: "bar" },
-          { label: "Average", color: "var(--sd-label-tertiary)", shape: "dashed" },
+          { label: "7-day average", color: "var(--mb-pink)", shape: "line" },
+          { label: "Daily", color: "color-mix(in oklch, var(--mb-pink) 50%, transparent)" },
+          { label: `Typical range, ${typical[0]}–${typical[1]}`, color: "color-mix(in oklch, var(--mb-pink) 20%, transparent)", shape: "bar" },
+          { label: "Average", color: "var(--mb-label-tertiary)", shape: "dashed" },
         ]}
       />
     </ChartFrame>

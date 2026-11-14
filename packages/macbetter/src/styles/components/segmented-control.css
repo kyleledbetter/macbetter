@@ -1,0 +1,183 @@
+/* Segmented Control — a recessed track with a raised pill that slides to the choice. */
+
+/* macOS sizes it like a push button. UIKit's segmented control is shorter than a
+   touch button (32pt, 13pt type); the items' hit areas still reach 44pt. */
+:where(:root, [data-platform="macos"]) {
+  --mb-segmented-height-sm: var(--mb-control-height-sm);
+  --mb-segmented-height-md: var(--mb-control-height);
+  --mb-segmented-height-lg: var(--mb-control-height-lg);
+  --mb-segmented-font-sm: var(--mb-control-font-sm);
+  --mb-segmented-font-md: var(--mb-control-font);
+  --mb-segmented-font-lg: var(--mb-control-font);
+  --mb-segmented-padding: var(--mb-control-padding);
+  --mb-segmented-icon-size: var(--mb-icon-size);
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-segmented-height-sm: 28px;
+  --mb-segmented-height-md: 32px;
+  --mb-segmented-height-lg: 40px;
+  --mb-segmented-font-sm: 500 13px/16px var(--mb-font);
+  --mb-segmented-font-md: 500 13px/16px var(--mb-font);
+  --mb-segmented-font-lg: 500 15px/20px var(--mb-font);
+  --mb-segmented-padding: 14px;
+  --mb-segmented-icon-size: 18px;
+}
+
+.mb-segmented-control {
+  --mb-segmented-height: var(--mb-segmented-height-md);
+  --mb-segmented-inset: 2px;
+  --mb-segmented-radius: var(--mb-control-radius);
+
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  flex: none;
+  align-items: stretch;
+  height: var(--mb-segmented-height);
+  padding: var(--mb-segmented-inset);
+  border-radius: var(--mb-segmented-radius);
+  background: var(--mb-fill-tertiary);
+  box-shadow: inset 0 0 0 var(--mb-hairline) var(--mb-separator);
+  font: var(--mb-segmented-font-md);
+  letter-spacing: var(--mb-tracking-body);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.mb-segmented-control[data-size="sm"] {
+  --mb-segmented-height: var(--mb-segmented-height-sm);
+  --mb-segmented-radius: var(--mb-control-radius-sm);
+  font: var(--mb-segmented-font-sm);
+}
+
+.mb-segmented-control[data-size="lg"] {
+  --mb-segmented-height: var(--mb-segmented-height-lg);
+  --mb-segmented-radius: var(--mb-control-radius-lg);
+  font: var(--mb-segmented-font-lg);
+}
+
+.mb-segmented-control[data-block] {
+  display: flex;
+  width: 100%;
+}
+
+/* Equal segments share the width; labels give up their padding before the row overflows. */
+.mb-segmented-control[data-block] .mb-segmented-control-item {
+  flex: 1 1 0;
+  min-width: 0;
+  padding-inline: var(--mb-space-2);
+}
+
+.mb-segmented-control-indicator {
+  position: absolute;
+  z-index: -1;
+  top: var(--segmented-control-indicator-top, 0);
+  left: var(--segmented-control-indicator-left, 0);
+  width: var(--segmented-control-indicator-width, 0);
+  height: var(--segmented-control-indicator-height, 0);
+  border-radius: calc(var(--mb-segmented-radius) - var(--mb-segmented-inset));
+  background: light-dark(#ffffff, color-mix(in oklch, var(--mb-tint) 46%, var(--mb-bg)));
+  box-shadow:
+    0 0 0 var(--mb-hairline) var(--mb-separator),
+    0 1px 2px var(--mb-shadow-color),
+    0 2px 6px -2px var(--mb-shadow-color);
+  transition:
+    left var(--mb-spring-snappy-duration) var(--mb-spring-snappy),
+    top var(--mb-spring-snappy-duration) var(--mb-spring-snappy),
+    width var(--mb-spring-snappy-duration) var(--mb-spring-snappy),
+    height var(--mb-spring-snappy-duration) var(--mb-spring-snappy),
+    scale var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-segmented-control-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--mb-control-gap);
+  margin: 0;
+  padding: 0 var(--mb-segmented-padding);
+  border: 0;
+  border-radius: calc(var(--mb-segmented-radius) - var(--mb-segmented-inset));
+  background: transparent;
+  color: var(--mb-label);
+  font: inherit;
+  letter-spacing: inherit;
+  white-space: nowrap;
+  cursor: default;
+  touch-action: manipulation;
+  transition: color var(--mb-duration-fast) var(--mb-ease-out), opacity var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+/* The hit area reaches the platform minimum vertically; neighbors already touch. */
+.mb-segmented-control-item::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 50%;
+  height: max(100%, var(--mb-hit-target));
+  translate: 0 -50%;
+}
+
+.mb-segmented-control-item :where(svg) {
+  flex: none;
+  width: var(--mb-segmented-icon-size);
+  height: var(--mb-segmented-icon-size);
+}
+
+.mb-segmented-control[data-size="sm"] .mb-segmented-control-item {
+  padding: 0 var(--mb-control-padding-sm);
+}
+
+.mb-segmented-control-item[data-checked] {
+  font-weight: 600;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-segmented-control-item[data-unchecked]:hover {
+    background: var(--mb-fill-quaternary);
+  }
+}
+
+.mb-segmented-control-item[data-unchecked]:active {
+  opacity: 0.6;
+}
+
+/* The pill gives a little under the finger, like the real one. */
+.mb-segmented-control:has(.mb-segmented-control-item[data-checked]:active) .mb-segmented-control-indicator {
+  scale: 0.96;
+}
+
+.mb-segmented-control-item:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: -1px;
+}
+
+.mb-segmented-control-item[data-disabled] {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.mb-segmented-control[data-orientation="vertical"] {
+  flex-direction: column;
+  height: auto;
+}
+
+.mb-segmented-control[data-orientation="vertical"] .mb-segmented-control-item {
+  min-height: calc(var(--mb-segmented-height) - var(--mb-segmented-inset) * 2);
+}
+
+/* The raised pill is the HIG's selection cue, at about 1.3:1 like AppKit's and UIKit's;
+   bold text carries it too. Increase Contrast draws 3:1 edges on the track and the pill. */
+@media (prefers-contrast: more) {
+  .mb-segmented-control {
+    box-shadow: inset 0 0 0 1px var(--mb-control-border);
+  }
+
+  .mb-segmented-control-indicator {
+    box-shadow:
+      0 0 0 1px var(--mb-control-border),
+      0 1px 2px var(--mb-shadow-color);
+  }
+}

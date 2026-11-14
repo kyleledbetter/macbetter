@@ -1,4 +1,4 @@
-import { ActivityIndicator } from "@dreambase/stardust/activity-indicator"
+import { ActivityIndicator } from "macbetter/activity-indicator"
 import {
   Alert,
   AlertAction,
@@ -7,15 +7,15 @@ import {
   AlertDescription,
   AlertTitle,
   AlertTrigger,
-} from "@dreambase/stardust/alert"
-import { Button } from "@dreambase/stardust/button"
-import { Calendar } from "@dreambase/stardust/calendar"
-import { Gauge, GaugeLabel, GaugeValue } from "@dreambase/stardust/gauge"
-import { GlassGroup, Glass } from "@dreambase/stardust/glass"
-import { SegmentedControl, SegmentedControlItem } from "@dreambase/stardust/segmented-control"
-import { Separator } from "@dreambase/stardust/separator"
-import { Slider } from "@dreambase/stardust/slider"
-import { Switch } from "@dreambase/stardust/switch"
+} from "macbetter/alert"
+import { Button } from "macbetter/button"
+import { Calendar } from "macbetter/calendar"
+import { Gauge, GaugeLabel, GaugeValue } from "macbetter/gauge"
+import { GlassGroup, Glass } from "macbetter/glass"
+import { SegmentedControl, SegmentedControlItem } from "macbetter/segmented-control"
+import { Separator } from "macbetter/separator"
+import { Slider } from "macbetter/slider"
+import { Switch } from "macbetter/switch"
 import {
   ArchiveIcon,
   BluetoothIcon,
@@ -76,24 +76,24 @@ const menuItems = [
 function StaticMenu() {
   return (
     <div className="lp-static-menu" aria-hidden="true">
-      <span className="sd-button lp-static-menu-trigger" data-variant="bezeled" data-tone="accent" data-size="md" data-shape="auto">
+      <span className="mb-button lp-static-menu-trigger" data-variant="bezeled" data-tone="accent" data-size="md" data-shape="auto">
         Note
       </span>
-      <div className="sd-menu-content lp-static-menu-content" data-has-icons="">
+      <div className="mb-menu-content lp-static-menu-content" data-has-icons="">
         {menuItems.map((item) => (
           <div
             key={item.label}
-            className={`sd-menu-item${item.submenu ? " sd-menu-sub-trigger" : ""}`}
+            className={`mb-menu-item${item.submenu ? " mb-menu-sub-trigger" : ""}`}
             data-has-icon=""
             data-highlighted={item.highlighted ? "" : undefined}
           >
-            <span className="sd-menu-item-icon">
+            <span className="mb-menu-item-icon">
               <item.icon />
             </span>
             {item.label}
-            {item.shortcut ? <span className="sd-menu-shortcut">{item.shortcut}</span> : null}
+            {item.shortcut ? <span className="mb-menu-shortcut">{item.shortcut}</span> : null}
             {item.submenu ? (
-              <span className="sd-menu-sub-trigger-indicator">
+              <span className="mb-menu-sub-trigger-indicator">
                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M6 3.5 10.5 8 6 12.5" />
                 </svg>
@@ -101,26 +101,26 @@ function StaticMenu() {
             ) : null}
           </div>
         ))}
-        <div className="sd-menu-separator" />
-        <div className="sd-menu-item" data-has-icon="">
-          <span className="sd-menu-item-icon">
+        <div className="mb-menu-separator" />
+        <div className="mb-menu-item" data-has-icon="">
+          <span className="mb-menu-item-icon">
             <ShareIcon />
           </span>
           Share…
         </div>
-        <div className="sd-menu-item" data-has-icon="" data-disabled="">
-          <span className="sd-menu-item-icon">
+        <div className="mb-menu-item" data-has-icon="" data-disabled="">
+          <span className="mb-menu-item-icon">
             <ArchiveIcon />
           </span>
           Archive
         </div>
-        <div className="sd-menu-separator" />
-        <div className="sd-menu-item" data-has-icon="" data-destructive="">
-          <span className="sd-menu-item-icon">
+        <div className="mb-menu-separator" />
+        <div className="mb-menu-item" data-has-icon="" data-destructive="">
+          <span className="mb-menu-item-icon">
             <Trash2Icon />
           </span>
           Delete
-          <span className="sd-menu-shortcut">⌘⌫</span>
+          <span className="mb-menu-shortcut">⌘⌫</span>
         </div>
       </div>
     </div>

@@ -5,7 +5,7 @@ export const metadata = {
 
 # Typography
 
-<Lead>Stardust uses Apple's text styles, from Large Title to Caption. Each is a single token that changes with the platform, so a headline is 13px on macOS and 17px on iPhone without you writing either number.</Lead>
+<Lead>Macbetter uses Apple's text styles, from Large Title to Caption. Each is a single token that changes with the platform, so a headline is 13px on macOS and 17px on iPhone without you writing either number.</Lead>
 
 ## Text styles
 
@@ -35,31 +35,31 @@ Tracking is set per group. On macOS, large titles are −0.022em, titles −0.01
 Each style is a class that sets `font` and `letter-spacing` together:
 
 ```tsx
-<h1 className="sd-text-large-title">Library</h1>
-<p className="sd-text-body sd-label-secondary">Your playlists sync to every device.</p>
+<h1 className="mb-text-large-title">Library</h1>
+<p className="mb-text-body mb-label-secondary">Your playlists sync to every device.</p>
 ```
 
-The classes are `sd-text-large-title`, `sd-text-title-1`, `sd-text-title-2`, `sd-text-title-3`, `sd-text-headline`, `sd-text-body`, `sd-text-callout`, `sd-text-subheadline`, `sd-text-footnote` and `sd-text-caption`. Two more change only the family: `sd-text-mono` and `sd-text-rounded`.
+The classes are `mb-text-large-title`, `mb-text-title-1`, `mb-text-title-2`, `mb-text-title-3`, `mb-text-headline`, `mb-text-body`, `mb-text-callout`, `mb-text-subheadline`, `mb-text-footnote` and `mb-text-caption`. Two more change only the family: `mb-text-mono` and `mb-text-rounded`.
 
-In your own CSS, use the tokens. `--sd-text-*` is a full `font` shorthand, and the tracking is separate:
+In your own CSS, use the tokens. `--mb-text-*` is a full `font` shorthand, and the tracking is separate:
 
 ```css
 .inspector-title {
-  font: var(--sd-text-headline);
-  letter-spacing: var(--sd-tracking-body);
+  font: var(--mb-text-headline);
+  letter-spacing: var(--mb-tracking-body);
 }
 ```
 
 | Tracking token | Used with |
 | --- | --- |
-| `--sd-tracking-large-title` | Large Title |
-| `--sd-tracking-title` | Title 1 to 3 |
-| `--sd-tracking-body` | Headline to Subheadline |
-| `--sd-tracking-caption` | Footnote and Caption |
+| `--mb-tracking-large-title` | Large Title |
+| `--mb-tracking-title` | Title 1 to 3 |
+| `--mb-tracking-body` | Headline to Subheadline |
+| `--mb-tracking-caption` | Footnote and Caption |
 
-Controls have their own font tokens, `--sd-control-font`, `--sd-control-font-sm` and `--sd-control-font-lg`: 13px medium on macOS and 17px medium on touch for the default size.
+Controls have their own font tokens, `--mb-control-font`, `--mb-control-font-sm` and `--mb-control-font-lg`: 13px medium on macOS and 17px medium on touch for the default size.
 
-The body style is the default. `[data-stardust]` and every `[data-platform]` element set `font: var(--sd-text-body)`, so plain text inside picks up the platform's size.
+The body style is the default. `[data-macbetter]` and every `[data-platform]` element set `font: var(--mb-text-body)`, so plain text inside picks up the platform's size.
 
 ## Fonts
 
@@ -67,14 +67,14 @@ Four seed tokens hold the families:
 
 | Token | Default |
 | --- | --- |
-| `--sd-font` | `-apple-system`, `BlinkMacSystemFont`, SF Pro Text, SF Pro Display, `system-ui`, Inter, Helvetica Neue, Segoe UI |
-| `--sd-font-display` | `var(--sd-font)` |
-| `--sd-font-rounded` | `ui-rounded`, SF Pro Rounded, then `--sd-font` |
-| `--sd-font-mono` | `ui-monospace`, SF Mono, Geist Mono, Menlo, Consolas |
+| `--mb-font` | `-apple-system`, `BlinkMacSystemFont`, SF Pro Text, SF Pro Display, `system-ui`, Inter, Helvetica Neue, Segoe UI |
+| `--mb-font-display` | `var(--mb-font)` |
+| `--mb-font-rounded` | `ui-rounded`, SF Pro Rounded, then `--mb-font` |
+| `--mb-font-mono` | `ui-monospace`, SF Mono, Geist Mono, Menlo, Consolas |
 
 On Apple devices the stack resolves to San Francisco, which switches between its Text and Display cuts by size on its own. Elsewhere it falls back to the system UI font.
 
-Titles use `--sd-font-display`, from Title 3 up on iPadOS and iOS and from Title 2 up on macOS. Set it to a different family to give headings a voice without changing body text.
+Titles use `--mb-font-display`, from Title 3 up on iPadOS and iOS and from Title 2 up on macOS. Set it to a different family to give headings a voice without changing body text.
 
 ### Change the fonts
 
@@ -82,8 +82,8 @@ Set the seeds in a theme. Load the font yourself, then name it first in the stac
 
 ```css
 [data-theme="harbor"] {
-  --sd-font: "Inter", system-ui, sans-serif;
-  --sd-font-display: "Inter Display", "Inter", system-ui, sans-serif;
+  --mb-font: "Inter", system-ui, sans-serif;
+  --mb-font-display: "Inter Display", "Inter", system-ui, sans-serif;
 }
 ```
 
@@ -93,11 +93,11 @@ Pick a font with a large x-height and open shapes at small sizes. macOS body tex
 
 ## Size and legibility
 
-Stardust doesn't implement Dynamic Type: the text styles are fixed pixel sizes per platform, and they don't follow the iOS text size setting. Browser zoom scales everything, and the layout tokens scale with it.
+Macbetter doesn't implement Dynamic Type: the text styles are fixed pixel sizes per platform, and they don't follow the iOS text size setting. Browser zoom scales everything, and the layout tokens scale with it.
 
 To keep text readable when people zoom or enlarge text:
 
 - **Use text styles, not pixel sizes.** Then the hierarchy stays consistent and one change of token moves everything.
-- **Let rows grow.** Use `min-height: var(--sd-row-height)` rather than `height`, so a row with wrapped or enlarged text gets taller instead of clipping.
+- **Let rows grow.** Use `min-height: var(--mb-row-height)` rather than `height`, so a row with wrapped or enlarged text gets taller instead of clipping.
 - **Don't truncate what people need.** Wrap labels in forms and settings; truncate only where the full text is available elsewhere, like a file name with a details view.
 - **Keep the hierarchy small.** Most screens need a title, body and one secondary style. Use weight and label color for emphasis before size.

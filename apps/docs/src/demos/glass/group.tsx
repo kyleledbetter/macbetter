@@ -1,6 +1,6 @@
-import { Button } from "@dreambase/stardust/button"
-import { Glass, GlassGroup } from "@dreambase/stardust/glass"
-import { Separator } from "@dreambase/stardust/separator"
+import { Button } from "macbetter/button"
+import { Glass, GlassGroup } from "macbetter/glass"
+import { Separator } from "macbetter/separator"
 import { LocateFixedIcon, MinusIcon, PlusIcon, ShareIcon, StarIcon, Trash2Icon } from "lucide-react"
 
 export default function Example() {
@@ -54,7 +54,7 @@ export default function Example() {
           placeItems: "center",
           width: 48,
           padding: 0,
-          color: "var(--sd-accent-text)",
+          color: "var(--mb-accent-text)",
         }}
       >
         <LocateFixedIcon aria-hidden="true" size={22} />

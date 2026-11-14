@@ -1,4 +1,4 @@
-import { SegmentedControl, SegmentedControlItem } from "@dreambase/stardust/segmented-control"
+import { SegmentedControl, SegmentedControlItem } from "macbetter/segmented-control"
 import { Columns3Icon, GalleryVerticalIcon, LayoutGridIcon, ListIcon } from "lucide-react"
 
 export default function Example() {

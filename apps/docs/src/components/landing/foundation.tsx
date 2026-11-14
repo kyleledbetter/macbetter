@@ -1,14 +1,14 @@
-import { Button } from "@dreambase/stardust/button"
+import { Button } from "macbetter/button"
 import { BotIcon, KeyboardIcon, LanguagesIcon, ScanEyeIcon, ServerIcon, TextCursorInputIcon } from "lucide-react"
 import Link from "next/link"
 import { CodeBlock } from "@/components/code-block"
 import { CopyButton } from "@/components/copy-button"
 import { SectionHeading } from "./section-heading"
 
-const install = "pnpm add @dreambase/stardust @ui-sdk/react @ui-sdk/core"
+const install = "pnpm add macbetter @ui-sdk/react @ui-sdk/core"
 
-const usage = `import { Button } from "@dreambase/stardust/button"
-import { Switch } from "@dreambase/stardust/switch"
+const usage = `import { Button } from "macbetter/button"
+import { Switch } from "macbetter/switch"
 
 export function JoinNetwork() {
   return (
@@ -66,11 +66,11 @@ function Foundation() {
         muted="Ready for people and agents."
         actions={
           <Button variant="tinted" render={<Link href="/docs/agents" />}>
-            How agents use Stardust
+            How agents use Macbetter
           </Button>
         }
       >
-        Stardust adds the Apple look and feel. Behavior comes from ui-sdk, shadcn’s headless component library, so
+        Macbetter adds the Apple look and feel. Behavior comes from ui-sdk, shadcn’s headless component library, so
         the hard parts of every control are already built and tested.
       </SectionHeading>
       <div className="lp-foundation lp-reveal">

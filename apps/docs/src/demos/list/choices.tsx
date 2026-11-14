@@ -1,6 +1,6 @@
 "use client"
 
-import { List, ListRow, ListRowAccessory, ListRowTitle, ListSection } from "@dreambase/stardust/list"
+import { List, ListRow, ListRowAccessory, ListRowTitle, ListSection } from "macbetter/list"
 import { useState } from "react"
 
 const appearances = ["Light", "Dark", "Automatic"]

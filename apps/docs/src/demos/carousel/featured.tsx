@@ -1,4 +1,4 @@
-import { Artwork } from "@dreambase/stardust/artwork"
+import { Artwork } from "macbetter/artwork"
 import {
   Carousel,
   CarouselContent,
@@ -8,7 +8,7 @@ import {
   CarouselNext,
   CarouselPrevious,
   CarouselViewport,
-} from "@dreambase/stardust/carousel"
+} from "macbetter/carousel"
 
 const stories = [
   { id: "focus", eyebrow: "Get started", title: "Set up Focus for deep work", variant: "orbit", palette: "dusk" },
@@ -30,12 +30,12 @@ export default function Example() {
                 variant={story.variant}
                 palette={story.palette}
                 aspect={16 / 10}
-                radius="var(--sd-group-radius)"
+                radius="var(--mb-group-radius)"
               >
-                <span style={{ font: "var(--sd-text-footnote)", fontWeight: 600, textTransform: "uppercase", opacity: 0.85 }}>
+                <span style={{ font: "var(--mb-text-footnote)", fontWeight: 600, textTransform: "uppercase", opacity: 0.85 }}>
                   {story.eyebrow}
                 </span>
-                <span style={{ font: "var(--sd-text-title-2)" }}>{story.title}</span>
+                <span style={{ font: "var(--mb-text-title-2)" }}>{story.title}</span>
               </Artwork>
             </CarouselItem>
           ))}

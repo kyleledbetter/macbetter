@@ -29,7 +29,7 @@ import {
   AlertIcon,
   AlertTitle,
   AlertTrigger,
-} from "@dreambase/stardust/alert"
+} from "macbetter/alert"
 ```
 
 `AlertContent` brings its own dimmed backdrop. `AlertAction` closes the alert and reports its `value`; `value="confirm"` is the agreeing answer that `createConfirm()` resolves `true` for. Put the least destructive action first in the markup, since the alert opens with focus on it.
@@ -134,15 +134,15 @@ Takes every [ui-sdk Alert Dialog](https://ui-sdk.dev/docs/components/alert-dialo
 
 | Data attribute | On | Meaning |
 | --- | --- | --- |
-| `data-variant` | `.sd-alert` | `alert` or `sheet` |
-| `data-orientation` | `.sd-alert-actions` | The layout you asked for |
-| `data-variant`, `data-tone` | `.sd-alert-action` | Its role and color |
-| `data-starting-style`, `data-ending-style` | `.sd-alert`, `.sd-alert-backdrop` | Entering and leaving |
-| `data-pending` | `.sd-alert-action` | Its action is running |
+| `data-variant` | `.mb-alert` | `alert` or `sheet` |
+| `data-orientation` | `.mb-alert-actions` | The layout you asked for |
+| `data-variant`, `data-tone` | `.mb-alert-action` | Its role and color |
+| `data-starting-style`, `data-ending-style` | `.mb-alert`, `.mb-alert-backdrop` | Entering and leaving |
+| `data-pending` | `.mb-alert-action` | Its action is running |
 
 | CSS variable | Default |
 | --- | --- |
-| `--sd-alert-width` | 260px on macOS, 270px on iOS and iPadOS |
-| `--sd-alert-radius` | `--sd-popup-radius` on macOS, 14pt on touch |
-| `--sd-alert-enter-scale` | 0.92 on macOS, 1.12 on touch |
-| `--sd-alert-scrim` | A lighter `--sd-scrim` on macOS, `--sd-scrim` on touch |
+| `--mb-alert-width` | 260px on macOS, 270px on iOS and iPadOS |
+| `--mb-alert-radius` | `--mb-popup-radius` on macOS, 14pt on touch |
+| `--mb-alert-enter-scale` | 0.92 on macOS, 1.12 on touch |
+| `--mb-alert-scrim` | A lighter `--mb-scrim` on macOS, `--mb-scrim` on touch |

@@ -1,7 +1,7 @@
 "use client"
 
-import { Avatar } from "@dreambase/stardust/avatar"
-import { Badge } from "@dreambase/stardust/badge"
+import { Avatar } from "macbetter/avatar"
+import { Badge } from "macbetter/badge"
 import {
   Menu,
   MenuCheckboxItem,
@@ -11,19 +11,19 @@ import {
   MenuRadioItem,
   MenuSeparator,
   MenuTrigger,
-} from "@dreambase/stardust/menu"
-import { SegmentedControl, SegmentedControlItem } from "@dreambase/stardust/segmented-control"
-import { Sidebar, SidebarItem, SidebarSection } from "@dreambase/stardust/sidebar"
-import { Switch } from "@dreambase/stardust/switch"
-import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@dreambase/stardust/table"
+} from "macbetter/menu"
+import { SegmentedControl, SegmentedControlItem } from "macbetter/segmented-control"
+import { Sidebar, SidebarItem, SidebarSection } from "macbetter/sidebar"
+import { Switch } from "macbetter/switch"
+import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "macbetter/table"
 import {
   Toolbar,
   ToolbarButton,
   ToolbarSearchField,
   ToolbarSpacer,
   ToolbarTitle,
-} from "@dreambase/stardust/toolbar"
-import { Window, WindowBody, WindowSidebar, WindowTitlebar, WindowTrafficLights } from "@dreambase/stardust/window"
+} from "macbetter/toolbar"
+import { Window, WindowBody, WindowSidebar, WindowTitlebar, WindowTrafficLights } from "macbetter/window"
 import { ArrowUpDownIcon, CalendarIcon, CircleIcon, InboxIcon, PlusIcon, StarIcon } from "lucide-react"
 import { useMemo, useState } from "react"
 import { dueLabel, ME, projects, statusColors, statusLabels, TODAY } from "./data"
@@ -77,7 +77,7 @@ function MacApp({ state }: { state: SceneState }) {
             {projects.map((p) => (
               <SidebarItem
                 key={p.id}
-                tint={`var(--sd-${p.color})`}
+                tint={`var(--mb-${p.color})`}
                 icon={<CircleIcon fill="currentColor" strokeWidth={0} />}
                 current={p.id === project.id}
                 onClick={() => setProjectId(p.id)}

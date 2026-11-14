@@ -18,7 +18,7 @@ Touch screens have no hover, so on iPhone and iPad tooltips don’t appear at al
 ## Usage
 
 ```tsx
-import { Tooltip, TooltipContent, TooltipShortcut, TooltipTrigger } from "@dreambase/stardust/tooltip"
+import { Tooltip, TooltipContent, TooltipShortcut, TooltipTrigger } from "macbetter/tooltip"
 ```
 
 The help tag waits 400ms before it appears and appears at once on keyboard focus. Set `delay` for a longer pause, such as the Mac's own 800ms, or a shorter one. Once one is showing, moving to the next control shows its tag straight away, without the delay or the fade, so moving along a toolbar reads as one tag following the pointer.
@@ -74,11 +74,11 @@ Takes every [ui-sdk Tooltip](https://ui-sdk.dev/docs/components/tooltip) root pr
 
 | Data attribute | On | Meaning |
 | --- | --- | --- |
-| `data-side`, `data-align` | `.sd-tooltip` | Where it landed |
-| `data-instant` | `.sd-tooltip` | Opened at once after another tag; skips the fade |
-| `data-starting-style`, `data-ending-style` | `.sd-tooltip` | Entering and leaving |
+| `data-side`, `data-align` | `.mb-tooltip` | Where it landed |
+| `data-instant` | `.mb-tooltip` | Opened at once after another tag; skips the fade |
+| `data-starting-style`, `data-ending-style` | `.mb-tooltip` | Entering and leaving |
 
 | CSS variable | Default |
 | --- | --- |
-| `--sd-tooltip-font` | 11px on macOS, 13px on touch |
-| `--sd-tooltip-padding` | 3px 7px on macOS |
+| `--mb-tooltip-font` | 11px on macOS, 13px on touch |
+| `--mb-tooltip-padding` | 3px 7px on macOS |

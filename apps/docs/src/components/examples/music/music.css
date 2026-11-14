@@ -1,6 +1,6 @@
 /* Music example. */
 
-/* Cover art is a Stardust Artwork drawn from the album's id; this only sets how it sits in the layout. */
+/* Cover art is a Macbetter Artwork drawn from the album's id; this only sets how it sits in the layout. */
 .ex-art {
   flex: none;
 }
@@ -21,15 +21,15 @@
   padding: 0;
   border: 0;
   background: none;
-  color: var(--sd-label);
-  font: var(--sd-text-body);
+  color: var(--mb-label);
+  font: var(--mb-text-body);
   text-align: start;
 }
 
 .ex-album .ex-art {
   width: 100%;
   margin-bottom: 6px;
-  box-shadow: inset 0 0 0 0.5px rgb(0 0 0 / 0.12), var(--sd-shadow-2);
+  box-shadow: inset 0 0 0 0.5px rgb(0 0 0 / 0.12), var(--mb-shadow-2);
 }
 
 .ex-album-title,
@@ -44,7 +44,7 @@
 }
 
 .ex-album-artist {
-  color: var(--sd-label-secondary);
+  color: var(--mb-label-secondary);
 }
 
 .ex-album-grid:not([data-titles]) :is(.ex-album-title, .ex-album-artist) {
@@ -70,7 +70,7 @@
   opacity: 0;
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
-  transition: opacity var(--sd-duration-fast) var(--sd-ease-out);
+  transition: opacity var(--mb-duration-fast) var(--mb-ease-out);
 }
 
 .ex-album-play svg {
@@ -85,7 +85,7 @@
 }
 
 .ex-album-play:focus-visible {
-  outline: var(--sd-focus-ring-width) solid var(--sd-focus-ring);
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
 }
 
 .ex-album-play:active {
@@ -93,7 +93,7 @@
 }
 
 button.ex-album:focus-visible {
-  outline: var(--sd-focus-ring-width) solid var(--sd-focus-ring);
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
   outline-offset: 4px;
   border-radius: 10px;
 }
@@ -104,7 +104,7 @@ button.ex-album:active .ex-art {
 
 /* Mac window */
 
-.ex-music-body.sd-window-body {
+.ex-music-body.mb-window-body {
   position: relative;
   overflow: hidden;
 }
@@ -134,7 +134,7 @@ button.ex-album:active .ex-art {
 
 .ex-transport-volume {
   gap: 8px;
-  color: var(--sd-label-secondary);
+  color: var(--mb-label-secondary);
 }
 
 .ex-transport-volume > svg {
@@ -143,7 +143,7 @@ button.ex-album:active .ex-art {
   height: 15px;
 }
 
-.ex-transport-volume .sd-slider {
+.ex-transport-volume .mb-slider {
   width: 110px;
   min-width: 0;
 }
@@ -156,7 +156,7 @@ button.ex-album:active .ex-art {
   border: 0;
   border-radius: 8px;
   background: none;
-  color: var(--sd-label);
+  color: var(--mb-label);
 }
 
 .ex-t-button svg {
@@ -165,11 +165,11 @@ button.ex-album:active .ex-art {
 }
 
 .ex-t-button[aria-pressed="false"] {
-  color: var(--sd-label-secondary);
+  color: var(--mb-label-secondary);
 }
 
 .ex-t-button[aria-pressed="true"] {
-  color: var(--sd-accent-text);
+  color: var(--mb-accent-text);
 }
 
 .ex-t-play svg {
@@ -179,16 +179,16 @@ button.ex-album:active .ex-art {
 
 @media (hover: hover) and (pointer: fine) {
   .ex-t-button:hover {
-    background: var(--sd-fill-tertiary);
+    background: var(--mb-fill-tertiary);
   }
 }
 
 .ex-t-button:active {
-  background: var(--sd-fill-secondary);
+  background: var(--mb-fill-secondary);
 }
 
 .ex-t-button:focus-visible {
-  outline: var(--sd-focus-ring-width) solid var(--sd-focus-ring);
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
 }
 
 .ex-transport-now {
@@ -221,7 +221,7 @@ button.ex-album:active .ex-art {
 
 .ex-transport-artist {
   overflow: hidden;
-  color: var(--sd-label-secondary);
+  color: var(--mb-label-secondary);
   text-overflow: ellipsis;
 }
 
@@ -229,18 +229,18 @@ button.ex-album:active .ex-art {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: var(--sd-label-secondary);
+  color: var(--mb-label-secondary);
   font-size: 11px;
 }
 
-.ex-transport-scrub .sd-slider {
+.ex-transport-scrub .mb-slider {
   min-width: 0;
 }
 
 /* iPhone */
 
-.ex-music-list .sd-list-row {
-  color: var(--sd-label);
+.ex-music-list .mb-list-row {
+  color: var(--mb-label);
 }
 
 .ex-music-row-glyph {
@@ -248,7 +248,7 @@ button.ex-album:active .ex-art {
   grid-row: 1 / -1;
   display: grid;
   margin-inline-end: 14px;
-  color: var(--sd-accent-text);
+  color: var(--mb-accent-text);
 }
 
 .ex-music-row-glyph svg {
@@ -258,7 +258,7 @@ button.ex-album:active .ex-art {
 
 .ex-music-heading {
   margin: 26px 16px 10px;
-  font: var(--sd-text-title-3);
+  font: var(--mb-text-title-3);
   font-weight: 700;
 }
 
@@ -273,14 +273,14 @@ button.ex-album:active .ex-art {
 }
 
 .ex-album-grid-phone .ex-album {
-  font: var(--sd-text-subheadline);
+  font: var(--mb-text-subheadline);
 }
 
 .ex-mini {
   position: absolute;
   z-index: 21;
   inset-inline: 20px;
-  bottom: calc(var(--sd-tab-bar-margin) + var(--sd-tab-bar-height) + 8px);
+  bottom: calc(var(--mb-tab-bar-margin) + var(--mb-tab-bar-height) + 8px);
   display: flex;
   align-items: center;
   gap: 2px;
@@ -298,7 +298,7 @@ button.ex-album:active .ex-art {
   padding: 0;
   border: 0;
   background: none;
-  color: var(--sd-label);
+  color: var(--mb-label);
   text-align: start;
 }
 
@@ -315,12 +315,12 @@ button.ex-album:active .ex-art {
 }
 
 .ex-mini-title {
-  font: 500 15px/19px var(--sd-font);
+  font: 500 15px/19px var(--mb-font);
 }
 
 .ex-mini-artist {
-  color: var(--sd-label-secondary);
-  font: 400 13px/16px var(--sd-font);
+  color: var(--mb-label-secondary);
+  font: 400 13px/16px var(--mb-font);
 }
 
 .ex-mini-button {
@@ -332,7 +332,7 @@ button.ex-album:active .ex-art {
   border: 0;
   border-radius: 50%;
   background: none;
-  color: var(--sd-label);
+  color: var(--mb-label);
 }
 
 .ex-mini-button svg {
@@ -341,11 +341,11 @@ button.ex-album:active .ex-art {
 }
 
 .ex-mini-button:active {
-  background: var(--sd-fill-tertiary);
+  background: var(--mb-fill-tertiary);
 }
 
 :is(.ex-mini-open, .ex-mini-button, .ex-np-button):focus-visible {
-  outline: var(--sd-focus-ring-width) solid var(--sd-focus-ring);
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
   outline-offset: 2px;
   border-radius: 12px;
 }
@@ -356,12 +356,12 @@ button.ex-album:active .ex-art {
   overflow-y: auto;
 }
 
-.ex-np-sheet.sd-sheet {
+.ex-np-sheet.mb-sheet {
   background: #1b1b1d;
 }
 
 .ex-np-sheet.ex-framed-sheet {
-  inset: calc(var(--sd-safe-area-top, 54px) - 10px) 0 0;
+  inset: calc(var(--mb-safe-area-top, 54px) - 10px) 0 0;
   background: #1b1b1d;
 }
 
@@ -376,7 +376,7 @@ button.ex-album:active .ex-art {
   flex: 1;
   gap: 16px;
   min-height: 0;
-  padding: 30px 28px calc(var(--sd-safe-area-bottom, 0px) + 18px);
+  padding: 30px 28px calc(var(--mb-safe-area-bottom, 0px) + 18px);
   background:
     radial-gradient(120% 70% at 20% 0%, color-mix(in oklch, var(--ex-art-from) 85%, black), transparent 70%),
     radial-gradient(120% 80% at 100% 100%, color-mix(in oklch, var(--ex-art-to) 70%, black), transparent 70%),
@@ -402,7 +402,7 @@ button.ex-album:active .ex-art {
   align-self: center;
   margin-top: 4px;
   box-shadow: 0 24px 50px -12px rgb(0 0 0 / 0.55);
-  transition: scale var(--sd-spring-smooth-duration) var(--sd-spring-smooth);
+  transition: scale var(--mb-spring-smooth-duration) var(--mb-spring-smooth);
 }
 
 .ex-np-meta {
@@ -414,7 +414,7 @@ button.ex-album:active .ex-art {
 }
 
 .ex-np-title {
-  font: 600 21px/26px var(--sd-font-display);
+  font: 600 21px/26px var(--mb-font-display);
   letter-spacing: -0.02em;
 }
 
@@ -425,26 +425,26 @@ button.ex-album:active .ex-art {
 .ex-np-artist {
   overflow: hidden;
   color: rgb(255 255 255 / 0.66);
-  font: 400 17px/22px var(--sd-font);
+  font: 400 17px/22px var(--mb-font);
   white-space: nowrap;
   text-overflow: ellipsis;
   letter-spacing: -0.02em;
 }
 
-.ex-np .sd-slider {
-  --sd-slider-thumb-sm: 9px;
+.ex-np .mb-slider {
+  --mb-slider-thumb-sm: 9px;
   min-width: 0;
 }
 
-.ex-np .sd-slider-track {
+.ex-np .mb-slider-track {
   background: rgb(255 255 255 / 0.22);
 }
 
-.ex-np .sd-slider-indicator {
+.ex-np .mb-slider-indicator {
   background: rgb(255 255 255 / 0.8);
 }
 
-.ex-np .sd-slider-thumb {
+.ex-np .mb-slider-thumb {
   background: #fff;
   box-shadow: none;
 }
@@ -476,7 +476,7 @@ button.ex-album:active .ex-art {
   border-radius: 50%;
   background: none;
   color: #fff;
-  transition: scale var(--sd-spring-snappy-duration) var(--sd-spring-snappy);
+  transition: scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
 }
 
 .ex-np-button svg {

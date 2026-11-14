@@ -34,8 +34,8 @@ export default function ScreenTimeStacked() {
       style={{ width: "100%", maxWidth: 560 }}
     >
       <div>
-        <div style={{ color: "var(--sd-label-secondary)", font: "var(--sd-text-footnote)", fontWeight: 600, textTransform: "uppercase" }}>Daily average</div>
-        <div style={{ font: "var(--sd-text-title-1)", fontFamily: "var(--sd-font-rounded)", fontVariantNumeric: "tabular-nums" }}>
+        <div style={{ color: "var(--mb-label-secondary)", font: "var(--mb-text-footnote)", fontWeight: 600, textTransform: "uppercase" }}>Daily average</div>
+        <div style={{ font: "var(--mb-text-title-1)", fontFamily: "var(--mb-font-rounded)", fontVariantNumeric: "tabular-nums" }}>
           {Math.floor(average)}h {Math.round((average % 1) * 60)}m
         </div>
       </div>
@@ -54,9 +54,9 @@ export default function ScreenTimeStacked() {
       </div>
       <ChartLegend
         items={[
-          { label: "Productivity", color: "var(--sd-chart-2)" },
-          { label: "Social", color: "var(--sd-chart-3)" },
-          { label: "Entertainment", color: "var(--sd-chart-1)" },
+          { label: "Productivity", color: "var(--mb-chart-2)" },
+          { label: "Social", color: "var(--mb-chart-3)" },
+          { label: "Entertainment", color: "var(--mb-chart-1)" },
         ]}
       />
     </ChartFrame>

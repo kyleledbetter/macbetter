@@ -1,4 +1,4 @@
-import { Checkbox } from "@dreambase/stardust/checkbox"
+import { Checkbox } from "macbetter/checkbox"
 
 export default function Example() {
   return (

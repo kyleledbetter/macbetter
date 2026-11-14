@@ -18,7 +18,7 @@ Keep it to two or three columns. Let people resize the panes and collapse the on
 ## Usage
 
 ```tsx
-import { SplitView, SplitViewDivider, SplitViewPane } from "@dreambase/stardust/split-view"
+import { SplitView, SplitViewDivider, SplitViewPane } from "macbetter/split-view"
 ```
 
 ### Sidebar, content and detail
@@ -84,9 +84,9 @@ Put a `SplitViewDivider` between each pair of panes and name it with `aria-label
 
 | Attribute or variable | On | Meaning |
 | --- | --- | --- |
-| `data-variant` | `.sd-split-view-pane` | `sidebar`, `content` or `inspector` |
-| `data-collapsed` | `.sd-split-view-pane` | The pane is collapsed |
+| `data-variant` | `.mb-split-view-pane` | `sidebar`, `content` or `inspector` |
+| `data-collapsed` | `.mb-split-view-pane` | The pane is collapsed |
 | `data-orientation` | every part | `horizontal` or `vertical` |
-| `data-dragging` | `.sd-split-view`, `.sd-split-view-divider` | A divider is being dragged |
-| `data-hovering` | `.sd-split-view-divider` | The pointer is within the divider's hit area |
-| `--resizable-panel-size` | `.sd-split-view-pane` | The pane's share of the group, from ui-sdk |
+| `data-dragging` | `.mb-split-view`, `.mb-split-view-divider` | A divider is being dragged |
+| `data-hovering` | `.mb-split-view-divider` | The pointer is within the divider's hit area |
+| `--resizable-panel-size` | `.mb-split-view-pane` | The pane's share of the group, from ui-sdk |

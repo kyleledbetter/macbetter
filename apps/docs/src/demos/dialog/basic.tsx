@@ -1,4 +1,4 @@
-import { Button } from "@dreambase/stardust/button"
+import { Button } from "macbetter/button"
 import {
   Dialog,
   DialogBody,
@@ -9,9 +9,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@dreambase/stardust/dialog"
-import { Field, FieldLabel } from "@dreambase/stardust/field"
-import { TextField } from "@dreambase/stardust/text-field"
+} from "macbetter/dialog"
+import { Field, FieldLabel } from "macbetter/field"
+import { TextField } from "macbetter/text-field"
 
 export default function Example() {
   return (

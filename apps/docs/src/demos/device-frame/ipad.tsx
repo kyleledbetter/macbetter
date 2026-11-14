@@ -1,5 +1,5 @@
-import { DeviceFrame } from "@dreambase/stardust/device-frame"
-import { Sidebar, SidebarItem, SidebarSection } from "@dreambase/stardust/sidebar"
+import { DeviceFrame } from "macbetter/device-frame"
+import { Sidebar, SidebarItem, SidebarSection } from "macbetter/sidebar"
 import { CalendarIcon, InboxIcon, StarIcon, SunIcon } from "lucide-react"
 
 export default function Example() {
@@ -8,7 +8,7 @@ export default function Example() {
       <div style={{ display: "flex", minHeight: 0 }}>
         <Sidebar
           aria-label="Lists"
-          style={{ width: 320, paddingTop: "calc(var(--sd-safe-top) + 16px)", paddingBottom: "var(--sd-safe-bottom)" }}
+          style={{ width: 320, paddingTop: "calc(var(--mb-safe-top) + 16px)", paddingBottom: "var(--mb-safe-bottom)" }}
         >
           <SidebarSection title="Reminders">
             <SidebarItem href="#today" icon={<SunIcon />} badge={3} current>
@@ -17,7 +17,7 @@ export default function Example() {
             <SidebarItem href="#scheduled" icon={<CalendarIcon />} badge={7}>
               Scheduled
             </SidebarItem>
-            <SidebarItem href="#flagged" icon={<StarIcon />} tint="var(--sd-orange)">
+            <SidebarItem href="#flagged" icon={<StarIcon />} tint="var(--mb-orange)">
               Flagged
             </SidebarItem>
             <SidebarItem href="#all" icon={<InboxIcon />} badge={24}>
@@ -25,11 +25,11 @@ export default function Example() {
             </SidebarItem>
           </SidebarSection>
         </Sidebar>
-        <div style={{ flex: 1, padding: "calc(var(--sd-safe-top) + 16px) 32px var(--sd-safe-bottom)" }}>
-          <h2 className="sd-text-large-title" style={{ margin: 0 }}>
+        <div style={{ flex: 1, padding: "calc(var(--mb-safe-top) + 16px) 32px var(--mb-safe-bottom)" }}>
+          <h2 className="mb-text-large-title" style={{ margin: 0 }}>
             Today
           </h2>
-          <p className="sd-text-body sd-label-secondary">3 reminders</p>
+          <p className="mb-text-body mb-label-secondary">3 reminders</p>
         </div>
       </div>
     </DeviceFrame>

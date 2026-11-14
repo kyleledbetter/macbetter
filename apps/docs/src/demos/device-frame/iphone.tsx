@@ -1,4 +1,4 @@
-import { DeviceFrame } from "@dreambase/stardust/device-frame"
+import { DeviceFrame } from "macbetter/device-frame"
 
 const reminders = ["Book the offsite venue", "Send Q3 metrics to Kofi", "Review the onboarding flow"]
 
@@ -9,12 +9,12 @@ export default function Example() {
         style={{
           display: "flex",
           flexDirection: "column",
-          paddingTop: "calc(var(--sd-safe-top) + 8px)",
-          paddingBottom: "var(--sd-safe-bottom)",
-          background: "var(--sd-bg-grouped)",
+          paddingTop: "calc(var(--mb-safe-top) + 8px)",
+          paddingBottom: "var(--mb-safe-bottom)",
+          background: "var(--mb-bg-grouped)",
         }}
       >
-        <h2 className="sd-text-large-title" style={{ margin: 0, padding: "0 16px 8px" }}>
+        <h2 className="mb-text-large-title" style={{ margin: 0, padding: "0 16px 8px" }}>
           Today
         </h2>
         <ul
@@ -23,16 +23,16 @@ export default function Example() {
             margin: "0 16px",
             padding: 0,
             borderRadius: 10,
-            background: "var(--sd-bg-grouped-secondary)",
+            background: "var(--mb-bg-grouped-secondary)",
           }}
         >
           {reminders.map((reminder, index) => (
             <li
               key={reminder}
-              className="sd-text-body"
+              className="mb-text-body"
               style={{
                 padding: "11px 16px",
-                boxShadow: index ? "inset 0 0.5px 0 var(--sd-separator)" : undefined,
+                boxShadow: index ? "inset 0 0.5px 0 var(--mb-separator)" : undefined,
               }}
             >
               {reminder}

@@ -1,4 +1,4 @@
-import { Select, SelectContent, SelectItem, SelectLabel, SelectTrigger } from "@dreambase/stardust/select"
+import { Select, SelectContent, SelectItem, SelectLabel, SelectTrigger } from "macbetter/select"
 
 const options = [
   { value: "automatic", label: "Automatically based on input" },

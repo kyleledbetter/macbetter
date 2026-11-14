@@ -1,6 +1,6 @@
 "use client"
 
-import { SegmentedControl, SegmentedControlItem } from "@dreambase/stardust/segmented-control"
+import { SegmentedControl, SegmentedControlItem } from "macbetter/segmented-control"
 import { useState } from "react"
 
 const ranges = {
@@ -25,7 +25,7 @@ export default function Example() {
         <SegmentedControlItem value="week">Week</SegmentedControlItem>
         <SegmentedControlItem value="month">Month</SegmentedControlItem>
       </SegmentedControl>
-      <p style={{ margin: 0, color: "var(--sd-label-secondary)" }}>{ranges[range]}</p>
+      <p style={{ margin: 0, color: "var(--mb-label-secondary)" }}>{ranges[range]}</p>
     </div>
   )
 }

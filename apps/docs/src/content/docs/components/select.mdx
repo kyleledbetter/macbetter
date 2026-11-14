@@ -17,7 +17,7 @@ A pop-up button shows the current choice and opens a menu of the others. Use it 
 ## Usage
 
 ```tsx
-import { Select, SelectContent, SelectItem, SelectLabel, SelectTrigger } from "@dreambase/stardust/select"
+import { Select, SelectContent, SelectItem, SelectLabel, SelectTrigger } from "macbetter/select"
 ```
 
 `SelectTrigger` renders the value and its chevron on its own. `SelectItem` renders the checkmark beside the selected item. On the Mac the menu opens over the button with the selected item on top of it, its text lined up with the button's. Pass `alignItemWithTrigger={false}` to `SelectContent` to open it below instead; iOS and iPadOS, and any touch, always do.
@@ -55,7 +55,7 @@ When the choices should stay on screen, use `Listbox`. It's the same choice in a
 <Demo name="select/listbox" height={300} />
 
 ```tsx
-import { Listbox, ListboxItem } from "@dreambase/stardust/listbox"
+import { Listbox, ListboxItem } from "macbetter/listbox"
 ```
 
 ## Platform behavior
@@ -102,7 +102,7 @@ The trigger is a combobox named by `SelectLabel`. Enter, Space and the arrow key
     { name: "data-selected", type: "item", description: "The chosen item, and its checkmark." },
     { name: "data-placeholder", type: "trigger and value", description: "Nothing is chosen yet." },
     { name: "data-open", type: "trigger", description: "The list is open." },
-    { name: "--sd-select-cap-inset", type: "length", default: "4px", description: "Space around the accent cap." },
-    { name: "--sd-select-content-shift", type: "length", description: "How far the Mac menu moves to line its text up with the button's." },
+    { name: "--mb-select-cap-inset", type: "length", default: "4px", description: "Space around the accent cap." },
+    { name: "--mb-select-content-shift", type: "length", description: "How far the Mac menu moves to line its text up with the button's." },
   ]}
 />

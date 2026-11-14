@@ -1,4 +1,4 @@
-import { TextField } from "@dreambase/stardust/text-field"
+import { TextField } from "macbetter/text-field"
 
 export default function Example() {
   return (

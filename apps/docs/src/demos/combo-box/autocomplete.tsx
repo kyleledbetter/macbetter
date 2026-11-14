@@ -6,7 +6,7 @@ import {
   AutocompleteLabel,
   AutocompleteList,
   ComboboxControl,
-} from "@dreambase/stardust/combo-box"
+} from "macbetter/combo-box"
 
 const destinations = ["Lisbon", "Lima", "Lyon", "Ljubljana", "Los Angeles", "Luang Prabang"]
 

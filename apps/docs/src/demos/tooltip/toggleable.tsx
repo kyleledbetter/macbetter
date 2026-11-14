@@ -1,5 +1,5 @@
-import { Button } from "@dreambase/stardust/button"
-import { Tooltip, TooltipContent, TooltipTrigger } from "@dreambase/stardust/tooltip"
+import { Button } from "macbetter/button"
+import { Tooltip, TooltipContent, TooltipTrigger } from "macbetter/tooltip"
 import { InfoIcon } from "lucide-react"
 
 export default function Example() {
@@ -12,7 +12,7 @@ export default function Example() {
         </TooltipTrigger>
         <TooltipContent>Files in the Trash still use storage.</TooltipContent>
       </Tooltip>
-      <span style={{ color: "var(--sd-label-secondary)" }}>12.4 of 15 GB used</span>
+      <span style={{ color: "var(--mb-label-secondary)" }}>12.4 of 15 GB used</span>
     </div>
   )
 }

@@ -1,6 +1,6 @@
 "use client"
 
-import type { Platform } from "@dreambase/stardust"
+import type { Platform } from "macbetter"
 import { useEffect, useState } from "react"
 
 /**

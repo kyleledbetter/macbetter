@@ -1,6 +1,6 @@
 "use client"
 
-import { SegmentedControl, SegmentedControlItem } from "@dreambase/stardust/segmented-control"
+import { SegmentedControl, SegmentedControlItem } from "macbetter/segmented-control"
 import * as React from "react"
 import { alpha, baseOption, ChartFrame, EChart, echarts, formatters, type ChartTheme, type Scrub } from "@/components/charts"
 
@@ -236,19 +236,19 @@ export default function StockChart() {
 
   const index = scrub?.index
   const shown = index === undefined ? null : { price: data.prices[index]!, date: data.times[index]! }
-  const summary = `DRMB ${up ? "rose" : "fell"} ${Math.abs((change / reference) * 100).toFixed(2)}% ${spec[range].long}, from ${formatters.price.format(reference)} to ${formatters.price.format(last)}. Low ${formatters.price.format(Math.min(...data.prices))}, high ${formatters.price.format(Math.max(...data.prices))}.`
+  const summary = `MCBT ${up ? "rose" : "fell"} ${Math.abs((change / reference) * 100).toFixed(2)}% ${spec[range].long}, from ${formatters.price.format(reference)} to ${formatters.price.format(last)}. Low ${formatters.price.format(Math.min(...data.prices))}, high ${formatters.price.format(Math.max(...data.prices))}.`
   const sample = Math.ceil(data.prices.length / 12)
 
   return (
     <div style={{ width: "100%", maxWidth: 640, minWidth: 0, display: "grid", gap: 12 }}>
       <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 12 }}>
         <div>
-          <div style={{ font: "var(--sd-text-title-1)", fontWeight: 700 }}>DRMB</div>
-          <div style={{ color: "var(--sd-label-secondary)", font: "var(--sd-text-subheadline)" }}>Dreambase Inc.</div>
+          <div style={{ font: "var(--mb-text-title-1)", fontWeight: 700 }}>MCBT</div>
+          <div style={{ color: "var(--mb-label-secondary)", font: "var(--mb-text-subheadline)" }}>Macbetter Inc.</div>
         </div>
         <div style={{ textAlign: "end", fontVariantNumeric: "tabular-nums" }}>
-          <div style={{ font: "var(--sd-text-title-2)" }}>{formatters.price.format(last)}</div>
-          <div style={{ font: "var(--sd-text-subheadline)", fontWeight: 600, color: up ? "var(--sd-chart-up, var(--sd-green))" : "var(--sd-chart-down, var(--sd-red))" }}>
+          <div style={{ font: "var(--mb-text-title-2)" }}>{formatters.price.format(last)}</div>
+          <div style={{ font: "var(--mb-text-subheadline)", fontWeight: 600, color: up ? "var(--mb-chart-up, var(--mb-green))" : "var(--mb-chart-down, var(--mb-red))" }}>
             {up ? "+" : "−"}
             {formatters.price.format(Math.abs(change))} ({up ? "+" : "−"}
             {Math.abs((change / reference) * 100).toFixed(2)}%)
@@ -266,7 +266,7 @@ export default function StockChart() {
       </SegmentedControl>
       </div>
       <ChartFrame
-        title={`DRMB price, ${spec[range].long}`}
+        title={`MCBT price, ${spec[range].long}`}
         summary={summary}
         table={{
           columns: ["Time", "Price", "Volume"],
@@ -277,7 +277,7 @@ export default function StockChart() {
         style={{ position: "relative" }}
       >
         {shown && scrub ? (
-          <div className="sd-chart-callout" style={{ left: Math.min(Math.max(scrub.x, 44), scrub.width - 60) }}>
+          <div className="mb-chart-callout" style={{ left: Math.min(Math.max(scrub.x, 44), scrub.width - 60) }}>
             <strong>{formatters.price.format(shown.price)}</strong>
             <span>{calloutDate(range, shown.date)}</span>
           </div>

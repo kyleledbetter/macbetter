@@ -1,6 +1,6 @@
 "use client"
 
-import { Button } from "@dreambase/stardust/button"
+import { Button } from "macbetter/button"
 import {
   Outline,
   OutlineGroup,
@@ -8,10 +8,10 @@ import {
   OutlineItemIcon,
   OutlineItemLabel,
   OutlineItemText,
-} from "@dreambase/stardust/outline"
-import { Select, SelectContent, SelectItem, SelectList, SelectTrigger } from "@dreambase/stardust/select"
-import { toast } from "@dreambase/stardust/toast"
-import { Window, WindowBody, WindowSidebar, WindowTitlebar, WindowTrafficLights } from "@dreambase/stardust/window"
+} from "macbetter/outline"
+import { Select, SelectContent, SelectItem, SelectList, SelectTrigger } from "macbetter/select"
+import { toast } from "macbetter/toast"
+import { Window, WindowBody, WindowSidebar, WindowTitlebar, WindowTrafficLights } from "macbetter/window"
 import { CheckIcon, CopyIcon, FileCode2Icon, FileTextIcon, FolderIcon, PaletteIcon } from "lucide-react"
 import Link from "next/link"
 import * as React from "react"
@@ -236,7 +236,7 @@ function BuiltWith({ source }: { source: ExampleSourceSet }) {
     <section className="ex-code-note" aria-label="How this is built">
       <p>
         <strong>How this is built.</strong> {source.files.length} files and {lines.toLocaleString("en-US")} lines,
-        using {source.components.length} Stardust components:{" "}
+        using {source.components.length} Macbetter components:{" "}
         {source.components.map((component, index) => (
           <React.Fragment key={component.name}>
             {index ? ", " : null}

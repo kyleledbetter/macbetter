@@ -1,4 +1,4 @@
-import { DatePicker, TimeField } from "@dreambase/stardust/date-picker"
+import { DatePicker, TimeField } from "macbetter/date-picker"
 
 export default function Example() {
   return (

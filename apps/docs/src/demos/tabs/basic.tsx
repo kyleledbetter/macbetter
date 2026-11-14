@@ -1,4 +1,4 @@
-import { Tabs, TabsList, TabsPanel, TabsTab } from "@dreambase/stardust/tabs"
+import { Tabs, TabsList, TabsPanel, TabsTab } from "macbetter/tabs"
 
 const rows = {
   general: [
@@ -12,7 +12,7 @@ const rows = {
     ["Screen Sharing", "Off"],
   ],
   network: [
-    ["Wi-Fi", "Connected to Dreambase"],
+    ["Wi-Fi", "Connected to Macbetter"],
     ["IP address", "192.168.1.24"],
     ["Firewall", "Active"],
   ],
@@ -31,7 +31,7 @@ export default function Example() {
           <dl style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: "10px 16px", margin: 0 }}>
             {rows[key].map(([label, value]) => (
               <div key={label} style={{ display: "contents" }}>
-                <dt className="sd-label-secondary" style={{ textAlign: "end" }}>{label}:</dt>
+                <dt className="mb-label-secondary" style={{ textAlign: "end" }}>{label}:</dt>
                 <dd style={{ margin: 0 }}>{value}</dd>
               </div>
             ))}

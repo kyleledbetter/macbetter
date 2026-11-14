@@ -1,15 +1,15 @@
 "use client"
 
-import { Button } from "@dreambase/stardust/button"
+import { Button } from "macbetter/button"
 import { usePreference } from "@ui-sdk/react/preferences"
 import { XIcon } from "lucide-react"
 import { useEffect, useState } from "react"
 import { motion, transparency } from "@/lib/preferences"
 
-const dismissedKey = "stardust-effects-notice"
+const dismissedKey = "macbetter-effects-notice"
 
 /**
- * Stardust follows the system's Reduce Motion and Reduce Transparency settings,
+ * Macbetter follows the system's Reduce Motion and Reduce Transparency settings,
  * which hides the materials and springs this site exists to show. This says so,
  * and lets a visitor see them anyway.
  */
@@ -55,7 +55,7 @@ function EffectsNotice() {
     <aside
       aria-label="Display effects"
       data-platform="macos"
-      className="fixed inset-x-3 bottom-3 z-50 mx-auto flex max-w-[560px] items-center gap-3 rounded-[16px] border border-separator bg-bg-elevated py-2.5 ps-4 pe-2.5 text-[13px] leading-[1.35] text-label shadow-(--sd-shadow-4)"
+      className="fixed inset-x-3 bottom-3 z-50 mx-auto flex max-w-[560px] items-center gap-3 rounded-[16px] border border-separator bg-bg-elevated py-2.5 ps-4 pe-2.5 text-[13px] leading-[1.35] text-label shadow-(--mb-shadow-4)"
     >
       <p className="min-w-0 flex-1">
         {full ? (

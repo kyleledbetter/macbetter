@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   // Lets a production build run beside a dev server: NEXT_DIST_DIR=.next-build pnpm build
   distDir: process.env.NEXT_DIST_DIR ?? ".next",
   pageExtensions: ["ts", "tsx", "md", "mdx"],
-  transpilePackages: ["@dreambase/stardust"],
+  transpilePackages: ["macbetter"],
   turbopack: {
     rules: {
       "*.css": {

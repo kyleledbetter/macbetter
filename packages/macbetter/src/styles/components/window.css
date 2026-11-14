@@ -1,0 +1,231 @@
+/* Window — a macOS window: title bar, traffic lights, an inset glass sidebar and the content. */
+
+.mb-window {
+  --mb-window-radius: var(--mb-radius-xl);
+  --mb-window-titlebar-height: var(--mb-bar-height);
+  --mb-window-sidebar-width: 220px;
+  --mb-window-sidebar-inset: 6px;
+  /* The traffic lights are system chrome: they keep Apple's colors in every theme. */
+  --mb-window-close: #ff5f57;
+  --mb-window-minimize: #febc2e;
+  --mb-window-zoom: #28c840;
+  --mb-window-light-inactive: light-dark(rgb(0 0 0 / 0.13), rgb(255 255 255 / 0.18));
+
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: var(--mb-window-radius);
+  background: var(--mb-bg);
+  color: var(--mb-label);
+  font: var(--mb-text-body);
+  letter-spacing: var(--mb-tracking-body);
+  text-align: start;
+  /* A bright inner edge in dark mode, as macOS draws it, over the window shadow and hairline. */
+  box-shadow:
+    inset 0 0 0 var(--mb-hairline) light-dark(transparent, rgb(255 255 255 / 0.14)),
+    var(--mb-shadow-window);
+}
+
+.mb-window:has(> .mb-window-sidebar) {
+  grid-template-columns: auto minmax(0, 1fr);
+  container-type: inline-size;
+}
+
+.mb-window:has(> .mb-window-sidebar) > :not(.mb-window-sidebar) {
+  grid-column: 2;
+}
+
+/* Title bar */
+.mb-window-titlebar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--mb-space-4);
+  min-width: 0;
+  height: var(--mb-window-titlebar-height);
+  padding-inline: var(--mb-space-6) var(--mb-space-4);
+  background: var(--mb-bg);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.mb-window-titlebar[data-variant="compact"] {
+  --mb-window-titlebar-height: 28px;
+  padding-inline: var(--mb-space-4);
+  background: var(--mb-bg-secondary);
+}
+
+.mb-window-titlebar[data-bordered] {
+  box-shadow: inset 0 calc(-1 * var(--mb-hairline)) 0 var(--mb-separator);
+}
+
+.mb-window-title {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  flex: none;
+  padding-inline: var(--mb-space-2);
+}
+
+.mb-window-title-text {
+  overflow: hidden;
+  font: var(--mb-text-headline);
+  font-size: 15px;
+  line-height: 18px;
+  letter-spacing: var(--mb-tracking-title);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--mb-label);
+}
+
+.mb-window-subtitle {
+  overflow: hidden;
+  font: var(--mb-text-subheadline);
+  color: var(--mb-label-secondary);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.mb-window-title[data-align="center"] {
+  position: absolute;
+  inset-inline: 96px;
+  align-items: center;
+  pointer-events: none;
+}
+
+.mb-window-titlebar[data-variant="compact"] .mb-window-title-text {
+  font: var(--mb-text-headline);
+}
+
+.mb-window[data-inactive] :is(.mb-window-title-text, .mb-window-subtitle) {
+  color: var(--mb-label-tertiary);
+}
+
+/* Traffic lights */
+.mb-window-traffic-lights {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  height: 12px;
+  margin-inline-end: var(--mb-space-4);
+}
+
+.mb-window-traffic-light {
+  --mb-light: var(--mb-window-close);
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 12px;
+  height: 12px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--mb-light);
+  color: rgb(0 0 0 / 0.55);
+  box-shadow: inset 0 0 0 0.5px rgb(0 0 0 / 0.16);
+  cursor: default;
+}
+
+.mb-window-traffic-light[data-light="minimize"] {
+  --mb-light: var(--mb-window-minimize);
+}
+
+.mb-window-traffic-light[data-light="zoom"] {
+  --mb-light: var(--mb-window-zoom);
+}
+
+button.mb-window-traffic-light::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+}
+
+.mb-window-traffic-light-glyph {
+  width: 12px;
+  height: 12px;
+  fill: none;
+  stroke: currentColor;
+  opacity: 0;
+}
+
+.mb-window-traffic-lights:is(:hover, :focus-within) .mb-window-traffic-light-glyph {
+  opacity: 1;
+}
+
+button.mb-window-traffic-light:active {
+  background: oklch(from var(--mb-light) calc(l - 0.1) c h);
+}
+
+button.mb-window-traffic-light:focus-visible {
+  outline: 2px solid var(--mb-focus-ring);
+  outline-offset: 1px;
+}
+
+.mb-window[data-inactive] .mb-window-traffic-lights:not(:hover, :focus-within) .mb-window-traffic-light {
+  background: var(--mb-window-light-inactive);
+  box-shadow: none;
+}
+
+/* Sidebar: a floating pane of glass, inset from the window's edges. */
+.mb-window-sidebar {
+  --mb-sidebar-bg: transparent;
+  --mb-sidebar-filter: none;
+  --mb-sidebar-padding-top: 0px;
+
+  position: relative;
+  z-index: 2;
+  grid-row: 1 / -1;
+  grid-column: 1;
+  display: flex;
+  width: calc(var(--mb-window-sidebar-width) - var(--mb-window-sidebar-inset));
+  flex-direction: column;
+  min-height: 0;
+  margin: var(--mb-window-sidebar-inset);
+  margin-inline-end: 0;
+  overflow: hidden;
+  border-radius: calc(var(--mb-window-radius) - var(--mb-window-sidebar-inset));
+  background: var(--mb-material-sidebar);
+  -webkit-backdrop-filter: var(--mb-material-filter);
+  backdrop-filter: var(--mb-material-filter);
+  box-shadow:
+    var(--mb-glass-rim),
+    0 0 0 var(--mb-hairline) var(--mb-glass-border),
+    var(--mb-shadow-2);
+}
+
+.mb-window-sidebar > .mb-window-traffic-lights {
+  height: calc(var(--mb-window-titlebar-height) - var(--mb-window-sidebar-inset) * 2);
+  padding-inline: calc(var(--mb-space-6) - var(--mb-window-sidebar-inset));
+  margin: 0;
+}
+
+.mb-window-sidebar > :not(.mb-window-traffic-lights) {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* A narrow window hides its sidebar, as a Mac window does when it's dragged small. */
+@container (width < 540px) {
+  .mb-window-sidebar {
+    display: none;
+  }
+}
+
+/* Body */
+.mb-window-body {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  background: var(--mb-bg);
+}

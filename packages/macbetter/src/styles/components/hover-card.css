@@ -1,0 +1,132 @@
+/*
+ * Hover Card — a link preview that grows out of the link. Like Popover, the
+ * material is on ::before so an optional arrow can blur the page as well.
+ */
+
+.mb-hover-card-trigger {
+  color: var(--mb-accent-text);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklch, currentColor 40%, transparent);
+  text-underline-offset: 0.18em;
+  border-radius: var(--mb-radius-xs);
+  transition: text-decoration-color var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-hover-card-trigger[data-open] {
+  text-decoration-color: currentColor;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-hover-card-trigger:hover {
+    text-decoration-color: currentColor;
+  }
+}
+
+.mb-hover-card {
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  width: min(320px, var(--available-width, 100vw));
+  max-height: var(--available-height);
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  border-radius: var(--mb-popup-radius);
+  background: transparent;
+  box-shadow: var(--mb-shadow-menu);
+  color: var(--mb-label);
+  font: var(--mb-text-body);
+  letter-spacing: var(--mb-tracking-body);
+  outline: none;
+  transform-origin: var(--transform-origin);
+  transition:
+    opacity var(--mb-duration-base) var(--mb-ease-out),
+    scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+.mb-hover-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--mb-material-thick);
+  -webkit-backdrop-filter: var(--mb-material-filter);
+  backdrop-filter: var(--mb-material-filter);
+  box-shadow: var(--mb-glass-rim);
+  pointer-events: none;
+}
+
+/* Media at the top of a preview follows the card's corners. */
+.mb-hover-card > :where(img, video, picture):first-child {
+  display: block;
+  width: 100%;
+  border-start-start-radius: inherit;
+  border-start-end-radius: inherit;
+  object-fit: cover;
+}
+
+.mb-hover-card:is([data-starting-style], [data-ending-style]) {
+  opacity: 0;
+  scale: 0.92;
+}
+
+.mb-hover-card[data-ending-style] {
+  scale: 0.97;
+  transition-duration: var(--mb-duration-fast);
+  transition-timing-function: var(--mb-ease-out);
+}
+
+/* Positioned like Popover's arrow: ui-sdk sets left/top inline. */
+.mb-hover-card-arrow {
+  --mb-hover-card-arrow-stroke: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 11'%3E%3Cpath d='M0 11C5 11 8 6.5 9.6 3.4C10.3 2 10.6 1.5 11 1.5S11.7 2 12.4 3.4C14 6.5 17 11 22 11' fill='none' stroke='black' stroke-width='1'/%3E%3C/svg%3E");
+
+  position: absolute;
+  z-index: -1;
+  width: 22px;
+  height: 11px;
+  background: var(--mb-material-thick);
+  -webkit-backdrop-filter: var(--mb-material-filter);
+  backdrop-filter: var(--mb-material-filter);
+  clip-path: path("M0 11C5 11 8 6.5 9.6 3.4C10.3 2 10.6 1.5 11 1.5S11.7 2 12.4 3.4C14 6.5 17 11 22 11Z");
+  pointer-events: none;
+}
+
+.mb-hover-card-arrow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--mb-glass-border);
+  -webkit-mask: var(--mb-hover-card-arrow-stroke) center / 100% 100% no-repeat;
+  mask: var(--mb-hover-card-arrow-stroke) center / 100% 100% no-repeat;
+}
+
+.mb-hover-card-arrow[data-side="bottom"] {
+  bottom: calc(100% - 0.5px);
+}
+
+.mb-hover-card-arrow[data-side="top"] {
+  top: calc(100% - 0.5px);
+  rotate: 180deg;
+}
+
+.mb-hover-card-arrow[data-side="left"] {
+  left: calc(100% - 0.5px);
+  rotate: 90deg;
+  translate: -5.5px 0;
+}
+
+.mb-hover-card-arrow[data-side="right"] {
+  right: calc(100% - 0.5px);
+  rotate: -90deg;
+  translate: 5.5px 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(:root:not([data-motion="full"])) {
+    .mb-hover-card:is([data-starting-style], [data-ending-style]) {
+      scale: none;
+    }
+  }
+}

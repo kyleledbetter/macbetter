@@ -1,4 +1,4 @@
-import { Toggle, ToggleIcon } from "@dreambase/stardust/toggle"
+import { Toggle, ToggleIcon } from "macbetter/toggle"
 import { HeartIcon } from "lucide-react"
 
 const sizes = ["sm", "md", "lg"] as const

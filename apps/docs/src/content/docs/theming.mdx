@@ -1,11 +1,11 @@
 export const metadata = {
   title: "Theming",
-  description: "Re-skin Stardust with a handful of seed tokens. Everything else derives from them, in light and dark.",
+  description: "Re-skin Macbetter with a handful of seed tokens. Everything else derives from them, in light and dark.",
 }
 
 # Theming
 
-<Lead>A theme answers a few questions about your brand: its accent, its ink, its backgrounds, how round its corners are and which fonts it uses. Stardust derives every other color and state from those answers.</Lead>
+<Lead>A theme answers a few questions about your brand: its accent, its ink, its backgrounds, how round its corners are and which fonts it uses. Macbetter derives every other color and state from those answers.</Lead>
 
 <Demo name="guides/theme-swatches" hideCode />
 
@@ -20,7 +20,7 @@ Tokens come in two kinds:
 
 Because derived tokens are declared on every `[data-theme]` element as well as `:root`, they recompute wherever a theme changes the seeds.
 
-A theme can set as few seeds as it likes. Any seed it leaves out keeps the Dreambase default.
+A theme can set as few seeds as it likes. Any seed it leaves out keeps the Ember default.
 
 ## The seeds
 
@@ -28,62 +28,62 @@ A theme can set as few seeds as it likes. Any seed it leaves out keeps the Dream
 
 | Seed | What it drives |
 | --- | --- |
-| `--sd-accent` | Filled buttons, tinted fills, text selection, focus rings, and `accent-color` for native inputs |
-| `--sd-on-accent` | Text and icons on the accent. Needs 4.5:1 against it |
-| `--sd-accent-text` | The accent as text on the background: links, plain and tinted buttons. Needs 4.5:1 against `--sd-bg` |
-| `--sd-accent-secondary` | A second brand color for illustration and accents that aren't actions |
+| `--mb-accent` | Filled buttons, tinted fills, text selection, focus rings, and `accent-color` for native inputs |
+| `--mb-on-accent` | Text and icons on the accent. Needs 4.5:1 against it |
+| `--mb-accent-text` | The accent as text on the background: links, plain and tinted buttons. Needs 4.5:1 against `--mb-bg` |
+| `--mb-accent-secondary` | A second brand color for illustration and accents that aren't actions |
 
 ### Surfaces and ink
 
 | Seed | What it drives |
 | --- | --- |
-| `--sd-ink` | Text at full strength. Every label level is an opacity of it, and so are separators and control edges |
-| `--sd-bg` | The window or page background |
-| `--sd-bg-secondary` | Grouped pages, the background behind inset lists |
-| `--sd-bg-tertiary` | Groups and cards on a secondary background |
-| `--sd-bg-elevated` | Popovers, menus and sheets, and the base of most materials |
-| `--sd-bg-sidebar` | Sidebars and source lists |
-| `--sd-tint` | The gray that fills and control backgrounds are mixed from. Tint it toward the brand |
+| `--mb-ink` | Text at full strength. Every label level is an opacity of it, and so are separators and control edges |
+| `--mb-bg` | The window or page background |
+| `--mb-bg-secondary` | Grouped pages, the background behind inset lists |
+| `--mb-bg-tertiary` | Groups and cards on a secondary background |
+| `--mb-bg-elevated` | Popovers, menus and sheets, and the base of most materials |
+| `--mb-bg-sidebar` | Sidebars and source lists |
+| `--mb-tint` | The gray that fills and control backgrounds are mixed from. Tint it toward the brand |
 
 ### System palette
 
-`--sd-red`, `--sd-orange`, `--sd-yellow`, `--sd-green`, `--sd-mint`, `--sd-teal`, `--sd-cyan`, `--sd-blue`, `--sd-indigo`, `--sd-purple`, `--sd-pink` and `--sd-brown`. These are the HIG's system colors, for status and categories. `--sd-red` is also the destructive color and `--sd-green` the success color and the switch's on state.
+`--mb-red`, `--mb-orange`, `--mb-yellow`, `--mb-green`, `--mb-mint`, `--mb-teal`, `--mb-cyan`, `--mb-blue`, `--mb-indigo`, `--mb-purple`, `--mb-pink` and `--mb-brown`. These are the HIG's system colors, for status and categories. `--mb-red` is also the destructive color and `--mb-green` the success color and the switch's on state.
 
 ### Shape and type
 
 | Seed | What it drives |
 | --- | --- |
-| `--sd-radius-scale` | Multiplies every radius token. `1` is Apple's corners; lower is squarer, higher is rounder. Capsules stay capsules |
-| `--sd-font` | Text and controls |
-| `--sd-font-display` | Titles. Defaults to `--sd-font` |
-| `--sd-font-rounded` | The `sd-text-rounded` class |
-| `--sd-font-mono` | Code and the `sd-text-mono` class |
+| `--mb-radius-scale` | Multiplies every radius token. `1` is Apple's corners; lower is squarer, higher is rounder. Capsules stay capsules |
+| `--mb-font` | Text and controls |
+| `--mb-font-display` | Titles. Defaults to `--mb-font` |
+| `--mb-font-rounded` | The `mb-text-rounded` class |
+| `--mb-font-mono` | Code and the `mb-text-mono` class |
 
 ## Light and dark
 
 Every color seed is written with `light-dark()`, so one theme covers both schemes:
 
 ```css
---sd-accent: light-dark(#ee5700, #f67f01);
+--mb-accent: light-dark(#ee5700, #f67f01);
 ```
 
-The browser picks the first value under a light `color-scheme` and the second under a dark one. Stardust sets `color-scheme: light dark` by default, so the system setting decides. `data-scheme="light"` or `data-scheme="dark"` on any element pins it for that subtree.
+The browser picks the first value under a light `color-scheme` and the second under a dark one. Macbetter sets `color-scheme: light dark` by default, so the system setting decides. `data-scheme="light"` or `data-scheme="dark"` on any element pins it for that subtree.
 
 Choose the dark value separately rather than inverting the light one. Dark backgrounds usually need a lighter, more saturated accent to reach the same contrast.
 
 ## Write a theme in CSS
 
-A theme is a rule that sets seeds under a `data-theme` name. Load it after Stardust's stylesheet:
+A theme is a rule that sets seeds under a `data-theme` name. Load it after Macbetter's stylesheet:
 
 ```css title="themes/harbor.css"
 [data-theme="harbor"] {
-  --sd-accent: light-dark(#0b6e99, #3fb3e6);
-  --sd-on-accent: light-dark(#ffffff, #04202e);
-  --sd-accent-text: light-dark(#0a5f85, #6cc7ef);
-  --sd-ink: light-dark(#0b1a22, #eaf4f8);
-  --sd-bg: light-dark(#ffffff, #0b1a22);
-  --sd-tint: light-dark(#5d6f78, #86a3b0);
-  --sd-radius-scale: 1.1;
+  --mb-accent: light-dark(#0b6e99, #3fb3e6);
+  --mb-on-accent: light-dark(#ffffff, #04202e);
+  --mb-accent-text: light-dark(#0a5f85, #6cc7ef);
+  --mb-ink: light-dark(#0b1a22, #eaf4f8);
+  --mb-bg: light-dark(#ffffff, #0b1a22);
+  --mb-tint: light-dark(#5d6f78, #86a3b0);
+  --mb-radius-scale: 1.1;
 }
 ```
 
@@ -93,12 +93,12 @@ A theme is a rule that sets seeds under a `data-theme` name. Load it after Stard
 
 ## Write a theme in TypeScript
 
-`@dreambase/stardust/theme` builds the same thing from an object. Each color takes a single value or a `{ light, dark }` pair.
+`macbetter/theme` builds the same thing from an object. Each color takes a single value or a `{ light, dark }` pair.
 
 `createTheme(name, seeds)` returns the CSS as a string, for a build step or a `<style>` tag:
 
 ```ts
-import { createTheme } from "@dreambase/stardust/theme"
+import { createTheme } from "macbetter/theme"
 
 const css = createTheme("harbor", {
   accent: { light: "#0b6e99", dark: "#3fb3e6" },
@@ -116,16 +116,16 @@ const css = createTheme("harbor", {
 
 <PropsTable
   rows={[
-    { name: "accent", type: "ColorPair", description: "Required. Becomes --sd-accent." },
-    { name: "onAccent", type: "ColorPair", description: "--sd-on-accent." },
-    { name: "accentText", type: "ColorPair", description: "--sd-accent-text." },
-    { name: "accentSecondary", type: "ColorPair", description: "--sd-accent-secondary." },
-    { name: "ink", type: "ColorPair", description: "--sd-ink." },
+    { name: "accent", type: "ColorPair", description: "Required. Becomes --mb-accent." },
+    { name: "onAccent", type: "ColorPair", description: "--mb-on-accent." },
+    { name: "accentText", type: "ColorPair", description: "--mb-accent-text." },
+    { name: "accentSecondary", type: "ColorPair", description: "--mb-accent-secondary." },
+    { name: "ink", type: "ColorPair", description: "--mb-ink." },
     { name: "bg, bgSecondary, bgTertiary, bgElevated, bgSidebar", type: "ColorPair", description: "The background seeds." },
-    { name: "tint", type: "ColorPair", description: "--sd-tint." },
+    { name: "tint", type: "ColorPair", description: "--mb-tint." },
     { name: "palette", type: "Partial<Record<SystemColor, ColorPair>>", description: "Overrides for any system color, keyed red, orange, yellow, green, mint, teal, cyan, blue, indigo, purple, pink or brown." },
-    { name: "radiusScale", type: "number", description: "--sd-radius-scale." },
-    { name: "font, fontDisplay, fontMono", type: "string", description: "Font stacks. There's no option for the rounded font; set --sd-font-rounded in CSS." },
+    { name: "radiusScale", type: "number", description: "--mb-radius-scale." },
+    { name: "font, fontDisplay, fontMono", type: "string", description: "Font stacks. There's no option for the rounded font; set --mb-font-rounded in CSS." },
   ]}
 />
 
@@ -135,24 +135,24 @@ const css = createTheme("harbor", {
 
 | Theme | Character |
 | --- | --- |
-| `dreambase` | The default. Trinidad and Gold Drop orange on Racing Green, with Racing Green text on the accent |
+| `ember` | The default. Trinidad and Gold Drop orange on Racing Green, with Racing Green text on the accent |
 | `system` | The neutral Apple look: system blue on true grays, Apple's system palette |
-| `nebula` | Violet on cool ink, `--sd-radius-scale: 1.15` |
-| `graphite` | Monochrome for dense tools: the accent is ink, `--sd-radius-scale: 0.7` |
+| `nebula` | Violet on cool ink, `--mb-radius-scale: 1.15` |
+| `graphite` | Monochrome for dense tools: the accent is ink, `--mb-radius-scale: 0.7` |
 
-All four are in `styles.css`. Dreambase is also the value of `:root`, so a page with no `data-theme` looks like Dreambase.
+All four are in `styles.css`. Ember is also the value of `:root`, so a page with no `data-theme` looks like Ember.
 
 ## Contrast
 
 A theme is your responsibility to check. These are the targets:
 
-- `--sd-ink`, `--sd-accent-text` and `--sd-on-accent` reach **4.5:1** against what they sit on.
-- Control edges, focus rings and state fills reach **3:1**. `--sd-control-border` is derived to do this from `--sd-ink`.
+- `--mb-ink`, `--mb-accent-text` and `--mb-on-accent` reach **4.5:1** against what they sit on.
+- Control edges, focus rings and state fills reach **3:1**. `--mb-control-border` is derived to do this from `--mb-ink`.
 
 Check both schemes. `contrastRatio()` computes the WCAG ratio of two hex colors:
 
 ```ts
-import { contrastRatio } from "@dreambase/stardust/theme"
+import { contrastRatio } from "macbetter/theme"
 
 contrastRatio("#0a5f85", "#ffffff") // 7.03
 contrastRatio("#04202e", "#3fb3e6") // 7.03
@@ -165,12 +165,12 @@ It takes six- or three-digit hex only, so check the hex values you write in your
 `data-theme` works on any element, not just `<html>`. Colors inside switch to that theme and re-derive:
 
 ```tsx
-<section data-theme="nebula" data-stardust="">
+<section data-theme="nebula" data-macbetter="">
   <Toolbar />
 </section>
 ```
 
-Add `data-stardust` when the subtree should also take the theme's background and text color.
+Add `data-macbetter` when the subtree should also take the theme's background and text color.
 
 A nested theme recomputes everything that depends on it, including the control radius and text styles that come from the platform, so `data-theme` is all you need.
 
@@ -179,7 +179,7 @@ A nested theme recomputes everything that depends on it, including the control r
 `data-scheme="light"` or `data-scheme="dark"` sets the scheme for a subtree. Put `data-theme` on the same element, even if the theme hasn't changed:
 
 ```tsx
-<aside data-scheme="dark" data-theme="dreambase">
+<aside data-scheme="dark" data-theme="ember">
   <Inspector />
 </aside>
 ```

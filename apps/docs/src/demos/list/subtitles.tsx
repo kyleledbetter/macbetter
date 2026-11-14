@@ -6,7 +6,7 @@ import {
   ListRowSubtitle,
   ListRowTitle,
   ListSection,
-} from "@dreambase/stardust/list"
+} from "macbetter/list"
 import { AtSignIcon, CloudIcon, MailIcon } from "lucide-react"
 
 export default function Example() {
@@ -25,7 +25,7 @@ export default function Example() {
           <ListRowIcon color="indigo">
             <MailIcon aria-hidden="true" />
           </ListRowIcon>
-          <ListRowTitle>Dreambase</ListRowTitle>
+          <ListRowTitle>Macbetter</ListRowTitle>
           <ListRowSubtitle>Mail, Calendars</ListRowSubtitle>
           <ListRowAccessory type="disclosure" />
         </ListRow>

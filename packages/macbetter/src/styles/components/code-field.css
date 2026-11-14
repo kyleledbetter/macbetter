@@ -1,0 +1,155 @@
+/* Code Field — the verification-code look: separate rounded cells, the active one ringed in the accent, a blinking caret. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-code-field-cell-width: 34px;
+  --mb-code-field-cell-ratio: 34 / 42;
+  --mb-code-field-cell-radius: var(--mb-radius-md);
+  --mb-code-field-cell-gap: 6px;
+  --mb-code-field-run-gap: 10px;
+  --mb-code-field-font: 500 22px/1 var(--mb-font);
+  --mb-code-field-cell-bg: var(--mb-bg-field);
+  --mb-code-field-cell-edge: inset 0 0 0 var(--mb-hairline) var(--mb-control-border),
+    inset 0 0.5px 1px light-dark(rgb(0 0 0 / 0.07), rgb(0 0 0 / 0.2));
+  --mb-code-field-active-width: 1.5px;
+  --mb-code-field-halo: var(--mb-focus-ring-width);
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-code-field-cell-width: 46px;
+  --mb-code-field-cell-ratio: 46 / 58;
+  --mb-code-field-cell-radius: var(--mb-radius-lg);
+  --mb-code-field-cell-gap: 8px;
+  --mb-code-field-run-gap: 12px;
+  --mb-code-field-font: 600 28px/1 var(--mb-font);
+  --mb-code-field-cell-bg: var(--mb-fill-tertiary);
+  --mb-code-field-cell-edge: inset 0 0 0 0 transparent;
+  --mb-code-field-active-width: 2px;
+  --mb-code-field-halo: 0px;
+}
+
+.mb-code-field {
+  --mb-code-field-w: var(--mb-code-field-cell-width);
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mb-code-field-run-gap);
+  max-width: 100%;
+  color: var(--mb-label);
+  font: var(--mb-code-field-font);
+  font-variant-numeric: tabular-nums;
+  cursor: text;
+}
+
+.mb-code-field[data-size="lg"] {
+  --mb-code-field-w: calc(var(--mb-code-field-cell-width) * 1.2);
+  font-size: calc(var(--mb-code-field-w) * 0.76);
+}
+
+.mb-code-field-group {
+  display: flex;
+  flex: 0 1 auto;
+  align-items: center;
+  gap: var(--mb-code-field-cell-gap);
+  min-width: 0;
+}
+
+.mb-code-field-slot {
+  --mb-code-field-edge: var(--mb-code-field-cell-edge);
+
+  position: relative;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  /* Cells keep their shape and narrow together when the row is wider than its container, as on a phone. */
+  flex: 0 1 auto;
+  width: var(--mb-code-field-w);
+  min-width: 0;
+  aspect-ratio: var(--mb-code-field-cell-ratio);
+  border-radius: var(--mb-code-field-cell-radius);
+  background: var(--mb-code-field-cell-bg);
+  box-shadow: var(--mb-code-field-edge);
+  text-transform: uppercase;
+  outline: var(--mb-code-field-halo) solid transparent;
+  outline-offset: 0;
+  transition:
+    box-shadow var(--mb-duration-fast) var(--mb-ease-out),
+    outline-color var(--mb-duration-fast) var(--mb-ease-out),
+    background-color var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-code-field-slot[data-active] {
+  --mb-code-field-edge: inset 0 0 0 var(--mb-code-field-active-width) var(--mb-accent);
+  outline-color: var(--mb-focus-ring);
+}
+
+/* The real caret is hidden; this one blinks the way the system's does. */
+.mb-code-field-slot[data-fake-caret]::after {
+  content: "";
+  width: 2px;
+  height: 1.05em;
+  border-radius: 1px;
+  background: var(--mb-accent);
+  animation: mb-code-field-caret 1.06s var(--mb-ease-in-out) infinite;
+}
+
+@keyframes mb-code-field-caret {
+  0%,
+  30%,
+  100% {
+    opacity: 1;
+  }
+  50%,
+  80% {
+    opacity: 0;
+  }
+}
+
+.mb-code-field-slot[data-filled] {
+  animation: mb-code-field-enter var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+@keyframes mb-code-field-enter {
+  from {
+    scale: 0.82;
+  }
+}
+
+.mb-code-field:has([aria-invalid="true"]) .mb-code-field-slot {
+  --mb-code-field-edge: inset 0 0 0 var(--mb-code-field-active-width) var(--mb-destructive);
+  color: var(--mb-destructive-text);
+}
+
+.mb-code-field:has([aria-invalid="true"]) .mb-code-field-slot[data-active] {
+  outline-color: color-mix(in oklch, var(--mb-destructive) 80%, transparent);
+}
+
+.mb-code-field[data-disabled] {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.mb-code-field-separator {
+  display: flex;
+  flex: none;
+  align-items: center;
+  color: var(--mb-label-tertiary);
+}
+
+.mb-code-field-dash {
+  display: block;
+  width: 10px;
+  height: 2px;
+  border-radius: 1px;
+  background: currentColor;
+}
+
+/* A label over code cells lines up with the first cell, not with text inside a field. */
+.mb-field:has(> .mb-code-field) > :is(.mb-field-label, .mb-field-description, .mb-field-error) {
+  padding-inline: 0;
+}
+
+@media (prefers-contrast: more) {
+  :where([data-platform="ios"], [data-platform="ipados"]) {
+    --mb-code-field-cell-edge: inset 0 0 0 1px var(--mb-control-border);
+  }
+}

@@ -1,7 +1,7 @@
 "use client"
 
-import { Button } from "@dreambase/stardust/button"
-import { Tabs, TabsList, TabsPanel, TabsTab } from "@dreambase/stardust/tabs"
+import { Button } from "macbetter/button"
+import { Tabs, TabsList, TabsPanel, TabsTab } from "macbetter/tabs"
 import { CheckIcon, LinkIcon, RotateCcwIcon } from "lucide-react"
 import { Fragment, useState } from "react"
 import { CopyButton } from "@/components/copy-button"
@@ -83,7 +83,7 @@ function ExportPanel({ theme, onReset }: { theme: StudioTheme; onReset: () => vo
         </TabsPanel>
       </Tabs>
       <p className="ts-section-footer">
-        Load the CSS after Stardust&apos;s stylesheet and set <code>data-theme</code> on any element. Everything else
+        Load the CSS after Macbetter&apos;s stylesheet and set <code>data-theme</code> on any element. Everything else
         derives from these seeds.
       </p>
       <div className="ts-actions">

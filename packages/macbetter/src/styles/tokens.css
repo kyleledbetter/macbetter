@@ -1,0 +1,278 @@
+/*
+ * Macbetter tokens.
+ *
+ * A theme sets the "seed" tokens in the first block. Everything below the
+ * seeds derives from them, so a brand only has to answer a dozen questions.
+ * Every color is written with light-dark(), and the scheme is chosen with
+ * [data-scheme] (or follows the system when it's absent).
+ */
+
+/* Only the root follows the system; a nested theme keeps the scheme it inherits. */
+:root {
+  color-scheme: light dark;
+}
+
+:root,
+[data-theme] {
+  /* ── Seeds: brand ─────────────────────────────────────────────── */
+  --mb-accent: light-dark(#ee5700, #f67f01);
+  --mb-on-accent: #0a1c13;
+  --mb-accent-text: light-dark(#b84300, #f9943c);
+  --mb-accent-secondary: light-dark(#028f71, #52c6a0);
+
+  /* ── Seeds: surfaces and ink ──────────────────────────────────── */
+  --mb-ink: light-dark(#0a1c13, #f1f7f3);
+  --mb-bg: light-dark(#ffffff, #0a1c13);
+  --mb-bg-secondary: light-dark(#f2f5f2, #0f251a);
+  --mb-bg-tertiary: light-dark(#ffffff, #163224);
+  --mb-bg-elevated: light-dark(#ffffff, #14301f);
+  --mb-bg-sidebar: light-dark(#eaf0ec, #0c2117);
+  --mb-tint: light-dark(#5b6b62, #7fa894);
+
+  /* ── Seeds: system palette ────────────────────────────────────── */
+  --mb-red: light-dark(#e5372b, #ff5a4f);
+  --mb-orange: light-dark(#ee5700, #f67f01);
+  --mb-yellow: light-dark(#e0a100, #ffd23c);
+  --mb-green: light-dark(#028f71, #44bd8b);
+  --mb-mint: light-dark(#17a58c, #52c6a0);
+  --mb-teal: light-dark(#1b93a8, #4fc3d6);
+  --mb-cyan: light-dark(#1d8fd0, #5cc4f5);
+  --mb-blue: light-dark(#1671e6, #4c9dff);
+  --mb-indigo: light-dark(#5653d4, #7d7aff);
+  --mb-purple: light-dark(#9a45d6, #c57bff);
+  --mb-pink: light-dark(#e0356f, #ff5c93);
+  --mb-brown: light-dark(#96724e, #b8956f);
+
+  /* ── Seeds: shape and type ────────────────────────────────────── */
+  --mb-radius-scale: 1;
+  --mb-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+    system-ui, "Inter", "Helvetica Neue", "Segoe UI", sans-serif;
+  --mb-font-display: var(--mb-font);
+  --mb-font-rounded: ui-rounded, "SF Pro Rounded", var(--mb-font);
+  --mb-font-mono: ui-monospace, "SF Mono", "Geist Mono", Menlo, Consolas, monospace;
+
+  /* ── Derived: accent ──────────────────────────────────────────── */
+  --mb-accent-hover: oklch(from var(--mb-accent) calc(l + 0.035) c h);
+  --mb-accent-pressed: oklch(from var(--mb-accent) calc(l - 0.05) c h);
+  --mb-accent-soft: color-mix(in oklch, var(--mb-accent) 16%, transparent);
+  --mb-accent-soft-hover: color-mix(in oklch, var(--mb-accent) 24%, transparent);
+  /* 90% keeps the halo at 3:1 against the surface in every built-in theme. */
+  --mb-focus-ring: color-mix(in oklch, var(--mb-accent) 90%, transparent);
+  --mb-selection: color-mix(in oklch, var(--mb-accent) 30%, transparent);
+  --mb-destructive: var(--mb-red);
+  --mb-destructive-text: light-dark(
+    oklch(from var(--mb-red) calc(l - 0.1) c h),
+    oklch(from var(--mb-red) calc(l + 0.1) c h)
+  );
+  --mb-on-destructive: #ffffff;
+  /* A red deep enough for white text at 4.5:1, whatever the theme's red is. */
+  --mb-destructive-fill: oklch(from var(--mb-red) min(l, 0.58) c h);
+  /* The soft edge of a raised macOS control. Increase Contrast swaps in the 3:1 border. */
+  --mb-bezel-edge: light-dark(
+    color-mix(in oklch, var(--mb-ink) 20%, transparent),
+    color-mix(in oklch, var(--mb-ink) 10%, transparent)
+  );
+  --mb-success: var(--mb-green);
+  --mb-warning: var(--mb-yellow);
+
+  /* ── Derived: labels (HIG label / secondaryLabel / …) ─────────── */
+  --mb-label: var(--mb-ink);
+  --mb-label-secondary: light-dark(
+    color-mix(in oklch, var(--mb-ink) 66%, transparent),
+    color-mix(in oklch, var(--mb-ink) 68%, transparent)
+  );
+  --mb-label-tertiary: light-dark(
+    color-mix(in oklch, var(--mb-ink) 54%, transparent),
+    color-mix(in oklch, var(--mb-ink) 52%, transparent)
+  );
+  --mb-label-quaternary: color-mix(in oklch, var(--mb-ink) 24%, transparent);
+  /* Placeholders are text: they hold 4.5:1, which tertiary labels don't. */
+  --mb-placeholder: light-dark(
+    color-mix(in oklch, var(--mb-ink) 64%, transparent),
+    color-mix(in oklch, var(--mb-ink) 60%, transparent)
+  );
+
+  /* ── Derived: fills (HIG systemFill ramp) ─────────────────────── */
+  --mb-fill: light-dark(
+    color-mix(in oklch, var(--mb-tint) 20%, transparent),
+    color-mix(in oklch, var(--mb-tint) 36%, transparent)
+  );
+  --mb-fill-secondary: light-dark(
+    color-mix(in oklch, var(--mb-tint) 16%, transparent),
+    color-mix(in oklch, var(--mb-tint) 30%, transparent)
+  );
+  --mb-fill-tertiary: light-dark(
+    color-mix(in oklch, var(--mb-tint) 12%, transparent),
+    color-mix(in oklch, var(--mb-tint) 22%, transparent)
+  );
+  --mb-fill-quaternary: light-dark(
+    color-mix(in oklch, var(--mb-tint) 8%, transparent),
+    color-mix(in oklch, var(--mb-tint) 14%, transparent)
+  );
+
+  /* ── Derived: separators and edges ────────────────────────────── */
+  --mb-separator: light-dark(
+    color-mix(in oklch, var(--mb-ink) 13%, transparent),
+    color-mix(in oklch, var(--mb-ink) 16%, transparent)
+  );
+  --mb-separator-strong: light-dark(
+    color-mix(in oklch, var(--mb-ink) 22%, transparent),
+    color-mix(in oklch, var(--mb-ink) 26%, transparent)
+  );
+  --mb-separator-opaque: light-dark(
+    color-mix(in oklch, var(--mb-ink) 13%, var(--mb-bg)),
+    color-mix(in oklch, var(--mb-ink) 16%, var(--mb-bg))
+  );
+  /* Edges of controls must hold 3:1 against the surface (WCAG 1.4.11). */
+  --mb-control-border: light-dark(
+    color-mix(in oklch, var(--mb-ink) 48%, transparent),
+    color-mix(in oklch, var(--mb-ink) 46%, transparent)
+  );
+  --mb-hairline: 0.5px;
+
+  /* ── Derived: grouped (inset list) surfaces ───────────────────── */
+  --mb-bg-grouped: var(--mb-bg-secondary);
+  --mb-bg-grouped-secondary: var(--mb-bg-tertiary);
+  --mb-bg-control: light-dark(#ffffff, color-mix(in oklch, var(--mb-tint) 26%, var(--mb-bg)));
+  --mb-bg-field: light-dark(#ffffff, color-mix(in oklch, var(--mb-tint) 10%, var(--mb-bg)));
+  --mb-scrim: light-dark(rgb(10 20 15 / 0.28), rgb(0 0 0 / 0.5));
+
+  /* ── Materials (translucent layers; see materials.css) ────────── */
+  --mb-material-ultrathin: light-dark(
+    color-mix(in oklch, var(--mb-bg-elevated) 38%, transparent),
+    color-mix(in oklch, var(--mb-bg-elevated) 48%, transparent)
+  );
+  --mb-material-thin: light-dark(
+    color-mix(in oklch, var(--mb-bg-elevated) 54%, transparent),
+    color-mix(in oklch, var(--mb-bg-elevated) 64%, transparent)
+  );
+  --mb-material-regular: light-dark(
+    color-mix(in oklch, var(--mb-bg-elevated) 70%, transparent),
+    color-mix(in oklch, var(--mb-bg-elevated) 78%, transparent)
+  );
+  --mb-material-thick: color-mix(in oklch, var(--mb-bg-elevated) 84%, transparent);
+  --mb-material-chrome: color-mix(in oklch, var(--mb-bg) 76%, transparent);
+  --mb-material-sidebar: color-mix(in oklch, var(--mb-bg-sidebar) 78%, transparent);
+  /* Menus and palettes carry small text over anything, so they stay nearly opaque. */
+  --mb-material-popup: color-mix(in oklch, var(--mb-material-thick), var(--mb-bg-elevated) 50%);
+  --mb-material-blur: 28px;
+  --mb-material-saturate: 180%;
+  --mb-material-filter: blur(var(--mb-material-blur)) saturate(var(--mb-material-saturate));
+  --mb-glass-edge: light-dark(rgb(255 255 255 / 0.7), rgb(255 255 255 / 0.14));
+  --mb-glass-edge-soft: light-dark(rgb(255 255 255 / 0.35), rgb(255 255 255 / 0.06));
+  --mb-glass-border: light-dark(rgb(0 0 0 / 0.1), rgb(255 255 255 / 0.1));
+  --mb-glass-rim: inset 0 0.5px 0 0 var(--mb-glass-edge), inset 0 0 0 0.5px var(--mb-glass-edge-soft);
+
+  /* ── Elevation ────────────────────────────────────────────────── */
+  --mb-shadow-color: light-dark(rgb(10 28 19 / 0.14), rgb(0 0 0 / 0.5));
+  --mb-shadow-color-strong: light-dark(rgb(10 28 19 / 0.22), rgb(0 0 0 / 0.62));
+  --mb-shadow-1: 0 0.5px 1px var(--mb-shadow-color), 0 1px 2px -1px var(--mb-shadow-color);
+  --mb-shadow-2: 0 1px 2px var(--mb-shadow-color), 0 4px 12px -2px var(--mb-shadow-color);
+  --mb-shadow-3: 0 2px 6px -1px var(--mb-shadow-color), 0 12px 28px -6px var(--mb-shadow-color);
+  --mb-shadow-4: 0 4px 10px -2px var(--mb-shadow-color), 0 22px 48px -10px var(--mb-shadow-color-strong);
+  --mb-shadow-5: 0 8px 18px -4px var(--mb-shadow-color), 0 36px 80px -16px var(--mb-shadow-color-strong);
+  --mb-shadow-control: 0 0.5px 1px var(--mb-shadow-color), 0 0 0 var(--mb-hairline) var(--mb-separator);
+  --mb-shadow-thumb: 0 1px 1px rgb(0 0 0 / 0.1), 0 3px 8px rgb(0 0 0 / 0.16), 0 0 0 0.5px rgb(0 0 0 / 0.06);
+  --mb-shadow-menu: 0 0 0 var(--mb-hairline) var(--mb-glass-border), var(--mb-shadow-4);
+  --mb-shadow-window: 0 0 0 var(--mb-hairline) var(--mb-glass-border), var(--mb-shadow-5);
+
+  /* ── Radius ───────────────────────────────────────────────────── */
+  --mb-radius-xs: calc(4px * var(--mb-radius-scale));
+  --mb-radius-sm: calc(6px * var(--mb-radius-scale));
+  --mb-radius-md: calc(8px * var(--mb-radius-scale));
+  --mb-radius-lg: calc(12px * var(--mb-radius-scale));
+  --mb-radius-xl: calc(16px * var(--mb-radius-scale));
+  --mb-radius-2xl: calc(22px * var(--mb-radius-scale));
+  --mb-radius-3xl: calc(30px * var(--mb-radius-scale));
+  --mb-radius-full: 9999px;
+
+  /* ── Space (4pt grid) ─────────────────────────────────────────── */
+  --mb-space-1: 2px;
+  --mb-space-2: 4px;
+  --mb-space-3: 6px;
+  --mb-space-4: 8px;
+  --mb-space-5: 12px;
+  --mb-space-6: 16px;
+  --mb-space-7: 20px;
+  --mb-space-8: 24px;
+  --mb-space-9: 32px;
+  --mb-space-10: 40px;
+  --mb-space-11: 48px;
+  --mb-space-12: 64px;
+
+  /* ── Motion ───────────────────────────────────────────────────── */
+  /* Springs as linear() curves: Apple's damping ratio + response. */
+  --mb-spring-snappy: linear(0, 0.0996, 0.2867, 0.4724, 0.6261, 0.7427, 0.8266, 0.8851, 0.9248, 0.9513, 0.9687, 0.98, 0.9873, 0.992, 0.995, 0.9969, 0.998, 0.9988, 1);
+  --mb-spring-snappy-duration: 380ms;
+  --mb-spring-smooth: linear(0, 0.0974, 0.2816, 0.4656, 0.6189, 0.7361, 0.821, 0.8806, 0.9213, 0.9487, 0.9668, 0.9787, 0.9864, 0.9914, 0.9945, 0.9966, 0.9978, 0.9987, 1);
+  --mb-spring-smooth-duration: 600ms;
+  --mb-spring-bouncy: linear(0, 0.0286, 0.1005, 0.1979, 0.3075, 0.4195, 0.5271, 0.626, 0.7136, 0.7887, 0.8513, 0.902, 0.9418, 0.9721, 0.9943, 1.0097, 1.0197, 1.0255, 1.028, 1.0282, 1.0269, 1.0245, 1.0216, 1.0184, 1.0152, 1.0123, 1.0096, 1.0072, 1.0053, 1.0036, 1.0023, 1.0013, 1);
+  --mb-spring-bouncy-duration: 520ms;
+  --mb-spring-sheet: linear(0, 0.0334, 0.114, 0.2189, 0.3325, 0.4444, 0.5483, 0.6408, 0.7206, 0.7874, 0.8421, 0.8859, 0.9202, 0.9464, 0.966, 0.9803, 0.9904, 0.9973, 1.0017, 1.0044, 1.0058, 1.0063, 1.0062, 1.0058, 1.0051, 1.0044, 1.0037, 1.003, 1.0024, 1.0019, 1.0015, 1.0011, 1);
+  --mb-spring-sheet-duration: 570ms;
+  --mb-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --mb-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --mb-ease-ios: cubic-bezier(0.32, 0.72, 0, 1);
+  --mb-duration-instant: 80ms;
+  --mb-duration-fast: 140ms;
+  --mb-duration-base: 220ms;
+  --mb-duration-slow: 360ms;
+
+  /* ── Safe areas (notches, home indicator) ─────────────────────── */
+  --mb-safe-top: env(safe-area-inset-top, 0px);
+  --mb-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --mb-safe-left: env(safe-area-inset-left, 0px);
+  --mb-safe-right: env(safe-area-inset-right, 0px);
+
+  /* ── Layers ───────────────────────────────────────────────────── */
+  --mb-z-chrome: 10;
+  --mb-z-floating: 20;
+}
+
+/* data-color-scheme is what ui-sdk's createColorScheme writes. */
+[data-scheme="light"],
+[data-color-scheme="light"] {
+  color-scheme: light;
+}
+
+[data-scheme="dark"],
+[data-color-scheme="dark"] {
+  color-scheme: dark;
+}
+
+@media (prefers-contrast: more) {
+  :root,
+  [data-theme] {
+    --mb-label-secondary: color-mix(in oklch, var(--mb-ink) 86%, transparent);
+    --mb-label-tertiary: color-mix(in oklch, var(--mb-ink) 74%, transparent);
+    --mb-separator: color-mix(in oklch, var(--mb-ink) 40%, transparent);
+    --mb-control-border: color-mix(in oklch, var(--mb-ink) 72%, transparent);
+    --mb-bezel-edge: var(--mb-control-border);
+    --mb-glass-border: color-mix(in oklch, var(--mb-ink) 50%, transparent);
+    --mb-material-ultrathin: var(--mb-bg-elevated);
+    --mb-material-thin: var(--mb-bg-elevated);
+    --mb-material-regular: var(--mb-bg-elevated);
+    --mb-material-thick: var(--mb-bg-elevated);
+    --mb-material-popup: var(--mb-bg-elevated);
+    --mb-material-chrome: var(--mb-bg);
+    --mb-material-sidebar: var(--mb-bg-sidebar);
+  }
+}
+
+/*
+ * Reduce Transparency makes every material solid. data-transparency="full" on
+ * <html> opts a page out, for a demo that exists to show the materials.
+ */
+@media (prefers-reduced-transparency: reduce) {
+  :root:not([data-transparency="full"]),
+  :root:not([data-transparency="full"]) [data-theme] {
+    --mb-material-ultrathin: var(--mb-bg-elevated);
+    --mb-material-thin: var(--mb-bg-elevated);
+    --mb-material-regular: var(--mb-bg-elevated);
+    --mb-material-thick: var(--mb-bg-elevated);
+    --mb-material-popup: var(--mb-bg-elevated);
+    --mb-material-chrome: var(--mb-bg);
+    --mb-material-sidebar: var(--mb-bg-sidebar);
+    --mb-material-filter: none;
+  }
+}

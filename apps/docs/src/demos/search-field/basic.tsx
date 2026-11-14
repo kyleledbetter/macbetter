@@ -1,4 +1,4 @@
-import { SearchField } from "@dreambase/stardust/search-field"
+import { SearchField } from "macbetter/search-field"
 
 export default function Example() {
   return (

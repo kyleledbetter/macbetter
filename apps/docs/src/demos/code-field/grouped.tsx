@@ -1,5 +1,5 @@
-import { CodeField } from "@dreambase/stardust/code-field"
-import { Field, FieldError, FieldLabel } from "@dreambase/stardust/field"
+import { CodeField } from "macbetter/code-field"
+import { Field, FieldError, FieldLabel } from "macbetter/field"
 
 export default function Example() {
   return (

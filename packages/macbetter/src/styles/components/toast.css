@@ -1,0 +1,406 @@
+/*
+ * Toast — Apple notifications. macOS: cards that slide in at the top right
+ * and stack. iOS and iPadOS: banners that drop from the top and swipe up.
+ * ui-sdk measures the stack (--toast-*); this file lays it out.
+ */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-toast-width: 344px;
+  --mb-toast-radius: var(--mb-popup-radius);
+  --mb-toast-padding: 12px;
+  --mb-toast-icon-size: 32px;
+  --mb-toast-title-font: 600 13px/16px var(--mb-font);
+  --mb-toast-body-font: 400 13px/16px var(--mb-font);
+  --mb-toast-time-font: 400 11px/16px var(--mb-font);
+  --mb-toast-inset: 12px;
+  --mb-toast-gap: 8px;
+  --mb-toast-peek: 8px;
+  /* Cards slide in sideways, from the edge the stack is aligned to. */
+  --mb-toast-slide: 1;
+  --mb-toast-enter-y: 0px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-toast-width: 400px;
+  --mb-toast-radius: var(--mb-radius-2xl);
+  --mb-toast-padding: 14px;
+  --mb-toast-icon-size: 38px;
+  --mb-toast-title-font: 600 15px/20px var(--mb-font);
+  --mb-toast-body-font: 400 15px/20px var(--mb-font);
+  --mb-toast-time-font: 400 13px/20px var(--mb-font);
+  --mb-toast-inset: 8px;
+  --mb-toast-gap: 8px;
+  --mb-toast-peek: 9px;
+  /* Banners drop from above the top edge. */
+  --mb-toast-slide: 0;
+  --mb-toast-enter-y: calc(-100% - var(--mb-toast-inset) - 40px);
+}
+
+/*
+ * The region is a popover in the top layer; undo the UA's centered box.
+ * --mb-toaster-* are the screen's distances from the viewport edges: zero
+ * normally, a nested preview's box when Toaster is mounted inside one.
+ */
+.mb-toaster {
+  position: fixed;
+  inset: auto;
+  inset-block-start: calc(var(--mb-toaster-top, 0px) + var(--mb-toast-inset) + env(safe-area-inset-top));
+  width: min(var(--mb-toast-width), calc(var(--mb-toaster-screen-width, 100vw) - var(--mb-toast-inset) * 2));
+  height: var(--toast-front-height, 0px);
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  background: transparent;
+  color: var(--mb-label);
+  transition: height var(--mb-spring-smooth-duration) var(--mb-spring-smooth);
+}
+
+.mb-toaster[data-side="bottom"] {
+  inset-block: auto calc(var(--mb-toaster-bottom, 0px) + var(--mb-toast-inset) + env(safe-area-inset-bottom));
+}
+
+.mb-toaster[data-align="end"] {
+  inset-inline-end: calc(var(--mb-toaster-inline-end, 0px) + var(--mb-toast-inset));
+}
+
+.mb-toaster[data-align="start"] {
+  inset-inline-start: calc(var(--mb-toaster-inline-start, 0px) + var(--mb-toast-inset));
+}
+
+.mb-toaster[data-align="center"] {
+  inset-inline: var(--mb-toaster-inline-start, 0px) var(--mb-toaster-inline-end, 0px);
+  margin-inline: auto;
+  translate: none;
+}
+
+/* Which way "the edge" is: end is right in left-to-right, left in right-to-left. */
+.mb-toaster[data-align="end"] {
+  --mb-toast-enter-dir: 1;
+}
+
+.mb-toaster[data-align="start"] {
+  --mb-toast-enter-dir: -1;
+}
+
+/* Not :dir(rtl): the CSS build rewrites it as a :lang() list, which misses dir="rtl". */
+:where([dir="rtl"]) .mb-toaster[data-align="end"] {
+  --mb-toast-enter-dir: -1;
+}
+
+:where([dir="rtl"]) .mb-toaster[data-align="start"] {
+  --mb-toast-enter-dir: 1;
+}
+
+.mb-toaster[data-expanded] {
+  height: calc(var(--toast-stack-height, 0px) + (var(--toast-count, 1) - 1) * var(--mb-toast-gap));
+}
+
+/* ui-sdk wraps the toasts in a list. */
+.mb-toaster > :where(ol, ul) {
+  position: relative;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mb-toast {
+  --mb-toast-enter-x: calc(var(--mb-toast-slide) * var(--mb-toast-enter-dir, 0) * (100% + var(--mb-toast-inset) + 24px));
+  --mb-toast-y: calc(var(--toast-index, 0) * var(--mb-toast-peek));
+
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  z-index: calc(100 - var(--toast-index, 0));
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 10px;
+  height: var(--toast-height);
+  padding: var(--mb-toast-padding);
+  overflow: hidden;
+  border-radius: var(--mb-toast-radius);
+  background: var(--mb-material-thick);
+  -webkit-backdrop-filter: var(--mb-material-filter);
+  backdrop-filter: var(--mb-material-filter);
+  box-shadow: var(--mb-glass-rim), 0 0 0 var(--mb-hairline) var(--mb-glass-border), var(--mb-shadow-3);
+  color: var(--mb-label);
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: default;
+  transform-origin: 50% 100%;
+  translate: var(--toast-swipe-x, 0px) calc(var(--mb-toast-y) + var(--toast-swipe-y, 0px));
+  scale: calc(1 - var(--toast-index, 0) * 0.05);
+  transition:
+    translate var(--mb-spring-smooth-duration) var(--mb-spring-smooth),
+    scale var(--mb-spring-smooth-duration) var(--mb-spring-smooth),
+    height var(--mb-spring-smooth-duration) var(--mb-spring-smooth),
+    opacity var(--mb-duration-base) var(--mb-ease-out);
+}
+
+.mb-toast:not(:has(> .mb-toast-icon)) {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+/* Behind the front card, only its edge peeks out. */
+.mb-toast:not([data-front], [data-expanded]) {
+  height: var(--toast-front-height);
+}
+
+.mb-toast:not([data-front], [data-expanded]) > * {
+  opacity: 0;
+}
+
+.mb-toast > * {
+  transition: opacity var(--mb-duration-base) var(--mb-ease-out);
+}
+
+.mb-toast[data-expanded] {
+  --mb-toast-y: calc(var(--toast-offset, 0px) + var(--toast-index, 0) * var(--mb-toast-gap));
+  scale: 1;
+}
+
+.mb-toast[data-starting-style] {
+  translate: var(--mb-toast-enter-x) var(--mb-toast-enter-y);
+}
+
+.mb-toast[data-starting-style]:not([data-front]) {
+  opacity: 0;
+}
+
+.mb-toast[data-ending-style] {
+  opacity: 0;
+  transition-duration: var(--mb-duration-base);
+  transition-timing-function: var(--mb-ease-in-out);
+}
+
+/* Leaving the front, a notification goes back the way it came; a swipe throws it that way. */
+.mb-toast[data-ending-style][data-front]:not([data-swipe-direction]) {
+  opacity: 1;
+  translate: var(--mb-toast-enter-x) var(--mb-toast-enter-y);
+}
+
+.mb-toast[data-ending-style][data-swipe-direction="up"] {
+  translate: 0 calc(-100% - 40px);
+}
+
+.mb-toast[data-ending-style][data-swipe-direction="down"] {
+  translate: 0 calc(100% + 40px);
+}
+
+.mb-toast[data-ending-style][data-swipe-direction="right"] {
+  translate: calc(100% + 40px) var(--mb-toast-y);
+}
+
+.mb-toast[data-ending-style][data-swipe-direction="left"] {
+  translate: calc(-100% - 40px) var(--mb-toast-y);
+}
+
+.mb-toast[data-swiping] {
+  transition: none;
+}
+
+.mb-toast:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: 2px;
+}
+
+.mb-toast-icon {
+  display: grid;
+  place-items: center;
+  align-self: start;
+  width: var(--mb-toast-icon-size);
+  height: var(--mb-toast-icon-size);
+  overflow: hidden;
+  /* An app icon's continuous corner, approximated. */
+  border-radius: 22.5%;
+}
+
+.mb-toast-icon > :where(img, svg) {
+  width: 100%;
+  height: 100%;
+}
+
+.mb-toast-icon[data-type] {
+  background: var(--mb-toast-icon-tone, var(--mb-fill));
+  color: #ffffff;
+}
+
+.mb-toast-icon[data-type] > svg {
+  width: 62%;
+  height: 62%;
+}
+
+.mb-toast-icon[data-type="success"] { --mb-toast-icon-tone: var(--mb-green); }
+.mb-toast-icon[data-type="error"] { --mb-toast-icon-tone: var(--mb-red); }
+.mb-toast-icon[data-type="warning"] { --mb-toast-icon-tone: var(--mb-yellow); color: rgb(0 0 0 / 0.85); }
+.mb-toast-icon[data-type="info"] { --mb-toast-icon-tone: var(--mb-blue); }
+.mb-toast-icon[data-type="loading"] { --mb-toast-icon-tone: var(--mb-fill-secondary); color: var(--mb-label); }
+
+.mb-toast-spinner {
+  width: 50%;
+  height: 50%;
+  border: 2px solid color-mix(in oklch, currentColor 25%, transparent);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: mb-toast-spin 0.8s linear infinite;
+}
+
+@keyframes mb-toast-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+.mb-toast-content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.mb-toast-header {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.mb-toast-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: var(--mb-toast-title-font);
+  letter-spacing: var(--mb-tracking-body);
+}
+
+.mb-toast-time {
+  flex: none;
+  color: var(--mb-label-secondary);
+  font: var(--mb-toast-time-font);
+  letter-spacing: var(--mb-tracking-caption);
+}
+
+.mb-toast-description {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  color: var(--mb-label);
+  font: var(--mb-toast-body-font);
+  letter-spacing: var(--mb-tracking-body);
+}
+
+.mb-toast-action {
+  position: relative;
+  align-self: center;
+  height: var(--mb-control-height-sm);
+  margin: 0;
+  padding: 0 var(--mb-control-padding-sm);
+  border: 0;
+  border-radius: var(--mb-control-radius-sm);
+  background: var(--mb-fill-secondary);
+  color: var(--mb-label);
+  font: var(--mb-control-font-sm);
+  white-space: nowrap;
+  cursor: default;
+  transition: background-color var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-toast-action::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: max(100%, var(--mb-hit-target));
+  height: max(100%, var(--mb-hit-target));
+  translate: -50% -50%;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-toast-action:hover {
+    background: var(--mb-fill);
+  }
+}
+
+.mb-toast-action:active {
+  background: var(--mb-fill);
+  opacity: 0.8;
+}
+
+.mb-toast-action:focus-visible,
+.mb-toast-close:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: var(--mb-focus-ring-offset);
+}
+
+/* The Mac's close button sits on the card's top-leading corner and shows on hover. */
+.mb-toast-close {
+  position: absolute;
+  inset-block-start: 6px;
+  inset-inline-start: 6px;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--mb-bg-elevated);
+  box-shadow: 0 0 0 var(--mb-hairline) var(--mb-separator-strong), var(--mb-shadow-1);
+  color: var(--mb-label-secondary);
+  opacity: 0;
+  scale: 0.8;
+  cursor: default;
+  transition:
+    opacity var(--mb-duration-fast) var(--mb-ease-out),
+    scale var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-toast-close > svg {
+  width: 10px;
+  height: 10px;
+}
+
+/* Kept at two classes' weight so the touch rule below, scoped closer, wins. */
+.mb-toast:where([data-front], [data-expanded]):where(:focus-within) .mb-toast-close {
+  opacity: 1;
+  scale: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-toast:where([data-front], [data-expanded]):where(:hover) .mb-toast-close {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+/*
+ * Touch dismisses with a swipe; there's no close button to aim for. It stays
+ * in the tab order (hidden, not removed) so a keyboard can still reach it.
+ */
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .mb-toast-close:not(:focus-visible) {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(:root:not([data-motion="full"])) {
+    /* A swipe still follows the finger; only the slides become fades. */
+    .mb-toast[data-starting-style],
+    .mb-toast[data-ending-style][data-front]:not([data-swipe-direction]) {
+      translate: 0 var(--mb-toast-y);
+    }
+
+    .mb-toast[data-starting-style] {
+      opacity: 0;
+    }
+
+    .mb-toast[data-ending-style][data-front] {
+      opacity: 0;
+    }
+  }
+}

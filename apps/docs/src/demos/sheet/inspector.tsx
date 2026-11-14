@@ -1,7 +1,7 @@
-import { Button } from "@dreambase/stardust/button"
-import { List, ListRow, ListRowAccessory, ListRowTitle, ListRowValue, ListSection } from "@dreambase/stardust/list"
-import { Sheet, SheetBody, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@dreambase/stardust/sheet"
-import { Switch } from "@dreambase/stardust/switch"
+import { Button } from "macbetter/button"
+import { List, ListRow, ListRowAccessory, ListRowTitle, ListRowValue, ListSection } from "macbetter/list"
+import { Sheet, SheetBody, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "macbetter/sheet"
+import { Switch } from "macbetter/switch"
 import { PanelRightIcon } from "lucide-react"
 
 export default function Example() {

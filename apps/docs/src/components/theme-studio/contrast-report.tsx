@@ -1,6 +1,6 @@
 "use client"
 
-import { Button } from "@dreambase/stardust/button"
+import { Button } from "macbetter/button"
 import { CheckIcon, XIcon } from "lucide-react"
 import { contrastChecks, fixCheck, type ContrastCheck, type ThemeColors } from "./derive"
 
@@ -23,7 +23,7 @@ function Ratio({ check, scheme }: { check: ContrastCheck; scheme: string }) {
     >
       <Icon aria-hidden="true" strokeWidth={2.6} />
       {check.ratio.toFixed(1)}
-      <span className="sd-visually-hidden">
+      <span className="mb-visually-hidden">
         {` to 1 in ${scheme}, ${check.pass ? "passes" : "falls short of"} ${check.target} to 1`}
       </span>
     </span>
@@ -60,7 +60,7 @@ function ContrastReport({ colors, onChange }: { colors: ThemeColors; onChange: (
             <div key={check.id} className="ts-contrast-row" role="row">
               <span className="ts-contrast-name" role="rowheader">
                 <span>
-                  {check.label} <span className="sd-label-secondary">· {check.target}:1</span>
+                  {check.label} <span className="mb-label-secondary">· {check.target}:1</span>
                 </span>
                 <small>{hints[check.id]}</small>
               </span>

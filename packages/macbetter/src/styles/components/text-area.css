@@ -1,0 +1,94 @@
+/* Text Area — the text field, several lines tall, growing with what's typed. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-text-area-pad-block: 5px;
+  --mb-text-area-line: 16px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-text-area-pad-block: 11px;
+  --mb-text-area-line: 22px;
+}
+
+.mb-text-area {
+  --mb-text-area-bg: var(--mb-text-field-auto-bg);
+  --mb-text-area-edge: var(--mb-text-field-auto-edge);
+  --mb-text-area-ring: var(--mb-focus-ring);
+
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: calc(var(--mb-text-area-min-rows, 3) * var(--mb-text-area-line) + var(--mb-text-area-pad-block) * 2);
+  max-height: calc(var(--mb-text-area-max-rows, 10) * var(--mb-text-area-line) + var(--mb-text-area-pad-block) * 2);
+  margin: 0;
+  padding: var(--mb-text-area-pad-block) var(--mb-text-field-padding);
+  border: 0;
+  border-radius: var(--mb-text-field-radius);
+  background: var(--mb-text-area-bg);
+  box-shadow: var(--mb-text-area-edge);
+  color: var(--mb-label);
+  font: var(--mb-text-field-font);
+  line-height: var(--mb-text-area-line);
+  letter-spacing: var(--mb-tracking-body);
+  caret-color: var(--mb-accent);
+  resize: none;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  appearance: none;
+  outline: var(--mb-focus-ring-width) solid transparent;
+  outline-offset: 2px;
+  transition:
+    outline-color var(--mb-duration-fast) var(--mb-ease-out),
+    outline-offset var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-text-area[data-variant="bordered"] {
+  --mb-text-area-bg: var(--mb-bg-field);
+  --mb-text-area-edge: inset 0 0 0 var(--mb-hairline) var(--mb-control-border),
+    inset 0 0.5px 1px light-dark(rgb(0 0 0 / 0.07), rgb(0 0 0 / 0.2));
+}
+
+.mb-text-area[data-variant="filled"] {
+  --mb-text-area-bg: var(--mb-fill-tertiary);
+  --mb-text-area-edge: inset 0 0 0 0 transparent;
+}
+
+.mb-text-area[data-variant="plain"] {
+  --mb-text-area-bg: transparent;
+  --mb-text-area-edge: inset 0 0 0 0 transparent;
+  padding-inline: 0;
+}
+
+.mb-text-area::placeholder {
+  color: var(--mb-field-placeholder);
+  opacity: 1;
+}
+
+.mb-text-area:focus {
+  outline-color: var(--mb-text-area-ring);
+  outline-offset: 0px;
+}
+
+.mb-text-area:is([data-invalid], [aria-invalid="true"]) {
+  --mb-text-area-edge: inset 0 0 0 1px var(--mb-destructive);
+  --mb-text-area-ring: color-mix(in oklch, var(--mb-destructive) 80%, transparent);
+}
+
+.mb-text-area:is([data-disabled], :disabled) {
+  --mb-text-area-bg: var(--mb-fill-quaternary);
+  --mb-text-area-edge: inset 0 0 0 var(--mb-hairline) var(--mb-separator);
+  color: var(--mb-label-tertiary);
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .mb-text-area[data-variant="plain"]:focus {
+    outline-color: transparent;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .mb-text-area[data-variant="filled"] {
+    --mb-text-area-edge: inset 0 0 0 1px var(--mb-control-border);
+  }
+}

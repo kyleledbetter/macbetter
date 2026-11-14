@@ -1,0 +1,175 @@
+/* Field — a control with its label, description and error. Stacked, or label beside control as in macOS forms. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-field-gap: 6px;
+  --mb-field-group-gap: 14px;
+  --mb-field-column-gap: 8px;
+  --mb-field-label-font: 400 13px/16px var(--mb-font);
+  --mb-field-label-color: var(--mb-label);
+  --mb-field-label-inset: 0px;
+  --mb-field-label-align: end;
+  --mb-field-note-font: var(--mb-text-subheadline);
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-field-gap: 7px;
+  --mb-field-group-gap: 20px;
+  --mb-field-column-gap: 16px;
+  --mb-field-label-font: var(--mb-text-footnote);
+  --mb-field-label-color: var(--mb-label-secondary);
+  --mb-field-label-inset: var(--mb-text-field-padding, 12px);
+  --mb-field-label-align: start;
+  --mb-field-note-font: var(--mb-text-footnote);
+}
+
+.mb-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mb-field-gap);
+  min-width: 0;
+}
+
+.mb-field-label {
+  color: var(--mb-field-label-color);
+  font: var(--mb-field-label-font);
+  letter-spacing: var(--mb-tracking-body);
+  padding-inline: var(--mb-field-label-inset);
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.mb-field-label[data-disabled] {
+  color: var(--mb-label-tertiary);
+}
+
+.mb-field-description,
+.mb-field-error {
+  margin: 0;
+  padding-inline: var(--mb-field-label-inset);
+  color: var(--mb-label-secondary);
+  font: var(--mb-field-note-font);
+  letter-spacing: var(--mb-tracking-caption);
+  text-wrap: pretty;
+}
+
+.mb-field-error {
+  color: var(--mb-destructive-text);
+}
+
+.mb-field-description[data-disabled] {
+  color: var(--mb-label-tertiary);
+}
+
+/* A field whose label follows its control, like a checkbox or a switch, reads as one row. */
+.mb-field:has(> .mb-field-label:not(:first-child)):not([data-layout="horizontal"]) {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: var(--mb-field-column-gap);
+  row-gap: 2px;
+}
+
+.mb-field:has(> .mb-field-label:not(:first-child)):not([data-layout="horizontal"]) > :not(:first-child) {
+  grid-column: 2;
+  padding-inline: 0;
+}
+
+/* Horizontal: the label sits in its own column, lined up with the control's first line. */
+.mb-field[data-layout="horizontal"],
+.mb-field-group[data-layout="horizontal"] > .mb-field:not([data-layout="stacked"]) {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  align-items: start;
+  column-gap: var(--mb-field-column-gap);
+  row-gap: 4px;
+}
+
+.mb-field-group[data-layout="horizontal"] > .mb-field:not([data-layout="stacked"]) {
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+}
+
+:is(.mb-field[data-layout="horizontal"], .mb-field-group[data-layout="horizontal"] > .mb-field:not([data-layout="stacked"]))
+  > .mb-field-label {
+  grid-column: 1;
+  display: flex;
+  align-items: center;
+  justify-content: var(--mb-field-label-align);
+  min-height: var(--mb-control-height);
+  padding-inline: 0;
+  color: var(--mb-label);
+  font: var(--mb-text-body);
+  text-align: var(--mb-field-label-align);
+}
+
+:is(.mb-field[data-layout="horizontal"], .mb-field-group[data-layout="horizontal"] > .mb-field:not([data-layout="stacked"]))
+  > :not(.mb-field-label) {
+  grid-column: 2;
+  min-width: 0;
+}
+
+:is(.mb-field[data-layout="horizontal"], .mb-field-group[data-layout="horizontal"] > .mb-field:not([data-layout="stacked"]))
+  > :is(.mb-field-description, .mb-field-error) {
+  padding-inline: 0;
+}
+
+/* A horizontal field's control takes its natural width; a text field fills the column. */
+:is(.mb-field[data-layout="horizontal"], .mb-field-group[data-layout="horizontal"] > .mb-field:not([data-layout="stacked"]))
+  > :not(.mb-field-label, .mb-field-description, .mb-field-error) {
+  justify-self: start;
+}
+
+:is(.mb-field[data-layout="horizontal"], .mb-field-group[data-layout="horizontal"] > .mb-field:not([data-layout="stacked"]))
+  > :is(.mb-text-field, .mb-text-field-group, .mb-search-field, .mb-secure-field, .mb-text-area, .mb-token-field) {
+  justify-self: stretch;
+}
+
+.mb-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mb-field-group-gap);
+  min-width: 0;
+}
+
+.mb-field-group[data-layout="horizontal"] {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  column-gap: var(--mb-field-column-gap);
+  row-gap: calc(var(--mb-field-group-gap) - 4px);
+}
+
+.mb-field-group[data-layout="horizontal"] > :not(.mb-field) {
+  grid-column: 2;
+}
+
+.mb-field-group[data-layout="horizontal"] > .mb-field[data-layout="stacked"] {
+  grid-column: 2;
+}
+
+.mb-field-set {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mb-field-gap);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.mb-field-legend {
+  margin-block-end: 6px;
+  padding: 0;
+  padding-inline: var(--mb-field-label-inset);
+  color: var(--mb-label);
+  font: var(--mb-text-headline);
+  letter-spacing: var(--mb-tracking-body);
+}
+
+.mb-field-set > .mb-field-description {
+  margin-block-end: 6px;
+}
+
+.mb-field-set[data-disabled] .mb-field-legend {
+  color: var(--mb-label-tertiary);
+}

@@ -9,8 +9,8 @@ import {
   ToolbarSpacer,
   ToolbarTitle,
   ToolbarToggle,
-} from "@dreambase/stardust/toolbar"
-import { Window, WindowBody, WindowTitlebar, WindowTrafficLights } from "@dreambase/stardust/window"
+} from "macbetter/toolbar"
+import { Window, WindowBody, WindowTitlebar, WindowTrafficLights } from "macbetter/window"
 import {
   ImageIcon,
   ListChecksIcon,
@@ -57,8 +57,8 @@ export default function Example() {
         </Toolbar>
       </WindowTitlebar>
       <WindowBody style={{ padding: "20px 28px", height: 160 }}>
-        <div className="sd-text-title-2">Launch checklist</div>
-        <div className="sd-text-body sd-label-secondary" style={{ marginTop: 8 }}>
+        <div className="mb-text-title-2">Launch checklist</div>
+        <div className="mb-text-body mb-label-secondary" style={{ marginTop: 8 }}>
           Press Tab to reach the toolbar, then use the arrow keys to move between its buttons.
         </div>
       </WindowBody>

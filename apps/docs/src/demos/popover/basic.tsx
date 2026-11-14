@@ -1,5 +1,5 @@
-import { Button } from "@dreambase/stardust/button"
-import { Field, FieldLabel } from "@dreambase/stardust/field"
+import { Button } from "macbetter/button"
+import { Field, FieldLabel } from "macbetter/field"
 import {
   Popover,
   PopoverClose,
@@ -7,8 +7,8 @@ import {
   PopoverDescription,
   PopoverTitle,
   PopoverTrigger,
-} from "@dreambase/stardust/popover"
-import { TextField } from "@dreambase/stardust/text-field"
+} from "macbetter/popover"
+import { TextField } from "macbetter/text-field"
 import { ShareIcon } from "lucide-react"
 
 export default function Example() {
@@ -24,7 +24,7 @@ export default function Example() {
         <div style={{ display: "grid", gap: 12, marginTop: 10, minWidth: 280 }}>
           <Field>
             <FieldLabel>Link</FieldLabel>
-            <TextField readOnly defaultValue="dreambase.ai/d/q3-roadmap" />
+            <TextField readOnly defaultValue="macbetter.dev/d/q3-roadmap" />
           </Field>
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
             <PopoverClose render={<Button variant="filled" />}>Copy Link</PopoverClose>

@@ -1,6 +1,6 @@
 "use client"
 
-import { ScrollView } from "@dreambase/stardust/scroll-view"
+import { ScrollView } from "macbetter/scroll-view"
 import {
   Table,
   TableBody,
@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
   type TableSort,
-} from "@dreambase/stardust/table"
+} from "macbetter/table"
 import { FileTextIcon, FolderIcon, ImageIcon, SheetIcon } from "lucide-react"
 import { useMemo, useState } from "react"
 

@@ -1,4 +1,4 @@
-import { TextArea } from "@dreambase/stardust/text-area"
+import { TextArea } from "macbetter/text-area"
 
 export default function Example() {
   return (

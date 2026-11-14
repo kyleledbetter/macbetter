@@ -1,0 +1,312 @@
+/* Toggle — a button that stays pressed. macOS draws it as a toolbar button with a gray pressed fill;
+   iOS and iPadOS tint the pressed state with the accent. */
+
+/* Bezeled edges match the push button's: soft like AppKit's, 3:1 under Increase Contrast.
+   The label or icon identifies the control, so the edge itself needn't hold 3:1. */
+.mb-toggle,
+.mb-toggle-group {
+  --mb-toggle-edge: light-dark(
+    color-mix(in oklch, var(--mb-ink) 20%, transparent),
+    color-mix(in oklch, var(--mb-ink) 10%, transparent)
+  );
+}
+
+@media (prefers-contrast: more) {
+  .mb-toggle,
+  .mb-toggle-group {
+    --mb-toggle-edge: var(--mb-control-border);
+  }
+}
+
+.mb-toggle {
+  --mb-toggle-h: var(--mb-toggle-height, var(--mb-control-height));
+  --mb-toggle-pad: var(--mb-toggle-padding, var(--mb-control-padding));
+  --mb-toggle-r: var(--mb-toggle-radius, var(--mb-control-radius));
+  --mb-toggle-bg: transparent;
+  --mb-toggle-fg: var(--mb-label-secondary);
+  --mb-toggle-bg-pressed: var(--mb-fill);
+  --mb-toggle-fg-pressed: var(--mb-label);
+
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: var(--mb-control-gap);
+  min-width: var(--mb-toggle-h);
+  height: var(--mb-toggle-h);
+  margin: 0;
+  padding: 0 var(--mb-toggle-pad);
+  border: 0;
+  border-radius: var(--mb-toggle-r);
+  background: var(--mb-toggle-bg);
+  color: var(--mb-toggle-fg);
+  font: var(--mb-toggle-font, var(--mb-control-font));
+  letter-spacing: var(--mb-tracking-body);
+  white-space: nowrap;
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--mb-duration-fast) var(--mb-ease-out),
+    color var(--mb-duration-fast) var(--mb-ease-out),
+    box-shadow var(--mb-duration-fast) var(--mb-ease-out),
+    scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+.mb-toggle::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: max(100%, var(--mb-hit-target));
+  height: max(100%, var(--mb-hit-target));
+  translate: -50% -50%;
+}
+
+/* Icon-only toggles are square; an icon beside a label gets a little less room than text alone. */
+.mb-toggle:not(:has(.mb-toggle-label)) {
+  padding: 0;
+}
+
+.mb-toggle:has(.mb-toggle-icon):has(.mb-toggle-label) {
+  padding-inline: calc(var(--mb-toggle-pad) * 0.7) var(--mb-toggle-pad);
+}
+
+.mb-toggle-icon {
+  display: inline-flex;
+  flex: none;
+}
+
+.mb-toggle-icon :where(svg) {
+  width: var(--mb-icon-size);
+  height: var(--mb-icon-size);
+}
+
+.mb-toggle-icon[data-mirror]:where([dir="rtl"] *) {
+  scale: -1 1;
+}
+
+/* Sizes live on the toggle or its group, so a group sizes every toggle inside it. */
+:is(.mb-toggle, .mb-toggle-group)[data-size="sm"] {
+  --mb-toggle-height: var(--mb-control-height-sm);
+  --mb-toggle-padding: var(--mb-control-padding-sm);
+  --mb-toggle-radius: var(--mb-control-radius-sm);
+  --mb-toggle-font: var(--mb-control-font-sm);
+}
+
+:is(.mb-toggle, .mb-toggle-group)[data-size="md"] {
+  --mb-toggle-height: var(--mb-control-height);
+  --mb-toggle-padding: var(--mb-control-padding);
+  --mb-toggle-radius: var(--mb-control-radius);
+  --mb-toggle-font: var(--mb-control-font);
+}
+
+:is(.mb-toggle, .mb-toggle-group)[data-size="lg"] {
+  --mb-toggle-height: var(--mb-control-height-lg);
+  --mb-toggle-padding: var(--mb-control-padding-lg);
+  --mb-toggle-radius: var(--mb-control-radius-lg);
+  --mb-toggle-font: var(--mb-control-font-lg);
+}
+
+/* Bezeled: a raised push-on/push-off button that sinks while it's on. */
+.mb-toggle[data-variant="bezeled"] {
+  --mb-toggle-bg: var(--mb-bg-control);
+  --mb-toggle-fg: var(--mb-label);
+  --mb-toggle-bg-pressed: light-dark(
+    color-mix(in oklch, var(--mb-bg-control), var(--mb-ink) 14%),
+    color-mix(in oklch, var(--mb-bg-control), var(--mb-ink) 28%)
+  );
+  box-shadow:
+    0 0 0 var(--mb-hairline) var(--mb-toggle-edge),
+    0 0.5px 1.5px var(--mb-shadow-color);
+}
+
+.mb-toggle[data-variant="bezeled"][data-pressed] {
+  box-shadow:
+    0 0 0 var(--mb-hairline) var(--mb-toggle-edge),
+    inset 0 1px 2px var(--mb-shadow-color);
+}
+
+.mb-toggle[data-tone="accent"] {
+  --mb-toggle-fg-pressed: var(--mb-accent-text);
+}
+
+.mb-toggle[data-variant="bezeled"][data-tone="accent"] {
+  --mb-toggle-bg-pressed: var(--mb-accent);
+  --mb-toggle-fg-pressed: var(--mb-on-accent);
+}
+
+.mb-toggle[data-pressed] {
+  --mb-toggle-bg: var(--mb-toggle-bg-pressed);
+  --mb-toggle-fg: var(--mb-toggle-fg-pressed);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-toggle:not([data-pressed]):hover {
+    --mb-toggle-bg: var(--mb-fill-quaternary);
+    --mb-toggle-fg: var(--mb-label);
+  }
+
+  .mb-toggle[data-variant="bezeled"]:not([data-pressed]):hover {
+    --mb-toggle-bg: color-mix(in oklch, var(--mb-bg-control), var(--mb-ink) 5%);
+  }
+}
+
+.mb-toggle:active {
+  --mb-toggle-bg: var(--mb-fill-secondary);
+  transition-duration: 0ms, 0ms, 0ms, var(--mb-duration-instant);
+}
+
+.mb-toggle[data-pressed]:active {
+  --mb-toggle-bg: color-mix(in oklch, var(--mb-toggle-bg-pressed), var(--mb-ink) 10%);
+}
+
+.mb-toggle[data-variant="bezeled"]:not([data-pressed]):active {
+  --mb-toggle-bg: color-mix(in oklch, var(--mb-bg-control), var(--mb-ink) 12%);
+}
+
+.mb-toggle[data-disabled] {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* Group */
+.mb-toggle-group {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--mb-space-1);
+}
+
+.mb-toggle-group[data-orientation="vertical"] {
+  flex-direction: column;
+}
+
+/* A bezeled group is one raised control, its toggles separated by hairlines. */
+.mb-toggle-group[data-variant="bezeled"] {
+  gap: 0;
+  border-radius: var(--mb-toggle-radius, var(--mb-control-radius));
+  background: var(--mb-bg-control);
+  box-shadow:
+    0 0 0 var(--mb-hairline) var(--mb-toggle-edge),
+    0 0.5px 1.5px var(--mb-shadow-color);
+}
+
+.mb-toggle-group[data-variant="bezeled"] > .mb-toggle:not([data-pressed]) {
+  --mb-toggle-fg: var(--mb-label);
+}
+
+.mb-toggle-group[data-variant="bezeled"] > .mb-toggle {
+  --mb-toggle-bg-pressed: light-dark(
+    color-mix(in oklch, var(--mb-bg-control), var(--mb-ink) 14%),
+    color-mix(in oklch, var(--mb-bg-control), var(--mb-ink) 28%)
+  );
+  border-radius: 0;
+  min-width: calc(var(--mb-toggle-h) + 4px);
+}
+
+.mb-toggle-group[data-variant="bezeled"] > .mb-toggle[data-tone="accent"] {
+  --mb-toggle-fg-pressed: var(--mb-accent-text);
+}
+
+.mb-toggle-group[data-variant="bezeled"] > .mb-toggle + .mb-toggle {
+  box-shadow: inset var(--mb-hairline) 0 0 var(--mb-separator-strong);
+}
+
+.mb-toggle-group[data-variant="bezeled"] > .mb-toggle:first-child {
+  border-start-start-radius: inherit;
+  border-end-start-radius: inherit;
+}
+
+.mb-toggle-group[data-variant="bezeled"] > .mb-toggle:last-child {
+  border-start-end-radius: inherit;
+  border-end-end-radius: inherit;
+}
+
+.mb-toggle-group[data-variant="bezeled"] > .mb-toggle:focus-visible {
+  z-index: 1;
+}
+
+.mb-toggle-group[data-disabled] {
+  opacity: 0.4;
+}
+
+.mb-toggle-group[data-disabled] > .mb-toggle[data-disabled] {
+  opacity: 1;
+}
+
+/* Touch: capsules, a tint for on, and a small give under the finger. */
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .mb-toggle {
+    --mb-toggle-bg-pressed: color-mix(in oklch, var(--mb-accent) 20%, transparent);
+    /* A little deeper in light, so accent text keeps 4.5:1 on the accent tint. */
+    --mb-toggle-fg-pressed: light-dark(oklch(from var(--mb-accent-text) calc(l - 0.05) c h), var(--mb-accent-text));
+  }
+
+  /* Scoped rules outrank unscoped ones of equal specificity, so rest-state colors skip the pressed state. */
+  .mb-toggle[data-variant="bezeled"] {
+    --mb-toggle-bg-pressed: color-mix(in oklch, var(--mb-accent) 20%, transparent);
+    box-shadow: none;
+  }
+
+  .mb-toggle[data-variant="bezeled"]:not([data-pressed]) {
+    --mb-toggle-bg: var(--mb-fill-secondary);
+  }
+
+  .mb-toggle[data-variant="bezeled"][data-pressed] {
+    box-shadow: none;
+  }
+
+  .mb-toggle[data-variant="bezeled"][data-tone="accent"] {
+    --mb-toggle-bg-pressed: var(--mb-accent);
+    --mb-toggle-fg-pressed: var(--mb-on-accent);
+  }
+
+  .mb-toggle[data-pressed] {
+    font-weight: 600;
+  }
+
+  .mb-toggle:active {
+    --mb-toggle-bg: var(--mb-fill);
+    scale: 0.96;
+  }
+
+  .mb-toggle[data-pressed]:active {
+    --mb-toggle-bg: color-mix(in oklch, var(--mb-accent) 30%, transparent);
+  }
+
+  .mb-toggle-group {
+    gap: var(--mb-space-3);
+  }
+
+  .mb-toggle-group[data-variant="bezeled"] {
+    gap: var(--mb-space-1);
+    padding: var(--mb-space-1);
+    border-radius: var(--mb-radius-full);
+    background: var(--mb-fill-tertiary);
+    box-shadow: none;
+  }
+
+  .mb-toggle-group[data-variant="bezeled"] > .mb-toggle {
+    --mb-toggle-bg-pressed: color-mix(in oklch, var(--mb-accent) 20%, transparent);
+    --mb-toggle-fg-pressed: light-dark(oklch(from var(--mb-accent-text) calc(l - 0.05) c h), var(--mb-accent-text));
+    height: calc(var(--mb-toggle-h) - var(--mb-space-1) * 2);
+    border-radius: var(--mb-radius-full);
+  }
+
+  .mb-toggle-group[data-variant="bezeled"] > .mb-toggle + .mb-toggle {
+    box-shadow: none;
+  }
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  @media (prefers-reduced-motion: reduce) {
+  :where(:root:not([data-motion="full"])) {
+      .mb-toggle:active {
+        scale: none;
+      }
+  }
+}
+}

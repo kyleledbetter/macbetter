@@ -5,66 +5,66 @@ const groups: Array<{ title: string; kind: "text" | "fill" | "line"; swatches: S
     title: "Labels",
     kind: "text",
     swatches: [
-      { token: "--sd-label", note: "Primary text" },
-      { token: "--sd-label-secondary", note: "Subtitles, values" },
-      { token: "--sd-label-tertiary", note: "Placeholders, hints" },
-      { token: "--sd-label-quaternary", note: "Disabled text" },
-      { token: "--sd-accent-text", note: "Links, tinted text" },
-      { token: "--sd-destructive-text", note: "Destructive text" },
+      { token: "--mb-label", note: "Primary text" },
+      { token: "--mb-label-secondary", note: "Subtitles, values" },
+      { token: "--mb-label-tertiary", note: "Placeholders, hints" },
+      { token: "--mb-label-quaternary", note: "Disabled text" },
+      { token: "--mb-accent-text", note: "Links, tinted text" },
+      { token: "--mb-destructive-text", note: "Destructive text" },
     ],
   },
   {
     title: "Backgrounds",
     kind: "fill",
     swatches: [
-      { token: "--sd-bg", note: "Window and page" },
-      { token: "--sd-bg-secondary", note: "Grouped page" },
-      { token: "--sd-bg-tertiary", note: "Inset groups" },
-      { token: "--sd-bg-elevated", note: "Popovers, sheets" },
-      { token: "--sd-bg-sidebar", note: "Sidebars" },
-      { token: "--sd-bg-control", note: "Bezeled controls" },
-      { token: "--sd-bg-field", note: "Text fields" },
+      { token: "--mb-bg", note: "Window and page" },
+      { token: "--mb-bg-secondary", note: "Grouped page" },
+      { token: "--mb-bg-tertiary", note: "Inset groups" },
+      { token: "--mb-bg-elevated", note: "Popovers, sheets" },
+      { token: "--mb-bg-sidebar", note: "Sidebars" },
+      { token: "--mb-bg-control", note: "Bezeled controls" },
+      { token: "--mb-bg-field", note: "Text fields" },
     ],
   },
   {
     title: "Fills",
     kind: "fill",
     swatches: [
-      { token: "--sd-fill", note: "Switch track, touch press" },
-      { token: "--sd-fill-secondary", note: "Touch bezeled buttons" },
-      { token: "--sd-fill-tertiary", note: "Hover, segmented track" },
-      { token: "--sd-fill-quaternary", note: "Quiet hover, large areas" },
+      { token: "--mb-fill", note: "Switch track, touch press" },
+      { token: "--mb-fill-secondary", note: "Touch bezeled buttons" },
+      { token: "--mb-fill-tertiary", note: "Hover, segmented track" },
+      { token: "--mb-fill-quaternary", note: "Quiet hover, large areas" },
     ],
   },
   {
     title: "Separators",
     kind: "line",
     swatches: [
-      { token: "--sd-separator", note: "Between rows" },
-      { token: "--sd-separator-strong", note: "Section edges" },
-      { token: "--sd-separator-opaque", note: "Opaque hairlines" },
-      { token: "--sd-control-border", note: "Control edges, 3:1" },
+      { token: "--mb-separator", note: "Between rows" },
+      { token: "--mb-separator-strong", note: "Section edges" },
+      { token: "--mb-separator-opaque", note: "Opaque hairlines" },
+      { token: "--mb-control-border", note: "Control edges, 3:1" },
     ],
   },
   {
     title: "Accent",
     kind: "fill",
     swatches: [
-      { token: "--sd-accent", note: "Filled controls" },
-      { token: "--sd-accent-hover", note: "Pointer hover" },
-      { token: "--sd-accent-pressed", note: "Press" },
-      { token: "--sd-accent-soft", note: "Tinted fills" },
-      { token: "--sd-on-accent", note: "Text on accent" },
-      { token: "--sd-accent-secondary", note: "Second brand color" },
-      { token: "--sd-focus-ring", note: "Focus halo" },
-      { token: "--sd-selection", note: "Text selection" },
+      { token: "--mb-accent", note: "Filled controls" },
+      { token: "--mb-accent-hover", note: "Pointer hover" },
+      { token: "--mb-accent-pressed", note: "Press" },
+      { token: "--mb-accent-soft", note: "Tinted fills" },
+      { token: "--mb-on-accent", note: "Text on accent" },
+      { token: "--mb-accent-secondary", note: "Second brand color" },
+      { token: "--mb-focus-ring", note: "Focus halo" },
+      { token: "--mb-selection", note: "Text selection" },
     ],
   },
   {
     title: "System palette",
     kind: "fill",
     swatches: ["red", "orange", "yellow", "green", "mint", "teal", "cyan", "blue", "indigo", "purple", "pink", "brown"].map(
-      (name) => ({ token: `--sd-${name}`, note: name[0]!.toUpperCase() + name.slice(1) })
+      (name) => ({ token: `--mb-${name}`, note: name[0]!.toUpperCase() + name.slice(1) })
     ),
   },
 ]
@@ -98,7 +98,7 @@ export default function SemanticColors() {
               <figure
                 key={swatch.token}
                 className="m-0 min-w-0 overflow-hidden rounded-[12px] border border-separator"
-                style={{ background: "var(--sd-bg)" }}
+                style={{ background: "var(--mb-bg)" }}
               >
                 <Sample kind={group.kind} token={swatch.token} />
                 <figcaption className="flex flex-col gap-0.5 border-t border-separator px-3 py-2">

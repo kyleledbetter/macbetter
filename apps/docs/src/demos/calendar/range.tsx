@@ -1,4 +1,4 @@
-import { Calendar } from "@dreambase/stardust/calendar"
+import { Calendar } from "macbetter/calendar"
 
 export default function Example() {
   return (

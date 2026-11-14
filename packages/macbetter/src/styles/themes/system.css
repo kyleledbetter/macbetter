@@ -1,0 +1,28 @@
+/* System: the neutral Apple look. Blue accent on true grays. */
+[data-theme="system"] {
+  --mb-accent: light-dark(#0071e3, #0071e3);
+  --mb-on-accent: #ffffff;
+  --mb-accent-text: light-dark(#0064d6, #409cff);
+  --mb-accent-secondary: light-dark(#248a3d, #30d158);
+  --mb-ink: light-dark(#000000, #ffffff);
+  --mb-bg: light-dark(#ffffff, #1c1c1e);
+  --mb-bg-secondary: light-dark(#f2f2f7, #000000);
+  --mb-bg-tertiary: light-dark(#ffffff, #2c2c2e);
+  --mb-bg-elevated: light-dark(#ffffff, #2c2c2e);
+  --mb-bg-sidebar: light-dark(#ecece9, #252528);
+  --mb-tint: light-dark(#78788a, #8e8e9e);
+  --mb-red: light-dark(#e0302a, #ff453a);
+  --mb-orange: light-dark(#e07800, #ff9f0a);
+  --mb-yellow: light-dark(#dba800, #ffd60a);
+  --mb-green: light-dark(#248a3d, #30d158);
+  --mb-mint: light-dark(#0c817b, #66d4cf);
+  --mb-teal: light-dark(#008299, #40c8e0);
+  --mb-cyan: light-dark(#0071a4, #64d2ff);
+  --mb-blue: light-dark(#007aff, #0a84ff);
+  --mb-indigo: light-dark(#5856d6, #5e5ce6);
+  --mb-purple: light-dark(#a550d8, #bf5af2);
+  --mb-pink: light-dark(#e0284f, #ff375f);
+  --mb-brown: light-dark(#a2845e, #ac8e68);
+  --mb-shadow-color: light-dark(rgb(0 0 0 / 0.12), rgb(0 0 0 / 0.5));
+  --mb-shadow-color-strong: light-dark(rgb(0 0 0 / 0.2), rgb(0 0 0 / 0.62));
+}

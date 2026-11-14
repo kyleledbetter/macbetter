@@ -25,7 +25,7 @@ import {
   CommandPalette,
   CommandPaletteContent,
   CommandPaletteTrigger,
-} from "@dreambase/stardust/command-palette"
+} from "macbetter/command-palette"
 ```
 
 `CommandPalette` is a dialog. `CommandPaletteTrigger` is a search-field-shaped button that also listens for ⌘K, and `CommandPaletteContent` is the floating panel. Inside it, `Command` holds a `CommandInput`, which draws its own magnifier, and a `CommandList` of groups and items. Close the palette from `onAction`.
@@ -58,7 +58,7 @@ The palette is a modal dialog named by `title`, and focus starts in the search f
     { name: "CommandItemIcon", type: "—", description: "A 22-point icon (28 on touch) before the label." },
     { name: "CommandGroup, CommandGroupLabel, CommandSeparator", type: "—", description: "Organize results. Empty groups disappear." },
     { name: "CommandEmpty, CommandStatus", type: "—", description: "What shows when nothing matches, and loading or error messages." },
-    { name: "--sd-command-width", type: "length", default: "680px", description: "The panel's width on the Mac." },
-    { name: "--sd-command-highlight", type: "color", default: "accent · gray", description: "The highlighted row's fill." },
+    { name: "--mb-command-width", type: "length", default: "680px", description: "The panel's width on the Mac." },
+    { name: "--mb-command-highlight", type: "color", default: "accent · gray", description: "The highlighted row's fill." },
   ]}
 />

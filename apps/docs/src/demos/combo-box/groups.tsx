@@ -12,7 +12,7 @@ import {
   ComboboxList,
   ComboboxSeparator,
   ComboboxTrigger,
-} from "@dreambase/stardust/combo-box"
+} from "macbetter/combo-box"
 import { Fragment } from "react"
 
 const regions = [

@@ -1,4 +1,4 @@
-import { Card } from "@dreambase/stardust/card"
+import { Card } from "macbetter/card"
 import { FootprintsIcon, HeartIcon } from "lucide-react"
 import { ChartFrame } from "@/components/charts"
 
@@ -6,7 +6,7 @@ const highlights = [
   {
     category: "Steps",
     icon: FootprintsIcon,
-    color: "var(--sd-orange)",
+    color: "var(--mb-orange)",
     when: "Today",
     headline: "You’re averaging more steps this year than you did last year.",
     unit: "steps/day",
@@ -18,7 +18,7 @@ const highlights = [
   {
     category: "Resting Heart Rate",
     icon: HeartIcon,
-    color: "var(--sd-pink)",
+    color: "var(--mb-pink)",
     when: "Yesterday",
     headline: "Your resting heart rate was lower this month than last month.",
     unit: "BPM",
@@ -37,12 +37,12 @@ export default function HealthHighlights() {
         const max = Math.max(...h.bars.map((b) => b.value))
         return (
           <Card key={h.category} style={{ display: "grid", gap: 12, alignContent: "start" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 6, color: h.color, font: "var(--sd-text-subheadline)", fontWeight: 600 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 6, color: h.color, font: "var(--mb-text-subheadline)", fontWeight: 600 }}>
               <h.icon aria-hidden="true" style={{ width: "1.1em", height: "1.1em" }} fill="currentColor" strokeWidth={1.5} />
               {h.category}
-              <span style={{ marginInlineStart: "auto", color: "var(--sd-label-secondary)", fontWeight: 400 }}>{h.when}</span>
+              <span style={{ marginInlineStart: "auto", color: "var(--mb-label-secondary)", fontWeight: 400 }}>{h.when}</span>
             </div>
-            <p style={{ margin: 0, font: "var(--sd-text-headline)" }}>{h.headline}</p>
+            <p style={{ margin: 0, font: "var(--mb-text-headline)" }}>{h.headline}</p>
             <ChartFrame
               title={`${h.category}: ${h.bars[0]!.label} compared with ${h.bars[1]!.label}`}
               summary={h.bars.map((b) => `${b.label}: ${b.value.toLocaleString("en-US")} ${h.unit}`).join(". ")}
@@ -51,10 +51,10 @@ export default function HealthHighlights() {
               {h.bars.map((bar, i) => (
                 <div key={bar.label} aria-hidden="true" style={{ display: "grid", gap: 4 }}>
                   <div style={{ display: "flex", alignItems: "baseline", gap: 4, fontVariantNumeric: "tabular-nums" }}>
-                    <span style={{ font: "var(--sd-text-title-3)", fontFamily: "var(--sd-font-rounded)", color: i === 0 ? h.color : "var(--sd-label)" }}>
+                    <span style={{ font: "var(--mb-text-title-3)", fontFamily: "var(--mb-font-rounded)", color: i === 0 ? h.color : "var(--mb-label)" }}>
                       {bar.value.toLocaleString("en-US")}
                     </span>
-                    <span style={{ color: "var(--sd-label-secondary)", font: "var(--sd-text-footnote)", fontWeight: 600 }}>{h.unit}</span>
+                    <span style={{ color: "var(--mb-label-secondary)", font: "var(--mb-text-footnote)", fontWeight: 600 }}>{h.unit}</span>
                   </div>
                   <div
                     style={{
@@ -64,9 +64,9 @@ export default function HealthHighlights() {
                       height: 26,
                       paddingInline: 10,
                       borderRadius: 7,
-                      background: i === 0 ? h.color : "var(--sd-fill)",
-                      color: i === 0 ? `oklch(from ${h.color} 0.26 0.06 h)` : "var(--sd-label)",
-                      font: "var(--sd-text-footnote)",
+                      background: i === 0 ? h.color : "var(--mb-fill)",
+                      color: i === 0 ? `oklch(from ${h.color} 0.26 0.06 h)` : "var(--mb-label)",
+                      font: "var(--mb-text-footnote)",
                       fontWeight: 600,
                     }}
                   >

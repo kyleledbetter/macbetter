@@ -6,8 +6,8 @@ import {
   AlertDescription,
   AlertTitle,
   AlertTrigger,
-} from "@dreambase/stardust/alert"
-import { Button } from "@dreambase/stardust/button"
+} from "macbetter/alert"
+import { Button } from "macbetter/button"
 
 export default function Example() {
   return (

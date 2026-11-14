@@ -1,0 +1,67 @@
+{
+  "name": "macbetter",
+  "version": "0.1.0",
+  "description": "Apple-style components for React: macOS, iPadOS and iOS in one themeable framework, built on ui-sdk.",
+  "keywords": [
+    "react",
+    "components",
+    "design-system",
+    "macos",
+    "ios",
+    "ipados",
+    "apple",
+    "hig",
+    "ui-sdk",
+    "liquid-glass"
+  ],
+  "license": "Apache-2.0",
+  "author": "Kyle Ledbetter",
+  "homepage": "https://macbetter.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kyleledbetter/macbetter.git",
+    "directory": "packages/macbetter"
+  },
+  "bugs": "https://github.com/kyleledbetter/macbetter/issues",
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": "./src/index.ts",
+    "./styles.css": "./src/styles/index.css",
+    "./themes/*.css": "./src/styles/themes/*.css",
+    "./theme": "./src/lib/theme.ts",
+    "./derive": "./src/lib/derive.ts",
+    "./*": "./src/components/*.tsx"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "react": ">=19",
+    "react-dom": ">=19"
+  },
+  "dependencies": {
+    "@ui-sdk/core": "0.1.0-beta.1",
+    "@ui-sdk/react": "0.1.0-beta.1"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/react": "^16",
+    "@testing-library/user-event": "^14.6.10",
+    "@types/react": "^19.2.10",
+    "@types/react-dom": "^19",
+    "jsdom": "^26",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "typescript": "^5",
+    "vitest": "^3"
+  }
+}

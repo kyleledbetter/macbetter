@@ -1,6 +1,6 @@
 "use client"
 
-import { Dock, DockItem, DockSeparator } from "@dreambase/stardust/dock"
+import { Dock, DockItem, DockSeparator } from "macbetter/dock"
 import {
   CalendarDaysIcon,
   CompassIcon,
@@ -16,15 +16,15 @@ import {
 import { useState } from "react"
 
 const apps = [
-  { name: "Finder", icon: FolderIcon, from: "var(--sd-cyan)", to: "var(--sd-blue)" },
-  { name: "Safari", icon: CompassIcon, from: "var(--sd-teal)", to: "var(--sd-blue)" },
-  { name: "Messages", icon: MessageCircleIcon, from: "var(--sd-mint)", to: "var(--sd-green)" },
-  { name: "Mail", icon: MailIcon, from: "var(--sd-cyan)", to: "var(--sd-indigo)" },
-  { name: "Photos", icon: ImageIcon, from: "var(--sd-yellow)", to: "var(--sd-pink)" },
-  { name: "Music", icon: MusicIcon, from: "var(--sd-pink)", to: "var(--sd-red)" },
-  { name: "Calendar", icon: CalendarDaysIcon, from: "var(--sd-red)", to: "var(--sd-orange)" },
-  { name: "Notes", icon: NotebookPenIcon, from: "var(--sd-yellow)", to: "var(--sd-orange)" },
-  { name: "System Settings", icon: SettingsIcon, from: "var(--sd-tint)", to: "color-mix(in oklch, var(--sd-tint), black 45%)" },
+  { name: "Finder", icon: FolderIcon, from: "var(--mb-cyan)", to: "var(--mb-blue)" },
+  { name: "Safari", icon: CompassIcon, from: "var(--mb-teal)", to: "var(--mb-blue)" },
+  { name: "Messages", icon: MessageCircleIcon, from: "var(--mb-mint)", to: "var(--mb-green)" },
+  { name: "Mail", icon: MailIcon, from: "var(--mb-cyan)", to: "var(--mb-indigo)" },
+  { name: "Photos", icon: ImageIcon, from: "var(--mb-yellow)", to: "var(--mb-pink)" },
+  { name: "Music", icon: MusicIcon, from: "var(--mb-pink)", to: "var(--mb-red)" },
+  { name: "Calendar", icon: CalendarDaysIcon, from: "var(--mb-red)", to: "var(--mb-orange)" },
+  { name: "Notes", icon: NotebookPenIcon, from: "var(--mb-yellow)", to: "var(--mb-orange)" },
+  { name: "System Settings", icon: SettingsIcon, from: "var(--mb-tint)", to: "color-mix(in oklch, var(--mb-tint), black 45%)" },
 ]
 
 function AppIcon({ icon: Icon, from, to }: { icon: typeof FolderIcon; from: string; to: string }) {
@@ -59,7 +59,7 @@ export default function Example() {
         ))}
         <DockSeparator />
         <DockItem label="Trash">
-          <AppIcon icon={Trash2Icon} from="color-mix(in oklch, var(--sd-tint) 45%, white)" to="var(--sd-tint)" />
+          <AppIcon icon={Trash2Icon} from="color-mix(in oklch, var(--mb-tint) 45%, white)" to="var(--mb-tint)" />
         </DockItem>
       </Dock>
     </div>

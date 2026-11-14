@@ -1,0 +1,370 @@
+/* Toolbar — the macOS unified toolbar and the iOS floating toolbar of glass capsules. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-toolbar-item-height: 28px;
+  --mb-toolbar-item-min-width: 32px;
+  --mb-toolbar-item-radius: var(--mb-radius-md);
+  --mb-toolbar-icon-size: 16px;
+  --mb-toolbar-gap: 6px;
+  --mb-toolbar-floating-height: 40px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-toolbar-item-height: 44px;
+  --mb-toolbar-item-min-width: 44px;
+  --mb-toolbar-item-radius: var(--mb-radius-full);
+  --mb-toolbar-icon-size: 22px;
+  --mb-toolbar-gap: 8px;
+  --mb-toolbar-floating-height: 48px;
+}
+
+.mb-toolbar {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: var(--mb-toolbar-gap);
+  min-width: 0;
+  color: var(--mb-label-secondary);
+  font: var(--mb-control-font);
+  letter-spacing: var(--mb-tracking-body);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.mb-toolbar[data-orientation="vertical"] {
+  flex-direction: column;
+  flex: none;
+}
+
+/* Buttons */
+.mb-toolbar-button {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: var(--mb-space-3);
+  min-width: var(--mb-toolbar-item-min-width);
+  height: var(--mb-toolbar-item-height);
+  margin: 0;
+  padding: 0 var(--mb-space-4);
+  border: 0;
+  border-radius: var(--mb-toolbar-item-radius);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: default;
+  touch-action: manipulation;
+  transition:
+    background-color var(--mb-duration-fast) var(--mb-ease-out),
+    color var(--mb-duration-fast) var(--mb-ease-out),
+    scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+.mb-toolbar-button:has(> svg:only-child) {
+  padding: 0;
+}
+
+.mb-toolbar-button :where(svg) {
+  flex: none;
+  width: var(--mb-toolbar-icon-size);
+  height: var(--mb-toolbar-icon-size);
+  stroke-width: 1.75;
+}
+
+/* A directional icon, like Back or Forward, marked data-mirror, points the other way in right to left. */
+.mb-toolbar-button > svg[data-mirror]:where([dir="rtl"] *) {
+  scale: -1 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-toolbar-button:hover {
+    background: var(--mb-fill-tertiary);
+    color: var(--mb-label);
+  }
+}
+
+.mb-toolbar-button:active {
+  background: var(--mb-fill-secondary);
+  color: var(--mb-label);
+  transition-duration: 0ms;
+}
+
+.mb-toolbar-button[data-pressed] {
+  background: var(--mb-fill-secondary);
+  color: var(--mb-label);
+}
+
+.mb-toolbar-button:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: 0;
+}
+
+.mb-toolbar-button[data-disabled] {
+  opacity: 0.35;
+}
+
+/* Groups: a capsule that clusters related buttons. */
+.mb-toolbar-group {
+  display: inline-flex;
+  flex: none;
+  align-items: stretch;
+  gap: 0;
+  padding: 0;
+  border-radius: var(--mb-radius-full);
+  background: var(--mb-fill-quaternary);
+  box-shadow: inset 0 0 0 var(--mb-hairline) var(--mb-separator);
+}
+
+/*
+ * Each button owns its slot, so its hover, press and pressed fills run edge to
+ * edge: the first and last take the capsule's curve, the ones between stay square.
+ */
+.mb-toolbar-group > .mb-toolbar-button {
+  border-radius: 0;
+}
+
+.mb-toolbar-group > .mb-toolbar-button:first-child {
+  border-start-start-radius: var(--mb-radius-full);
+  border-end-start-radius: var(--mb-radius-full);
+  padding-inline-start: 3px;
+}
+
+.mb-toolbar-group > .mb-toolbar-button:last-child {
+  border-start-end-radius: var(--mb-radius-full);
+  border-end-end-radius: var(--mb-radius-full);
+  padding-inline-end: 3px;
+}
+
+.mb-toolbar-group > .mb-toolbar-button:focus-visible {
+  outline-offset: calc(var(--mb-focus-ring-width) * -1);
+}
+
+.mb-toolbar-group > .mb-toolbar-button[data-pressed] {
+  background: light-dark(#ffffff, color-mix(in oklch, var(--mb-tint) 46%, var(--mb-bg)));
+  color: var(--mb-label);
+  box-shadow: inset 0 0 0 var(--mb-hairline) var(--mb-separator);
+}
+
+.mb-toolbar-separator {
+  flex: none;
+  align-self: center;
+  width: 1px;
+  height: calc(var(--mb-toolbar-item-height) * 0.6);
+  margin-inline: var(--mb-space-1);
+  background: var(--mb-separator);
+}
+
+.mb-toolbar-separator[data-orientation="horizontal"] {
+  width: calc(var(--mb-toolbar-item-height) * 0.6);
+  height: 1px;
+}
+
+.mb-toolbar-spacer {
+  flex: 1 1 auto;
+  min-width: var(--mb-space-4);
+}
+
+/* Title */
+.mb-toolbar-title {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* Shrinks only once the search field has folded to a magnifying glass. The factor is tiny, not 0,
+     so it can still give way then; a factor of 1 would shave a fraction of a pixel and ellipsize early. */
+  flex: 0 0.01 auto;
+  min-width: 3em;
+  max-width: 40%;
+  padding-inline: var(--mb-space-2) var(--mb-space-4);
+}
+
+.mb-toolbar-title-text {
+  overflow: hidden;
+  color: var(--mb-label);
+  font: var(--mb-text-headline);
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 700;
+  letter-spacing: var(--mb-tracking-title);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.mb-toolbar-subtitle {
+  overflow: hidden;
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-subheadline);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+:where(.mb-window[data-inactive]) .mb-toolbar {
+  color: var(--mb-label-tertiary);
+}
+
+/* Search field */
+.mb-toolbar-search {
+  position: relative;
+  display: inline-flex;
+  flex: 0 1000 180px;
+  align-items: center;
+  min-width: var(--mb-toolbar-item-min-width);
+  height: var(--mb-toolbar-item-height);
+  color: var(--mb-label-secondary);
+  container: mb-toolbar-search / inline-size;
+}
+
+.mb-toolbar-search-icon {
+  position: absolute;
+  inset-inline-start: 9px;
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+
+.mb-toolbar-search-input {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding-block: 0;
+  padding-inline: 28px var(--mb-space-5);
+  border: 0;
+  border-radius: var(--mb-radius-full);
+  background: var(--mb-fill-tertiary);
+  box-shadow: inset 0 0 0 var(--mb-hairline) var(--mb-separator);
+  color: var(--mb-label);
+  font: var(--mb-text-body);
+  letter-spacing: var(--mb-tracking-body);
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.mb-toolbar-search-input::placeholder {
+  color: var(--mb-label-secondary);
+}
+
+/* Too narrow for its placeholder, the field folds into a magnifying glass, as a macOS toolbar's does,
+   rather than clipping the word. */
+@container mb-toolbar-search (width < 104px) {
+  .mb-toolbar-search-input:placeholder-shown:not(:focus) {
+    padding-inline: 0;
+    color: transparent;
+  }
+
+  .mb-toolbar-search-input:placeholder-shown:not(:focus)::placeholder {
+    color: transparent;
+  }
+
+  .mb-toolbar-search-icon:has(+ .mb-toolbar-search-input:placeholder-shown:not(:focus)) {
+    inset-inline-start: calc(50% - 7px);
+  }
+}
+
+.mb-toolbar-search-input::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+.mb-toolbar-search-input:focus {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: 0;
+}
+
+/* Floating: each control and cluster is its own capsule of glass over the content. */
+.mb-toolbar[data-variant="floating"] {
+  --mb-toolbar-item-height: var(--mb-toolbar-floating-height);
+  --mb-toolbar-item-min-width: var(--mb-toolbar-floating-height);
+  --mb-toolbar-item-radius: var(--mb-radius-full);
+  gap: var(--mb-space-5);
+  color: var(--mb-label);
+}
+
+:where(.mb-toolbar[data-variant="floating"]) > :is(.mb-toolbar-button, .mb-toolbar-group, .mb-toolbar-search) {
+  border-radius: var(--mb-radius-full);
+  background-color: color-mix(in oklch, var(--mb-bg-elevated) 46%, transparent);
+  background-image: linear-gradient(
+    to bottom,
+    light-dark(rgb(255 255 255 / 0.5), rgb(255 255 255 / 0.09)),
+    light-dark(rgb(255 255 255 / 0.12), rgb(255 255 255 / 0.02)) 60%
+  );
+  -webkit-backdrop-filter: blur(18px) saturate(190%) brightness(1.04);
+  backdrop-filter: blur(18px) saturate(190%) brightness(1.04);
+  box-shadow:
+    inset 0 1px 0 0 var(--mb-glass-edge),
+    inset 0 -0.5px 0 0 var(--mb-glass-edge-soft),
+    0 0 0 var(--mb-hairline) var(--mb-glass-border),
+    var(--mb-shadow-3);
+}
+
+:where(.mb-toolbar[data-variant="floating"]) > .mb-toolbar-group {
+  gap: 0;
+  padding: 0;
+}
+
+:where(.mb-toolbar[data-variant="floating"]) > .mb-toolbar-group > .mb-toolbar-button {
+  --mb-toolbar-item-height: var(--mb-toolbar-floating-height);
+}
+
+:where(.mb-toolbar[data-variant="floating"]) > .mb-toolbar-search {
+  flex: 1 1 auto;
+}
+
+:where(.mb-toolbar[data-variant="floating"]) .mb-toolbar-search-input {
+  background: transparent;
+  box-shadow: none;
+  padding-inline-start: 36px;
+  font: var(--mb-text-body);
+}
+
+:where(.mb-toolbar[data-variant="floating"]) .mb-toolbar-search-icon {
+  inset-inline-start: 14px;
+  width: 17px;
+  height: 17px;
+}
+
+:where(.mb-toolbar[data-variant="floating"]) .mb-toolbar-separator {
+  display: none;
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .mb-toolbar-button:active {
+    background: transparent;
+    scale: 0.92;
+    opacity: 0.6;
+  }
+
+  .mb-toolbar-button {
+    color: var(--mb-accent-text);
+  }
+
+  :where(.mb-toolbar[data-variant="floating"]) .mb-toolbar-button {
+    color: var(--mb-label);
+  }
+}
+
+@media (prefers-contrast: more) {
+  :where(.mb-toolbar[data-variant="floating"]) > :is(.mb-toolbar-button, .mb-toolbar-group, .mb-toolbar-search) {
+    background-color: var(--mb-bg-elevated);
+    background-image: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :where(:root:not([data-transparency="full"])) {
+    :where(.mb-toolbar[data-variant="floating"]) > :is(.mb-toolbar-button, .mb-toolbar-group, .mb-toolbar-search) {
+      background-color: var(--mb-bg-elevated);
+      background-image: none;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+}

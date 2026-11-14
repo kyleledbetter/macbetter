@@ -1,0 +1,189 @@
+/* Secure Field — a text field whose text is dots, with an eye button that shows it. */
+
+.mb-secure-field {
+  --mb-secure-field-h: var(--mb-control-height);
+  --mb-secure-field-r: var(--mb-text-field-radius);
+  --mb-secure-field-pad: var(--mb-text-field-padding);
+  --mb-secure-field-bg: var(--mb-text-field-auto-bg);
+  --mb-secure-field-edge: var(--mb-text-field-auto-edge);
+  --mb-secure-field-ring: var(--mb-focus-ring);
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--mb-text-field-gap);
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  height: var(--mb-secure-field-h);
+  padding-inline: var(--mb-secure-field-pad);
+  border-radius: var(--mb-secure-field-r);
+  background: var(--mb-secure-field-bg);
+  box-shadow: var(--mb-secure-field-edge);
+  color: var(--mb-label);
+  font: var(--mb-text-field-font);
+  letter-spacing: var(--mb-tracking-body);
+  cursor: text;
+  outline: var(--mb-focus-ring-width) solid transparent;
+  outline-offset: 2px;
+  transition:
+    outline-color var(--mb-duration-fast) var(--mb-ease-out),
+    outline-offset var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-secure-field[data-size="sm"] {
+  --mb-secure-field-h: var(--mb-control-height-sm);
+  --mb-secure-field-r: var(--mb-text-field-radius-sm);
+  --mb-secure-field-pad: var(--mb-text-field-padding-sm);
+  font: var(--mb-text-field-font-sm);
+}
+
+.mb-secure-field[data-size="lg"] {
+  --mb-secure-field-h: var(--mb-control-height-lg);
+  --mb-secure-field-r: var(--mb-text-field-radius-lg);
+  --mb-secure-field-pad: var(--mb-text-field-padding-lg);
+  font: var(--mb-text-field-font-lg);
+}
+
+.mb-secure-field[data-variant="bordered"] {
+  --mb-secure-field-bg: var(--mb-bg-field);
+  --mb-secure-field-edge: inset 0 0 0 var(--mb-hairline) var(--mb-control-border),
+    inset 0 0.5px 1px light-dark(rgb(0 0 0 / 0.07), rgb(0 0 0 / 0.2));
+}
+
+.mb-secure-field[data-variant="filled"] {
+  --mb-secure-field-bg: var(--mb-fill-tertiary);
+  --mb-secure-field-edge: inset 0 0 0 0 transparent;
+}
+
+.mb-secure-field[data-variant="plain"] {
+  --mb-secure-field-bg: transparent;
+  --mb-secure-field-edge: inset 0 0 0 0 transparent;
+  --mb-secure-field-pad: 0px;
+}
+
+.mb-secure-field-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  caret-color: var(--mb-accent);
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* Dots sit wider than letters, as in a real secure field. */
+.mb-secure-field:not([data-visible]) .mb-secure-field-input[data-filled] {
+  letter-spacing: 0.12em;
+}
+
+.mb-secure-field-input::placeholder {
+  color: var(--mb-field-placeholder);
+  letter-spacing: var(--mb-tracking-body);
+  opacity: 1;
+}
+
+.mb-secure-field-input::-ms-reveal {
+  display: none;
+}
+
+.mb-secure-field:has(.mb-secure-field-input:focus) {
+  outline-color: var(--mb-secure-field-ring);
+  outline-offset: 0px;
+}
+
+.mb-secure-field:has(.mb-secure-field-input:is([data-invalid], [aria-invalid="true"])) {
+  --mb-secure-field-edge: inset 0 0 0 1px var(--mb-destructive);
+  --mb-secure-field-ring: color-mix(in oklch, var(--mb-destructive) 80%, transparent);
+}
+
+.mb-secure-field[data-disabled] {
+  --mb-secure-field-bg: var(--mb-fill-quaternary);
+  --mb-secure-field-edge: inset 0 0 0 var(--mb-hairline) var(--mb-separator);
+  color: var(--mb-label-tertiary);
+  cursor: default;
+}
+
+.mb-secure-field-toggle {
+  order: 2;
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--mb-text-field-icon) + 4px);
+  height: calc(var(--mb-text-field-icon) + 4px);
+  margin: 0;
+  margin-inline-end: -3px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--mb-radius-xs);
+  background: transparent;
+  color: var(--mb-label-secondary);
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+  transition: color var(--mb-duration-fast) var(--mb-ease-out), scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+.mb-secure-field-toggle::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: var(--mb-hit-target);
+  height: var(--mb-hit-target);
+  translate: -50% -50%;
+}
+
+.mb-secure-field-toggle :where(svg) {
+  width: var(--mb-text-field-icon);
+  height: var(--mb-text-field-icon);
+}
+
+.mb-secure-field-toggle[data-visible] {
+  color: var(--mb-accent-text);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-secure-field-toggle:hover {
+    color: var(--mb-label);
+  }
+
+  .mb-secure-field-toggle[data-visible]:hover {
+    color: var(--mb-accent-text);
+  }
+}
+
+.mb-secure-field-toggle:active {
+  scale: 0.88;
+  transition-duration: 0ms;
+}
+
+.mb-secure-field-toggle:focus-visible {
+  outline: 2px solid var(--mb-focus-ring);
+  outline-offset: 1px;
+}
+
+.mb-secure-field-toggle[data-disabled] {
+  opacity: 0.5;
+}
+
+/* A Caps Lock warning glyph appears at the trailing edge while it's on. */
+.mb-secure-field[data-capslock]::after {
+  content: "⇪";
+  order: 1;
+  color: var(--mb-label-secondary);
+  font: 600 12px/1 var(--mb-font);
+}
+
+@media (prefers-contrast: more) {
+  .mb-secure-field[data-variant="filled"] {
+    --mb-secure-field-edge: inset 0 0 0 1px var(--mb-control-border);
+  }
+}

@@ -1,0 +1,16 @@
+/* Nebula: violet on cool ink. Shows how far the seeds can move a brand. */
+[data-theme="nebula"] {
+  --mb-accent: light-dark(#6d3df5, #9b7bff);
+  --mb-on-accent: light-dark(#ffffff, #120a2e);
+  --mb-accent-text: light-dark(#5a2be0, #b29bff);
+  --mb-accent-secondary: light-dark(#c026a8, #ff7ad9);
+  --mb-ink: light-dark(#14102b, #f3f1ff);
+  --mb-bg: light-dark(#ffffff, #100c24);
+  --mb-bg-secondary: light-dark(#f4f2fb, #161131);
+  --mb-bg-tertiary: light-dark(#ffffff, #201a42);
+  --mb-bg-elevated: light-dark(#ffffff, #1d173d);
+  --mb-bg-sidebar: light-dark(#eceaf7, #130f2a);
+  --mb-tint: light-dark(#66618a, #9a94c9);
+  --mb-green: light-dark(#1a8f6a, #4ad6a4);
+  --mb-radius-scale: 1.15;
+}

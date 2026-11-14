@@ -1,4 +1,4 @@
-import { Tabs, TabsList, TabsPanel, TabsTab, TabsTabIcon } from "@dreambase/stardust/tabs"
+import { Tabs, TabsList, TabsPanel, TabsTab, TabsTabIcon } from "macbetter/tabs"
 import { ClockIcon, StarIcon, UsersIcon } from "lucide-react"
 
 export default function Example() {
@@ -24,13 +24,13 @@ export default function Example() {
           Groups
         </TabsTab>
       </TabsList>
-      <TabsPanel value="recents" className="sd-label-secondary">
+      <TabsPanel value="recents" className="mb-label-secondary">
         Inès Moreau called 12 minutes ago. Kofi Mensah, yesterday.
       </TabsPanel>
-      <TabsPanel value="favorites" className="sd-label-secondary">
+      <TabsPanel value="favorites" className="mb-label-secondary">
         Hollis Grant and Wren Takahashi are in your favorites.
       </TabsPanel>
-      <TabsPanel value="groups" className="sd-label-secondary">
+      <TabsPanel value="groups" className="mb-label-secondary">
         Design, Family and Climbing Club.
       </TabsPanel>
     </Tabs>

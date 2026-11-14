@@ -1,0 +1,267 @@
+/*
+ * Artwork — an abstract picture drawn from a seed. The SVG paints with five
+ * variables, so a palette is only a set of system colors and follows the theme.
+ *   --mb-artwork-1 … -4   hues
+ *   --mb-artwork-ground   the deep base
+ *   --mb-artwork-light    highlights
+ *   --mb-artwork-paper    a warm off-white ground; --mb-artwork-ink is drawn on it
+ */
+
+.mb-artwork {
+  --mb-artwork-1: var(--mb-accent);
+  --mb-artwork-2: var(--mb-pink);
+  --mb-artwork-3: var(--mb-yellow);
+  --mb-artwork-4: var(--mb-indigo);
+  --mb-artwork-ground: oklch(from var(--mb-artwork-1) 0.21 calc(c * 0.4) h);
+  --mb-artwork-light: color-mix(in oklch, var(--mb-artwork-1) 16%, white);
+  --mb-artwork-paper: color-mix(in oklch, var(--mb-artwork-4) 5%, color-mix(in oklch, var(--mb-yellow) 9%, white));
+  --mb-artwork-ink: var(--mb-artwork-ground);
+  --mb-artwork-corner: 0%;
+  --mb-artwork-min-radius: 0px;
+
+  position: relative;
+  display: block;
+  flex: none;
+  box-sizing: border-box;
+  inline-size: var(--mb-artwork-size, 100%);
+  aspect-ratio: var(--mb-artwork-aspect, 1);
+  overflow: hidden;
+  isolation: isolate;
+  /* A percentage radius is elliptical on a wide box; divide it by the aspect so corners stay round. */
+  border-radius: var(
+    --mb-artwork-radius,
+    max(var(--mb-artwork-min-radius), calc(var(--mb-artwork-corner) / max(var(--mb-artwork-aspect, 1), 1))) /
+      max(var(--mb-artwork-min-radius), calc(var(--mb-artwork-corner) * min(var(--mb-artwork-aspect, 1), 1)))
+  );
+  background-color: var(--mb-artwork-ground);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Shapes */
+
+.mb-artwork[data-shape="rounded"] {
+  --mb-artwork-corner: 4.5%;
+  --mb-artwork-min-radius: 3px;
+}
+
+.mb-artwork[data-shape="circle"] {
+  --mb-artwork-corner: 50%;
+}
+
+.mb-artwork[data-shape="app"] {
+  --mb-artwork-corner: 22.5%;
+}
+
+@supports (corner-shape: squircle) {
+  .mb-artwork[data-shape="app"],
+  .mb-artwork[data-shape="app"]::after {
+    --mb-artwork-corner: 34%;
+    corner-shape: superellipse(1.6);
+  }
+}
+
+/* A faint inner edge, so a pale cover doesn't melt into a pale page. */
+.mb-artwork::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 var(--mb-hairline) light-dark(rgb(0 0 0 / 0.1), rgb(255 255 255 / 0.1));
+  pointer-events: none;
+}
+
+.mb-artwork-svg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.mb-artwork-blend :is(path, rect) {
+  mix-blend-mode: screen;
+}
+
+.mb-artwork-grain {
+  mix-blend-mode: overlay;
+}
+
+/* Text laid over the art sits on a soft scrim at the bottom. */
+.mb-artwork-content {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 2px;
+  padding: 16px;
+  background-image: linear-gradient(to top, rgb(0 0 0 / 0.45), rgb(0 0 0 / 0.12) 45%, transparent 70%);
+  color: #ffffff;
+}
+
+/* Palettes */
+
+.mb-artwork[data-palette="accent"] {
+  --mb-artwork-1: var(--mb-accent);
+  --mb-artwork-2: oklch(from var(--mb-accent) calc(l + 0.08) c calc(h + 22));
+  --mb-artwork-3: oklch(from var(--mb-accent) calc(l + 0.04) c calc(h - 30));
+  --mb-artwork-4: oklch(from var(--mb-accent) calc(l - 0.06) c calc(h - 62));
+  --mb-artwork-ground: oklch(from var(--mb-accent) 0.2 calc(c * 0.4) calc(h + 20));
+}
+
+.mb-artwork[data-palette="sunset"] {
+  --mb-artwork-1: var(--mb-orange);
+  --mb-artwork-2: var(--mb-pink);
+  --mb-artwork-3: var(--mb-yellow);
+  --mb-artwork-4: var(--mb-purple);
+  --mb-artwork-ground: oklch(from var(--mb-purple) 0.2 0.08 h);
+  --mb-artwork-light: color-mix(in oklch, var(--mb-yellow) 18%, white);
+}
+
+.mb-artwork[data-palette="ocean"] {
+  --mb-artwork-1: var(--mb-blue);
+  --mb-artwork-2: var(--mb-cyan);
+  --mb-artwork-3: var(--mb-teal);
+  --mb-artwork-4: var(--mb-indigo);
+  --mb-artwork-ground: oklch(from var(--mb-blue) 0.18 0.07 h);
+  --mb-artwork-light: color-mix(in oklch, var(--mb-cyan) 14%, white);
+}
+
+.mb-artwork[data-palette="forest"] {
+  --mb-artwork-1: var(--mb-green);
+  --mb-artwork-2: var(--mb-mint);
+  --mb-artwork-3: var(--mb-yellow);
+  --mb-artwork-4: var(--mb-teal);
+  --mb-artwork-ground: oklch(from var(--mb-green) 0.19 0.045 h);
+  --mb-artwork-light: color-mix(in oklch, var(--mb-yellow) 14%, white);
+}
+
+.mb-artwork[data-palette="berry"] {
+  --mb-artwork-1: var(--mb-pink);
+  --mb-artwork-2: var(--mb-purple);
+  --mb-artwork-3: var(--mb-red);
+  --mb-artwork-4: var(--mb-indigo);
+  --mb-artwork-ground: oklch(from var(--mb-purple) 0.17 0.07 h);
+  --mb-artwork-light: color-mix(in oklch, var(--mb-pink) 14%, white);
+}
+
+.mb-artwork[data-palette="citrus"] {
+  --mb-artwork-1: var(--mb-yellow);
+  --mb-artwork-2: var(--mb-orange);
+  --mb-artwork-3: var(--mb-mint);
+  --mb-artwork-4: var(--mb-green);
+  --mb-artwork-ground: oklch(from var(--mb-green) 0.22 0.06 h);
+  --mb-artwork-light: color-mix(in oklch, var(--mb-yellow) 20%, white);
+}
+
+.mb-artwork[data-palette="dusk"] {
+  --mb-artwork-1: var(--mb-indigo);
+  --mb-artwork-2: var(--mb-pink);
+  --mb-artwork-3: var(--mb-orange);
+  --mb-artwork-4: var(--mb-purple);
+  --mb-artwork-ground: oklch(from var(--mb-indigo) 0.16 0.07 h);
+  --mb-artwork-light: color-mix(in oklch, var(--mb-orange) 14%, white);
+}
+
+.mb-artwork[data-palette="ember"] {
+  --mb-artwork-1: var(--mb-red);
+  --mb-artwork-2: var(--mb-orange);
+  --mb-artwork-3: var(--mb-yellow);
+  --mb-artwork-4: var(--mb-brown);
+  --mb-artwork-ground: oklch(from var(--mb-red) 0.16 0.06 h);
+  --mb-artwork-light: color-mix(in oklch, var(--mb-yellow) 20%, white);
+}
+
+.mb-artwork[data-palette="glacier"] {
+  --mb-artwork-1: var(--mb-cyan);
+  --mb-artwork-2: var(--mb-mint);
+  --mb-artwork-3: var(--mb-blue);
+  --mb-artwork-4: color-mix(in oklch, var(--mb-cyan) 35%, white);
+  --mb-artwork-ground: oklch(from var(--mb-blue) 0.2 0.06 h);
+  --mb-artwork-light: color-mix(in oklch, var(--mb-cyan) 10%, white);
+}
+
+.mb-artwork[data-palette="candy"] {
+  --mb-artwork-1: color-mix(in oklch, var(--mb-pink) 72%, white);
+  --mb-artwork-2: color-mix(in oklch, var(--mb-cyan) 68%, white);
+  --mb-artwork-3: color-mix(in oklch, var(--mb-yellow) 72%, white);
+  --mb-artwork-4: color-mix(in oklch, var(--mb-purple) 70%, white);
+  --mb-artwork-ground: oklch(from var(--mb-purple) 0.32 0.1 h);
+  --mb-artwork-light: color-mix(in oklch, var(--mb-pink) 8%, white);
+}
+
+/* Graphite, tinted toward the theme's gray. */
+.mb-artwork[data-palette="mono"] {
+  --mb-artwork-1: oklch(from var(--mb-tint) 0.9 0.012 h);
+  --mb-artwork-2: oklch(from var(--mb-tint) 0.68 0.02 h);
+  --mb-artwork-3: oklch(from var(--mb-tint) 0.5 0.024 h);
+  --mb-artwork-4: oklch(from var(--mb-tint) 0.36 0.02 h);
+  --mb-artwork-ground: oklch(from var(--mb-tint) 0.15 0.01 h);
+  --mb-artwork-light: oklch(from var(--mb-tint) 0.98 0.005 h);
+  --mb-artwork-paper: oklch(from var(--mb-tint) 0.95 0.008 h);
+  --mb-artwork-ink: oklch(from var(--mb-tint) 0.2 0.012 h);
+}
+
+/* Motion: a slow drift of a few layers, only when asked for. */
+
+.mb-artwork[data-animated] .mb-artwork-drift {
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+  animation: mb-artwork-drift-1 28s var(--mb-ease-in-out) infinite alternate;
+}
+
+.mb-artwork[data-animated] .mb-artwork-drift[data-drift="2"] {
+  animation-name: mb-artwork-drift-2;
+  animation-duration: 34s;
+}
+
+.mb-artwork[data-animated] .mb-artwork-drift[data-drift="3"] {
+  animation-name: mb-artwork-drift-3;
+  animation-duration: 22s;
+}
+
+.mb-artwork[data-animated] .mb-artwork-drift[data-drift="4"] {
+  animation-name: mb-artwork-drift-4;
+  animation-duration: 40s;
+}
+
+.mb-artwork[data-animated] .mb-artwork-drift[data-drift="5"] {
+  animation-name: mb-artwork-drift-5;
+  animation-duration: 36s;
+}
+
+@keyframes mb-artwork-drift-1 {
+  from { translate: -4% -3%; rotate: -3deg; }
+  to { translate: 4% 3%; rotate: 3deg; scale: 1.04; }
+}
+
+@keyframes mb-artwork-drift-2 {
+  from { translate: 5% -2%; scale: 1.06; }
+  to { translate: -4% 4%; scale: 0.98; }
+}
+
+@keyframes mb-artwork-drift-3 {
+  from { translate: 0 0; }
+  to { translate: -6% 3%; }
+}
+
+@keyframes mb-artwork-drift-4 {
+  from { rotate: -3deg; scale: 1.06; }
+  to { rotate: 3deg; scale: 1.06; }
+}
+
+@keyframes mb-artwork-drift-5 {
+  from { rotate: -3deg; }
+  to { rotate: 3deg; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mb-artwork[data-animated] .mb-artwork-drift {
+    animation: none;
+  }
+}

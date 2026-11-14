@@ -1,7 +1,7 @@
-import { Artwork, type ArtworkVariant } from "@dreambase/stardust/artwork"
-import { DeviceFrame } from "@dreambase/stardust/device-frame"
-import { NavigationBar, NavigationStack } from "@dreambase/stardust/navigation-bar"
-import { TabBar, TabBarItem, TabBarList, TabBarPanel } from "@dreambase/stardust/tab-bar"
+import { Artwork, type ArtworkVariant } from "macbetter/artwork"
+import { DeviceFrame } from "macbetter/device-frame"
+import { NavigationBar, NavigationStack } from "macbetter/navigation-bar"
+import { TabBar, TabBarItem, TabBarList, TabBarPanel } from "macbetter/tab-bar"
 import { HouseIcon, LayoutGridIcon, LibraryIcon, RadioIcon, SearchIcon } from "lucide-react"
 
 const tabs = [
@@ -41,14 +41,14 @@ export default function Example() {
               <NavigationBar title={tab.label} largeTitle />
               {shelves.map((shelf, shelfIndex) => (
                 <section key={shelf} style={{ padding: "4px 20px 24px" }}>
-                  <h2 className="sd-text-title-3" style={{ margin: "0 0 12px" }}>{shelf}</h2>
+                  <h2 className="mb-text-title-3" style={{ margin: "0 0 12px" }}>{shelf}</h2>
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 20 }}>
                     {palettes.map((palette, index) => {
                       const station = stations[(index + shelfIndex * 3) % stations.length]
                       return (
                         <div key={station}>
                           <Artwork seed={station} variant={shelfStyles[shelfIndex]} palette={palette} radius={12} />
-                          <div className="sd-text-subheadline" style={{ marginTop: 8 }}>
+                          <div className="mb-text-subheadline" style={{ marginTop: 8 }}>
                             {station}
                           </div>
                         </div>

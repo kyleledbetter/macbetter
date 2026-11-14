@@ -1,0 +1,414 @@
+/* Alert — the system alert: a compact centered panel on macOS, the 270pt alert and action sheet on iOS. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-alert-width: 260px;
+  --mb-alert-radius: var(--mb-popup-radius);
+  --mb-alert-padding-block: 20px 16px;
+  --mb-alert-padding-inline: 16px;
+  --mb-alert-gap: 4px;
+  --mb-alert-title-font: 700 13px/16px var(--mb-font);
+  --mb-alert-message-font: 400 11px/14px var(--mb-font);
+  --mb-alert-enter-scale: 0.92;
+  /* macOS doesn't dim the window behind an alert; a light veil keeps the modality readable on the web. */
+  --mb-alert-scrim: color-mix(in oklch, var(--mb-scrim) 55%, transparent);
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-alert-width: 270px;
+  /* iOS alerts and action sheets round to 14pt, between the radius tokens. */
+  --mb-alert-radius: calc(14px * var(--mb-radius-scale));
+  --mb-alert-padding-block: 19px 20px;
+  --mb-alert-padding-inline: 16px;
+  --mb-alert-gap: 2px;
+  --mb-alert-title-font: 600 17px/22px var(--mb-font);
+  --mb-alert-message-font: 400 13px/18px var(--mb-font);
+  --mb-alert-enter-scale: 1.12;
+  --mb-alert-scrim: var(--mb-scrim);
+}
+
+.mb-alert-backdrop {
+  position: fixed;
+  inset: 0;
+  background: var(--mb-alert-scrim);
+  transition: opacity var(--mb-duration-base) var(--mb-ease-out);
+}
+
+.mb-alert-backdrop:is([data-starting-style], [data-ending-style]) {
+  opacity: 0;
+}
+
+.mb-alert-backdrop[data-ending-style] {
+  transition-duration: var(--mb-duration-fast);
+}
+
+.mb-alert {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--mb-alert-gap);
+  width: min(var(--mb-alert-width), calc(100vw - 32px));
+  height: fit-content;
+  max-width: none;
+  max-height: calc(100dvh - 32px);
+  margin: auto;
+  padding: var(--mb-alert-padding-block);
+  padding-inline: var(--mb-alert-padding-inline);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 0;
+  border-radius: var(--mb-alert-radius);
+  /* Denser than the thick material: an alert's message must read over any backdrop. Opaque under reduced transparency. */
+  background: color-mix(in oklch, var(--mb-material-thick), var(--mb-bg-elevated) 70%);
+  -webkit-backdrop-filter: var(--mb-material-filter);
+  backdrop-filter: var(--mb-material-filter);
+  box-shadow: var(--mb-glass-rim), var(--mb-shadow-window);
+  color: var(--mb-label);
+  text-align: center;
+  outline: none;
+  transition:
+    opacity var(--mb-duration-fast) var(--mb-ease-out),
+    scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+.mb-alert:is([data-starting-style], [data-ending-style]) {
+  opacity: 0;
+}
+
+.mb-alert[data-starting-style] {
+  scale: var(--mb-alert-enter-scale);
+}
+
+.mb-alert[data-ending-style] {
+  scale: 0.97;
+  transition-duration: var(--mb-duration-fast);
+  transition-timing-function: var(--mb-ease-out);
+}
+
+.mb-alert-icon {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  margin-block-end: 10px;
+}
+
+.mb-alert-icon > :where(img, svg) {
+  width: 100%;
+  height: 100%;
+}
+
+.mb-alert-title {
+  margin: 0;
+  font: var(--mb-alert-title-font);
+  letter-spacing: var(--mb-tracking-body);
+  text-wrap: balance;
+}
+
+.mb-alert-description {
+  margin: 0;
+  color: var(--mb-label);
+  font: var(--mb-alert-message-font);
+  letter-spacing: var(--mb-tracking-caption);
+  text-wrap: pretty;
+}
+
+/* Actions: side by side for two, stacked for one or three and more. */
+.mb-alert-actions {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  gap: 8px;
+  margin-block-start: 16px;
+}
+
+.mb-alert-actions:where(
+    [data-orientation="horizontal"],
+    [data-orientation="auto"]:has(> :nth-child(2):last-child)
+  ) {
+  flex-direction: row;
+}
+
+.mb-alert-actions:where(
+    [data-orientation="horizontal"],
+    [data-orientation="auto"]:has(> :nth-child(2):last-child)
+  )
+  > * {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+/* In a stack the cancel button sits at the bottom, wherever it is in the markup (and so in Tab order). */
+.mb-alert-actions:where(
+    :not([data-orientation="horizontal"], [data-orientation="auto"]:has(> :nth-child(2):last-child))
+  )
+  > [data-variant="cancel"] {
+  order: 1;
+}
+
+.mb-alert-action {
+  --mb-alert-action-bg: var(--mb-bg-control);
+  --mb-alert-action-fg: var(--mb-label);
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--mb-control-height);
+  margin: 0;
+  padding: 0 var(--mb-control-padding-sm);
+  border: 0;
+  border-radius: var(--mb-control-radius);
+  background: var(--mb-alert-action-bg);
+  color: var(--mb-alert-action-fg);
+  font: var(--mb-control-font);
+  letter-spacing: var(--mb-tracking-body);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  box-shadow:
+    0 0 0 var(--mb-hairline) var(--mb-control-border),
+    0 0.5px 1.5px var(--mb-shadow-color);
+  transition:
+    background-color var(--mb-duration-fast) var(--mb-ease-out),
+    color var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-alert-action[data-tone="destructive"] {
+  --mb-alert-action-fg: var(--mb-destructive-text);
+}
+
+.mb-alert-action[data-variant="primary"] {
+  --mb-alert-action-bg: var(--mb-accent);
+  --mb-alert-action-fg: var(--mb-on-accent);
+  font-weight: 600;
+  box-shadow:
+    inset 0 0.5px 0 rgb(255 255 255 / 0.28),
+    0 0.5px 1.5px var(--mb-shadow-color);
+}
+
+.mb-alert-action[data-variant="primary"][data-tone="destructive"] {
+  --mb-alert-action-bg: var(--mb-destructive);
+  --mb-alert-action-fg: var(--mb-on-destructive);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-alert-action:hover {
+    --mb-alert-action-bg: color-mix(in oklch, var(--mb-bg-control), var(--mb-ink) 5%);
+  }
+
+  .mb-alert-action[data-variant="primary"]:hover {
+    --mb-alert-action-bg: var(--mb-accent-hover);
+  }
+
+  .mb-alert-action[data-variant="primary"][data-tone="destructive"]:hover {
+    --mb-alert-action-bg: oklch(from var(--mb-destructive) calc(l + 0.035) c h);
+  }
+}
+
+.mb-alert-action:active {
+  --mb-alert-action-bg: color-mix(in oklch, var(--mb-bg-control), var(--mb-ink) 12%);
+  transition-duration: 0ms;
+}
+
+.mb-alert-action[data-variant="primary"]:active {
+  --mb-alert-action-bg: var(--mb-accent-pressed);
+}
+
+.mb-alert-action[data-variant="primary"][data-tone="destructive"]:active {
+  --mb-alert-action-bg: oklch(from var(--mb-destructive) calc(l - 0.06) c h);
+}
+
+.mb-alert-action:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: var(--mb-focus-ring-offset);
+}
+
+.mb-alert-action[data-pending] {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+/* iOS and iPadOS: full-bleed text buttons divided by hairlines. */
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .mb-alert-icon {
+    display: none;
+  }
+
+  .mb-alert-actions {
+    gap: 0;
+    margin-block-start: 19px;
+    margin-inline: calc(-1 * var(--mb-alert-padding-inline));
+    margin-block-end: -20px;
+  }
+
+  .mb-alert-action {
+    --mb-alert-action-bg: transparent;
+    --mb-alert-action-fg: var(--mb-accent-text);
+
+    height: 44px;
+    padding-inline: 8px;
+    border-radius: 0;
+    border-block-start: var(--mb-hairline) solid var(--mb-separator-strong);
+    box-shadow: none;
+    font: 400 17px/22px var(--mb-font);
+    letter-spacing: var(--mb-tracking-body);
+    transition: background-color var(--mb-duration-base) var(--mb-ease-out);
+  }
+
+  .mb-alert-actions:where(
+      [data-orientation="horizontal"],
+      [data-orientation="auto"]:has(> :nth-child(2):last-child)
+    )
+    > * + * {
+    border-inline-start: var(--mb-hairline) solid var(--mb-separator-strong);
+  }
+
+  .mb-alert-action[data-variant="primary"] {
+    --mb-alert-action-bg: transparent;
+    --mb-alert-action-fg: var(--mb-accent-text);
+    font-weight: 600;
+  }
+
+  .mb-alert-action[data-tone="destructive"],
+  .mb-alert-action[data-variant="primary"][data-tone="destructive"] {
+    --mb-alert-action-bg: transparent;
+    --mb-alert-action-fg: var(--mb-destructive-text);
+  }
+
+  /* An iPad with a pointer has hover; the Mac's bezel hover mustn't leak into text buttons. */
+  .mb-alert-action:hover,
+  .mb-alert-action[data-variant="primary"]:hover,
+  .mb-alert-action[data-variant="primary"][data-tone="destructive"]:hover {
+    --mb-alert-action-bg: transparent;
+  }
+
+  .mb-alert-action:active,
+  .mb-alert-action[data-variant="primary"]:active,
+  .mb-alert-action[data-variant="primary"][data-tone="destructive"]:active {
+    --mb-alert-action-bg: var(--mb-fill-secondary);
+  }
+
+  .mb-alert-action:focus-visible {
+    outline-offset: -3px;
+  }
+}
+
+/* iOS action sheet: a card of choices docked to the bottom, with Cancel standing apart. */
+@scope ([data-platform="ios"]) to (:scope [data-platform]) {
+  .mb-alert[data-variant="sheet"] {
+    inset: auto 0 calc(8px + env(safe-area-inset-bottom)) 0;
+    gap: 0;
+    width: min(calc(100vw - 16px), 420px);
+    max-height: calc(100dvh - 48px);
+    margin-block: 0;
+    padding: 0;
+    overflow: visible;
+    border-radius: 0;
+    background: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: none;
+    align-items: stretch;
+    transition:
+      opacity var(--mb-duration-fast) var(--mb-ease-out),
+      translate var(--mb-spring-sheet-duration) var(--mb-spring-sheet);
+  }
+
+  .mb-alert[data-variant="sheet"][data-starting-style] {
+    scale: none;
+    opacity: 1;
+    translate: 0 calc(100% + 16px);
+  }
+
+  .mb-alert[data-variant="sheet"][data-ending-style] {
+    scale: none;
+    opacity: 1;
+    translate: 0 calc(100% + 16px);
+    transition-duration: var(--mb-duration-base);
+    transition-timing-function: var(--mb-ease-in-out);
+  }
+
+  .mb-alert[data-variant="sheet"] > :is(.mb-alert-title, .mb-alert-description) {
+    padding-inline: 16px;
+    background: var(--mb-material-thick);
+    -webkit-backdrop-filter: var(--mb-material-filter);
+    backdrop-filter: var(--mb-material-filter);
+    color: var(--mb-label-secondary);
+    font: 400 13px/18px var(--mb-font);
+  }
+
+  .mb-alert[data-variant="sheet"] > .mb-alert-title {
+    padding-block-start: 14px;
+    border-start-start-radius: var(--mb-alert-radius);
+    border-start-end-radius: var(--mb-alert-radius);
+    font-weight: 600;
+  }
+
+  .mb-alert[data-variant="sheet"] > .mb-alert-title:not(:has(+ .mb-alert-description)) {
+    padding-block-end: 14px;
+  }
+
+  .mb-alert[data-variant="sheet"] > .mb-alert-description {
+    padding-block: 2px 14px;
+  }
+
+  .mb-alert[data-variant="sheet"] > .mb-alert-actions {
+    flex-direction: column;
+    margin: 0;
+  }
+
+  .mb-alert[data-variant="sheet"] .mb-alert-action {
+    flex: none;
+    height: 57px;
+    background-color: var(--mb-material-thick);
+    -webkit-backdrop-filter: var(--mb-material-filter);
+    backdrop-filter: var(--mb-material-filter);
+    border-inline-start: 0;
+    font: 400 20px/25px var(--mb-font);
+    letter-spacing: -0.02em;
+  }
+
+  .mb-alert[data-variant="sheet"] .mb-alert-action:active {
+    background-color: color-mix(in oklch, var(--mb-material-thick), var(--mb-ink) 10%);
+  }
+
+  .mb-alert[data-variant="sheet"] .mb-alert-action[data-variant="primary"] {
+    font-weight: 600;
+  }
+
+  .mb-alert[data-variant="sheet"] .mb-alert-action:nth-last-child(1 of :not([data-variant="cancel"])) {
+    border-end-start-radius: var(--mb-alert-radius);
+    border-end-end-radius: var(--mb-alert-radius);
+  }
+
+  .mb-alert[data-variant="sheet"] > .mb-alert-actions:first-child > :nth-child(1 of :not([data-variant="cancel"])) {
+    border-block-start: 0;
+    border-start-start-radius: var(--mb-alert-radius);
+    border-start-end-radius: var(--mb-alert-radius);
+  }
+
+  .mb-alert[data-variant="sheet"] .mb-alert-action[data-variant="cancel"] {
+    order: 1;
+    margin-block-start: 8px;
+    border-block-start: 0;
+    border-radius: var(--mb-alert-radius);
+    background-color: var(--mb-bg-elevated);
+    font-weight: 600;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(:root:not([data-motion="full"])) {
+    .mb-alert,
+    .mb-alert:is([data-starting-style], [data-ending-style]) {
+      scale: none;
+      translate: none;
+    }
+  }
+}

@@ -1,5 +1,5 @@
-import { Field, FieldDescription, FieldLabel } from "@dreambase/stardust/field"
-import { TextArea } from "@dreambase/stardust/text-area"
+import { Field, FieldDescription, FieldLabel } from "macbetter/field"
+import { TextArea } from "macbetter/text-area"
 
 export default function Example() {
   return (

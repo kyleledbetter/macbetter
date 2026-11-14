@@ -1,14 +1,14 @@
 "use client";
 
-import { Badge } from "@dreambase/stardust/badge";
-import { Button } from "@dreambase/stardust/button";
-import { Checkbox } from "@dreambase/stardust/checkbox";
+import { Badge } from "macbetter/badge";
+import { Button } from "macbetter/button";
+import { Checkbox } from "macbetter/checkbox";
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
-} from "@dreambase/stardust/field";
+} from "macbetter/field";
 import {
   Menu,
   MenuContent,
@@ -16,31 +16,31 @@ import {
   MenuItemIcon,
   MenuSeparator,
   MenuTrigger,
-} from "@dreambase/stardust/menu";
+} from "macbetter/menu";
 import {
   Progress,
   ProgressLabel,
   ProgressValue,
-} from "@dreambase/stardust/progress";
+} from "macbetter/progress";
 import {
   SegmentedControl,
   SegmentedControlItem,
-} from "@dreambase/stardust/segmented-control";
+} from "macbetter/segmented-control";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-} from "@dreambase/stardust/select";
+} from "macbetter/select";
 import {
   Sidebar,
   SidebarItem,
   SidebarSection,
-} from "@dreambase/stardust/sidebar";
-import { Slider } from "@dreambase/stardust/slider";
-import { Switch } from "@dreambase/stardust/switch";
-import { Tabs, TabsList, TabsPanel, TabsTab } from "@dreambase/stardust/tabs";
-import { TextField } from "@dreambase/stardust/text-field";
+} from "macbetter/sidebar";
+import { Slider } from "macbetter/slider";
+import { Switch } from "macbetter/switch";
+import { Tabs, TabsList, TabsPanel, TabsTab } from "macbetter/tabs";
+import { TextField } from "macbetter/text-field";
 import {
   Toolbar,
   ToolbarButton,
@@ -48,14 +48,14 @@ import {
   ToolbarSearchField,
   ToolbarSpacer,
   ToolbarTitle,
-} from "@dreambase/stardust/toolbar";
+} from "macbetter/toolbar";
 import {
   Window,
   WindowBody,
   WindowSidebar,
   WindowTitlebar,
   WindowTrafficLights,
-} from "@dreambase/stardust/window";
+} from "macbetter/window";
 import {
   ArchiveIcon,
   CalendarClockIcon,
@@ -81,9 +81,9 @@ const places = [
 ];
 
 const lists = [
-  { name: "Customers", color: "var(--sd-accent)" },
-  { name: "Trial users", color: "var(--sd-accent-secondary)" },
-  { name: "Press", color: "var(--sd-green)" },
+  { name: "Customers", color: "var(--mb-accent)" },
+  { name: "Trial users", color: "var(--mb-accent-secondary)" },
+  { name: "Press", color: "var(--mb-green)" },
 ];
 
 function MacPreview() {

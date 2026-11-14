@@ -8,9 +8,9 @@ const today = {
 }
 
 const rows = [
-  { key: "move", label: "Move", unit: "KCAL", color: "var(--sd-chart-move)" },
-  { key: "exercise", label: "Exercise", unit: "MIN", color: "var(--sd-chart-exercise)" },
-  { key: "stand", label: "Stand", unit: "HRS", color: "var(--sd-chart-stand)" },
+  { key: "move", label: "Move", unit: "KCAL", color: "var(--mb-chart-move)" },
+  { key: "exercise", label: "Exercise", unit: "MIN", color: "var(--mb-chart-exercise)" },
+  { key: "stand", label: "Stand", unit: "HRS", color: "var(--mb-chart-stand)" },
 ] as const
 
 export default function ActivityRingsSummary() {
@@ -26,10 +26,10 @@ export default function ActivityRingsSummary() {
       <dl style={{ display: "grid", gap: 10, margin: 0 }}>
         {rows.map(({ key, label, unit, color }) => (
           <div key={key}>
-            <dt style={{ font: "var(--sd-text-subheadline)", fontWeight: 600 }}>{label}</dt>
-            <dd style={{ margin: 0, color, font: "var(--sd-text-title-2)", fontFamily: "var(--sd-font-rounded)", fontVariantNumeric: "tabular-nums" }}>
+            <dt style={{ font: "var(--mb-text-subheadline)", fontWeight: 600 }}>{label}</dt>
+            <dd style={{ margin: 0, color, font: "var(--mb-text-title-2)", fontFamily: "var(--mb-font-rounded)", fontVariantNumeric: "tabular-nums" }}>
               {today[key].value}/{today[key].goal}
-              <span style={{ font: "var(--sd-text-subheadline)", fontFamily: "var(--sd-font-rounded)", fontWeight: 600 }}> {unit}</span>
+              <span style={{ font: "var(--mb-text-subheadline)", fontFamily: "var(--mb-font-rounded)", fontWeight: 600 }}> {unit}</span>
             </dd>
           </div>
         ))}

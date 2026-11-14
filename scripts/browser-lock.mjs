@@ -7,8 +7,8 @@ import { mkdirSync, rmdirSync, statSync } from "node:fs"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
 
-const slots = Number(process.env.STARDUST_BROWSER_SLOTS ?? 2)
-const dir = join(tmpdir(), "stardust-browser-slots")
+const slots = Number(process.env.MACBETTER_BROWSER_SLOTS ?? 2)
+const dir = join(tmpdir(), "macbetter-browser-slots")
 const stale = 3 * 60 * 1000
 
 function tryAcquire() {

@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@dreambase/stardust/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "macbetter/card"
 
 // A local CSS artwork stands in for a photo, so the material has something to blur.
 const sky = {

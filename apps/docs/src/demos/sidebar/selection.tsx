@@ -1,4 +1,4 @@
-import { Sidebar, SidebarItem, SidebarSection } from "@dreambase/stardust/sidebar"
+import { Sidebar, SidebarItem, SidebarSection } from "macbetter/sidebar"
 import { ClockIcon, HeartIcon, ListMusicIcon, Music2Icon } from "lucide-react"
 
 function Library({ selection }: { selection: "accent" | "gray" }) {
@@ -6,7 +6,7 @@ function Library({ selection }: { selection: "accent" | "gray" }) {
     <Sidebar
       aria-label={selection === "accent" ? "Library, accent selection" : "Library, gray selection"}
       selection={selection}
-      style={{ width: 220, borderRadius: 14, boxShadow: "var(--sd-glass-rim), var(--sd-shadow-menu)" }}
+      style={{ width: 220, borderRadius: 14, boxShadow: "var(--mb-glass-rim), var(--mb-shadow-menu)" }}
     >
       <SidebarSection title="Library">
         <SidebarItem href="#recent" icon={<ClockIcon />}>
@@ -15,7 +15,7 @@ function Library({ selection }: { selection: "accent" | "gray" }) {
         <SidebarItem href="#songs" icon={<Music2Icon />} current>
           Songs
         </SidebarItem>
-        <SidebarItem href="#favorites" icon={<HeartIcon />} tint="var(--sd-pink)">
+        <SidebarItem href="#favorites" icon={<HeartIcon />} tint="var(--mb-pink)">
           Favorites
         </SidebarItem>
         <SidebarItem href="#playlists" icon={<ListMusicIcon />} badge={8}>

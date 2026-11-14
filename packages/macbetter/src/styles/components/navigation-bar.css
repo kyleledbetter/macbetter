@@ -1,0 +1,248 @@
+/* Navigation Bar — iOS's bar of back button, title and actions, with a large title that collapses on scroll. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-navigation-bar-row: var(--mb-bar-height);
+  --mb-navigation-bar-title-font: 600 13px/16px var(--mb-font);
+  --mb-navigation-large-title-height: 50px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  /* 44pt on iPhone, 50pt on iPad (the platform's bar height). */
+  --mb-navigation-bar-row: var(--mb-bar-height);
+  --mb-navigation-bar-title-font: 600 17px/22px var(--mb-font);
+  --mb-navigation-large-title-height: 52px;
+}
+
+.mb-navigation-stack {
+  position: relative;
+  display: block;
+  height: 100%;
+  min-height: 0;
+  overflow-x: clip;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-bottom: var(--mb-content-inset-bottom, var(--mb-safe-bottom, 0px));
+  background: var(--mb-bg);
+  scroll-timeline: --mb-navigation block;
+  scrollbar-width: none;
+}
+
+/* Sticky content (a plain list's section headers) pins below the bar, not under it. */
+.mb-navigation-stack:has(> .mb-navigation-bar) {
+  --mb-content-inset-top: calc(var(--mb-safe-top, 0px) + var(--mb-navigation-bar-row));
+}
+
+.mb-navigation-stack::-webkit-scrollbar {
+  display: none;
+}
+
+/* The bar */
+.mb-navigation-bar {
+  position: sticky;
+  z-index: var(--mb-z-chrome);
+  top: 0;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: var(--mb-space-4);
+  height: calc(var(--mb-safe-top, 0px) + var(--mb-navigation-bar-row));
+  padding-top: var(--mb-safe-top, 0px);
+  padding-inline: max(var(--mb-space-4), var(--mb-safe-left, 0px)) max(var(--mb-space-4), var(--mb-safe-right, 0px));
+  color: var(--mb-label);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* The chrome only appears once content scrolls under it, as on iOS. */
+.mb-navigation-bar::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: var(--mb-material-chrome);
+  -webkit-backdrop-filter: var(--mb-material-filter);
+  backdrop-filter: var(--mb-material-filter);
+  box-shadow: inset 0 calc(-1 * var(--mb-hairline)) 0 var(--mb-separator);
+  opacity: 0;
+  animation: mb-navigation-reveal linear both;
+  animation-timeline: --mb-navigation;
+  animation-range: 0px 10px;
+}
+
+.mb-navigation-bar[data-large-title]::before {
+  animation-range: calc(var(--mb-navigation-large-title-height) - 16px) var(--mb-navigation-large-title-height);
+}
+
+.mb-navigation-bar-title {
+  grid-row: 1;
+  grid-column: 2;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
+  overflow: hidden;
+  clip-path: var(--mb-navigation-bar-title-clip, none);
+  font: var(--mb-navigation-bar-title-font);
+  letter-spacing: var(--mb-tracking-body);
+  text-align: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.mb-navigation-bar-title[data-large-title] {
+  opacity: 0;
+  animation: mb-navigation-reveal linear both;
+  animation-timeline: --mb-navigation;
+  animation-range: calc(var(--mb-navigation-large-title-height) - 22px) calc(var(--mb-navigation-large-title-height) - 4px);
+}
+
+.mb-navigation-bar-leading,
+.mb-navigation-bar-back {
+  grid-row: 1;
+  grid-column: 1;
+  justify-self: start;
+}
+
+.mb-navigation-bar-leading,
+.mb-navigation-bar-trailing {
+  display: flex;
+  align-items: center;
+  gap: var(--mb-space-2);
+  min-width: 0;
+}
+
+.mb-navigation-bar-trailing {
+  grid-row: 1;
+  grid-column: 3;
+  justify-self: end;
+}
+
+/* Large title: it scrolls under the bar and is cut off at the bar's bottom edge, as UIKit's is. */
+.mb-navigation-bar-large-title {
+  box-sizing: border-box;
+  height: var(--mb-navigation-large-title-height);
+  margin: 0;
+  padding: 3px var(--mb-content-padding) 8px;
+  overflow: hidden;
+  font: var(--mb-text-large-title);
+  letter-spacing: var(--mb-tracking-large-title);
+  color: var(--mb-label);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  animation: mb-navigation-collapse linear both;
+  animation-timeline: --mb-navigation;
+  animation-range: 0px var(--mb-navigation-large-title-height);
+}
+
+/* Back button */
+.mb-navigation-bar-back {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  max-width: 100%;
+  height: var(--mb-navigation-bar-row);
+  margin: 0;
+  margin-inline-start: -2px;
+  padding: 0 var(--mb-space-2) 0 0;
+  border: 0;
+  border-radius: var(--mb-radius-sm);
+  background: transparent;
+  color: var(--mb-accent-text);
+  font: var(--mb-text-body);
+  letter-spacing: var(--mb-tracking-body);
+  cursor: default;
+  touch-action: manipulation;
+  transition: opacity var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-navigation-bar-back-chevron {
+  flex: none;
+  width: 12px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+:where([dir="rtl"]) .mb-navigation-bar-back-chevron {
+  scale: -1 1;
+}
+
+.mb-navigation-bar-back-label {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.mb-navigation-bar-back-label:empty {
+  display: none;
+}
+
+.mb-navigation-bar-back:active {
+  opacity: 0.35;
+  transition-duration: 0ms;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-navigation-bar-back:hover {
+    opacity: 0.7;
+  }
+}
+
+.mb-navigation-bar-back:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: 0;
+}
+
+@scope ([data-platform="macos"]) to (:scope [data-platform]) {
+  .mb-navigation-bar-back-chevron {
+    width: 9px;
+    height: 15px;
+    stroke-width: 2;
+  }
+
+  .mb-navigation-bar-large-title {
+    padding-top: 6px;
+  }
+}
+
+@keyframes mb-navigation-collapse {
+  from {
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    clip-path: inset(100% 0 0 0);
+  }
+}
+
+@keyframes mb-navigation-reveal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Without scroll-driven animations, NavigationStack sets [data-scrolled] from a scroll listener. */
+@supports not (animation-timeline: scroll()) {
+  .mb-navigation-stack[data-scrolled] {
+    --mb-navigation-progress: 1;
+  }
+
+  .mb-navigation-bar-large-title {
+    animation: none;
+    clip-path: inset(min(var(--mb-navigation-offset, 0px), 100%) 0 0 0);
+  }
+
+  .mb-navigation-bar::before,
+  .mb-navigation-bar-title[data-large-title] {
+    animation: none;
+    opacity: var(--mb-navigation-progress, 0);
+    transition: opacity var(--mb-duration-base) var(--mb-ease-out);
+  }
+}

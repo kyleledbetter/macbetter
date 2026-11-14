@@ -1,7 +1,7 @@
-import { DeviceFrame } from "@dreambase/stardust/device-frame"
-import { List, ListRow, ListRowSubtitle, ListRowTitle, ListRowValue, ListSection } from "@dreambase/stardust/list"
-import { NavigationBar, NavigationStack } from "@dreambase/stardust/navigation-bar"
-import { TabBar, TabBarItem, TabBarList, TabBarPanel } from "@dreambase/stardust/tab-bar"
+import { DeviceFrame } from "macbetter/device-frame"
+import { List, ListRow, ListRowSubtitle, ListRowTitle, ListRowValue, ListSection } from "macbetter/list"
+import { NavigationBar, NavigationStack } from "macbetter/navigation-bar"
+import { TabBar, TabBarItem, TabBarList, TabBarPanel } from "macbetter/tab-bar"
 import { AlarmClockIcon, GlobeIcon, HourglassIcon, TimerIcon } from "lucide-react"
 
 const cities = [
@@ -34,7 +34,7 @@ export default function Example() {
                     <ListRow key={item.city}>
                       <ListRowSubtitle style={{ gridRow: 2 }}>{item.offset}</ListRowSubtitle>
                       <ListRowTitle style={{ gridRow: 3, fontSize: 24, lineHeight: "30px" }}>{item.city}</ListRowTitle>
-                      <ListRowValue style={{ fontSize: 44, lineHeight: "52px", fontWeight: 300, color: "var(--sd-label)" }}>
+                      <ListRowValue style={{ fontSize: 44, lineHeight: "52px", fontWeight: 300, color: "var(--mb-label)" }}>
                         {item.time}
                       </ListRowValue>
                     </ListRow>

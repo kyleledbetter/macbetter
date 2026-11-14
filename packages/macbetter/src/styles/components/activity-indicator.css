@@ -1,0 +1,63 @@
+/* Activity indicator — eight spokes that light in turn around the circle, as on every Apple platform. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-activity-indicator-size-sm: 12px;
+  --mb-activity-indicator-size: 16px;
+  --mb-activity-indicator-size-lg: 32px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-activity-indicator-size-sm: 16px;
+  --mb-activity-indicator-size: 20px;
+  --mb-activity-indicator-size-lg: 37px;
+}
+
+.mb-activity-indicator {
+  --mb-activity-indicator-current: var(--mb-activity-indicator-size);
+
+  display: inline-flex;
+  flex: none;
+  width: var(--mb-activity-indicator-current);
+  height: var(--mb-activity-indicator-current);
+  vertical-align: middle;
+  color: inherit;
+}
+
+.mb-activity-indicator[data-size="sm"] {
+  --mb-activity-indicator-current: var(--mb-activity-indicator-size-sm);
+}
+
+.mb-activity-indicator[data-size="lg"] {
+  --mb-activity-indicator-current: var(--mb-activity-indicator-size-lg);
+}
+
+.mb-activity-indicator-spokes {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+/*
+ * The chase: each spoke lights fully, then fades until its turn comes round
+ * again. A negative delay per spoke (set inline) starts them an eighth of a
+ * turn apart, so the bright one travels clockwise with a fading tail.
+ * The spokes carry no mb- class, so the reduced-motion reset leaves them
+ * turning, as the system spinner does.
+ */
+.mb-activity-indicator {
+  --mb-activity-indicator-duration: 0.8s;
+}
+
+.mb-activity-indicator-spokes rect {
+  opacity: 0.25;
+  animation: mb-activity-indicator-chase var(--mb-activity-indicator-duration) linear infinite;
+}
+
+@keyframes mb-activity-indicator-chase {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.25;
+  }
+}

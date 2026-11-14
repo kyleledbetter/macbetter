@@ -1,4 +1,4 @@
-import { Card } from "@dreambase/stardust/card"
+import { Card } from "macbetter/card"
 import { ChartFrame, Sparkline, type ChartColor } from "@/components/charts"
 
 /** The last 14 days of four measurements, for summary tiles. */
@@ -15,11 +15,11 @@ export default function SummaryTiles() {
       {tiles.map((tile) => (
         <Card key={tile.label} style={{ display: "grid", gap: 6, padding: "12px 14px" }}>
           <ChartFrame title={`${tile.label}, last 14 days`} summary={`${tile.value} ${tile.unit}. ${tile.trend}.`} style={{ gap: 6 }}>
-            <div style={{ color: `var(--sd-${tile.color === "core" ? "chart-core" : tile.color})`, font: "var(--sd-text-subheadline)", fontWeight: 600 }}>{tile.label}</div>
+            <div style={{ color: `var(--mb-${tile.color === "core" ? "chart-core" : tile.color})`, font: "var(--mb-text-subheadline)", fontWeight: 600 }}>{tile.label}</div>
             <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 8 }}>
               <div style={{ fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>
-                <span style={{ font: "var(--sd-text-title-2)", fontFamily: "var(--sd-font-rounded)" }}>{tile.value}</span>
-                <span style={{ color: "var(--sd-label-secondary)", font: "var(--sd-text-footnote)", fontWeight: 600 }}> {tile.unit}</span>
+                <span style={{ font: "var(--mb-text-title-2)", fontFamily: "var(--mb-font-rounded)" }}>{tile.value}</span>
+                <span style={{ color: "var(--mb-label-secondary)", font: "var(--mb-text-footnote)", fontWeight: 600 }}> {tile.unit}</span>
               </div>
               <Sparkline values={tile.values} color={tile.color} area width={64} height={30} />
             </div>

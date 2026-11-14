@@ -1,12 +1,12 @@
-import { Button } from "@dreambase/stardust/button"
+import { Button } from "macbetter/button"
 import Link from "next/link"
-import { StardustMark } from "@/components/logo"
+import { MacbetterMark } from "@/components/logo"
 
 const links = [
   { href: "/docs/introduction", label: "Docs" },
   { href: "/docs/components/button", label: "Components" },
   { href: "/themes", label: "Themes" },
-  { href: "https://github.com/DreambaseAI/stardust", label: "GitHub", external: true },
+  { href: "https://github.com/kyleledbetter/macbetter", label: "GitHub", external: true },
 ]
 
 function Closing() {
@@ -14,7 +14,7 @@ function Closing() {
     <>
       <section className="lp-section lp-cta" aria-labelledby="lp-cta">
         <div className="lp-cta-inner lp-reveal">
-          <StardustMark size={44} className="lp-cta-mark" />
+          <MacbetterMark size={56} tone="ember" className="lp-cta-mark" />
           <h2 id="lp-cta" className="lp-h2">
             Start with one component.
             {" "}<span className="lp-muted">Keep going.</span>
@@ -25,7 +25,7 @@ function Closing() {
           </p>
           <div className="lp-heading-actions" data-platform="macos">
             <Button variant="filled" size="lg" render={<Link href="/docs/installation" />}>
-              Install Stardust
+              Install Macbetter
             </Button>
             <Button variant="bezeled" tone="neutral" size="lg" render={<Link href="/docs/introduction" />}>
               Read the docs
@@ -35,11 +35,10 @@ function Closing() {
       </section>
       <footer className="lp-footer">
         <div className="lp-footer-inner">
-          <a href="https://dreambase.ai" className="lp-footer-brand">
-            {/* biome-ignore lint/performance/noImgElement: a tiny static SVG */}
-            <img src="/dreambase-logo-mark.svg" alt="" width={24} height={24} />
+          <a href="https://github.com/kyleledbetter" className="lp-footer-brand">
+            <MacbetterMark size={22} className="lp-footer-mark" />
             <span>
-              Stardust is made by <strong>Dreambase</strong>.
+              Macbetter is made by <strong>Kyle Ledbetter</strong>.
             </span>
           </a>
           <nav aria-label="Footer" className="lp-footer-links">

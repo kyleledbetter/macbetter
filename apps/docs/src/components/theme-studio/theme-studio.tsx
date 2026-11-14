@@ -1,8 +1,8 @@
 "use client"
 
-import type { Platform } from "@dreambase/stardust"
-import { SegmentedControl, SegmentedControlItem } from "@dreambase/stardust/segmented-control"
-import { themeVariables } from "@dreambase/stardust/theme"
+import type { Platform } from "macbetter"
+import { SegmentedControl, SegmentedControlItem } from "macbetter/segmented-control"
+import { themeVariables } from "macbetter/theme"
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
 import { colorKeys, type Scheme } from "./derive"
 import { Inspector } from "./inspector"

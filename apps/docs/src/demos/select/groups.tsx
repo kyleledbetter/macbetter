@@ -8,7 +8,7 @@ import {
   SelectSeparator,
   SelectTrigger,
   type ListData,
-} from "@dreambase/stardust/select"
+} from "macbetter/select"
 import { Fragment } from "react"
 
 const families = [

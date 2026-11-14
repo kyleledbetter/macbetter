@@ -1,4 +1,4 @@
-import { Badge } from "@dreambase/stardust/badge"
+import { Badge } from "macbetter/badge"
 import { SparklesIcon } from "lucide-react"
 
 export default function Example() {

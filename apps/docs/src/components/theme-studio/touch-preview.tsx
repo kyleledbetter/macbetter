@@ -1,8 +1,8 @@
 "use client"
 
-import { Badge } from "@dreambase/stardust/badge"
-import { Button } from "@dreambase/stardust/button"
-import { DeviceFrame } from "@dreambase/stardust/device-frame"
+import { Badge } from "macbetter/badge"
+import { Button } from "macbetter/button"
+import { DeviceFrame } from "macbetter/device-frame"
 import {
   List,
   ListRow,
@@ -11,19 +11,19 @@ import {
   ListRowTitle,
   ListRowValue,
   ListSection,
-} from "@dreambase/stardust/list"
+} from "macbetter/list"
 import {
   NavigationBar,
   NavigationBarBackButton,
   NavigationBarTrailing,
   NavigationStack,
-} from "@dreambase/stardust/navigation-bar"
-import { Progress, ProgressLabel, ProgressValue } from "@dreambase/stardust/progress"
-import { SegmentedControl, SegmentedControlItem } from "@dreambase/stardust/segmented-control"
-import { Sidebar, SidebarItem, SidebarSection } from "@dreambase/stardust/sidebar"
-import { Slider } from "@dreambase/stardust/slider"
-import { Switch } from "@dreambase/stardust/switch"
-import { TabBar, TabBarItem, TabBarList, TabBarPanel } from "@dreambase/stardust/tab-bar"
+} from "macbetter/navigation-bar"
+import { Progress, ProgressLabel, ProgressValue } from "macbetter/progress"
+import { SegmentedControl, SegmentedControlItem } from "macbetter/segmented-control"
+import { Sidebar, SidebarItem, SidebarSection } from "macbetter/sidebar"
+import { Slider } from "macbetter/slider"
+import { Switch } from "macbetter/switch"
+import { TabBar, TabBarItem, TabBarList, TabBarPanel } from "macbetter/tab-bar"
 import {
   ArchiveIcon,
   BellIcon,
@@ -108,7 +108,7 @@ function AccountScreen() {
         </ListSection>
         <ListSection>
           <ListRow onClick={() => {}}>
-            <ListRowTitle style={{ color: "var(--sd-destructive-text)" }}>Sign out</ListRowTitle>
+            <ListRowTitle style={{ color: "var(--mb-destructive-text)" }}>Sign out</ListRowTitle>
           </ListRow>
         </ListSection>
       </List>

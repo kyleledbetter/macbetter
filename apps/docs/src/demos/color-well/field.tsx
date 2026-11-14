@@ -1,4 +1,4 @@
-import { ColorWell } from "@dreambase/stardust/color-well"
+import { ColorWell } from "macbetter/color-well"
 
 const row = { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 24 }
 

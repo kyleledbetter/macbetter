@@ -1,7 +1,7 @@
 "use client"
 
-import { Button } from "@dreambase/stardust/button"
-import { Menu, MenuContent, MenuGroupLabel, MenuRadioGroup, MenuRadioItem, MenuTrigger } from "@dreambase/stardust/menu"
+import { Button } from "macbetter/button"
+import { Menu, MenuContent, MenuGroupLabel, MenuRadioGroup, MenuRadioItem, MenuTrigger } from "macbetter/menu"
 import { usePreference } from "@ui-sdk/react/preferences"
 import { MoonIcon, SunIcon } from "lucide-react"
 import { colorScheme, theme, themeLabels, themes, type ThemeName } from "@/lib/preferences"
@@ -25,7 +25,7 @@ function SchemeToggle() {
 
 /** Each theme's accent, as a swatch. Graphite's accent is ink, so it shows both inks. */
 const swatches: Record<ThemeName, string> = {
-  dreambase: "linear-gradient(135deg, #f8b16d, #f67f01 55%, #ee5700)",
+  ember: "linear-gradient(135deg, #f8b16d, #f67f01 55%, #ee5700)",
   system: "linear-gradient(135deg, #3d9bff, #0071e3)",
   nebula: "linear-gradient(135deg, #b9a2ff, #6d3df5)",
   graphite: "linear-gradient(135deg, #f2f2f4 50%, #1f1f23 50%)",
@@ -43,7 +43,7 @@ function ThemeSwatch({ name }: { name: ThemeName }) {
 
 function ThemeMenu() {
   const { value } = usePreference(theme)
-  const current = (value ?? "dreambase") as ThemeName
+  const current = (value ?? "ember") as ThemeName
   return (
     <Menu>
       <MenuTrigger

@@ -1,0 +1,101 @@
+/* Glass group — one capsule of Liquid Glass around a cluster of plain controls. The material itself is in materials.css. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-glass-group-padding: 3px;
+  --mb-glass-group-gap: 0px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-glass-group-padding: 4px;
+  --mb-glass-group-gap: 2px;
+}
+
+.mb-glass-group {
+  display: inline-flex;
+  flex: none;
+  align-items: stretch;
+  gap: 0;
+  padding: 0;
+}
+
+.mb-glass-group[data-orientation="vertical"] {
+  flex-direction: column;
+}
+
+/*
+ * Each control owns its slot: its hover and press fill runs edge to edge, so
+ * the first and last take the capsule's curve and the ones between stay square.
+ */
+.mb-glass-group > .mb-button:where(*) {
+  --mb-glass-group-slot: calc(var(--mb-button-height) + var(--mb-glass-group-padding) * 2);
+
+  width: auto;
+  min-width: var(--mb-glass-group-slot);
+  height: var(--mb-glass-group-slot);
+  padding-inline: calc(var(--mb-button-padding) + var(--mb-glass-group-gap));
+  border-radius: 0;
+  scale: none;
+}
+
+.mb-glass-group > .mb-button:where([data-shape="circle"]) {
+  padding-inline: var(--mb-glass-group-padding);
+}
+
+.mb-glass-group > .mb-button:where(:first-child) {
+  border-start-start-radius: var(--mb-radius-full);
+  border-end-start-radius: var(--mb-radius-full);
+  padding-inline-start: calc(var(--mb-glass-group-padding) + 4px);
+}
+
+.mb-glass-group > .mb-button:where(:last-child) {
+  border-start-end-radius: var(--mb-radius-full);
+  border-end-end-radius: var(--mb-radius-full);
+  padding-inline-end: calc(var(--mb-glass-group-padding) + 4px);
+}
+
+.mb-glass-group[data-orientation="vertical"] > .mb-button:where(*) {
+  width: var(--mb-glass-group-slot);
+  padding-inline: 0;
+  border-radius: 0;
+}
+
+.mb-glass-group[data-orientation="vertical"] > .mb-button:where(:first-child) {
+  border-start-start-radius: var(--mb-radius-full);
+  border-start-end-radius: var(--mb-radius-full);
+  padding-block-start: 4px;
+}
+
+.mb-glass-group[data-orientation="vertical"] > .mb-button:where(:last-child) {
+  border-end-start-radius: var(--mb-radius-full);
+  border-end-end-radius: var(--mb-radius-full);
+  padding-block-end: 4px;
+}
+
+/* The ring would be cut by the neighbouring slot, so it sits inside. */
+.mb-glass-group > .mb-button:where(:focus-visible) {
+  outline-offset: calc(var(--mb-focus-ring-width) * -1);
+}
+
+.mb-glass-group > :where(.mb-separator[data-orientation="vertical"]) {
+  align-self: stretch;
+  margin-block: 7px;
+  margin-inline: 0;
+}
+
+.mb-glass-group > :where(.mb-separator[data-orientation="horizontal"]) {
+  align-self: stretch;
+  margin-inline: 7px;
+  margin-block: 0;
+}
+
+/* On glass a gray fill disappears; lighten the glass itself instead. */
+@media (hover: hover) and (pointer: fine) {
+  .mb-glass-group > .mb-button:where([data-variant="plain"]):hover {
+    --mb-button-bg: light-dark(rgb(255 255 255 / 0.5), rgb(255 255 255 / 0.14));
+  }
+}
+
+.mb-glass-group > .mb-button:where([data-variant="plain"]):active {
+  --mb-button-bg: light-dark(rgb(255 255 255 / 0.72), rgb(255 255 255 / 0.24));
+  opacity: 1;
+}

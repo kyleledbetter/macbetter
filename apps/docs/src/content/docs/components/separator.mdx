@@ -18,7 +18,7 @@ Prefer space and grouping first. Inset grouped lists, cards and sections already
 ## Usage
 
 ```tsx
-import { Separator, SeparatorLabel } from "@dreambase/stardust/separator"
+import { Separator, SeparatorLabel } from "macbetter/separator"
 ```
 
 ### Vertical
@@ -29,7 +29,7 @@ Set `orientation="vertical"` between items in a row. It stretches to the row's h
 
 ### Inset
 
-`inset="leading"` starts the line at the row's text instead of its edge, as between the rows of an iOS list. `inset` alone insets both ends. Both use the platform's row padding; set `--sd-separator-inset` to line up with text that sits after an icon.
+`inset="leading"` starts the line at the row's text instead of its edge, as between the rows of an iOS list. `inset` alone insets both ends. Both use the platform's row padding; set `--mb-separator-inset` to line up with text that sits after an icon.
 
 <Demo name="separator/inset" />
 
@@ -74,7 +74,7 @@ The line is the same hairline everywhere. Its inset follows the platform's row p
 
 | Attribute or variable | On | Description |
 | --- | --- | --- |
-| `data-orientation` | `.sd-separator` | `horizontal` or `vertical`, from ui-sdk. |
-| `data-inset` | `.sd-separator` | `both` or `leading`. |
-| `--sd-separator-color` | `.sd-separator` | The line's color. Defaults to `--sd-separator`. |
-| `--sd-separator-inset` | `.sd-separator` | How far an inset line starts from the edge. |
+| `data-orientation` | `.mb-separator` | `horizontal` or `vertical`, from ui-sdk. |
+| `data-inset` | `.mb-separator` | `both` or `leading`. |
+| `--mb-separator-color` | `.mb-separator` | The line's color. Defaults to `--mb-separator`. |
+| `--mb-separator-inset` | `.mb-separator` | How far an inset line starts from the edge. |

@@ -1,4 +1,4 @@
-import { Checkbox, CheckboxGroup } from "@dreambase/stardust/checkbox"
+import { Checkbox, CheckboxGroup } from "macbetter/checkbox"
 
 const notifications = [
   { value: "messages", label: "Messages" },
@@ -17,8 +17,8 @@ export default function Example() {
       <div style={{
           display: "flex",
           flexDirection: "column",
-          gap: "var(--sd-checkbox-group-gap)",
-          paddingInlineStart: "calc(var(--sd-checkbox-size) + var(--sd-checkbox-label-gap))",
+          gap: "var(--mb-checkbox-group-gap)",
+          paddingInlineStart: "calc(var(--mb-checkbox-size) + var(--mb-checkbox-label-gap))",
         }}>
         {notifications.map((item) => (
           <Checkbox key={item.value} value={item.value}>

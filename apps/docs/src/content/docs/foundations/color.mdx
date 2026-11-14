@@ -1,15 +1,15 @@
 export const metadata = {
   title: "Color",
-  description: "The Dreambase palette, Stardust's semantic color tokens, and how to use them in light and dark.",
+  description: "The Ember palette, Macbetter's semantic color tokens, and how to use them in light and dark.",
 }
 
 # Color
 
-<Lead>Use semantic tokens, not raw colors. A token like `--sd-label-secondary` says what a color is for, and it stays right in light and dark, in every theme.</Lead>
+<Lead>Use semantic tokens, not raw colors. A token like `--mb-label-secondary` says what a color is for, and it stays right in light and dark, in every theme.</Lead>
 
-## The Dreambase palette
+## The Ember palette
 
-The default theme is built from Dreambase's brand colors. Orange carries action; Racing Green is the stage. The ratio on each swatch is its best contrast against white or Racing Green.
+The default theme, Ember, pairs warm oranges with deep greens. Orange carries action; Racing Green is the stage. The ratio on each swatch is its best contrast against white or Racing Green.
 
 <Demo name="foundations/palette" hideCode />
 
@@ -23,48 +23,48 @@ These swatches read the live CSS variables, so they follow the theme and scheme 
 
 ### Labels
 
-Four levels of text, from `--sd-label` down to `--sd-label-quaternary`. They're all `--sd-ink` at decreasing opacity, so they sit correctly on any background, including materials.
+Four levels of text, from `--mb-label` down to `--mb-label-quaternary`. They're all `--mb-ink` at decreasing opacity, so they sit correctly on any background, including materials.
 
 - **Label** for primary text.
 - **Secondary** for subtitles and supporting values.
 - **Tertiary** for placeholders and hints.
 - **Quaternary** for disabled text. It's deliberately below 4.5:1, so don't use it for anything a person needs to read.
 
-`--sd-accent-text` is the accent adjusted to read as text. Use it for links and text-only buttons, never `--sd-accent` itself, which may be too light on a white background.
+`--mb-accent-text` is the accent adjusted to read as text. Use it for links and text-only buttons, never `--mb-accent` itself, which may be too light on a white background.
 
-Classes `sd-label`, `sd-label-secondary`, `sd-label-tertiary` and `sd-label-accent` apply the most common ones.
+Classes `mb-label`, `mb-label-secondary`, `mb-label-tertiary` and `mb-label-accent` apply the most common ones.
 
 ### Backgrounds
 
-`--sd-bg` is the page. `--sd-bg-secondary` and `--sd-bg-tertiary` form the grouped hierarchy of iOS settings screens: a secondary page with tertiary groups on it. `--sd-bg-elevated` is for surfaces that float, `--sd-bg-sidebar` for source lists, and `--sd-bg-control` and `--sd-bg-field` for bezeled controls and text fields.
+`--mb-bg` is the page. `--mb-bg-secondary` and `--mb-bg-tertiary` form the grouped hierarchy of iOS settings screens: a secondary page with tertiary groups on it. `--mb-bg-elevated` is for surfaces that float, `--mb-bg-sidebar` for source lists, and `--mb-bg-control` and `--mb-bg-field` for bezeled controls and text fields.
 
 ### Fills
 
-Four translucent grays mixed from `--sd-tint`, from `--sd-fill` (strongest) to `--sd-fill-quaternary`. They tint whatever is behind them, so use them for shapes that sit on varying backgrounds: switch tracks, segmented control tracks, hover and pressed states.
+Four translucent grays mixed from `--mb-tint`, from `--mb-fill` (strongest) to `--mb-fill-quaternary`. They tint whatever is behind them, so use them for shapes that sit on varying backgrounds: switch tracks, segmented control tracks, hover and pressed states.
 
 ### Separators
 
-`--sd-separator` divides rows and `--sd-separator-strong` marks larger edges. Both are translucent; `--sd-separator-opaque` is the same color mixed onto the background, for when overlapping translucent lines would show darker spots. `--sd-control-border` is for the edges of controls, and is derived to hold 3:1 against the background. `--sd-hairline` is the 0.5px width they're usually drawn at.
+`--mb-separator` divides rows and `--mb-separator-strong` marks larger edges. Both are translucent; `--mb-separator-opaque` is the same color mixed onto the background, for when overlapping translucent lines would show darker spots. `--mb-control-border` is for the edges of controls, and is derived to hold 3:1 against the background. `--mb-hairline` is the 0.5px width they're usually drawn at.
 
 ### Accent
 
-`--sd-accent` fills the one primary action in a view. `--sd-accent-hover` and `--sd-accent-pressed` are derived lighter and darker in OKLCH, `--sd-accent-soft` is a 16% tint of it, the strength tinted buttons use, and `--sd-focus-ring` and `--sd-selection` are translucent mixes for the focus halo and selected text. Text on the accent uses `--sd-on-accent`.
+`--mb-accent` fills the one primary action in a view. `--mb-accent-hover` and `--mb-accent-pressed` are derived lighter and darker in OKLCH, `--mb-accent-soft` is a 16% tint of it, the strength tinted buttons use, and `--mb-focus-ring` and `--mb-selection` are translucent mixes for the focus halo and selected text. Text on the accent uses `--mb-on-accent`.
 
-`--sd-destructive`, `--sd-success` and `--sd-warning` point at red, green and yellow.
+`--mb-destructive`, `--mb-success` and `--mb-warning` point at red, green and yellow.
 
 ### System palette
 
-Twelve colors named as in the HIG, from `--sd-red` to `--sd-brown`. Use them for status, categories and charts. The Dreambase theme replaces orange, green and mint with brand colors; the System theme uses Apple's values.
+Twelve colors named as in the HIG, from `--mb-red` to `--mb-brown`. Use them for status, categories and charts. The Ember theme replaces orange, green and mint with brand colors; the System theme uses Apple's values.
 
 ## Using color
 
-- **Reach for the role, not the hue.** Write `var(--sd-label-secondary)`, not a gray. Write `var(--sd-destructive)`, not `var(--sd-red)`, when you mean "this deletes something".
+- **Reach for the role, not the hue.** Write `var(--mb-label-secondary)`, not a gray. Write `var(--mb-destructive)`, not `var(--mb-red)`, when you mean "this deletes something".
 - **One accent per view.** The accent means "this is the action". If everything is orange, nothing is.
 - **Never rely on color alone.** Pair status colors with an icon or text, so the meaning survives color blindness and grayscale.
-- **Derive, don't hard-code.** For a shade that doesn't exist, mix from a token: `color-mix(in oklch, var(--sd-accent) 24%, transparent)` or `oklch(from var(--sd-accent) calc(l - 0.05) c h)`. It then follows the theme and scheme.
+- **Derive, don't hard-code.** For a shade that doesn't exist, mix from a token: `color-mix(in oklch, var(--mb-accent) 24%, transparent)` or `oklch(from var(--mb-accent) calc(l - 0.05) c h)`. It then follows the theme and scheme.
 
 ## Contrast
 
-Stardust's targets are WCAG's: text at 4.5:1 against its background, and control edges, focus rings and state fills at 3:1, in light and dark. Under `prefers-contrast: more`, secondary and tertiary labels, separators and control borders get stronger, and materials turn opaque.
+Macbetter's targets are WCAG's: text at 4.5:1 against its background, and control edges, focus rings and state fills at 3:1, in light and dark. Under `prefers-contrast: more`, secondary and tertiary labels, separators and control borders get stronger, and materials turn opaque.
 
-On a white background, Trinidad as text reaches only 3.5:1, which is why the theme uses a darker orange, `#B84300`, for `--sd-accent-text` in light mode. Text on the orange accent is Racing Green, not white, for the same reason. [Accessibility](/docs/foundations/accessibility) has the ratios for every built-in theme.
+On a white background, Trinidad as text reaches only 3.5:1, which is why the theme uses a darker orange, `#B84300`, for `--mb-accent-text` in light mode. Text on the orange accent is Racing Green, not white, for the same reason. [Accessibility](/docs/foundations/accessibility) has the ratios for every built-in theme.

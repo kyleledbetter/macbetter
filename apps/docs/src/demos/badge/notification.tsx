@@ -1,6 +1,6 @@
-import { Avatar } from "@dreambase/stardust/avatar"
-import { BadgeAnchor, NotificationBadge } from "@dreambase/stardust/badge"
-import { Button } from "@dreambase/stardust/button"
+import { Avatar } from "macbetter/avatar"
+import { BadgeAnchor, NotificationBadge } from "macbetter/badge"
+import { Button } from "macbetter/button"
 import { BellIcon, InboxIcon } from "lucide-react"
 
 export default function Example() {

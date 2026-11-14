@@ -1,4 +1,4 @@
-import { Select, SelectContent, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@dreambase/stardust/select"
+import { Select, SelectContent, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "macbetter/select"
 
 const events = [
   { value: "mentions", label: "Mentions" },

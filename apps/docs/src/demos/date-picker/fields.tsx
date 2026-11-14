@@ -1,5 +1,5 @@
-import { DateField, TimeField } from "@dreambase/stardust/date-picker"
-import { Field, FieldGroup, FieldLabel } from "@dreambase/stardust/field"
+import { DateField, TimeField } from "macbetter/date-picker"
+import { Field, FieldGroup, FieldLabel } from "macbetter/field"
 
 export default function Example() {
   return (

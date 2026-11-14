@@ -1,0 +1,248 @@
+/* Outline — the macOS outline view: Finder's list, with disclosure triangles that turn. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-outline-row-height: 24px;
+  --mb-outline-indent: 16px;
+  --mb-outline-padding-inline: 6px;
+  --mb-outline-inset: 8px;
+  --mb-outline-radius: var(--mb-radius-sm);
+  --mb-outline-font: 400 13px/16px var(--mb-font);
+  --mb-outline-detail-font: 400 12px/16px var(--mb-font);
+  --mb-outline-indicator: 14px;
+  --mb-outline-chevron-height: 9px;
+  --mb-outline-icon: 16px;
+  --mb-outline-gap: 5px;
+  --mb-outline-indicator-order: 0;
+  --mb-outline-indicator-color: var(--mb-label-secondary);
+  /* Where a guide hangs: under the leading triangle. */
+  --mb-outline-guide-offset: calc(var(--mb-outline-indicator) / 2);
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-outline-row-height: 44px;
+  --mb-outline-indent: 20px;
+  --mb-outline-padding-inline: 12px;
+  --mb-outline-inset: 8px;
+  --mb-outline-radius: var(--mb-radius-md);
+  --mb-outline-font: 400 17px/22px var(--mb-font);
+  --mb-outline-detail-font: 400 15px/20px var(--mb-font);
+  --mb-outline-indicator: 20px;
+  --mb-outline-chevron-height: 13px;
+  --mb-outline-icon: 22px;
+  --mb-outline-gap: 8px;
+  /* UIKit's outline disclosure sits at the trailing edge, tinted, and turns down when open. */
+  --mb-outline-indicator-order: 1;
+  --mb-outline-indicator-color: var(--mb-accent-text);
+  --mb-outline-guide-offset: calc(var(--mb-outline-icon) / 2);
+}
+
+.mb-outline {
+  --mb-outline-selected: light-dark(color-mix(in oklch, var(--mb-label) 16%, transparent), var(--mb-fill));
+  --mb-outline-on-selected: var(--mb-label);
+  --mb-outline-on-selected-secondary: color-mix(in oklch, var(--mb-label) 78%, transparent);
+
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: var(--mb-space-2) var(--mb-outline-inset);
+  color: var(--mb-label);
+  font: var(--mb-outline-font);
+  letter-spacing: var(--mb-tracking-body);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Selection is the accent while the outline has focus, and gray once focus leaves, as on macOS. */
+.mb-outline:focus-within {
+  --mb-outline-selected: var(--mb-accent);
+  --mb-outline-on-selected: var(--mb-on-accent);
+  --mb-outline-on-selected-secondary: var(--mb-on-accent);
+}
+
+.mb-outline-item {
+  display: block;
+  outline: none;
+}
+
+.mb-outline-row {
+  --mb-outline-level: calc(var(--tree-level, 1) - 1);
+
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--mb-outline-gap);
+  min-height: var(--mb-outline-row-height);
+  padding-inline: calc(var(--mb-outline-padding-inline) + var(--mb-outline-level) * var(--mb-outline-indent))
+    var(--mb-outline-padding-inline);
+  border-radius: var(--mb-outline-radius);
+  color: inherit;
+  text-decoration: none;
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mb-outline-row[data-selected] {
+  background: var(--mb-outline-selected);
+  color: var(--mb-outline-on-selected);
+}
+
+/* Adjacent selected rows read as one block, like Finder's. */
+.mb-outline-item:has(> .mb-outline-row[data-selected])
+  + .mb-outline-item
+  > .mb-outline-row[data-selected] {
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
+}
+
+.mb-outline-item:has(> .mb-outline-row[data-selected]):has(+ .mb-outline-item > .mb-outline-row[data-selected])
+  > .mb-outline-row {
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+}
+
+.mb-outline-item:focus-visible > .mb-outline-row {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  /* Drawn inside the row: a group's overflow clip would cut a ring drawn outside it. */
+  outline-offset: calc(var(--mb-focus-ring-width) * -1);
+}
+
+/* Inside a block of selected rows the accent ring would vanish: ring the focused row in the selection's text color. */
+.mb-outline-item:focus-visible:is(
+    :has(+ .mb-outline-item > .mb-outline-row[data-selected]),
+    .mb-outline-item:has(> .mb-outline-row[data-selected]) + *
+  )
+  > .mb-outline-row[data-selected] {
+  outline: 2px solid var(--mb-outline-on-selected);
+  outline-offset: -3px;
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .mb-outline-row:active:not([data-selected]) {
+    background: var(--mb-fill-tertiary);
+  }
+}
+
+.mb-outline-row[data-disabled] {
+  opacity: 0.45;
+}
+
+.mb-outline-indicator {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--mb-outline-indicator);
+  height: var(--mb-outline-indicator);
+  order: var(--mb-outline-indicator-order);
+  margin-inline-end: calc(var(--mb-outline-gap) * -0.4);
+  color: var(--mb-outline-indicator-color);
+  transition: rotate var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+.mb-outline-indicator:not([data-branch]) {
+  visibility: hidden;
+}
+
+.mb-outline-indicator[data-expanded] {
+  rotate: 90deg;
+}
+
+/* In right to left the closed triangle points left, so it turns the other way to point down. */
+:where([dir="rtl"]) .mb-outline-indicator svg {
+  scale: -1 1;
+}
+
+:where([dir="rtl"]) .mb-outline-indicator[data-expanded] {
+  rotate: -90deg;
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .mb-outline-indicator {
+    margin-inline: 0 calc(var(--mb-outline-gap) * -0.25);
+  }
+}
+
+.mb-outline-indicator svg {
+  width: calc(var(--mb-outline-chevron-height) * 0.58);
+  height: var(--mb-outline-chevron-height);
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.mb-outline-row[data-selected] .mb-outline-indicator {
+  color: inherit;
+}
+
+.mb-outline-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--mb-outline-icon);
+  height: var(--mb-outline-icon);
+  color: var(--mb-outline-icon-color, var(--mb-accent-text));
+}
+
+.mb-outline-icon :where(svg) {
+  width: 100%;
+  height: 100%;
+}
+
+.mb-outline-row[data-selected] .mb-outline-icon {
+  color: inherit;
+}
+
+.mb-outline-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mb-outline-detail {
+  flex: none;
+  margin-inline-start: auto;
+  padding-inline-start: var(--mb-space-5);
+  color: var(--mb-label-secondary);
+  font: var(--mb-outline-detail-font);
+  font-variant-numeric: tabular-nums;
+}
+
+.mb-outline-row[data-selected] .mb-outline-detail {
+  color: var(--mb-outline-on-selected-secondary);
+}
+
+.mb-outline-group {
+  position: relative;
+  height: var(--tree-group-height, auto);
+  overflow: hidden;
+  transition: height var(--mb-spring-smooth-duration) var(--mb-spring-smooth);
+}
+
+.mb-outline-group:is([data-starting-style], [data-ending-style]) {
+  height: 0;
+}
+
+.mb-outline-group[data-ending-style] {
+  transition-duration: var(--mb-duration-base);
+  transition-timing-function: var(--mb-ease-out);
+}
+
+.mb-outline[data-guides] .mb-outline-group::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset-block: 2px;
+  inset-inline-start: calc(
+    var(--mb-outline-padding-inline) + (var(--tree-level, 1) - 1) * var(--mb-outline-indent) +
+      var(--mb-outline-guide-offset)
+  );
+  width: 1px;
+  background: var(--mb-separator);
+  pointer-events: none;
+}
+

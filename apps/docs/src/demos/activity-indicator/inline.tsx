@@ -1,4 +1,4 @@
-import { ActivityIndicator } from "@dreambase/stardust/activity-indicator"
+import { ActivityIndicator } from "macbetter/activity-indicator"
 
 export default function Example() {
   return (
@@ -7,7 +7,7 @@ export default function Example() {
         display: "flex",
         alignItems: "center",
         gap: 8,
-        color: "var(--sd-label-secondary)",
+        color: "var(--mb-label-secondary)",
       }}
     >
       <ActivityIndicator aria-label="Loading messages" />

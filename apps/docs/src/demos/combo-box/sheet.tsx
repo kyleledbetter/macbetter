@@ -8,7 +8,7 @@ import {
   ComboboxLabel,
   ComboboxList,
   ComboboxTrigger,
-} from "@dreambase/stardust/combo-box"
+} from "macbetter/combo-box"
 
 const languages = [
   "Čeština",

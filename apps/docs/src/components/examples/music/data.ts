@@ -1,4 +1,4 @@
-import type { ArtworkFinish, ArtworkPalette, ArtworkVariant } from "@dreambase/stardust/artwork"
+import type { ArtworkFinish, ArtworkPalette, ArtworkVariant } from "macbetter/artwork"
 
 type Album = {
   id: string
@@ -28,16 +28,16 @@ const titles = [
 ]
 
 const covers: Omit<Album, "tracks">[] = [
-  { id: "golden-hour-tapes", title: "Golden Hour Tapes", artist: "The Saltmarsh", year: 2026, genre: "Indie", art: { variant: "grain", palette: "sunset" }, from: "var(--sd-orange)", to: "var(--sd-pink)" },
-  { id: "evergreen", title: "Evergreen", artist: "Mara Quill", year: 2025, genre: "Folk", art: { variant: "strata", palette: "forest" }, from: "var(--sd-green)", to: "var(--sd-teal)" },
-  { id: "low-tide", title: "Low Tide", artist: "Harbor Lights", year: 2026, genre: "Ambient", art: { variant: "ribbon", palette: "ocean" }, from: "var(--sd-blue)", to: "var(--sd-indigo)" },
-  { id: "kiln", title: "Kiln", artist: "Oda Brenner", year: 2024, genre: "Electronic", art: { variant: "rays", palette: "ember" }, from: "var(--sd-red)", to: "var(--sd-orange)" },
-  { id: "night-garden", title: "Night Garden", artist: "Juniper & Ash", year: 2026, genre: "Dream Pop", art: { variant: "bloom", palette: "berry" }, from: "var(--sd-purple)", to: "var(--sd-pink)" },
-  { id: "fieldwork", title: "Fieldwork", artist: "Calloway", year: 2023, genre: "Country", art: { variant: "halftone", palette: "citrus" }, from: "var(--sd-yellow)", to: "var(--sd-green)" },
-  { id: "paper-moons", title: "Paper Moons", artist: "Lio Hart", year: 2025, genre: "Singer-Songwriter", art: { variant: "orbit", palette: "glacier" }, from: "var(--sd-cyan)", to: "var(--sd-blue)" },
-  { id: "overland", title: "Overland", artist: "Tamsin Vale", year: 2024, genre: "Rock", art: { variant: "topo", palette: "dusk" }, from: "var(--sd-indigo)", to: "var(--sd-orange)" },
-  { id: "bright-static", title: "Bright Static", artist: "Neon Orchard", year: 2026, genre: "Synthpop", art: { variant: "prism", palette: "sunset" }, from: "var(--sd-pink)", to: "var(--sd-purple)" },
-  { id: "quiet-hours", title: "Quiet Hours", artist: "Elm Street Trio", year: 2022, genre: "Jazz", art: { variant: "glyph", palette: "ocean" }, from: "var(--sd-blue)", to: "var(--sd-teal)" },
+  { id: "golden-hour-tapes", title: "Golden Hour Tapes", artist: "The Saltmarsh", year: 2026, genre: "Indie", art: { variant: "grain", palette: "sunset" }, from: "var(--mb-orange)", to: "var(--mb-pink)" },
+  { id: "evergreen", title: "Evergreen", artist: "Mara Quill", year: 2025, genre: "Folk", art: { variant: "strata", palette: "forest" }, from: "var(--mb-green)", to: "var(--mb-teal)" },
+  { id: "low-tide", title: "Low Tide", artist: "Harbor Lights", year: 2026, genre: "Ambient", art: { variant: "ribbon", palette: "ocean" }, from: "var(--mb-blue)", to: "var(--mb-indigo)" },
+  { id: "kiln", title: "Kiln", artist: "Oda Brenner", year: 2024, genre: "Electronic", art: { variant: "rays", palette: "ember" }, from: "var(--mb-red)", to: "var(--mb-orange)" },
+  { id: "night-garden", title: "Night Garden", artist: "Juniper & Ash", year: 2026, genre: "Dream Pop", art: { variant: "bloom", palette: "berry" }, from: "var(--mb-purple)", to: "var(--mb-pink)" },
+  { id: "fieldwork", title: "Fieldwork", artist: "Calloway", year: 2023, genre: "Country", art: { variant: "halftone", palette: "citrus" }, from: "var(--mb-yellow)", to: "var(--mb-green)" },
+  { id: "paper-moons", title: "Paper Moons", artist: "Lio Hart", year: 2025, genre: "Singer-Songwriter", art: { variant: "orbit", palette: "glacier" }, from: "var(--mb-cyan)", to: "var(--mb-blue)" },
+  { id: "overland", title: "Overland", artist: "Tamsin Vale", year: 2024, genre: "Rock", art: { variant: "topo", palette: "dusk" }, from: "var(--mb-indigo)", to: "var(--mb-orange)" },
+  { id: "bright-static", title: "Bright Static", artist: "Neon Orchard", year: 2026, genre: "Synthpop", art: { variant: "prism", palette: "sunset" }, from: "var(--mb-pink)", to: "var(--mb-purple)" },
+  { id: "quiet-hours", title: "Quiet Hours", artist: "Elm Street Trio", year: 2022, genre: "Jazz", art: { variant: "glyph", palette: "ocean" }, from: "var(--mb-blue)", to: "var(--mb-teal)" },
 ]
 
 const albums: Album[] = covers.map((cover, i) => ({

@@ -1,4 +1,4 @@
-import { Toggle, ToggleIcon } from "@dreambase/stardust/toggle"
+import { Toggle, ToggleIcon } from "macbetter/toggle"
 import { BellOffIcon, EyeIcon, MapPinIcon } from "lucide-react"
 
 export default function Example() {

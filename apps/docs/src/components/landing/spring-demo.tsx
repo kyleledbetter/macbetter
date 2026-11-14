@@ -1,7 +1,7 @@
 "use client"
 
-import { Glass } from "@dreambase/stardust/glass"
-import { SegmentedControl, SegmentedControlItem } from "@dreambase/stardust/segmented-control"
+import { Glass } from "macbetter/glass"
+import { SegmentedControl, SegmentedControlItem } from "macbetter/segmented-control"
 import { useEffect, useRef, useState } from "react"
 
 type Spring = "snappy" | "smooth" | "bouncy"
@@ -17,7 +17,7 @@ function useCurve(spring: Spring, host: React.RefObject<HTMLElement | null>) {
   const [points, setPoints] = useState<number[]>([])
   useEffect(() => {
     if (!host.current) return
-    const value = getComputedStyle(host.current).getPropertyValue(`--sd-spring-${spring}`)
+    const value = getComputedStyle(host.current).getPropertyValue(`--mb-spring-${spring}`)
     const stops = value
       .replace(/^\s*linear\(|\)\s*$/g, "")
       .split(",")
@@ -74,7 +74,7 @@ function SpringDemo() {
           {path ? <path d={path} /> : null}
         </svg>
         <p>
-          <code>--sd-spring-{spring}</code>
+          <code>--mb-spring-{spring}</code>
           <span>{springs[spring]}</span>
         </p>
       </div>

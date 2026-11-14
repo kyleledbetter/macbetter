@@ -1,6 +1,6 @@
-import { Button } from "@dreambase/stardust/button"
-import { Switch } from "@dreambase/stardust/switch"
-import { themeVariables } from "@dreambase/stardust/theme"
+import { Button } from "macbetter/button"
+import { Switch } from "macbetter/switch"
+import { themeVariables } from "macbetter/theme"
 
 const harbor = themeVariables({
   accent: { light: "#0b6e99", dark: "#3fb3e6" },
@@ -16,14 +16,14 @@ export default function Example() {
   return (
     <div
       data-theme="harbor"
-      data-stardust=""
+      data-macbetter=""
       style={{
         ...harbor,
         display: "grid",
-        gap: "var(--sd-space-5)",
-        padding: "var(--sd-space-7)",
-        borderRadius: "var(--sd-group-radius)",
-        boxShadow: "0 0 0 var(--sd-hairline) var(--sd-separator)",
+        gap: "var(--mb-space-5)",
+        padding: "var(--mb-space-7)",
+        borderRadius: "var(--mb-group-radius)",
+        boxShadow: "0 0 0 var(--mb-hairline) var(--mb-separator)",
         minWidth: 260,
       }}
     >
@@ -31,7 +31,7 @@ export default function Example() {
         Tide alerts
         <Switch defaultChecked />
       </label>
-      <div style={{ display: "flex", gap: "var(--sd-space-4)" }}>
+      <div style={{ display: "flex", gap: "var(--mb-space-4)" }}>
         <Button variant="filled">Book a slip</Button>
         <Button variant="tinted">Charts</Button>
       </div>

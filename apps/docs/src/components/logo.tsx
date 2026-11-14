@@ -1,37 +1,48 @@
-function StardustMark({ size = 24, className }: { size?: number; className?: string }) {
+import { useId } from "react"
+import { dragonPaths, ember, markViewBox } from "@/components/brand-art"
+
+type MarkProps = {
+  size?: number
+  className?: string
+  /** `ember` paints the dragon with the Ember orange gradient, for large brand moments. */
+  tone?: "label" | "ember"
+}
+
+/** The Macbetter dragon. Inherits `currentColor`, so it follows the label color in every theme. */
+function MacbetterMark({ size = 24, className, tone = "label" }: MarkProps) {
+  const id = `mb-mark-${useId().replace(/[^A-Za-z0-9_-]/g, "")}`
   return (
     <svg
       width={size}
       height={size}
-      viewBox="0 0 32 32"
-      fill="none"
+      viewBox={markViewBox}
+      fill={tone === "ember" ? `url(#${id})` : "currentColor"}
       aria-hidden="true"
       className={className}
     >
-      <defs>
-        <linearGradient id="sd-mark-a" x1="4" y1="4" x2="28" y2="28" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#F8B16D" />
-          <stop offset="0.45" stopColor="#F67F01" />
-          <stop offset="1" stopColor="#EE5700" />
-        </linearGradient>
-      </defs>
-      <path
-        d="M16 1.5c.9 7.6 6.9 13.6 14.5 14.5C22.9 16.9 16.9 22.9 16 30.5 15.1 22.9 9.1 16.9 1.500 16 9.1 15.1 15.1 9.1 16 1.5Z"
-        fill="url(#sd-mark-a)"
-      />
-      <circle cx="25.5" cy="6.5" r="2" fill="#52C6A0" />
-      <circle cx="6" cy="25" r="1.25" fill="#44BD8B" />
+      {tone === "ember" ? (
+        <defs>
+          <linearGradient id={id} x1="0" y1="0" x2="0.4" y2="1">
+            <stop offset="0" stopColor={ember.light} />
+            <stop offset="0.5" stopColor={ember.mid} />
+            <stop offset="1" stopColor={ember.deep} />
+          </linearGradient>
+        </defs>
+      ) : null}
+      {dragonPaths.map((d) => (
+        <path key={d.slice(0, 12)} d={d} />
+      ))}
     </svg>
   )
 }
 
-function StardustLogo({ className }: { className?: string }) {
+function MacbetterLogo({ className }: { className?: string }) {
   return (
-    <span className={`inline-flex items-center gap-2 ${className ?? ""}`}>
-      <StardustMark size={22} />
-      <span className="text-[15px] font-semibold tracking-[-0.02em] text-label">Stardust</span>
+    <span className={`inline-flex items-center gap-[7px] text-label ${className ?? ""}`}>
+      <MacbetterMark size={24} />
+      <span className="text-[16px] leading-none font-semibold tracking-[-0.035em]">macbetter</span>
     </span>
   )
 }
 
-export { StardustLogo, StardustMark }
+export { MacbetterLogo, MacbetterMark }

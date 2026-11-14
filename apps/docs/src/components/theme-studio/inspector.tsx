@@ -1,11 +1,11 @@
 "use client"
 
-import { Button } from "@dreambase/stardust/button"
-import { ColorWell } from "@dreambase/stardust/color-well"
-import { SegmentedControl, SegmentedControlItem } from "@dreambase/stardust/segmented-control"
-import { Select, SelectContent, SelectItem, SelectTrigger } from "@dreambase/stardust/select"
-import { Slider } from "@dreambase/stardust/slider"
-import { TextField } from "@dreambase/stardust/text-field"
+import { Button } from "macbetter/button"
+import { ColorWell } from "macbetter/color-well"
+import { SegmentedControl, SegmentedControlItem } from "macbetter/segmented-control"
+import { Select, SelectContent, SelectItem, SelectTrigger } from "macbetter/select"
+import { Slider } from "macbetter/slider"
+import { TextField } from "macbetter/text-field"
 import { Radio, RadioGroup } from "@ui-sdk/react/radio"
 import { WandSparklesIcon } from "lucide-react"
 import { useEffect, useState } from "react"
@@ -127,7 +127,7 @@ function Inspector({ theme, presetId, scheme, onSchemeChange, onPreset, onEdit, 
       <header className="ts-intro">
         <h1>Theme Studio</h1>
         <p>
-          Pick a starting point, then change any seed. The preview is built from real Stardust components, so what
+          Pick a starting point, then change any seed. The preview is built from real Macbetter components, so what
           you see is what ships.
         </p>
       </header>
@@ -199,7 +199,7 @@ function Inspector({ theme, presetId, scheme, onSchemeChange, onPreset, onEdit, 
             </div>
           </div>
           <div className="ts-row">
-            <span className="ts-row-label sd-label-secondary">Replaces the colors below</span>
+            <span className="ts-row-label mb-label-secondary">Replaces the colors below</span>
             <Button size="sm" variant="filled" onClick={() => onEdit({ ...theme, colors: deriveFromAccent(seed) })}>
               <WandSparklesIcon aria-hidden="true" />
               Generate
@@ -272,7 +272,7 @@ function Inspector({ theme, presetId, scheme, onSchemeChange, onPreset, onEdit, 
                   <SelectItem
                     key={id}
                     value={id}
-                    style={{ fontFamily: fonts[id].display ?? fonts[id].font ?? "var(--sd-font)" }}
+                    style={{ fontFamily: fonts[id].display ?? fonts[id].font ?? "var(--mb-font)" }}
                   >
                     {fonts[id].label}
                   </SelectItem>

@@ -1,6 +1,6 @@
 "use client"
 
-import { Button, ButtonSpinner } from "@dreambase/stardust/button"
+import { Button, ButtonSpinner } from "macbetter/button"
 import { CloudUploadIcon } from "lucide-react"
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))

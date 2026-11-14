@@ -22,7 +22,7 @@ Mount `Toaster` once, near the root of your app, then call `toast()` from anywhe
 
 ```tsx
 // app/layout.tsx
-import { Toaster } from "@dreambase/stardust/toast"
+import { Toaster } from "macbetter/toast"
 
 export default function RootLayout({ children }) {
   return (
@@ -37,7 +37,7 @@ export default function RootLayout({ children }) {
 ```
 
 ```tsx
-import { toast } from "@dreambase/stardust/toast"
+import { toast } from "macbetter/toast"
 
 toast("Hollis Grant", { description: "Can you review the Q3 roadmap?", data: { icon: <img src="/icon.png" alt="" /> } })
 ```
@@ -103,19 +103,19 @@ Takes every [ui-sdk Toast Region](https://ui-sdk.dev/docs/components/toast) prop
   ]}
 />
 
-`toast.success`, `.info`, `.warning`, `.error`, `.loading`, `.promise`, `.update` and `.dismiss` come from ui-sdk. For your own layout, `Toast`, `ToastIcon`, `ToastTitle`, `ToastDescription`, `ToastAction` and `ToastClose` are exported with Stardust’s classes.
+`toast.success`, `.info`, `.warning`, `.error`, `.loading`, `.promise`, `.update` and `.dismiss` come from ui-sdk. For your own layout, `Toast`, `ToastIcon`, `ToastTitle`, `ToastDescription`, `ToastAction` and `ToastClose` are exported with Macbetter’s classes.
 
 | Data attribute | On | Meaning |
 | --- | --- | --- |
-| `data-side`, `data-align` | `.sd-toaster` | Where the stack sits |
-| `data-expanded` | `.sd-toaster`, `.sd-toast` | The stack is spread out |
-| `data-front` | `.sd-toast` | The newest notification |
-| `data-type` | `.sd-toast`, `.sd-toast-icon` | `default`, `success`, `error`, `info`, `warning` or `loading` |
-| `data-swiping`, `data-swipe-direction` | `.sd-toast` | Being swiped, and which way it left |
+| `data-side`, `data-align` | `.mb-toaster` | Where the stack sits |
+| `data-expanded` | `.mb-toaster`, `.mb-toast` | The stack is spread out |
+| `data-front` | `.mb-toast` | The newest notification |
+| `data-type` | `.mb-toast`, `.mb-toast-icon` | `default`, `success`, `error`, `info`, `warning` or `loading` |
+| `data-swiping`, `data-swipe-direction` | `.mb-toast` | Being swiped, and which way it left |
 
 | CSS variable | Default |
 | --- | --- |
-| `--sd-toast-width` | 344px on macOS, 400px on touch |
-| `--sd-toast-radius` | `--sd-popup-radius` on macOS, `--sd-radius-2xl` on touch |
-| `--sd-toast-icon-size` | 32px on macOS, 38px on touch |
-| `--sd-toast-peek` | How far each card behind the front one shows |
+| `--mb-toast-width` | 344px on macOS, 400px on touch |
+| `--mb-toast-radius` | `--mb-popup-radius` on macOS, `--mb-radius-2xl` on touch |
+| `--mb-toast-icon-size` | 32px on macOS, 38px on touch |
+| `--mb-toast-peek` | How far each card behind the front one shows |

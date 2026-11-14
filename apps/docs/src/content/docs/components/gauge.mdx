@@ -18,7 +18,7 @@ Set thresholds when the reading can be good or bad. With `low`, `high` and `opti
 ## Usage
 
 ```tsx
-import { Gauge, GaugeLabel, GaugeValue } from "@dreambase/stardust/gauge"
+import { Gauge, GaugeLabel, GaugeValue } from "macbetter/gauge"
 ```
 
 Put a `GaugeLabel` and a `GaugeValue` inside a `Gauge`; the track is drawn for you.
@@ -91,10 +91,10 @@ System yellow is under 3:1 against a white page, so in light mode a `suboptimal`
 
 | Attribute or variable | On | Description |
 | --- | --- | --- |
-| `data-variant`, `data-size` | `.sd-gauge` | The props. |
-| `data-level` | `.sd-gauge` | `optimum`, `suboptimal` or `critical`, when thresholds are set. |
-| `data-lit` | `.sd-gauge-segment` | A lit segment. |
-| `--meter-value` | `.sd-gauge` | The reading as a percentage, from ui-sdk. |
-| `--sd-gauge-good`, `--sd-gauge-fair`, `--sd-gauge-poor` | `.sd-gauge` | The three level colors. |
-| `--sd-gauge-edge` | `.sd-gauge` | The edge drawn around a reading. Transparent except for a `suboptimal` reading in light mode. |
-| `--sd-gauge-ring` | any ancestor | The color that cuts the gradient marker out of the ring. Defaults to `--sd-bg`. |
+| `data-variant`, `data-size` | `.mb-gauge` | The props. |
+| `data-level` | `.mb-gauge` | `optimum`, `suboptimal` or `critical`, when thresholds are set. |
+| `data-lit` | `.mb-gauge-segment` | A lit segment. |
+| `--meter-value` | `.mb-gauge` | The reading as a percentage, from ui-sdk. |
+| `--mb-gauge-good`, `--mb-gauge-fair`, `--mb-gauge-poor` | `.mb-gauge` | The three level colors. |
+| `--mb-gauge-edge` | `.mb-gauge` | The edge drawn around a reading. Transparent except for a `suboptimal` reading in light mode. |
+| `--mb-gauge-ring` | any ancestor | The color that cuts the gradient marker out of the ring. Defaults to `--mb-bg`. |

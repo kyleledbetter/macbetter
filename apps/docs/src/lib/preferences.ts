@@ -1,10 +1,10 @@
 import { createColorScheme, createLocalStorage, createPreference } from "@ui-sdk/core"
 
-const themes = ["dreambase", "system", "nebula", "graphite"] as const
+const themes = ["ember", "system", "nebula", "graphite"] as const
 type ThemeName = (typeof themes)[number]
 
 const themeLabels: Record<ThemeName, string> = {
-  dreambase: "Dreambase",
+  ember: "Ember",
   system: "System",
   nebula: "Nebula",
   graphite: "Graphite",
@@ -13,15 +13,15 @@ const themeLabels: Record<ThemeName, string> = {
 const colorScheme = createColorScheme({
   defaultValue: "dark",
   global: true,
-  storage: createLocalStorage("stardust-scheme"),
+  storage: createLocalStorage("macbetter-scheme"),
 })
 
 const theme = createPreference({
   values: themes,
-  defaultValue: "dreambase",
+  defaultValue: "ember",
   attribute: "data-theme",
   global: true,
-  storage: createLocalStorage("stardust-theme"),
+  storage: createLocalStorage("macbetter-theme"),
 })
 
 // Whether the site follows the system's Reduce Motion and Reduce Transparency settings.
@@ -30,7 +30,7 @@ const motion = createPreference({
   defaultValue: "system",
   attribute: "data-motion",
   global: true,
-  storage: createLocalStorage("stardust-motion"),
+  storage: createLocalStorage("macbetter-motion"),
 })
 
 const transparency = createPreference({
@@ -38,7 +38,7 @@ const transparency = createPreference({
   defaultValue: "system",
   attribute: "data-transparency",
   global: true,
-  storage: createLocalStorage("stardust-transparency"),
+  storage: createLocalStorage("macbetter-transparency"),
 })
 
 export { colorScheme, motion, theme, themeLabels, themes, transparency }

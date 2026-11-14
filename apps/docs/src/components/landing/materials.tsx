@@ -1,4 +1,4 @@
-import { Glass, Material } from "@dreambase/stardust/glass"
+import { Glass, Material } from "macbetter/glass"
 import { SectionHeading } from "./section-heading"
 import { SpringDemo } from "./spring-demo"
 import { Wallpaper } from "./wallpaper"

@@ -1,4 +1,4 @@
-import { Slider } from "@dreambase/stardust/slider"
+import { Slider } from "macbetter/slider"
 
 const bands = [
   { label: "60 Hz", value: 62 },
@@ -14,7 +14,7 @@ export default function Example() {
       {bands.map((band) => (
         <div key={band.label} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
           <Slider orientation="vertical" defaultValue={band.value} thumbLabel={band.label} />
-          <span aria-hidden="true" style={{ color: "var(--sd-label-secondary)", font: "var(--sd-text-caption)" }}>
+          <span aria-hidden="true" style={{ color: "var(--mb-label-secondary)", font: "var(--mb-text-caption)" }}>
             {band.label}
           </span>
         </div>

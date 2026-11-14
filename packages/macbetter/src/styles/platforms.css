@@ -1,0 +1,213 @@
+/*
+ * Platform idioms.
+ *
+ * [data-platform] picks the metrics: macOS is dense and pointer-first, iOS is
+ * roomy and touch-first, iPadOS sits between. The tokens inherit, so a
+ * platform can be nested inside another (a phone preview on a desktop page).
+ * Without the attribute, everything is macOS; <MacbetterScript /> resolves
+ * "auto" to a real platform before first paint.
+ *
+ * A component sets its own metrics the same way, as inherited variables:
+ *
+ *   :where(:root, [data-platform="macos"]) { --mb-switch-width: 38px }
+ *   :where([data-platform="ios"], [data-platform="ipados"]) { --mb-switch-width: 51px }
+ *
+ * and, when a platform needs different rules rather than different numbers,
+ * scopes them so they stop at a nested platform:
+ *
+ *   @scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+ *     .mb-button:active { scale: 0.97 }
+ *   }
+ */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-platform: macos;
+  --mb-touch: 0;
+
+  /* Type ramp: macOS text styles (pt = px). */
+  --mb-text-large-title-spec: 600 26px/32px;
+  --mb-text-title-1-spec: 600 22px/26px;
+  --mb-text-title-2-spec: 600 17px/22px;
+  --mb-text-title-3-spec: 600 15px/20px;
+  --mb-text-headline-spec: 600 13px/16px;
+  --mb-text-body-spec: 400 13px/16px;
+  --mb-text-callout-spec: 400 12px/15px;
+  --mb-text-subheadline-spec: 400 11px/14px;
+  --mb-text-footnote-spec: 400 10px/13px;
+  --mb-text-caption-spec: 400 10px/13px;
+  --mb-tracking-large-title: -0.022em;
+  --mb-tracking-title: -0.016em;
+  --mb-tracking-body: -0.003em;
+  --mb-tracking-caption: 0.006em;
+
+  /* Controls. */
+  --mb-control-height-sm: 22px;
+  --mb-control-height: 28px;
+  --mb-control-height-lg: 36px;
+  --mb-control-padding-sm: 8px;
+  --mb-control-padding: 12px;
+  --mb-control-padding-lg: 16px;
+  --mb-control-gap: 6px;
+  --mb-control-radius-sm-base: 6px;
+  --mb-control-radius-base: 8px;
+  --mb-control-radius-lg-base: 12px;
+  --mb-control-font-spec: 500 13px/16px;
+  --mb-control-font-sm-spec: 500 11px/14px;
+  --mb-control-font-lg-spec: 500 15px/20px;
+  --mb-icon-size: 16px;
+  --mb-hit-target: 24px;
+
+  /* Lists, menus and popups. */
+  --mb-row-height: 28px;
+  --mb-row-padding: 10px;
+  --mb-row-radius-base: 6px;
+  --mb-menu-item-height: 24px;
+  --mb-menu-padding: 5px;
+  --mb-menu-radius-base: 12px;
+  --mb-menu-font-spec: 400 13px/16px;
+  --mb-popup-radius-base: 16px;
+  --mb-sheet-radius-base: 16px;
+  --mb-group-radius-base: 12px;
+  --mb-bar-height: 52px;
+  --mb-content-padding: 20px;
+  --mb-focus-ring-width: 3px;
+  --mb-focus-ring-offset: 1px;
+}
+
+:where([data-platform="ipados"]) {
+  --mb-platform: ipados;
+  --mb-touch: 1;
+
+  --mb-text-large-title-spec: 700 34px/41px;
+  --mb-text-title-1-spec: 700 28px/34px;
+  --mb-text-title-2-spec: 700 22px/28px;
+  --mb-text-title-3-spec: 600 20px/25px;
+  --mb-text-headline-spec: 600 17px/22px;
+  --mb-text-body-spec: 400 17px/22px;
+  --mb-text-callout-spec: 400 16px/21px;
+  --mb-text-subheadline-spec: 400 15px/20px;
+  --mb-text-footnote-spec: 400 13px/18px;
+  --mb-text-caption-spec: 400 12px/16px;
+  --mb-tracking-large-title: -0.021em;
+  --mb-tracking-title: -0.018em;
+  --mb-tracking-body: -0.025em;
+  --mb-tracking-caption: 0em;
+
+  --mb-control-height-sm: 30px;
+  --mb-control-height: 38px;
+  --mb-control-height-lg: 50px;
+  --mb-control-padding-sm: 12px;
+  --mb-control-padding: 16px;
+  --mb-control-padding-lg: 20px;
+  --mb-control-gap: 6px;
+  --mb-control-radius-sm-base: 9999px;
+  --mb-control-radius-base: 9999px;
+  --mb-control-radius-lg-base: 9999px;
+  --mb-control-font-spec: 500 17px/22px;
+  --mb-control-font-sm-spec: 500 15px/20px;
+  --mb-control-font-lg-spec: 600 17px/22px;
+  --mb-icon-size: 20px;
+  --mb-hit-target: 44px;
+
+  --mb-row-height: 44px;
+  --mb-row-padding: 16px;
+  --mb-row-radius-base: 8px;
+  --mb-menu-item-height: 44px;
+  --mb-menu-padding: 6px;
+  --mb-menu-radius-base: 22px;
+  --mb-menu-font-spec: 400 17px/22px;
+  --mb-popup-radius-base: 22px;
+  --mb-sheet-radius-base: 30px;
+  --mb-group-radius-base: 22px;
+  --mb-bar-height: 50px;
+  --mb-content-padding: 20px;
+  --mb-focus-ring-width: 3px;
+  --mb-focus-ring-offset: 2px;
+}
+
+:where([data-platform="ios"]) {
+  --mb-platform: ios;
+  --mb-touch: 1;
+
+  --mb-text-large-title-spec: 700 34px/41px;
+  --mb-text-title-1-spec: 700 28px/34px;
+  --mb-text-title-2-spec: 700 22px/28px;
+  --mb-text-title-3-spec: 600 20px/25px;
+  --mb-text-headline-spec: 600 17px/22px;
+  --mb-text-body-spec: 400 17px/22px;
+  --mb-text-callout-spec: 400 16px/21px;
+  --mb-text-subheadline-spec: 400 15px/20px;
+  --mb-text-footnote-spec: 400 13px/18px;
+  --mb-text-caption-spec: 400 12px/16px;
+  --mb-tracking-large-title: -0.021em;
+  --mb-tracking-title: -0.018em;
+  --mb-tracking-body: -0.025em;
+  --mb-tracking-caption: 0em;
+
+  --mb-control-height-sm: 34px;
+  --mb-control-height: 44px;
+  --mb-control-height-lg: 52px;
+  --mb-control-padding-sm: 14px;
+  --mb-control-padding: 18px;
+  --mb-control-padding-lg: 22px;
+  --mb-control-gap: 6px;
+  --mb-control-radius-sm-base: 9999px;
+  --mb-control-radius-base: 9999px;
+  --mb-control-radius-lg-base: 9999px;
+  --mb-control-font-spec: 500 17px/22px;
+  --mb-control-font-sm-spec: 500 15px/20px;
+  --mb-control-font-lg-spec: 600 17px/22px;
+  --mb-icon-size: 22px;
+  --mb-hit-target: 44px;
+
+  --mb-row-height: 48px;
+  --mb-row-padding: 16px;
+  --mb-row-radius-base: 8px;
+  --mb-menu-item-height: 44px;
+  --mb-menu-padding: 6px;
+  --mb-menu-radius-base: 22px;
+  --mb-menu-font-spec: 400 17px/22px;
+  --mb-popup-radius-base: 22px;
+  --mb-sheet-radius-base: 30px;
+  --mb-group-radius-base: 22px;
+  --mb-bar-height: 44px;
+  --mb-content-padding: 16px;
+  --mb-focus-ring-width: 3px;
+  --mb-focus-ring-offset: 2px;
+}
+
+/*
+ * Composed tokens: a platform's numbers with the theme's fonts and radius
+ * scale. Restated at every theme and platform boundary, so nesting either one
+ * inside the other re-derives them.
+ */
+:where(:root, [data-theme], [data-platform]) {
+  --mb-text-large-title: var(--mb-text-large-title-spec) var(--mb-font-display);
+  --mb-text-title-1: var(--mb-text-title-1-spec) var(--mb-font-display);
+  --mb-text-title-2: var(--mb-text-title-2-spec) var(--mb-font-display);
+  --mb-text-title-3: var(--mb-text-title-3-spec) var(--mb-font-display);
+  --mb-text-headline: var(--mb-text-headline-spec) var(--mb-font);
+  --mb-text-body: var(--mb-text-body-spec) var(--mb-font);
+  --mb-text-callout: var(--mb-text-callout-spec) var(--mb-font);
+  --mb-text-subheadline: var(--mb-text-subheadline-spec) var(--mb-font);
+  --mb-text-footnote: var(--mb-text-footnote-spec) var(--mb-font);
+  --mb-text-caption: var(--mb-text-caption-spec) var(--mb-font);
+  --mb-control-font: var(--mb-control-font-spec) var(--mb-font);
+  --mb-control-font-sm: var(--mb-control-font-sm-spec) var(--mb-font);
+  --mb-control-font-lg: var(--mb-control-font-lg-spec) var(--mb-font);
+  --mb-menu-font: var(--mb-menu-font-spec) var(--mb-font);
+  --mb-control-radius-sm: min(calc(var(--mb-control-radius-sm-base) * var(--mb-radius-scale)), 9999px);
+  --mb-control-radius-lg: min(calc(var(--mb-control-radius-lg-base) * var(--mb-radius-scale)), 9999px);
+  --mb-control-radius: min(calc(var(--mb-control-radius-base) * var(--mb-radius-scale)), 9999px);
+  --mb-row-radius: min(calc(var(--mb-row-radius-base) * var(--mb-radius-scale)), 9999px);
+  --mb-menu-radius: min(calc(var(--mb-menu-radius-base) * var(--mb-radius-scale)), 9999px);
+  --mb-popup-radius: min(calc(var(--mb-popup-radius-base) * var(--mb-radius-scale)), 9999px);
+  --mb-sheet-radius: min(calc(var(--mb-sheet-radius-base) * var(--mb-radius-scale)), 9999px);
+  --mb-group-radius: min(calc(var(--mb-group-radius-base) * var(--mb-radius-scale)), 9999px);
+}
+
+/* A platform boundary restates the type so nested previews look right. */
+:where([data-platform], [data-theme]) {
+  font: var(--mb-text-body);
+  letter-spacing: var(--mb-tracking-body);
+}

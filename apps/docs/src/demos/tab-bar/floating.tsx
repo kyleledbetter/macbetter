@@ -1,8 +1,8 @@
-import { Artwork } from "@dreambase/stardust/artwork"
-import { DeviceFrame } from "@dreambase/stardust/device-frame"
-import { List, ListRow, ListRowAccessory, ListRowSubtitle, ListRowTitle, ListSection } from "@dreambase/stardust/list"
-import { NavigationBar, NavigationStack } from "@dreambase/stardust/navigation-bar"
-import { TabBar, TabBarItem, TabBarList, TabBarPanel } from "@dreambase/stardust/tab-bar"
+import { Artwork } from "macbetter/artwork"
+import { DeviceFrame } from "macbetter/device-frame"
+import { List, ListRow, ListRowAccessory, ListRowSubtitle, ListRowTitle, ListSection } from "macbetter/list"
+import { NavigationBar, NavigationStack } from "macbetter/navigation-bar"
+import { TabBar, TabBarItem, TabBarList, TabBarPanel } from "macbetter/tab-bar"
 import { HouseIcon, LayoutGridIcon, LibraryIcon, RadioIcon, SearchIcon } from "lucide-react"
 
 const albums = [

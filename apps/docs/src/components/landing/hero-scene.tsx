@@ -1,8 +1,8 @@
 "use client"
 
-import { Dock, DockItem, DockSeparator } from "@dreambase/stardust/dock"
-import { Menu, MenuCheckboxItem, MenuItem, MenuSeparator } from "@dreambase/stardust/menu"
-import { MenuBar, MenuBarContent, MenuBarTrigger } from "@dreambase/stardust/menu-bar"
+import { Dock, DockItem, DockSeparator } from "macbetter/dock"
+import { Menu, MenuCheckboxItem, MenuItem, MenuSeparator } from "macbetter/menu"
+import { MenuBar, MenuBarContent, MenuBarTrigger } from "macbetter/menu-bar"
 import {
   CalendarDaysIcon,
   CompassIcon,
@@ -16,7 +16,7 @@ import {
   WifiIcon,
 } from "lucide-react"
 import { useCallback, useState } from "react"
-import { StardustMark } from "@/components/logo"
+import { MacbetterMark } from "@/components/logo"
 import type { Status, Task } from "./data"
 import { MacApp } from "./mac-app"
 import { PhoneApp } from "./phone-app"
@@ -50,18 +50,18 @@ function useSceneState(): SceneState {
 }
 
 const apps = [
-  { name: "Projects", icon: FolderKanbanIcon, from: "var(--sd-accent)", to: "color-mix(in oklch, var(--sd-accent), black 30%)" },
-  { name: "Browser", icon: CompassIcon, from: "var(--sd-teal)", to: "var(--sd-blue)" },
-  { name: "Mail", icon: MailIcon, from: "var(--sd-cyan)", to: "var(--sd-indigo)" },
-  { name: "Calendar", icon: CalendarDaysIcon, from: "var(--sd-red)", to: "var(--sd-orange)" },
-  { name: "Notes", icon: NotebookPenIcon, from: "var(--sd-yellow)", to: "var(--sd-orange)" },
-  { name: "Photos", icon: ImageIcon, from: "var(--sd-yellow)", to: "var(--sd-pink)" },
-  { name: "Music", icon: MusicIcon, from: "var(--sd-pink)", to: "var(--sd-red)" },
+  { name: "Projects", icon: FolderKanbanIcon, from: "var(--mb-accent)", to: "color-mix(in oklch, var(--mb-accent), black 30%)" },
+  { name: "Browser", icon: CompassIcon, from: "var(--mb-teal)", to: "var(--mb-blue)" },
+  { name: "Mail", icon: MailIcon, from: "var(--mb-cyan)", to: "var(--mb-indigo)" },
+  { name: "Calendar", icon: CalendarDaysIcon, from: "var(--mb-red)", to: "var(--mb-orange)" },
+  { name: "Notes", icon: NotebookPenIcon, from: "var(--mb-yellow)", to: "var(--mb-orange)" },
+  { name: "Photos", icon: ImageIcon, from: "var(--mb-yellow)", to: "var(--mb-pink)" },
+  { name: "Music", icon: MusicIcon, from: "var(--mb-pink)", to: "var(--mb-red)" },
   {
     name: "Settings",
     icon: SettingsIcon,
-    from: "var(--sd-tint)",
-    to: "color-mix(in oklch, var(--sd-tint), black 45%)",
+    from: "var(--mb-tint)",
+    to: "color-mix(in oklch, var(--mb-tint), black 45%)",
   },
 ]
 
@@ -75,8 +75,8 @@ function AppIcon({ icon: Icon, from, to }: { icon: typeof MailIcon; from: string
 
 function SceneMenuBar() {
   return (
-    <div className="lp-menubar sd-material" data-material="ultrathin">
-      <StardustMark size={14} className="lp-menubar-mark" />
+    <div className="lp-menubar mb-material" data-material="ultrathin">
+      <MacbetterMark size={14} className="lp-menubar-mark" />
       <MenuBar aria-label="Projects" className="lp-menubar-menus">
         <Menu>
           <MenuBarTrigger app>Projects</MenuBarTrigger>
@@ -155,7 +155,7 @@ function HeroScene() {
             ))}
             <DockSeparator />
             <DockItem label="Trash">
-              <AppIcon icon={Trash2Icon} from="color-mix(in oklch, var(--sd-tint) 45%, white)" to="var(--sd-tint)" />
+              <AppIcon icon={Trash2Icon} from="color-mix(in oklch, var(--mb-tint) 45%, white)" to="var(--mb-tint)" />
             </DockItem>
           </Dock>
         </div>

@@ -11,10 +11,10 @@ export const metadata = {
 
 ## The materials
 
-A material is the `sd-material` class with a `data-material` thickness. It sets a translucent background, the shared blur and saturation filter, a bright rim along the top edge and a hairline border:
+A material is the `mb-material` class with a `data-material` thickness. It sets a translucent background, the shared blur and saturation filter, a bright rim along the top edge and a hairline border:
 
 ```tsx
-<div className="sd-material" data-material="thick">…</div>
+<div className="mb-material" data-material="thick">…</div>
 ```
 
 | `data-material` | Background | Use it for |
@@ -26,17 +26,17 @@ A material is the `sd-material` class with a `data-material` thickness. It sets 
 | `chrome` | Page background at 76% | Toolbars, title bars and navigation bars |
 | `sidebar` | Sidebar background at 78% | Sidebars and source lists |
 
-Each value is also a token, `--sd-material-ultrathin` through `--sd-material-sidebar`, for components that compose their own surface. They pair with `--sd-material-filter` (a 28px blur at 180% saturation), `--sd-glass-rim` for the top-edge highlight and `--sd-shadow-menu` for elevation:
+Each value is also a token, `--mb-material-ultrathin` through `--mb-material-sidebar`, for components that compose their own surface. They pair with `--mb-material-filter` (a 28px blur at 180% saturation), `--mb-glass-rim` for the top-edge highlight and `--mb-shadow-menu` for elevation:
 
 ```css
 .inspector-popover {
-  background: var(--sd-material-regular);
-  backdrop-filter: var(--sd-material-filter);
-  box-shadow: var(--sd-glass-rim), var(--sd-shadow-menu);
+  background: var(--mb-material-regular);
+  backdrop-filter: var(--mb-material-filter);
+  box-shadow: var(--mb-glass-rim), var(--mb-shadow-menu);
 }
 ```
 
-Stardust's menus, dialogs, alerts, bars, windows and sidebars use these tokens, so they follow the theme and the accessibility settings below.
+Macbetter's menus, dialogs, alerts, bars, windows and sidebars use these tokens, so they follow the theme and the accessibility settings below.
 
 ## Choosing a thickness
 
@@ -49,17 +49,17 @@ Thicker materials are more legible and less contextual. Start from the surface's
 
 ## Glass
 
-`sd-glass` is a clearer, lensing surface for floating controls such as tab bars and toolbar capsules. It has a brighter top edge, a soft inner glow and a lighter blur than the materials. The [Glass](/docs/components/glass) component page covers its API and variants. The `glass` variant of [Button](/docs/components/button) uses the same look.
+`mb-glass` is a clearer, lensing surface for floating controls such as tab bars and toolbar capsules. It has a brighter top edge, a soft inner glow and a lighter blur than the materials. The [Glass](/docs/components/glass) component page covers its API and variants. The `glass` variant of [Button](/docs/components/button) uses the same look.
 
 ## Don't stack materials
 
-Never put one material on another. Blurring a surface that's already blurred produces a flat, muddy layer, and the contrast of text on it becomes unpredictable. Inside a material, use fills (`--sd-fill-tertiary`) or separators to group content, not a second material. If a popover opens from a toolbar, it floats over content beside the toolbar; it doesn't need to look like part of it.
+Never put one material on another. Blurring a surface that's already blurred produces a flat, muddy layer, and the contrast of text on it becomes unpredictable. Inside a material, use fills (`--mb-fill-tertiary`) or separators to group content, not a second material. If a popover opens from a toolbar, it floats over content beside the toolbar; it doesn't need to look like part of it.
 
 ## Reduced transparency and increased contrast
 
-When someone turns on Reduce Transparency (`prefers-reduced-transparency: reduce`), every material token resolves to its opaque background and `--sd-material-filter` becomes `none`. Increase Contrast (`prefers-contrast: more`) makes the materials opaque too, and strengthens the glass border. `sd-glass` becomes opaque under either setting.
+When someone turns on Reduce Transparency (`prefers-reduced-transparency: reduce`), every material token resolves to its opaque background and `--mb-material-filter` becomes `none`. Increase Contrast (`prefers-contrast: more`) makes the materials opaque too, and strengthens the glass border. `mb-glass` becomes opaque under either setting.
 
-This happens in the tokens, so a component built on them needs no extra CSS. If you write your own translucent surface, build it from `--sd-material-*` and `--sd-material-filter` rather than raw `rgba()` and `blur()`, or it won't respond.
+This happens in the tokens, so a component built on them needs no extra CSS. If you write your own translucent surface, build it from `--mb-material-*` and `--mb-material-filter` rather than raw `rgba()` and `blur()`, or it won't respond.
 
 <Callout type="note" title="Check over real content">
 Materials depend on what's behind them. The wallpaper on this page is colorful on purpose. Check your surfaces over your own content, in light and dark, and with Reduce Transparency on.

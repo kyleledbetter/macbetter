@@ -1,0 +1,400 @@
+/* List — iOS Settings and macOS System Settings: grouped rows with icon tiles, values and accessories. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-list-inset: 20px;
+  --mb-list-padding-block: 20px;
+  --mb-list-section-gap: 22px;
+  --mb-list-row-height: 36px;
+  --mb-list-row-height-icon: 40px;
+  --mb-list-row-padding-block: 6px;
+  --mb-list-row-padding-inline: 10px;
+  --mb-list-icon-size: 20px;
+  --mb-list-icon-radius: 5px;
+  --mb-list-icon-glyph: 13px;
+  --mb-list-icon-gap: 8px;
+  --mb-list-trailing-gap: 8px;
+  --mb-list-group-radius: var(--mb-radius-md);
+  --mb-list-chevron-width: 5.5px;
+  --mb-list-chevron-height: 10px;
+  --mb-list-chevron-stroke: 1.6;
+  --mb-list-check-width: 12px;
+  --mb-list-info-size: 16px;
+  --mb-list-title-font: 400 13px/16px var(--mb-font);
+  --mb-list-subtitle-font: 400 11px/14px var(--mb-font);
+  --mb-list-header-font: 600 13px/16px var(--mb-font);
+  --mb-list-header-color: var(--mb-label);
+  --mb-list-header-gap: 8px;
+  --mb-list-footer-font: 400 11px/14px var(--mb-font);
+  --mb-list-bg: var(--mb-bg);
+  --mb-list-group-bg: var(--mb-fill-quaternary);
+  --mb-list-group-edge: var(--mb-separator);
+  --mb-list-pressed: var(--mb-fill-tertiary);
+  /* macOS insets separators from both edges and doesn't skip the icon. */
+  --mb-list-separator-start: var(--mb-list-row-padding-inline);
+  --mb-list-separator-start-icon: var(--mb-list-row-padding-inline);
+  --mb-list-separator-end: var(--mb-list-row-padding-inline);
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-list-inset: 16px;
+  --mb-list-padding-block: 16px;
+  --mb-list-section-gap: 32px;
+  --mb-list-row-height: 48px;
+  --mb-list-row-height-icon: 48px;
+  --mb-list-row-padding-block: 11px;
+  --mb-list-row-padding-inline: 16px;
+  --mb-list-icon-size: 30px;
+  --mb-list-icon-radius: 7.5px;
+  --mb-list-icon-glyph: 19px;
+  --mb-list-icon-gap: 14px;
+  --mb-list-trailing-gap: 8px;
+  --mb-list-group-radius: var(--mb-group-radius);
+  --mb-list-chevron-width: 7px;
+  --mb-list-chevron-height: 12.5px;
+  --mb-list-chevron-stroke: 2.1;
+  --mb-list-check-width: 16px;
+  --mb-list-info-size: 22px;
+  --mb-list-title-font: 400 17px/22px var(--mb-font);
+  --mb-list-subtitle-font: 400 15px/20px var(--mb-font);
+  --mb-list-header-font: 400 13px/18px var(--mb-font);
+  --mb-list-header-color: var(--mb-label-secondary);
+  --mb-list-header-gap: 7px;
+  --mb-list-footer-font: 400 13px/18px var(--mb-font);
+  --mb-list-bg: var(--mb-bg-grouped);
+  --mb-list-group-bg: var(--mb-bg-grouped-secondary);
+  --mb-list-group-edge: transparent;
+  --mb-list-pressed: var(--mb-fill);
+  /* iOS starts the separator under the title, past the icon, and runs it to the edge. */
+  --mb-list-separator-start: var(--mb-list-row-padding-inline);
+  --mb-list-separator-start-icon: calc(
+    var(--mb-list-row-padding-inline) + var(--mb-list-icon-size) + var(--mb-list-icon-gap)
+  );
+  --mb-list-separator-end: 0px;
+}
+
+.mb-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mb-list-section-gap);
+  padding-block: var(--mb-list-padding-block);
+  background: var(--mb-list-bg);
+  color: var(--mb-label);
+  font: var(--mb-list-title-font);
+  letter-spacing: var(--mb-tracking-body);
+}
+
+.mb-list[data-variant="plain"] {
+  --mb-list-bg: var(--mb-bg);
+  --mb-list-group-bg: transparent;
+  --mb-list-group-edge: transparent;
+  --mb-list-separator-end: 0px;
+  gap: 0;
+  padding-block: 0;
+}
+
+.mb-list-section {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.mb-list[data-variant="inset-grouped"] .mb-list-section {
+  margin-inline: var(--mb-list-inset);
+}
+
+.mb-list-section-header {
+  margin-block-end: var(--mb-list-header-gap);
+  padding-inline: var(--mb-list-row-padding-inline);
+  color: var(--mb-list-header-color);
+  font: var(--mb-list-header-font);
+  letter-spacing: var(--mb-tracking-caption);
+}
+
+.mb-list[data-variant="plain"] .mb-list-section-header {
+  position: sticky;
+  z-index: 1;
+  /* A NavigationStack sets the inset, so headers pin below its bar instead of under it. */
+  top: var(--mb-content-inset-top, 0px);
+  margin: 0;
+  padding-block: 6px;
+  background: var(--mb-bg-secondary);
+  color: var(--mb-label);
+  font: var(--mb-text-headline);
+}
+
+.mb-list-section-footer {
+  margin-block-start: var(--mb-list-header-gap);
+  padding-inline: var(--mb-list-row-padding-inline);
+  color: var(--mb-label-secondary);
+  font: var(--mb-list-footer-font);
+  letter-spacing: var(--mb-tracking-caption);
+  text-wrap: pretty;
+}
+
+.mb-list-group {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  list-style: none;
+  background: var(--mb-list-group-bg);
+}
+
+.mb-list[data-variant="inset-grouped"] .mb-list-group {
+  --mb-list-row-radius: var(--mb-list-group-radius);
+  border-radius: var(--mb-list-group-radius);
+  box-shadow: inset 0 0 0 var(--mb-hairline) var(--mb-list-group-edge);
+}
+
+.mb-list[data-variant="grouped"] .mb-list-group {
+  box-shadow:
+    inset 0 var(--mb-hairline) 0 var(--mb-separator),
+    inset 0 calc(var(--mb-hairline) * -1) 0 var(--mb-separator);
+}
+
+.mb-list-item {
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+.mb-list-row {
+  position: relative;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  grid-template-rows: 1fr auto auto 1fr;
+  align-items: center;
+  justify-items: start;
+  width: 100%;
+  min-height: var(--mb-list-row-height);
+  margin: 0;
+  padding: var(--mb-list-row-padding-block) var(--mb-list-row-padding-inline);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: start;
+  text-decoration: none;
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: background-color var(--mb-duration-base) var(--mb-ease-out);
+}
+
+.mb-list-row:has(> .mb-list-row-icon) {
+  min-height: var(--mb-list-row-height-icon);
+}
+
+.mb-list-item:first-child > .mb-list-row {
+  border-start-start-radius: var(--mb-list-row-radius, 0);
+  border-start-end-radius: var(--mb-list-row-radius, 0);
+}
+
+.mb-list-item:last-child > .mb-list-row {
+  border-end-start-radius: var(--mb-list-row-radius, 0);
+  border-end-end-radius: var(--mb-list-row-radius, 0);
+}
+
+/* The hairline sits on top of every row but the first, so it never doubles against the group's edge. */
+.mb-list-item + .mb-list-item > .mb-list-row::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: var(--mb-list-separator-start) var(--mb-list-separator-end);
+  height: var(--mb-hairline);
+  background: var(--mb-separator);
+  pointer-events: none;
+}
+
+.mb-list-item + .mb-list-item > .mb-list-row:has(> .mb-list-row-icon)::before {
+  inset-inline-start: var(--mb-list-separator-start-icon);
+}
+
+/*
+ * iOS starts the hairline at the title, past any leading icon, artwork or avatar.
+ * It hangs off the title at the title's own inline position and runs to the group's clipped edge.
+ */
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .mb-list-item + .mb-list-item > .mb-list-row:has(> .mb-list-row-title)::before {
+    content: none;
+  }
+
+  .mb-list-item + .mb-list-item > .mb-list-row > .mb-list-row-title::before {
+    content: "";
+    position: absolute;
+    inset-block-start: 0;
+    inline-size: 100vw;
+    block-size: var(--mb-hairline);
+    background: var(--mb-separator);
+    pointer-events: none;
+  }
+}
+
+/* A pressed row fills edge to edge, so the hairlines around it step aside, as UIKit's do. */
+.mb-list-row[data-interactive]:active {
+  background: var(--mb-list-pressed);
+  transition-duration: 0ms;
+}
+
+.mb-list-item > .mb-list-row[data-interactive]:active::before,
+.mb-list-item > .mb-list-row[data-interactive]:active > .mb-list-row-title::before,
+.mb-list-item:has(> .mb-list-row[data-interactive]:active) + .mb-list-item > .mb-list-row::before,
+.mb-list-item:has(> .mb-list-row[data-interactive]:active) + .mb-list-item > .mb-list-row > .mb-list-row-title::before {
+  opacity: 0;
+}
+
+.mb-list-row:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: calc(var(--mb-focus-ring-width) * -1);
+}
+
+.mb-list-row-icon {
+  grid-column: 1;
+  grid-row: 1 / -1;
+  display: grid;
+  place-items: center;
+  width: var(--mb-list-icon-size);
+  height: var(--mb-list-icon-size);
+  margin-inline-end: var(--mb-list-icon-gap);
+  border-radius: var(--mb-list-icon-radius);
+  background:
+    linear-gradient(to bottom, rgb(255 255 255 / 0.16), rgb(255 255 255 / 0) 60%),
+    var(--mb-list-icon-bg, var(--mb-tint));
+  color: var(--mb-list-icon-fg, #ffffff);
+  box-shadow: inset 0 0 0 var(--mb-hairline) rgb(0 0 0 / 0.06);
+}
+
+@supports (corner-shape: squircle) {
+  .mb-list-row-icon {
+    border-radius: calc(var(--mb-list-icon-radius) * 1.45);
+    corner-shape: squircle;
+  }
+}
+
+.mb-list-row-icon :where(svg) {
+  width: var(--mb-list-icon-glyph);
+  height: var(--mb-list-icon-glyph);
+  stroke-width: 2.25;
+}
+
+.mb-list-row-icon[data-color="red"] { --mb-list-icon-bg: var(--mb-red); }
+.mb-list-row-icon[data-color="orange"] { --mb-list-icon-bg: var(--mb-orange); }
+.mb-list-row-icon[data-color="yellow"] { --mb-list-icon-bg: var(--mb-yellow); }
+.mb-list-row-icon[data-color="green"] { --mb-list-icon-bg: var(--mb-green); }
+.mb-list-row-icon[data-color="mint"] { --mb-list-icon-bg: var(--mb-mint); }
+.mb-list-row-icon[data-color="teal"] { --mb-list-icon-bg: var(--mb-teal); }
+.mb-list-row-icon[data-color="cyan"] { --mb-list-icon-bg: var(--mb-cyan); }
+.mb-list-row-icon[data-color="blue"] { --mb-list-icon-bg: var(--mb-blue); }
+.mb-list-row-icon[data-color="indigo"] { --mb-list-icon-bg: var(--mb-indigo); }
+.mb-list-row-icon[data-color="purple"] { --mb-list-icon-bg: var(--mb-purple); }
+.mb-list-row-icon[data-color="pink"] { --mb-list-icon-bg: var(--mb-pink); }
+.mb-list-row-icon[data-color="brown"] { --mb-list-icon-bg: var(--mb-brown); }
+.mb-list-row-icon[data-color="gray"] {
+  --mb-list-icon-bg: light-dark(var(--mb-tint), oklch(from var(--mb-tint) calc(l - 0.14) calc(c * 0.8) h));
+}
+.mb-list-row-icon[data-color="accent"] {
+  --mb-list-icon-bg: var(--mb-accent);
+  --mb-list-icon-fg: var(--mb-on-accent);
+}
+
+.mb-list-row-title {
+  grid-column: 2;
+  grid-row: 2;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.mb-list-row-subtitle {
+  grid-column: 2;
+  grid-row: 3;
+  min-width: 0;
+  max-width: 100%;
+  color: var(--mb-label-secondary);
+  font: var(--mb-list-subtitle-font);
+  letter-spacing: var(--mb-tracking-caption);
+}
+
+.mb-list-row-value {
+  grid-column: 3;
+  grid-row: 1 / -1;
+  justify-self: end;
+  max-width: 14em;
+  margin-inline-start: var(--mb-list-trailing-gap);
+  overflow: hidden;
+  color: var(--mb-label-secondary);
+  text-align: end;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mb-list-row-accessory {
+  grid-column: 4;
+  grid-row: 1 / -1;
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  margin-inline-start: var(--mb-list-trailing-gap);
+}
+
+.mb-list-row-accessory :where(svg) {
+  display: block;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.mb-list-row-accessory[data-type="disclosure"] {
+  color: var(--mb-label-tertiary);
+}
+
+.mb-list-row-accessory[data-type="disclosure"] svg {
+  width: var(--mb-list-chevron-width);
+  height: var(--mb-list-chevron-height);
+  stroke-width: var(--mb-list-chevron-stroke);
+  overflow: visible;
+}
+
+:where([dir="rtl"]) .mb-list-row-accessory[data-type="disclosure"] svg {
+  scale: -1 1;
+}
+
+.mb-list-row-accessory[data-type="checkmark"] {
+  color: var(--mb-accent-text);
+}
+
+.mb-list-row-accessory[data-type="checkmark"] svg {
+  width: var(--mb-list-check-width);
+  height: calc(var(--mb-list-check-width) * 0.875);
+  stroke-width: 2.4;
+  overflow: visible;
+}
+
+.mb-list-row-accessory[data-type="info"] {
+  color: var(--mb-accent-text);
+}
+
+.mb-list-row-accessory[data-type="info"] svg {
+  width: var(--mb-list-info-size);
+  height: var(--mb-list-info-size);
+  stroke-width: 1.5;
+}
+
+.mb-list-row-accessory[data-type="info"] svg circle:last-child {
+  fill: currentColor;
+}
+
+.mb-list-item[data-disabled] > .mb-list-row > * {
+  opacity: 0.45;
+}
+
+.mb-list-item[data-disabled] > .mb-list-row {
+  pointer-events: none;
+}

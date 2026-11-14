@@ -1,5 +1,5 @@
-import { Field, FieldGroup, FieldLabel } from "@dreambase/stardust/field"
-import { NumberField } from "@dreambase/stardust/stepper"
+import { Field, FieldGroup, FieldLabel } from "macbetter/field"
+import { NumberField } from "macbetter/stepper"
 
 export default function Example() {
   return (

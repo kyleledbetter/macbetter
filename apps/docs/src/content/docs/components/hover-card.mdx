@@ -16,7 +16,7 @@ Use a hover card for a link preview: a page, a person’s profile, a document. I
 ## Usage
 
 ```tsx
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@dreambase/stardust/hover-card"
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "macbetter/hover-card"
 ```
 
 `HoverCardTrigger` is a real link: give it an `href`, and pressing it navigates. The card waits 600ms before it opens and stays 300ms after the pointer leaves, so the pointer can cross onto it. Media placed first in the card takes the card’s top corners.
@@ -59,6 +59,6 @@ Takes every [ui-sdk Hover Card](https://ui-sdk.dev/docs/components/hover-card) r
 
 | Data attribute | On | Meaning |
 | --- | --- | --- |
-| `data-open` | `.sd-hover-card-trigger` | Its card is showing |
-| `data-side` | `.sd-hover-card`, `.sd-hover-card-arrow` | Where it landed |
-| `data-starting-style`, `data-ending-style` | `.sd-hover-card` | Entering and leaving |
+| `data-open` | `.mb-hover-card-trigger` | Its card is showing |
+| `data-side` | `.mb-hover-card`, `.mb-hover-card-arrow` | Where it landed |
+| `data-starting-style`, `data-ending-style` | `.mb-hover-card` | Entering and leaving |

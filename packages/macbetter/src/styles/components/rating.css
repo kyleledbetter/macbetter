@@ -1,0 +1,122 @@
+/* Rating — a row of stars, filled with the accent up to the score. A pointer previews the score
+   it's over; touch picks at once. Half stars fill halfway. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-rating-size: 16px;
+  --mb-rating-size-sm: 12px;
+  --mb-rating-size-lg: 22px;
+  --mb-rating-gap: 2px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-rating-size: 24px;
+  --mb-rating-size-sm: 14px;
+  --mb-rating-size-lg: 32px;
+  --mb-rating-gap: 4px;
+}
+
+.mb-rating {
+  --mb-rating-s: var(--mb-rating-size);
+  --mb-rating-color: var(--mb-accent);
+  --mb-rating-empty: var(--mb-label-tertiary);
+
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--mb-rating-gap);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mb-rating[data-size="sm"] {
+  --mb-rating-s: var(--mb-rating-size-sm);
+  --mb-rating-gap: 1px;
+}
+
+.mb-rating[data-size="lg"] {
+  --mb-rating-s: var(--mb-rating-size-lg);
+}
+
+/* A read-only score is a picture of a number; it doesn't need to look pressable. */
+.mb-rating[data-readonly] {
+  --mb-rating-empty: var(--mb-label-quaternary);
+}
+
+.mb-rating-item {
+  position: relative;
+  display: inline-flex;
+  width: var(--mb-rating-s);
+  height: var(--mb-rating-s);
+  border-radius: var(--mb-radius-xs);
+  transition: scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+.mb-rating-symbol {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.mb-rating-symbol[data-part="empty"] {
+  fill: none;
+  stroke: var(--mb-rating-empty);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+
+.mb-rating[data-readonly] .mb-rating-symbol[data-part="empty"] {
+  fill: var(--mb-rating-empty);
+  stroke: none;
+}
+
+.mb-rating-symbol[data-part="fill"] {
+  fill: var(--mb-rating-color);
+  clip-path: inset(0 calc((1 - var(--rating-fill, 0)) * 100%) 0 0);
+  transition: clip-path var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+:where([dir="rtl"]) .mb-rating-symbol[data-part="fill"] {
+  clip-path: inset(0 0 0 calc((1 - var(--rating-fill, 0)) * 100%));
+}
+
+/* The radios sit over the star; the ring goes around the star they belong to. */
+.mb-rating-item :where([data-slot="rating-radio"]) {
+  cursor: default;
+  outline: none;
+}
+
+/* Stars are smaller than a fingertip: each radio reaches the hit target vertically and
+   meets its neighbour across the gap. */
+.mb-rating-item :where([data-slot="rating-radio"])::after {
+  content: "";
+  position: absolute;
+  inset-block: min(0px, calc((var(--mb-rating-s) - var(--mb-hit-target)) / 2));
+  inset-inline: calc(var(--mb-rating-gap) / -2);
+}
+
+.mb-rating-item:has([data-slot="rating-radio"]:focus-visible) {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: 1px;
+}
+
+/* A previewed score is a little lighter than a chosen one, so the difference reads. */
+.mb-rating:has(.mb-rating-item[data-highlighted]) .mb-rating-symbol[data-part="fill"] {
+  fill: color-mix(in oklch, var(--mb-rating-color) 72%, transparent);
+}
+
+.mb-rating-item:active:not([data-disabled], [data-readonly]) {
+  scale: 0.88;
+}
+
+.mb-rating[data-disabled] {
+  opacity: 0.4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(:root:not([data-motion="full"])) {
+    .mb-rating-item:active {
+      scale: 1 !important;
+    }
+  }
+}

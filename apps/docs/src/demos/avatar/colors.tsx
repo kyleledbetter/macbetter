@@ -1,4 +1,4 @@
-import { Avatar } from "@dreambase/stardust/avatar"
+import { Avatar } from "macbetter/avatar"
 
 const people = ["Ines Laurent", "Kenji Sato", "Lena Fischer", "Omar Haddad", "Sofia Rossi", "Wen Li"]
 

@@ -1,4 +1,4 @@
-import { DeviceFrame } from "@dreambase/stardust/device-frame"
+import { DeviceFrame } from "macbetter/device-frame"
 import {
   List,
   ListRow,
@@ -6,11 +6,11 @@ import {
   ListRowIcon,
   ListRowTitle,
   ListSection,
-} from "@dreambase/stardust/list"
-import { SegmentedControl, SegmentedControlItem } from "@dreambase/stardust/segmented-control"
-import { Slider } from "@dreambase/stardust/slider"
-import { Switch } from "@dreambase/stardust/switch"
-import { Window, WindowBody, WindowTitle, WindowTitlebar, WindowTrafficLights } from "@dreambase/stardust/window"
+} from "macbetter/list"
+import { SegmentedControl, SegmentedControlItem } from "macbetter/segmented-control"
+import { Slider } from "macbetter/slider"
+import { Switch } from "macbetter/switch"
+import { Window, WindowBody, WindowTitle, WindowTitlebar, WindowTrafficLights } from "macbetter/window"
 import { BadgeIcon, BellIcon, Volume1Icon, Volume2Icon } from "lucide-react"
 import { SectionHeading } from "./section-heading"
 
@@ -93,7 +93,7 @@ function Platforms() {
           <div className="lp-platform-stage">
             <DeviceFrame device="ipad" date="Sat Nov 14" className="lp-platform-ipad" role="group" aria-label="Notifications settings on iPadOS">
               <div className="lp-platform-screen">
-                <div className="sd-text-title-2 lp-platform-screen-title" role="heading" aria-level={3}>
+                <div className="mb-text-title-2 lp-platform-screen-title" role="heading" aria-level={3}>
                   Notifications
                 </div>
                 <SettingsForm id="lp-ipad" />
@@ -108,7 +108,7 @@ function Platforms() {
           <div className="lp-platform-stage">
             <DeviceFrame className="lp-platform-iphone" role="group" aria-label="Notifications settings on iOS">
               <div className="lp-platform-screen">
-                <div className="sd-text-large-title lp-platform-screen-title" role="heading" aria-level={3}>
+                <div className="mb-text-large-title lp-platform-screen-title" role="heading" aria-level={3}>
                   Notifications
                 </div>
                 <SettingsForm id="lp-ios" />

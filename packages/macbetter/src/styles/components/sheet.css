@@ -1,0 +1,324 @@
+/*
+ * Sheet — the iOS bottom sheet with a grabber and detents, and edge
+ * inspectors on iPad and Mac. ui-sdk moves the sheet with its own spring and
+ * follows the finger 1:1; this file only shapes it.
+ */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-sheet-width: 560px;
+  --mb-sheet-inspector-width: 300px;
+  --mb-sheet-inspector-inset: 8px;
+  --mb-sheet-inspector-radius: var(--mb-popup-radius);
+  --mb-sheet-top-gap: 40px;
+  --mb-sheet-header-height: 44px;
+}
+
+:where([data-platform="ipados"]) {
+  --mb-sheet-width: 620px;
+  --mb-sheet-inspector-width: 340px;
+  --mb-sheet-inspector-inset: 10px;
+  --mb-sheet-inspector-radius: var(--mb-radius-3xl);
+  --mb-sheet-top-gap: 40px;
+  --mb-sheet-header-height: 56px;
+}
+
+:where([data-platform="ios"]) {
+  --mb-sheet-width: 440px;
+  --mb-sheet-inspector-width: min(340px, 85vw);
+  --mb-sheet-inspector-inset: 0px;
+  --mb-sheet-inspector-radius: var(--mb-sheet-radius);
+  --mb-sheet-top-gap: calc(max(env(safe-area-inset-top), 20px) + 10px);
+  --mb-sheet-header-height: 56px;
+}
+
+/* The backdrop is a popover in the top layer; undo the UA's fit-content box. */
+.mb-sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: var(--mb-scrim);
+}
+
+.mb-sheet-backdrop[data-hidden] {
+  display: none;
+}
+
+.mb-sheet {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: calc(100dvh - var(--mb-sheet-top-gap));
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: var(--mb-material-thick);
+  -webkit-backdrop-filter: var(--mb-material-filter);
+  backdrop-filter: var(--mb-material-filter);
+  box-shadow: var(--mb-glass-rim), var(--mb-shadow-window);
+  color: var(--mb-label);
+  font: var(--mb-text-body);
+  letter-spacing: var(--mb-tracking-body);
+  outline: none;
+  /* A sheet opened on top of this one pushes it back. */
+  scale: calc(1 - var(--drawer-stack, 0) * 0.05);
+  transition: scale var(--mb-spring-sheet-duration) var(--mb-spring-sheet);
+}
+
+/* Covers the gap a drag past the edge would open. */
+.mb-sheet::after {
+  content: "";
+  position: absolute;
+  background: inherit;
+  pointer-events: none;
+}
+
+.mb-sheet:is([data-side="bottom"], [data-side="top"]) {
+  max-width: var(--mb-sheet-width);
+  height: fit-content;
+  margin-inline: auto;
+}
+
+.mb-sheet:is([data-side="bottom"], [data-side="top"])::after {
+  inset-inline: 0;
+  height: 6rem;
+}
+
+.mb-sheet[data-side="bottom"] {
+  padding-block-end: env(safe-area-inset-bottom);
+  border-start-start-radius: var(--mb-sheet-radius);
+  border-start-end-radius: var(--mb-sheet-radius);
+  transform-origin: 50% 0;
+}
+
+.mb-sheet[data-side="bottom"]::after {
+  top: 100%;
+}
+
+.mb-sheet[data-side="top"] {
+  border-end-start-radius: var(--mb-sheet-radius);
+  border-end-end-radius: var(--mb-sheet-radius);
+}
+
+.mb-sheet[data-side="top"]::after {
+  bottom: 100%;
+}
+
+/* With a large detent the sheet is as tall as the screen allows; detents show part of it. */
+.mb-sheet[data-side="bottom"][data-large] {
+  height: calc(100dvh - var(--mb-sheet-top-gap));
+}
+
+/* Inspectors: a floating panel along the leading or trailing edge. */
+.mb-sheet:is([data-side="left"], [data-side="right"]) {
+  width: var(--mb-sheet-inspector-width);
+  max-width: calc(100vw - 32px);
+  height: calc(100% - var(--mb-sheet-inspector-inset) * 2);
+  max-height: none;
+  margin-block: var(--mb-sheet-inspector-inset);
+  border-radius: var(--mb-sheet-inspector-radius);
+  background: var(--mb-material-regular);
+}
+
+.mb-sheet[data-side="left"] {
+  margin-left: var(--mb-sheet-inspector-inset);
+}
+
+.mb-sheet[data-side="right"] {
+  margin-right: var(--mb-sheet-inspector-inset);
+}
+
+.mb-sheet:is([data-side="left"], [data-side="right"])::after {
+  inset-block: 0;
+  width: 6rem;
+}
+
+.mb-sheet[data-side="left"]::after {
+  right: 100%;
+}
+
+.mb-sheet[data-side="right"]::after {
+  left: 100%;
+}
+
+@scope ([data-platform="ios"]) to (:scope [data-platform]) {
+  .mb-sheet:is([data-side="left"], [data-side="right"]) {
+    height: 100%;
+    margin-block: 0;
+  }
+
+  /* data-side is physical, so these corners are too (logical ones flip in right to left). */
+  .mb-sheet[data-side="left"] {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  .mb-sheet[data-side="right"] {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
+/* Grabber: 36 × 5 at the top. As a button it steps between detents. */
+.mb-sheet-grabber {
+  position: absolute;
+  inset-block-start: 5px;
+  inset-inline-start: 50%;
+  z-index: 1;
+  width: 36px;
+  height: 5px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--mb-radius-full);
+  background: var(--mb-label-quaternary);
+  translate: -50% 0;
+  cursor: grab;
+  touch-action: none;
+}
+
+:where([dir="rtl"]) .mb-sheet-grabber {
+  translate: 50% 0;
+}
+
+/* As a control it needs a 3:1 edge; the decorative bar keeps the system's lighter fill. */
+button.mb-sheet-grabber {
+  background: color-mix(in oklch, var(--mb-ink) 45%, transparent);
+}
+
+button.mb-sheet-grabber::after {
+  content: "";
+  position: absolute;
+  inset: -12px -20px;
+}
+
+.mb-sheet-grabber:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: 3px;
+}
+
+.mb-sheet[data-dragging] .mb-sheet-grabber {
+  cursor: grabbing;
+}
+
+.mb-sheet-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  flex: none;
+  min-height: var(--mb-sheet-header-height);
+  padding: 8px 16px 0;
+}
+
+.mb-sheet-header > .mb-sheet-title {
+  grid-column: 2;
+}
+
+.mb-sheet-header > .mb-sheet-close:first-child {
+  grid-column: 1;
+  justify-self: start;
+}
+
+.mb-sheet-header > .mb-sheet-close:last-child {
+  grid-column: 3;
+  justify-self: end;
+}
+
+.mb-sheet-title {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: var(--mb-text-headline);
+  letter-spacing: var(--mb-tracking-body);
+  text-align: center;
+}
+
+.mb-sheet-description {
+  margin: 0;
+  padding: 4px 16px 0;
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-footnote);
+  letter-spacing: var(--mb-tracking-caption);
+  text-align: center;
+}
+
+.mb-sheet-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 12px 16px 16px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.mb-sheet-close {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--mb-control-height);
+  margin: 0 -8px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: var(--mb-control-radius);
+  background: transparent;
+  color: var(--mb-accent-text);
+  font: var(--mb-control-font);
+  font-weight: 400;
+  letter-spacing: var(--mb-tracking-body);
+  white-space: nowrap;
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  transition:
+    background-color var(--mb-duration-fast) var(--mb-ease-out),
+    opacity var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-sheet-close::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: max(100%, var(--mb-hit-target));
+  height: max(100%, var(--mb-hit-target));
+  translate: -50% -50%;
+}
+
+.mb-sheet-close[data-variant="primary"] {
+  font-weight: 600;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-sheet-close:hover {
+    background: var(--mb-fill-tertiary);
+  }
+}
+
+.mb-sheet-close:active {
+  opacity: 0.45;
+  transition-duration: 0ms;
+}
+
+.mb-sheet-outlet {
+  transform-origin: 50% 0;
+}
+
+/* An inset grouped list fills the body edge to edge, as in a Settings sheet. */
+.mb-sheet-body:has(> .mb-list) {
+  padding-inline: 0;
+}
+
+/* The list paints no backdrop of its own, so header and body read as one surface. */
+.mb-sheet-body > .mb-list {
+  --mb-list-bg: transparent;
+}
+
+/* A bottom sheet holding a grouped list takes the grouped background throughout, as iOS does. */
+.mb-sheet:is([data-side="bottom"], [data-side="top"]):has(> .mb-sheet-body > .mb-list:not([data-variant="plain"])) {
+  background: var(--mb-list-bg);
+}

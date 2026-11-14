@@ -1,4 +1,4 @@
-import { List, ListRow, ListRowAccessory, ListRowTitle, ListRowValue, ListSection } from "@dreambase/stardust/list"
+import { List, ListRow, ListRowAccessory, ListRowTitle, ListRowValue, ListSection } from "macbetter/list"
 
 export default function Example() {
   return (

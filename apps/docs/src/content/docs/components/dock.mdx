@@ -18,7 +18,7 @@ Keep it to the destinations people use most, in an order that doesn't change on 
 ## Usage
 
 ```tsx
-import { Dock, DockItem, DockSeparator } from "@dreambase/stardust/dock"
+import { Dock, DockItem, DockSeparator } from "macbetter/dock"
 ```
 
 ### Items, labels and the running dot
@@ -35,7 +35,7 @@ Move the pointer along the dock: icons grow with their distance from the pointer
 
 - **macOS**: the dock is a glass shelf. Magnification follows a mouse or trackpad pointer only, never touch, and is off under Reduce Motion.
 - **iPadOS and iOS**: there's no magnification without a pointer; items keep their size and the shelf works like a toolbar of icons.
-- Icons default to 48px; set `--sd-dock-icon-size` on the dock to change it.
+- Icons default to 48px; set `--mb-dock-icon-size` on the dock to change it.
 
 ## Accessibility
 
@@ -75,8 +75,8 @@ The line between apps and documents. Takes no props of its own.
 
 | Attribute or variable | On | Meaning |
 | --- | --- | --- |
-| `data-magnifying` | `.sd-dock` | The pointer is over the dock |
-| `data-running` | `.sd-dock-item` | The app is open |
-| `data-bouncing` | `.sd-dock-item` | The app is launching |
-| `--sd-dock-icon-size` | `.sd-dock` | Resting icon size, 48px |
-| `--sd-dock-scale` | `.sd-dock-item` | The icon's current magnification, written as the pointer moves |
+| `data-magnifying` | `.mb-dock` | The pointer is over the dock |
+| `data-running` | `.mb-dock-item` | The app is open |
+| `data-bouncing` | `.mb-dock-item` | The app is launching |
+| `--mb-dock-icon-size` | `.mb-dock` | Resting icon size, 48px |
+| `--mb-dock-scale` | `.mb-dock-item` | The icon's current magnification, written as the pointer moves |

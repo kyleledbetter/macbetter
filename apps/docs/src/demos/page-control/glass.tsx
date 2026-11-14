@@ -1,14 +1,14 @@
 "use client"
 
-import { PageControl } from "@dreambase/stardust/page-control"
+import { PageControl } from "macbetter/page-control"
 import { useState } from "react"
 
 const photos = [
-  { caption: "Sunrise over Half Dome", background: "linear-gradient(160deg, var(--sd-orange), var(--sd-pink) 60%, var(--sd-indigo))" },
-  { caption: "Kelp forest, Monterey", background: "linear-gradient(160deg, var(--sd-mint), var(--sd-teal) 50%, var(--sd-blue))" },
-  { caption: "Lavender fields, Valensole", background: "linear-gradient(160deg, var(--sd-purple), var(--sd-indigo) 60%, var(--sd-blue))" },
-  { caption: "Aspens in October", background: "linear-gradient(160deg, var(--sd-yellow), var(--sd-orange) 55%, var(--sd-brown))" },
-  { caption: "Moss in the rain", background: "linear-gradient(160deg, var(--sd-green), var(--sd-mint) 60%, var(--sd-teal))" },
+  { caption: "Sunrise over Half Dome", background: "linear-gradient(160deg, var(--mb-orange), var(--mb-pink) 60%, var(--mb-indigo))" },
+  { caption: "Kelp forest, Monterey", background: "linear-gradient(160deg, var(--mb-mint), var(--mb-teal) 50%, var(--mb-blue))" },
+  { caption: "Lavender fields, Valensole", background: "linear-gradient(160deg, var(--mb-purple), var(--mb-indigo) 60%, var(--mb-blue))" },
+  { caption: "Aspens in October", background: "linear-gradient(160deg, var(--mb-yellow), var(--mb-orange) 55%, var(--mb-brown))" },
+  { caption: "Moss in the rain", background: "linear-gradient(160deg, var(--mb-green), var(--mb-mint) 60%, var(--mb-teal))" },
 ]
 
 export default function Example() {
@@ -33,7 +33,7 @@ export default function Example() {
       }}
     >
       <figcaption
-        className="sd-text-headline"
+        className="mb-text-headline"
         style={{ justifySelf: "start", color: "#fff", textShadow: "0 1px 8px rgb(0 0 0 / 0.3)" }}
       >
         {photo.caption}

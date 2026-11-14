@@ -17,8 +17,8 @@ The menu bar is where people look for any command on the Mac, so every action yo
 ## Usage
 
 ```tsx
-import { MenuBar, MenuBarContent, MenuBarTrigger } from "@dreambase/stardust/menu-bar"
-import { Menu, MenuItem } from "@dreambase/stardust/menu"
+import { MenuBar, MenuBarContent, MenuBarTrigger } from "macbetter/menu-bar"
+import { Menu, MenuItem } from "macbetter/menu"
 ```
 
 Put one `Menu` per title inside `MenuBar`, with a `MenuBarTrigger` and a `MenuBarContent`. Mark the app menu's trigger `app` to set it in bold. The items are the [Menu](/docs/components/menu) parts.
@@ -41,7 +41,7 @@ The bar is one tab stop with `role="menubar"`; name it with `aria-label`. Left a
     { name: "MenuBarTrigger", type: "app?: boolean", description: "A title. `app` sets the application menu's title in bold." },
     { name: "MenuBarContent", type: "sideOffset", default: "3", description: "A menu that hangs from the bar." },
     { name: "data-open", type: "bar and title", description: "On the bar while any menu is open, and on the open title." },
-    { name: "--sd-menu-bar-height", type: "length", default: "24px · 44px", description: "Mac · iPad." },
-    { name: "--sd-menu-bar-radius", type: "length", default: "4px · capsule", description: "The open title's fill." },
+    { name: "--mb-menu-bar-height", type: "length", default: "24px · 44px", description: "Mac · iPad." },
+    { name: "--mb-menu-bar-radius", type: "length", default: "4px · capsule", description: "The open title's fill." },
   ]}
 />

@@ -1,4 +1,4 @@
-import { Separator } from "@dreambase/stardust/separator"
+import { Separator } from "macbetter/separator"
 
 const rows = [
   { title: "Plan", value: "Pro" },
@@ -12,9 +12,9 @@ export default function Example() {
       style={{
         width: "100%",
         maxWidth: 420,
-        borderRadius: "var(--sd-group-radius)",
-        background: "var(--sd-bg-grouped-secondary)",
-        boxShadow: "0 0 0 0.5px var(--sd-separator)",
+        borderRadius: "var(--mb-group-radius)",
+        background: "var(--mb-bg-grouped-secondary)",
+        boxShadow: "0 0 0 0.5px var(--mb-separator)",
       }}
     >
       {rows.map((row, index) => (
@@ -25,12 +25,12 @@ export default function Example() {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              minHeight: "var(--sd-row-height)",
-              paddingInline: "var(--sd-row-padding)",
+              minHeight: "var(--mb-row-height)",
+              paddingInline: "var(--mb-row-padding)",
             }}
           >
             <span>{row.title}</span>
-            <span style={{ color: "var(--sd-label-secondary)" }}>{row.value}</span>
+            <span style={{ color: "var(--mb-label-secondary)" }}>{row.value}</span>
           </div>
         </div>
       ))}

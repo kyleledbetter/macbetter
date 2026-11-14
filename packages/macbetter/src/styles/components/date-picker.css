@@ -1,0 +1,344 @@
+/*
+ * Date Picker — the macOS date field: segments that type and step, with a
+ * calendar in a translucent popover. Compact is the iOS date button. Date Field
+ * and Time Field are the segments on their own.
+ */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-date-field-segment-radius: 3px;
+  --mb-date-field-segment-pad: 1px;
+  --mb-date-picker-button-bg: var(--mb-fill-tertiary);
+  --mb-date-picker-button-radius: var(--mb-radius-sm);
+  --mb-date-picker-button-pad: 8px;
+  --mb-date-picker-popover-pad: 10px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-date-field-segment-radius: 6px;
+  --mb-date-field-segment-pad: 2px;
+  --mb-date-picker-button-bg: var(--mb-fill-tertiary);
+  --mb-date-picker-button-radius: var(--mb-radius-md);
+  --mb-date-picker-button-pad: 11px;
+  --mb-date-picker-popover-pad: 14px;
+}
+
+/* The field's box: a text field holding segments. */
+.mb-date-field,
+.mb-date-picker-field {
+  --mb-date-field-h: var(--mb-control-height);
+  --mb-date-field-bg: var(--mb-text-field-auto-bg);
+  --mb-date-field-edge: var(--mb-text-field-auto-edge);
+  --mb-date-field-ring: var(--mb-focus-ring);
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  height: var(--mb-date-field-h);
+  padding-inline: calc(var(--mb-text-field-padding) - var(--mb-date-field-segment-pad));
+  border-radius: var(--mb-text-field-radius);
+  background: var(--mb-date-field-bg);
+  box-shadow: var(--mb-date-field-edge);
+  color: var(--mb-label);
+  font: var(--mb-text-field-font);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--mb-tracking-body);
+  white-space: nowrap;
+  outline: var(--mb-focus-ring-width) solid transparent;
+  outline-offset: 2px;
+  transition:
+    outline-color var(--mb-duration-fast) var(--mb-ease-out),
+    outline-offset var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+:is(.mb-date-field, .mb-date-picker-field)[data-size="sm"] {
+  --mb-date-field-h: var(--mb-control-height-sm);
+  font: var(--mb-text-field-font-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+:is(.mb-date-field, .mb-date-picker-field)[data-size="lg"] {
+  --mb-date-field-h: var(--mb-control-height-lg);
+  font: var(--mb-text-field-font-lg);
+  font-variant-numeric: tabular-nums;
+}
+
+.mb-date-field[data-variant="bordered"] {
+  --mb-date-field-bg: var(--mb-bg-field);
+  --mb-date-field-edge: inset 0 0 0 var(--mb-hairline) var(--mb-control-border),
+    inset 0 0.5px 1px light-dark(rgb(0 0 0 / 0.07), rgb(0 0 0 / 0.2));
+}
+
+.mb-date-field[data-variant="filled"] {
+  --mb-date-field-bg: var(--mb-fill-tertiary);
+  --mb-date-field-edge: inset 0 0 0 0 transparent;
+}
+
+.mb-date-field:focus-within,
+.mb-date-picker-field:focus-within {
+  outline-color: var(--mb-date-field-ring);
+  outline-offset: 0px;
+}
+
+.mb-date-field[data-invalid],
+.mb-date-picker-field:has(.mb-date-picker-segments[data-invalid]),
+.mb-date-picker[data-invalid] .mb-date-picker-field {
+  --mb-date-field-edge: inset 0 0 0 1px var(--mb-destructive);
+  --mb-date-field-ring: color-mix(in oklch, var(--mb-destructive) 60%, transparent);
+}
+
+.mb-date-field[data-disabled],
+.mb-date-picker[data-disabled] .mb-date-picker-field {
+  --mb-date-field-bg: var(--mb-fill-quaternary);
+  --mb-date-field-edge: inset 0 0 0 var(--mb-hairline) var(--mb-separator);
+  color: var(--mb-label-tertiary);
+}
+
+/* Inside the picker the segments sit in the field's box, beside the calendar button. */
+.mb-date-picker-segments {
+  display: inline-flex;
+  align-items: center;
+  flex: 1 1 auto;
+}
+
+/* Segments: the focused one fills with the accent, the way a macOS date field selects a part. */
+.mb-date-field-segment {
+  box-sizing: content-box;
+  min-width: 0;
+  height: calc(var(--mb-date-field-h) - 8px);
+  margin: 0;
+  padding: 0 var(--mb-date-field-segment-pad);
+  border: 0;
+  border-radius: var(--mb-date-field-segment-radius);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+  text-align: center;
+  caret-color: transparent;
+  outline: none;
+  field-sizing: content;
+  appearance: none;
+  transition: background-color var(--mb-duration-instant) var(--mb-ease-out);
+}
+
+span.mb-date-field-segment {
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  white-space: pre;
+  color: var(--mb-label-secondary);
+}
+
+.mb-date-field-segment::placeholder {
+  color: var(--mb-placeholder);
+  opacity: 1;
+}
+
+.mb-date-field-segment:focus {
+  background: var(--mb-accent);
+  color: var(--mb-on-accent);
+}
+
+.mb-date-field-segment:focus::placeholder {
+  color: color-mix(in oklch, var(--mb-on-accent) 70%, transparent);
+}
+
+.mb-date-field-segment[data-type="dayPeriod"] {
+  margin-inline-start: 3px;
+}
+
+/* The calendar button: a quiet glyph at the field's trailing edge. */
+.mb-date-picker-trigger {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--mb-text-field-icon) + 6px);
+  height: calc(var(--mb-text-field-icon) + 6px);
+  margin: 0;
+  margin-inline: 4px -4px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--mb-radius-xs);
+  background: transparent;
+  color: var(--mb-label-secondary);
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--mb-duration-fast) var(--mb-ease-out),
+    color var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-date-picker-trigger::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: var(--mb-hit-target);
+  height: var(--mb-hit-target);
+  translate: -50% -50%;
+}
+
+.mb-date-picker-trigger :where(svg) {
+  width: var(--mb-text-field-icon);
+  height: var(--mb-text-field-icon);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-date-picker-trigger:hover {
+    color: var(--mb-label);
+  }
+}
+
+.mb-date-picker-trigger:active,
+.mb-date-picker-trigger[data-open] {
+  color: var(--mb-accent-text);
+}
+
+.mb-date-picker-trigger:focus-visible {
+  outline: 2px solid var(--mb-focus-ring);
+  outline-offset: 1px;
+}
+
+/* Compact: the date as a gray button, accent text while its calendar is open. */
+.mb-date-picker-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: var(--mb-control-height-sm);
+  margin: 0;
+  padding: 0 var(--mb-date-picker-button-pad);
+  border: 0;
+  border-radius: var(--mb-date-picker-button-radius);
+  background: var(--mb-date-picker-button-bg);
+  color: var(--mb-label);
+  font: var(--mb-text-body);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--mb-tracking-body);
+  white-space: nowrap;
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--mb-duration-fast) var(--mb-ease-out),
+    color var(--mb-duration-fast) var(--mb-ease-out),
+    scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+.mb-date-picker-button::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: max(100%, var(--mb-hit-target));
+  height: max(100%, var(--mb-hit-target));
+  translate: -50% -50%;
+}
+
+.mb-date-picker-button[data-open] {
+  color: var(--mb-accent-text);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-date-picker-button:hover {
+    background: var(--mb-fill-secondary);
+  }
+}
+
+.mb-date-picker-button:active {
+  background: var(--mb-fill);
+  transition-duration: 0ms;
+}
+
+.mb-date-picker[data-size="lg"] .mb-date-picker-button {
+  height: var(--mb-control-height);
+}
+
+.mb-date-picker[data-disabled] .mb-date-picker-button {
+  opacity: 0.45;
+}
+
+/* The popover: a material that scales from the field. */
+.mb-date-picker-content {
+  z-index: var(--mb-z-floating);
+  box-sizing: border-box;
+  padding: var(--mb-date-picker-popover-pad);
+  padding-block-start: calc(var(--mb-date-picker-popover-pad) - 4px);
+  border-radius: var(--mb-popup-radius);
+  background: var(--mb-material-regular);
+  -webkit-backdrop-filter: var(--mb-material-filter);
+  backdrop-filter: var(--mb-material-filter);
+  box-shadow: var(--mb-glass-rim), var(--mb-shadow-menu);
+  color: var(--mb-label);
+  transform-origin: var(--transform-origin);
+  transition:
+    scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy),
+    opacity var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-date-picker-content[data-starting-style] {
+  scale: 0.94;
+  opacity: 0;
+}
+
+.mb-date-picker-content[data-ending-style] {
+  scale: 0.97;
+  opacity: 0;
+  transition-duration: var(--mb-duration-fast);
+}
+
+.mb-date-picker-content:focus-visible {
+  outline: none;
+}
+
+/* On a small touch screen the calendar arrives in a sheet from the bottom edge. */
+.mb-date-picker-content[data-presentation="sheet"] {
+  padding: 28px 16px calc(16px + env(safe-area-inset-bottom));
+  border-radius: var(--mb-sheet-radius) var(--mb-sheet-radius) 0 0;
+  background: var(--mb-material-thick);
+  transform-origin: 50% 100%;
+}
+
+.mb-date-picker-content[data-presentation="sheet"]::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 6px;
+  inset-inline-start: 50%;
+  width: 36px;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--mb-label-quaternary);
+  translate: -50% 0;
+}
+
+.mb-date-picker-content[data-presentation="sheet"] .mb-date-picker-calendar {
+  --mb-calendar-w: var(--mb-calendar-cell-width);
+  --mb-calendar-h: var(--mb-calendar-cell-height);
+  --mb-calendar-d: var(--mb-calendar-circle);
+  --mb-calendar-font: var(--mb-calendar-day-font);
+  display: flex;
+  width: min(100%, calc(var(--mb-calendar-cell-width) * 7));
+  margin-inline: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(:root:not([data-motion="full"])) {
+    .mb-date-picker-content[data-starting-style],
+    .mb-date-picker-content[data-ending-style] {
+      scale: 1;
+    }
+  }
+}
+
+/* Filled fields and the compact button are a faint fill (about 1.2:1), as on iOS.
+   Increase Contrast gives them an edge. */
+@media (prefers-contrast: more) {
+  .mb-date-picker .mb-date-picker-button {
+    box-shadow: inset 0 0 0 1px var(--mb-control-border);
+  }
+
+  .mb-date-field[data-variant]:not([data-invalid]),
+  .mb-date-picker:not([data-invalid]) .mb-date-picker-field:not(:has([data-invalid])) {
+    --mb-date-field-edge: inset 0 0 0 1px var(--mb-control-border);
+  }
+}

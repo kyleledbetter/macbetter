@@ -20,7 +20,7 @@ Keep the number of tabs small, usually six or fewer. If people need more, a side
 ## Usage
 
 ```tsx
-import { Tabs, TabsList, TabsPanel, TabsTab } from "@dreambase/stardust/tabs"
+import { Tabs, TabsList, TabsPanel, TabsTab } from "macbetter/tabs"
 ```
 
 ### Tab view
@@ -84,10 +84,10 @@ Renders the sliding indicator for you. Takes the props of a `div`; name it with 
 
 | Attribute or variable | On | Meaning |
 | --- | --- | --- |
-| `data-variant` | `.sd-tabs` | `bordered` or `plain` |
-| `data-selected` | `.sd-tabs-tab`, `.sd-tabs-panel` | The selected tab and its panel |
+| `data-variant` | `.mb-tabs` | `bordered` or `plain` |
+| `data-selected` | `.mb-tabs-tab`, `.mb-tabs-panel` | The selected tab and its panel |
 | `data-orientation` | every part | `horizontal` or `vertical` |
-| `data-disabled` | `.sd-tabs-tab` | The tab can't be selected |
-| `--sd-tabs-height` | inherited | Height of the strip: 24px on macOS, 34pt on touch |
-| `--sd-tabs-padding` | inherited | Horizontal padding inside each tab |
-| `--active-tab-left`, `--active-tab-width`… | `.sd-tabs-indicator` | The selected tab's box, from ui-sdk |
+| `data-disabled` | `.mb-tabs-tab` | The tab can't be selected |
+| `--mb-tabs-height` | inherited | Height of the strip: 24px on macOS, 34pt on touch |
+| `--mb-tabs-padding` | inherited | Horizontal padding inside each tab |
+| `--active-tab-left`, `--active-tab-width`… | `.mb-tabs-indicator` | The selected tab's box, from ui-sdk |

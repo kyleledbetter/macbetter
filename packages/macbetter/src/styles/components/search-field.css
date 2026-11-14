@@ -1,0 +1,128 @@
+/* Search Field — magnifier, prompt and clear button. A rounded rectangle on macOS, a gray capsule on touch. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-search-field-height-sm: var(--mb-control-height-sm);
+  --mb-search-field-height: var(--mb-control-height);
+  --mb-search-field-height-lg: var(--mb-control-height-lg);
+  --mb-search-field-radius: var(--mb-radius-sm);
+  --mb-search-field-pad: 7px;
+  --mb-search-field-glyph: 13px;
+  --mb-search-field-bg: var(--mb-bg-field);
+  --mb-search-field-edge: inset 0 0 0 var(--mb-hairline) var(--mb-control-border),
+    inset 0 0.5px 1px light-dark(rgb(0 0 0 / 0.07), rgb(0 0 0 / 0.2));
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-search-field-height-sm: 32px;
+  --mb-search-field-height: 36px;
+  --mb-search-field-height-lg: 44px;
+  --mb-search-field-radius: var(--mb-radius-full);
+  --mb-search-field-pad: 10px;
+  --mb-search-field-glyph: 16px;
+  --mb-search-field-bg: var(--mb-fill-tertiary);
+  --mb-search-field-edge: inset 0 0 0 0 transparent;
+}
+
+.mb-search-field {
+  --mb-search-field-h: var(--mb-search-field-height);
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--mb-text-field-gap);
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  height: var(--mb-search-field-h);
+  padding-inline: var(--mb-search-field-pad);
+  border-radius: var(--mb-search-field-radius);
+  background: var(--mb-search-field-bg);
+  box-shadow: var(--mb-search-field-edge);
+  color: var(--mb-label);
+  font: var(--mb-text-field-font);
+  letter-spacing: var(--mb-tracking-body);
+  cursor: text;
+  outline: var(--mb-focus-ring-width) solid transparent;
+  outline-offset: 2px;
+  transition:
+    outline-color var(--mb-duration-fast) var(--mb-ease-out),
+    outline-offset var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-search-field[data-size="sm"] {
+  --mb-search-field-h: var(--mb-search-field-height-sm);
+  font: var(--mb-text-field-font-sm);
+}
+
+.mb-search-field[data-size="lg"] {
+  --mb-search-field-h: var(--mb-search-field-height-lg);
+  font: var(--mb-text-field-font-lg);
+}
+
+.mb-search-field-glyph {
+  flex: none;
+  width: var(--mb-search-field-glyph);
+  height: var(--mb-search-field-glyph);
+  color: var(--mb-label-secondary);
+}
+
+.mb-search-field[data-size="sm"] .mb-search-field-glyph {
+  width: calc(var(--mb-search-field-glyph) - 2px);
+  height: calc(var(--mb-search-field-glyph) - 2px);
+}
+
+.mb-search-field[data-size="lg"] .mb-search-field-glyph {
+  width: calc(var(--mb-search-field-glyph) + 2px);
+  height: calc(var(--mb-search-field-glyph) + 2px);
+}
+
+.mb-search-field-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  caret-color: var(--mb-accent);
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  text-overflow: ellipsis;
+}
+
+.mb-search-field-input::placeholder {
+  color: var(--mb-field-placeholder);
+  opacity: 1;
+}
+
+/* The field draws its own clear button; hide the browser's. */
+.mb-search-field-input::-webkit-search-cancel-button,
+.mb-search-field-input::-webkit-search-decoration {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.mb-search-field:has(.mb-search-field-input:focus) {
+  outline-color: var(--mb-focus-ring);
+  outline-offset: 0px;
+}
+
+.mb-search-field[data-disabled] {
+  --mb-search-field-bg: var(--mb-fill-quaternary);
+  color: var(--mb-label-tertiary);
+  cursor: default;
+}
+
+.mb-search-field[data-disabled] .mb-search-field-glyph {
+  color: var(--mb-label-tertiary);
+}
+
+@media (prefers-contrast: more) {
+  :where([data-platform="ios"], [data-platform="ipados"]) {
+    --mb-search-field-edge: inset 0 0 0 1px var(--mb-control-border);
+  }
+}

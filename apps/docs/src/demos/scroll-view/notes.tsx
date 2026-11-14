@@ -1,4 +1,4 @@
-import { ScrollView } from "@dreambase/stardust/scroll-view"
+import { ScrollView } from "macbetter/scroll-view"
 
 const notes = [
   { version: "26.1", date: "Nov 12", text: "Lists remember their scroll position when you come back from a detail view." },
@@ -16,11 +16,11 @@ export default function Example() {
       <div style={{ display: "flex", flexDirection: "column", gap: 14, padding: 16 }}>
         {notes.map((note) => (
           <article key={note.version}>
-            <div style={{ display: "flex", justifyContent: "space-between", font: "var(--sd-text-headline)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", font: "var(--mb-text-headline)" }}>
               <span>Version {note.version}</span>
-              <span style={{ color: "var(--sd-label-secondary)", fontWeight: 400 }}>{note.date}</span>
+              <span style={{ color: "var(--mb-label-secondary)", fontWeight: 400 }}>{note.date}</span>
             </div>
-            <div style={{ marginTop: 2, color: "var(--sd-label-secondary)" }}>{note.text}</div>
+            <div style={{ marginTop: 2, color: "var(--mb-label-secondary)" }}>{note.text}</div>
           </article>
         ))}
       </div>

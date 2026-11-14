@@ -6,7 +6,7 @@ import {
   OutlineItemIcon,
   OutlineItemLabel,
   OutlineItemText,
-} from "@dreambase/stardust/outline"
+} from "macbetter/outline"
 import { FileTextIcon, FolderIcon, ImageIcon, PresentationIcon, SheetIcon } from "lucide-react"
 
 type Node = { value: string; name: string; detail: string; kind: "folder" | "doc" | "image" | "sheet" | "deck"; children?: Node[] }
@@ -19,14 +19,14 @@ const files: Node[] = [
     kind: "folder",
     children: [
       {
-        value: "projects/stardust",
-        name: "Stardust",
+        value: "projects/macbetter",
+        name: "Macbetter",
         detail: "4 items",
         kind: "folder",
         children: [
-          { value: "projects/stardust/spec", name: "Design Spec.pdf", detail: "2.4 MB", kind: "doc" },
-          { value: "projects/stardust/icons", name: "App Icons.png", detail: "860 KB", kind: "image" },
-          { value: "projects/stardust/launch", name: "Launch Plan.key", detail: "18 MB", kind: "deck" },
+          { value: "projects/macbetter/spec", name: "Design Spec.pdf", detail: "2.4 MB", kind: "doc" },
+          { value: "projects/macbetter/icons", name: "App Icons.png", detail: "860 KB", kind: "image" },
+          { value: "projects/macbetter/launch", name: "Launch Plan.key", detail: "18 MB", kind: "deck" },
         ],
       },
       { value: "projects/budget", name: "Budget 2027.numbers", detail: "212 KB", kind: "sheet" },
@@ -74,8 +74,8 @@ export default function Example() {
   return (
     <Outline
       aria-label="Documents"
-      defaultExpanded={["projects", "projects/stardust"]}
-      defaultValue="projects/stardust/spec"
+      defaultExpanded={["projects", "projects/macbetter"]}
+      defaultValue="projects/macbetter/spec"
       style={{ width: "100%", maxWidth: 520 }}
     >
       <Items items={files} />

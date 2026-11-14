@@ -6,7 +6,7 @@ import {
   CommandPalette,
   CommandPaletteContent,
   CommandPaletteTrigger,
-} from "@dreambase/stardust/command-palette"
+} from "macbetter/command-palette"
 import { useState } from "react"
 import { Results } from "./results"
 

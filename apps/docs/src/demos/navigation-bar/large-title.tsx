@@ -1,15 +1,15 @@
 "use client"
 
-import { Artwork } from "@dreambase/stardust/artwork"
-import { Button } from "@dreambase/stardust/button"
-import { DeviceFrame } from "@dreambase/stardust/device-frame"
-import { List, ListRow, ListRowAccessory, ListRowSubtitle, ListRowTitle, ListSection } from "@dreambase/stardust/list"
+import { Artwork } from "macbetter/artwork"
+import { Button } from "macbetter/button"
+import { DeviceFrame } from "macbetter/device-frame"
+import { List, ListRow, ListRowAccessory, ListRowSubtitle, ListRowTitle, ListSection } from "macbetter/list"
 import {
   NavigationBar,
   NavigationBarBackButton,
   NavigationBarTrailing,
   NavigationStack,
-} from "@dreambase/stardust/navigation-bar"
+} from "macbetter/navigation-bar"
 import { EllipsisIcon, PlayIcon, PlusIcon } from "lucide-react"
 import { useState } from "react"
 
@@ -70,9 +70,9 @@ export default function Example() {
             </NavigationBarTrailing>
           </NavigationBar>
           <div style={{ display: "grid", justifyItems: "center", gap: 6, padding: "12px 16px 20px", textAlign: "center" }}>
-            <Artwork seed={open.id} variant={open.variant} palette={open.palette} size={200} radius={18} style={{ boxShadow: "var(--sd-shadow-3)" }} />
-            <div className="sd-text-title-2" style={{ marginTop: 12 }}>{open.title}</div>
-            <div className="sd-text-subheadline sd-label-secondary">{open.host} · {open.episodes} episodes</div>
+            <Artwork seed={open.id} variant={open.variant} palette={open.palette} size={200} radius={18} style={{ boxShadow: "var(--mb-shadow-3)" }} />
+            <div className="mb-text-title-2" style={{ marginTop: 12 }}>{open.title}</div>
+            <div className="mb-text-subheadline mb-label-secondary">{open.host} · {open.episodes} episodes</div>
             <Button variant="filled" style={{ marginTop: 10, minWidth: 180 }}>
               <PlayIcon aria-hidden="true" fill="currentColor" />
               Latest Episode

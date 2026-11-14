@@ -1,0 +1,62 @@
+/* Separator — the HIG hairline between groups of content. */
+
+.mb-separator {
+  --mb-separator-color: var(--mb-separator);
+  --mb-separator-inset: var(--mb-row-padding);
+
+  flex: none;
+  margin: 0;
+  border: 0 solid var(--mb-separator-color);
+  background: none;
+}
+
+/* Borders round to whole device pixels, so a 0.5px hairline is one physical pixel on any screen. */
+.mb-separator[data-orientation="horizontal"] {
+  align-self: stretch;
+  height: 0;
+  border-block-start-width: var(--mb-hairline);
+}
+
+.mb-separator[data-orientation="vertical"] {
+  align-self: stretch;
+  width: 0;
+  min-height: 1em;
+  border-inline-start-width: var(--mb-hairline);
+}
+
+.mb-separator[data-orientation="horizontal"][data-inset="both"] {
+  margin-inline: var(--mb-separator-inset);
+}
+
+.mb-separator[data-orientation="horizontal"][data-inset="leading"] {
+  margin-inline-start: var(--mb-separator-inset);
+}
+
+.mb-separator[data-orientation="vertical"][data-inset] {
+  margin-block: var(--mb-space-2);
+}
+
+.mb-separator-labeled {
+  display: flex;
+  align-items: center;
+  gap: var(--mb-space-5);
+  align-self: stretch;
+  min-width: 0;
+}
+
+.mb-separator-labeled[data-inset="both"] {
+  padding-inline: var(--mb-row-padding);
+}
+
+.mb-separator-labeled > .mb-separator {
+  flex: 1 1 0;
+  align-self: center;
+}
+
+.mb-separator-label {
+  flex: none;
+  font: var(--mb-text-footnote);
+  letter-spacing: var(--mb-tracking-caption);
+  color: var(--mb-label-secondary);
+  white-space: nowrap;
+}

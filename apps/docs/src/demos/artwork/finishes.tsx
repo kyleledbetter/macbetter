@@ -1,4 +1,4 @@
-import { Artwork } from "@dreambase/stardust/artwork"
+import { Artwork } from "macbetter/artwork"
 
 const finishes = ["flat", "gloss", "grain"] as const
 
@@ -8,7 +8,7 @@ export default function Example() {
       {finishes.map((finish) => (
         <figure key={finish} style={{ margin: 0 }}>
           <Artwork seed="Finish" variant="glyph" palette="sunset" finish={finish} size={160} />
-          <figcaption className="sd-text-subheadline" style={{ marginTop: 8 }}>
+          <figcaption className="mb-text-subheadline" style={{ marginTop: 8 }}>
             {finish}
           </figcaption>
         </figure>

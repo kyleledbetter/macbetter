@@ -61,7 +61,7 @@ export default function RunsScatter() {
       table={{ columns: ["Run", "Distance (mi)", "Pace (/mi)"], rows: runs.map(([d, p], i) => [`Run ${i + 1}`, d, pace(p)]) }}
       style={{ width: "100%", maxWidth: 520 }}
     >
-      <div style={{ font: "var(--sd-text-headline)" }}>Faster pace is higher</div>
+      <div style={{ font: "var(--mb-text-headline)" }}>Faster pace is higher</div>
       <EChart option={option} height={230} />
     </ChartFrame>
   )

@@ -112,7 +112,7 @@ export default function SleepStagesChart() {
         value={
           <>
             {Math.floor(asleep / 60)}
-            <span className="sd-chart-unit"> hr </span>
+            <span className="mb-chart-unit"> hr </span>
             {asleep % 60}
           </>
         }
@@ -121,7 +121,7 @@ export default function SleepStagesChart() {
       />
       <EChart option={option} height={200} />
       <ChartLegend
-        items={[...stages].reverse().map((s) => ({ label: s.name, color: `var(--sd-chart-${s.color})`, value: duration(totals[s.name]), shape: "bar" }))}
+        items={[...stages].reverse().map((s) => ({ label: s.name, color: `var(--mb-chart-${s.color})`, value: duration(totals[s.name]), shape: "bar" }))}
       />
     </ChartFrame>
   )

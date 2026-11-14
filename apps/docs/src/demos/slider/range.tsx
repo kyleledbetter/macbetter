@@ -1,5 +1,5 @@
-import { Field, FieldLabel } from "@dreambase/stardust/field"
-import { Slider, SliderControl, SliderValue } from "@dreambase/stardust/slider"
+import { Field, FieldLabel } from "macbetter/field"
+import { Slider, SliderControl, SliderValue } from "macbetter/slider"
 
 export default function Example() {
   return (

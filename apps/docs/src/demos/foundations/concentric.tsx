@@ -3,7 +3,7 @@ function Nested({ outer, padding, inner, label }: { outer: number; padding: numb
     <figure className="m-0 flex flex-col items-center gap-2">
       <div
         className="flex h-36 w-52 bg-fill-secondary"
-        style={{ borderRadius: outer, padding, boxShadow: "inset 0 0 0 1px var(--sd-separator-strong)" }}
+        style={{ borderRadius: outer, padding, boxShadow: "inset 0 0 0 1px var(--mb-separator-strong)" }}
       >
         <div className="flex-1 bg-accent" style={{ borderRadius: inner }} />
       </div>

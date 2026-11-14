@@ -1,0 +1,176 @@
+/* Device Frame — an iPhone or iPad to present iOS and iPadOS layouts in. */
+
+/* An iPhone 16 (393 × 852 points, Dynamic Island) and an 11-inch iPad Air (1180 × 820). */
+.mb-device-frame {
+  --mb-device-scale: 1;
+  --mb-device-screen-width: 393px;
+  --mb-device-screen-height: 852px;
+  --mb-device-screen-radius: 55px;
+  --mb-device-bezel: 11px;
+  --mb-device-safe-top: 59px;
+  --mb-device-safe-bottom: 34px;
+  --mb-device-status-bar-height: 54px;
+
+  position: relative;
+  display: inline-block;
+  flex: none;
+  zoom: var(--mb-device-scale);
+  padding: var(--mb-device-bezel);
+  border-radius: calc(var(--mb-device-screen-radius) + var(--mb-device-bezel));
+  background: rgb(0 0 0);
+  /* The titanium band, a catch of light on its edge, and the shadow it casts. */
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.1),
+    inset 0 0 0 3px rgb(0 0 0),
+    0 0 0 1.5px light-dark(rgb(0 0 0 / 0.42), rgb(255 255 255 / 0.2)),
+    0 0 0 3px light-dark(rgb(255 255 255 / 0.55), rgb(0 0 0 / 0.35)),
+    0 0 0 3.5px light-dark(rgb(0 0 0 / 0.16), rgb(255 255 255 / 0.1)),
+    var(--mb-shadow-5);
+}
+
+.mb-device-frame[data-device="ipad"] {
+  --mb-device-screen-width: 1180px;
+  --mb-device-screen-height: 820px;
+  --mb-device-screen-radius: 18px;
+  --mb-device-bezel: 20px;
+  --mb-device-safe-top: 24px;
+  --mb-device-safe-bottom: 20px;
+  --mb-device-status-bar-height: 24px;
+}
+
+.mb-device-frame[data-device="ipad"][data-orientation="portrait"] {
+  --mb-device-screen-width: 820px;
+  --mb-device-screen-height: 1180px;
+}
+
+/* The screen publishes the hardware insets as the shared --mb-safe-* tokens, which replace
+   env(safe-area-inset-*) inside it. --mb-safe-area-top/-bottom are kept as aliases for older code. */
+.mb-device-frame-screen {
+  --mb-safe-top: var(--mb-device-safe-top);
+  --mb-safe-bottom: var(--mb-device-safe-bottom);
+  --mb-safe-left: 0px;
+  --mb-safe-right: 0px;
+  --mb-safe-area-top: var(--mb-safe-top);
+  --mb-safe-area-bottom: var(--mb-safe-bottom);
+
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  width: var(--mb-device-screen-width);
+  height: var(--mb-device-screen-height);
+  overflow: hidden;
+  border-radius: var(--mb-device-screen-radius);
+  background: var(--mb-bg);
+  color: var(--mb-label);
+  /* Keeps the screen's corners clipped while children use backdrop filters. */
+  clip-path: inset(0 round var(--mb-device-screen-radius));
+}
+
+.mb-device-frame-screen > :not([aria-hidden="true"]) {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* Status bar */
+.mb-device-frame-status-bar {
+  position: absolute;
+  z-index: 100;
+  inset: 0 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 126px 1fr;
+  align-items: center;
+  height: var(--mb-device-status-bar-height);
+  padding-inline: 16px;
+  padding-top: 6px;
+  color: var(--mb-label);
+  font: 600 17px/22px var(--mb-font);
+  letter-spacing: -0.02em;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.mb-device-frame-time {
+  justify-self: center;
+  padding-inline-start: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.mb-device-frame-indicators {
+  grid-column: 3;
+  justify-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding-inline-end: 8px;
+}
+
+.mb-device-frame-icon {
+  display: block;
+  height: 12px;
+  width: auto;
+  fill: currentColor;
+}
+
+.mb-device-frame-icon[data-icon="battery"] {
+  height: 13px;
+}
+
+.mb-device-frame[data-device="ipad"] .mb-device-frame-status-bar {
+  display: flex;
+  gap: 8px;
+  padding-inline: 22px;
+  padding-top: 0;
+  font: 600 14px/18px var(--mb-font);
+}
+
+.mb-device-frame[data-device="ipad"] .mb-device-frame-time {
+  padding: 0;
+}
+
+.mb-device-frame[data-device="ipad"] .mb-device-frame-indicators {
+  margin-inline-start: auto;
+  padding: 0;
+}
+
+.mb-device-frame[data-device="ipad"] .mb-device-frame-icon {
+  height: 10px;
+}
+
+.mb-device-frame[data-device="ipad"] .mb-device-frame-icon[data-icon="battery"] {
+  height: 11px;
+}
+
+/* Dynamic Island */
+.mb-device-frame-island {
+  position: absolute;
+  z-index: 101;
+  top: 11px;
+  left: 50%;
+  width: 126px;
+  height: 37px;
+  translate: -50% 0;
+  border-radius: var(--mb-radius-full);
+  background: rgb(0 0 0);
+  pointer-events: none;
+}
+
+/* Home indicator */
+.mb-device-frame-home-indicator {
+  position: absolute;
+  z-index: 100;
+  bottom: 8px;
+  left: 50%;
+  width: 134px;
+  height: 5px;
+  translate: -50% 0;
+  border-radius: var(--mb-radius-full);
+  background: var(--mb-label);
+  pointer-events: none;
+}
+
+.mb-device-frame[data-device="ipad"] .mb-device-frame-home-indicator {
+  width: 200px;
+  bottom: 6px;
+}

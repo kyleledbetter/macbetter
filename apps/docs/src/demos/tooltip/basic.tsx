@@ -1,5 +1,5 @@
-import { Button } from "@dreambase/stardust/button"
-import { Tooltip, TooltipContent, TooltipShortcut, TooltipTrigger } from "@dreambase/stardust/tooltip"
+import { Button } from "macbetter/button"
+import { Tooltip, TooltipContent, TooltipShortcut, TooltipTrigger } from "macbetter/tooltip"
 import { BoldIcon, ItalicIcon, UnderlineIcon } from "lucide-react"
 
 const styles = [

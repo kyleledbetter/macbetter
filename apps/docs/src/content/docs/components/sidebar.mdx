@@ -22,7 +22,7 @@ On iPhone, use a [tab bar](/docs/components/tab-bar) or a list that pushes scree
 ## Usage
 
 ```tsx
-import { Sidebar, SidebarItem, SidebarSection } from "@dreambase/stardust/sidebar"
+import { Sidebar, SidebarItem, SidebarSection } from "macbetter/sidebar"
 ```
 
 Rows with an `href` are links; rows without one are buttons, for apps that keep the place in state. Mark the place on screen with `current`.
@@ -96,10 +96,10 @@ A row with `href` takes the rest of an `a`'s props; a row without it passes the 
 
 | Name | On | Description |
 | --- | --- | --- |
-| `data-selection` | `.sd-sidebar` | `accent` or `gray`. |
-| `data-current` | `.sd-sidebar-item` | The current row. |
-| `data-open`, `data-closed` | `.sd-sidebar-section-header` | A collapsible section's state. |
-| `--sd-sidebar-bg` | inherited | The sidebar's background. Defaults to the sidebar material; a window sidebar and a split view's sidebar pane set it to transparent. |
-| `--sd-sidebar-filter` | inherited | The sidebar's backdrop filter. Set to `none` alongside a transparent background. |
-| `--sd-sidebar-icon-color` | `.sd-sidebar-item` | Set by `tint`. |
-| `--sd-sidebar-row-height` | inherited | 28 points on macOS, 44 on iPadOS. |
+| `data-selection` | `.mb-sidebar` | `accent` or `gray`. |
+| `data-current` | `.mb-sidebar-item` | The current row. |
+| `data-open`, `data-closed` | `.mb-sidebar-section-header` | A collapsible section's state. |
+| `--mb-sidebar-bg` | inherited | The sidebar's background. Defaults to the sidebar material; a window sidebar and a split view's sidebar pane set it to transparent. |
+| `--mb-sidebar-filter` | inherited | The sidebar's backdrop filter. Set to `none` alongside a transparent background. |
+| `--mb-sidebar-icon-color` | `.mb-sidebar-item` | Set by `tint`. |
+| `--mb-sidebar-row-height` | inherited | 28 points on macOS, 44 on iPadOS. |

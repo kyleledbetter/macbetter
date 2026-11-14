@@ -27,7 +27,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@dreambase/stardust/card"
+} from "macbetter/card"
 ```
 
 `CardTitle` is an `h3` and `CardDescription` a paragraph. `CardFooter` lines its buttons up at the trailing edge.
@@ -44,7 +44,7 @@ import {
 ## Platform behavior
 
 - **macOS.** 13-point semibold titles, 16-point padding and a 12-point corner radius, like a group box in System Settings.
-- **iOS and iPadOS.** 17-point semibold titles and a 22-point corner radius, like a widget or an inset grouped cell. A grouped card is white in light appearance, so put it on `--sd-bg-grouped`, as Settings does; on a white page use `elevated` or `outline`.
+- **iOS and iPadOS.** 17-point semibold titles and a 22-point corner radius, like a widget or an inset grouped cell. A grouped card is white in light appearance, so put it on `--mb-bg-grouped`, as Settings does; on a white page use `elevated` or `outline`.
 - Corners are continuous where the browser supports `corner-shape`, so the curve eases into the straight edge as Apple's do. Elsewhere they're round.
 - Under Reduce Transparency or Increase Contrast, the material card turns opaque.
 
@@ -71,6 +71,6 @@ import {
 
 | Variable | Meaning |
 | --- | --- |
-| `--sd-card-padding`, `--sd-card-gap` | Padding and the space between parts. |
-| `--sd-card-radius` | The corner radius. |
-| `--sd-card-grouped-bg`, `--sd-card-grouped-edge` | The grouped surface and its edge. |
+| `--mb-card-padding`, `--mb-card-gap` | Padding and the space between parts. |
+| `--mb-card-radius` | The corner radius. |
+| `--mb-card-grouped-bg`, `--mb-card-grouped-edge` | The grouped surface and its edge. |

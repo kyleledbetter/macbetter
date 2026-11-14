@@ -16,6 +16,6 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter @dreambase/stardust typecheck
-      - run: pnpm --filter @dreambase/stardust test
+      - run: pnpm --filter macbetter typecheck
+      - run: pnpm --filter macbetter test
       - run: pnpm --filter docs build

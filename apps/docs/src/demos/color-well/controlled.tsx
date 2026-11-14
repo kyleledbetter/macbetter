@@ -1,6 +1,6 @@
 "use client"
 
-import { ColorWell } from "@dreambase/stardust/color-well"
+import { ColorWell } from "macbetter/color-well"
 import { useState } from "react"
 
 /** Black or white, whichever reads better on the color. */
@@ -25,7 +25,7 @@ export default function Example() {
           borderRadius: 999,
           background: color,
           color: inkFor(color),
-          fontFamily: "var(--sd-font-mono)",
+          fontFamily: "var(--mb-font-mono)",
           fontSize: 13,
         }}
       >

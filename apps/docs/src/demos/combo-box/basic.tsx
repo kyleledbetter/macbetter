@@ -8,7 +8,7 @@ import {
   ComboboxLabel,
   ComboboxList,
   ComboboxTrigger,
-} from "@dreambase/stardust/combo-box"
+} from "macbetter/combo-box"
 
 const sizes = ["9", "10", "11", "12", "13", "14", "18", "24", "36", "48", "64"]
 

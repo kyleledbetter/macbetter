@@ -1,0 +1,212 @@
+/* Checkbox — macOS's small rounded square that fills with the accent; on touch, the circular
+   checkmark Reminders and Mail use for selection, since iOS has no square checkbox. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-checkbox-size: 14px;
+  --mb-checkbox-radius: calc(var(--mb-radius-xs) - 0.5px);
+  --mb-checkbox-stroke: 2.1;
+  --mb-checkbox-label-gap: var(--mb-space-3);
+  --mb-checkbox-group-gap: var(--mb-space-3);
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-checkbox-size: 22px;
+  --mb-checkbox-radius: var(--mb-radius-full);
+  --mb-checkbox-stroke: 1.7;
+  --mb-checkbox-label-gap: var(--mb-space-5);
+  --mb-checkbox-group-gap: var(--mb-space-6);
+}
+
+.mb-checkbox {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--mb-checkbox-size);
+  height: var(--mb-checkbox-size);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--mb-checkbox-radius);
+  background: var(--mb-bg-control);
+  box-shadow:
+    inset 0 0 0 var(--mb-hairline) var(--mb-control-border),
+    0 0.5px 1px var(--mb-shadow-color);
+  color: var(--mb-on-accent);
+  font: inherit;
+  cursor: default;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--mb-duration-fast) var(--mb-ease-out),
+    box-shadow var(--mb-duration-fast) var(--mb-ease-out),
+    scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+.mb-checkbox::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: max(100%, var(--mb-hit-target));
+  height: max(100%, var(--mb-hit-target));
+  translate: -50% -50%;
+}
+
+.mb-checkbox:is([data-checked], [data-indeterminate]) {
+  background: var(--mb-accent);
+  box-shadow:
+    inset 0 0 0 var(--mb-hairline) color-mix(in oklch, var(--mb-accent-pressed), transparent 30%),
+    inset 0 0.5px 0 rgb(255 255 255 / 0.28),
+    0 0.5px 1px var(--mb-shadow-color);
+}
+
+.mb-checkbox:active:not([data-disabled], [data-readonly]) {
+  background: color-mix(in oklch, var(--mb-bg-control), var(--mb-ink) 12%);
+  transition-duration: 0ms;
+}
+
+.mb-checkbox:is([data-checked], [data-indeterminate]):active:not([data-disabled], [data-readonly]) {
+  background: var(--mb-accent-pressed);
+}
+
+.mb-checkbox[data-disabled] {
+  opacity: 0.4;
+}
+
+.mb-checkbox[data-invalid] {
+  box-shadow: inset 0 0 0 1.5px var(--mb-destructive);
+}
+
+.mb-checkbox-indicator {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: opacity var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-checkbox-indicator[data-ending-style] {
+  opacity: 0;
+  transition-duration: var(--mb-duration-instant);
+}
+
+.mb-checkbox-glyph {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--mb-checkbox-stroke);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The check draws itself in, stroke first, like a pen. */
+.mb-checkbox-check {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset var(--mb-duration-base) var(--mb-ease-out) 30ms;
+}
+
+.mb-checkbox-indicator[data-starting-style] .mb-checkbox-check {
+  stroke-dashoffset: 1;
+}
+
+.mb-checkbox-dash,
+.mb-checkbox-indicator[data-indeterminate] .mb-checkbox-check {
+  display: none;
+}
+
+.mb-checkbox-indicator[data-indeterminate] .mb-checkbox-dash {
+  display: inline;
+}
+
+/* A checkbox with a title. */
+.mb-checkbox-label {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--mb-checkbox-label-gap);
+  color: var(--mb-label);
+  font: var(--mb-text-body);
+  letter-spacing: var(--mb-tracking-body);
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Centers the box on the first line, so a long title wraps under its text. */
+.mb-checkbox-label > .mb-checkbox {
+  margin-block-start: calc((1lh - var(--mb-checkbox-size)) / 2);
+}
+
+.mb-checkbox-label:has(> .mb-checkbox[data-disabled]) {
+  color: var(--mb-label-tertiary);
+}
+
+.mb-checkbox-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mb-space-1);
+  min-width: 0;
+}
+
+.mb-checkbox-description {
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-callout);
+}
+
+.mb-checkbox-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--mb-checkbox-group-gap);
+}
+
+.mb-checkbox-group[data-disabled] .mb-checkbox-label {
+  color: var(--mb-label-tertiary);
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .mb-checkbox {
+    background: transparent;
+    box-shadow: inset 0 0 0 1.5px var(--mb-control-border);
+  }
+
+  .mb-checkbox:is([data-checked], [data-indeterminate]) {
+    background: var(--mb-accent);
+    box-shadow: none;
+  }
+
+  .mb-checkbox:active:not([data-disabled], [data-readonly]) {
+    background: var(--mb-fill-tertiary);
+    scale: 0.92;
+  }
+
+  .mb-checkbox:is([data-checked], [data-indeterminate]):active:not([data-disabled], [data-readonly]) {
+    background: var(--mb-accent-pressed);
+  }
+
+  /* The circle pops a little as it fills. */
+  .mb-checkbox-indicator {
+    transition:
+      opacity var(--mb-duration-fast) var(--mb-ease-out),
+      scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+  }
+
+  .mb-checkbox-indicator[data-starting-style] {
+    scale: 0.6;
+  }
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  @media (prefers-reduced-motion: reduce) {
+  :where(:root:not([data-motion="full"])) {
+      .mb-checkbox:active:not([data-disabled], [data-readonly]) {
+        scale: none;
+      }
+  }
+}
+}
+
+.mb-checkbox-group:has(.mb-checkbox-description) {
+  gap: calc(var(--mb-checkbox-group-gap) + var(--mb-space-3));
+}

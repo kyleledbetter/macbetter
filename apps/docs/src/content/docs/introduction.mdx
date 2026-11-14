@@ -1,15 +1,15 @@
 export const metadata = {
   title: "Introduction",
-  description: "Stardust is Dreambase's design system: macOS, iPadOS and iOS for the web, themeable to any brand, built on ui-sdk.",
+  description: "Macbetter is a design system: macOS, iPadOS and iOS for the web, themeable to any brand, built on ui-sdk.",
 }
 
 # Introduction
 
-<Lead>Stardust is Dreambase's design system for the web. It renders macOS, iPadOS and iOS from one set of React components, follows Apple's Human Interface Guidelines, and takes on your brand through a short list of seed tokens.</Lead>
+<Lead>Macbetter is a design system for the web. It renders macOS, iPadOS and iOS from one set of React components, follows Apple's Human Interface Guidelines, and takes on your brand through a short list of seed tokens.</Lead>
 
 <Demo name="guides/settings" hideCode />
 
-The settings above are three Stardust components on plain markup. Switch the platform in the preview's toolbar: text, control heights, row heights and corner shapes change to match each platform, and nothing in the code changes.
+The settings above are three Macbetter components on plain markup. Switch the platform in the preview's toolbar: text, control heights, row heights and corner shapes change to match each platform, and nothing in the code changes.
 
 ## Three ideas
 
@@ -23,18 +23,18 @@ A theme sets the brand's accent, its ink and background colors, a gray to tint f
 
 ### Behavior comes from ui-sdk
 
-Stardust doesn't implement keyboard handling, focus management or ARIA. Each component wraps a part from [ui-sdk](https://ui-sdk.dev), which owns those behaviors along with right-to-left support and server rendering. Stardust adds classes, a few `data-*` variants and the CSS. Because the components are ui-sdk components, an agent connected through ui-sdk's agent bridge can read their state and call their actions by name. [Built for agents](/docs/agents) covers that.
+Macbetter doesn't implement keyboard handling, focus management or ARIA. Each component wraps a part from [ui-sdk](https://ui-sdk.dev), which owns those behaviors along with right-to-left support and server rendering. Macbetter adds classes, a few `data-*` variants and the CSS. Because the components are ui-sdk components, an agent connected through ui-sdk's agent bridge can read their state and call their actions by name. [Built for agents](/docs/agents) covers that.
 
 ## What's in the box
 
-- **One stylesheet**, `@dreambase/stardust/styles.css`, in its own cascade layer: tokens, platform metrics, four built-in themes, base styles, materials and every component's CSS.
-- **Components**, one file each, imported by name: `@dreambase/stardust/button`, `@dreambase/stardust/switch`, `@dreambase/stardust/segmented-control` and the rest listed in the sidebar.
-- **`<StardustScript />`**, which sets `data-platform` before first paint so a phone never flashes desktop metrics.
-- **Theme helpers** in `@dreambase/stardust/theme`: `createTheme()`, `themeVariables()` and `contrastRatio()`.
-- **Text style classes** such as `sd-text-headline` and `sd-text-body`, label colors such as `sd-label-secondary`, and the `sd-material` and `sd-glass` surfaces.
+- **One stylesheet**, `macbetter/styles.css`, in its own cascade layer: tokens, platform metrics, four built-in themes, base styles, materials and every component's CSS.
+- **Components**, one file each, imported by name: `macbetter/button`, `macbetter/switch`, `macbetter/segmented-control` and the rest listed in the sidebar.
+- **`<MacbetterScript />`**, which sets `data-platform` before first paint so a phone never flashes desktop metrics.
+- **Theme helpers** in `macbetter/theme`: `createTheme()`, `themeVariables()` and `contrastRatio()`.
+- **Text style classes** such as `mb-text-headline` and `mb-text-body`, label colors such as `mb-label-secondary`, and the `mb-material` and `mb-glass` surfaces.
 
 ## Where to go next
 
-- [Installation](/docs/installation) adds Stardust to a React app.
+- [Installation](/docs/installation) adds Macbetter to a React app.
 - [Platforms](/docs/platforms) and [Theming](/docs/theming) cover the two attributes that shape everything.
 - [Foundations](/docs/foundations/color) document the tokens: color, type, materials, motion, layout and accessibility.

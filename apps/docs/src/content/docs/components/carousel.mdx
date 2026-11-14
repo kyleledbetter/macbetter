@@ -29,14 +29,14 @@ import {
   CarouselNext,
   CarouselPrevious,
   CarouselViewport,
-} from "@dreambase/stardust/carousel"
+} from "macbetter/carousel"
 ```
 
 Put the cards in `CarouselItem`s inside the viewport and content. `CarouselPrevious` and `CarouselNext` draw their chevrons and are named "Previous" and "Next" unless you pass your own `aria-label`. Write one `CarouselIndicator` per card, each named after its card; dots past the page count hide themselves.
 
 ### Layout
 
-`layout="peek"`, the default, sizes each card to most of the view so the next one peeks in, like the App Store. `layout="full"` shows one page at a time. To size cards yourself, set `--sd-carousel-item-size`.
+`layout="peek"`, the default, sizes each card to most of the view so the next one peeks in, like the App Store. `layout="full"` shows one page at a time. To size cards yourself, set `--mb-carousel-item-size`.
 
 ## Platform behavior
 
@@ -67,8 +67,8 @@ Takes every prop of ui-sdk's [Carousel](https://ui-sdk.dev/docs/react/components
 
 | Attribute or variable | On | Meaning |
 | --- | --- | --- |
-| `data-layout` | `.sd-carousel` | `peek` or `full`. |
-| `data-disabled` | `.sd-carousel-button` | No page that way. |
-| `data-selected` | `.sd-carousel-indicator` | The current page's dot. |
-| `--sd-carousel-item-size` | platform | Each card's width. |
-| `--sd-carousel-gap`, `--sd-carousel-inset` | platform | Space between cards, and the inset before the first. |
+| `data-layout` | `.mb-carousel` | `peek` or `full`. |
+| `data-disabled` | `.mb-carousel-button` | No page that way. |
+| `data-selected` | `.mb-carousel-indicator` | The current page's dot. |
+| `--mb-carousel-item-size` | platform | Each card's width. |
+| `--mb-carousel-gap`, `--mb-carousel-inset` | platform | Space between cards, and the inset before the first. |

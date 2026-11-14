@@ -1,4 +1,4 @@
-import { Toggle, ToggleGroup, ToggleIcon } from "@dreambase/stardust/toggle"
+import { Toggle, ToggleGroup, ToggleIcon } from "macbetter/toggle"
 import { BoldIcon, ItalicIcon, StrikethroughIcon, UnderlineIcon } from "lucide-react"
 
 export default function Example() {

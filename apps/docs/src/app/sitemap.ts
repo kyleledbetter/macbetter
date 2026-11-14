@@ -3,7 +3,7 @@ import { join } from "node:path"
 import type { MetadataRoute } from "next"
 import { allDocSlugs } from "@/lib/docs"
 
-const base = "https://stardust.dreambase.ai"
+const base = "https://macbetter.dev"
 
 /** Static routes under a folder, like /examples/finder. Dynamic segments are skipped. */
 function routesUnder(app: string, folder: string): string[] {

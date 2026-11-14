@@ -1,0 +1,438 @@
+/* Color Well — a swatch button that opens a color editor. macOS draws a bezeled well around the swatch;
+   iPadOS and iOS draw UIColorWell's circle inside a spectrum ring. The editor floats on a translucent popover. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-color-well-width: 44px;
+  --mb-color-well-height: var(--mb-control-height-sm);
+  --mb-color-well-panel-width: 240px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-color-well-width: 30px;
+  --mb-color-well-height: 30px;
+  --mb-color-well-panel-width: 300px;
+}
+
+.mb-color-well {
+  --mb-color-well-checker: repeating-conic-gradient(rgb(0 0 0 / 0.14) 0 25%, #ffffff 0 50%) 0 0 / 8px 8px;
+  --mb-color-well-edge: light-dark(rgb(0 0 0 / 0.18), rgb(255 255 255 / 0.24));
+  --mb-color-well-w: var(--mb-color-well-width);
+  --mb-color-well-h: var(--mb-color-well-height);
+
+  display: inline-flex;
+  flex: none;
+}
+
+.mb-color-well[data-size="sm"] {
+  --mb-color-well-w: calc(var(--mb-color-well-width) * 0.8);
+  --mb-color-well-h: calc(var(--mb-color-well-height) * 0.8);
+}
+
+.mb-color-well[data-size="lg"] {
+  --mb-color-well-w: calc(var(--mb-color-well-width) * 1.3);
+  --mb-color-well-h: var(--mb-control-height);
+}
+
+/* The well. */
+.mb-color-well-trigger {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  width: var(--mb-color-well-w);
+  height: var(--mb-color-well-h);
+  margin: 0;
+  padding: 3px;
+  border: 0;
+  border-radius: var(--mb-control-radius-sm);
+  background: var(--mb-bg-control);
+  box-shadow:
+    0 0 0 var(--mb-hairline) var(--mb-control-border),
+    0 0.5px 1.5px var(--mb-shadow-color);
+  cursor: default;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--mb-duration-fast) var(--mb-ease-out),
+    scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+.mb-color-well-trigger::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: max(100%, var(--mb-hit-target));
+  height: max(100%, var(--mb-hit-target));
+  translate: -50% -50%;
+}
+
+.mb-color-well-trigger:active,
+.mb-color-well-trigger[data-open] {
+  background: color-mix(in oklch, var(--mb-bg-control), var(--mb-ink) 14%);
+}
+
+.mb-color-well-swatch {
+  flex: 1;
+  border-radius: calc(var(--mb-control-radius-sm) - 3px);
+  background:
+    linear-gradient(var(--color-picker-color), var(--color-picker-color)),
+    var(--mb-color-well-checker);
+  box-shadow: inset 0 0 0 var(--mb-hairline) var(--mb-color-well-edge);
+}
+
+.mb-color-well[data-disabled] .mb-color-well-trigger {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* The editor. */
+.mb-color-well-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mb-space-5);
+  width: var(--mb-color-well-panel-width);
+  max-width: calc(100vw - 16px);
+  margin: 0;
+  padding: var(--mb-space-5);
+  border: 0;
+  border-radius: var(--mb-popup-radius);
+  background: var(--mb-material-regular);
+  -webkit-backdrop-filter: var(--mb-material-filter);
+  backdrop-filter: var(--mb-material-filter);
+  box-shadow: var(--mb-glass-rim), var(--mb-shadow-menu);
+  color: var(--mb-label);
+  font: var(--mb-text-body);
+  letter-spacing: var(--mb-tracking-body);
+  transform-origin: var(--transform-origin);
+  transition:
+    opacity var(--mb-duration-fast) var(--mb-ease-out),
+    scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+.mb-color-well-panel[data-starting-style] {
+  opacity: 0;
+  scale: 0.94;
+}
+
+.mb-color-well-panel[data-ending-style] {
+  opacity: 0;
+  scale: 0.97;
+  transition-duration: var(--mb-duration-fast), var(--mb-duration-fast);
+  transition-timing-function: var(--mb-ease-out);
+}
+
+.mb-color-well-area {
+  position: relative;
+  height: 150px;
+  border-radius: var(--mb-radius-md);
+  background: var(--color-area-background, var(--mb-color-well-checker));
+  box-shadow: inset 0 0 0 var(--mb-hairline) var(--mb-color-well-edge);
+  touch-action: none;
+}
+
+.mb-color-well-sliders {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mb-space-4);
+}
+
+.mb-color-well-slider {
+  position: relative;
+  height: 12px;
+  border-radius: var(--mb-radius-full);
+  background: var(--color-slider-background);
+  box-shadow: inset 0 0 0 var(--mb-hairline) var(--mb-color-well-edge);
+  touch-action: none;
+}
+
+/* Hue reads as the full spectrum, as in AppKit's color panel, not at the color's own brightness. */
+.mb-color-well-slider[data-channel="hue"] {
+  background: linear-gradient(to right in hsl longer hue, hsl(0 100% 50%), hsl(0 100% 50%));
+}
+
+:where([dir="rtl"]) .mb-color-well-slider[data-channel="hue"] {
+  background: linear-gradient(to left in hsl longer hue, hsl(0 100% 50%), hsl(0 100% 50%));
+}
+
+.mb-color-well-slider[data-channel="alpha"] {
+  background: var(--color-slider-background), var(--mb-color-well-checker);
+}
+
+.mb-color-well-thumb {
+  width: 18px;
+  height: 18px;
+  border: 3px solid #ffffff;
+  border-radius: var(--mb-radius-full);
+  background: var(--color-picker-color);
+  box-shadow:
+    0 0 0 var(--mb-hairline) rgb(0 0 0 / 0.2),
+    0 1px 4px rgb(0 0 0 / 0.3);
+  translate: -50% -50%;
+  transition: scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+:where([dir="rtl"]) .mb-color-well-thumb {
+  translate: 50% -50%;
+}
+
+/* A slider's thumb stays inside the track at both ends, so its center travels the inner width. */
+.mb-color-well-slider .mb-color-well-thumb {
+  top: 50%;
+  translate: calc(var(--color-slider-thumb-position) * -1) -50%;
+}
+
+:where([dir="rtl"]) .mb-color-well-slider .mb-color-well-thumb {
+  translate: var(--color-slider-thumb-position) -50%;
+}
+
+.mb-color-well-thumb:active {
+  scale: 1.12;
+}
+
+.mb-color-well-thumb:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: 1px;
+}
+
+.mb-color-well-thumb[data-out-of-gamut] {
+  border-style: dashed;
+}
+
+.mb-color-well-fields {
+  display: flex;
+  align-items: center;
+  gap: var(--mb-space-4);
+}
+
+.mb-color-well-preview {
+  flex: none;
+  width: 28px;
+  height: var(--mb-control-height-sm);
+  border-radius: var(--mb-radius-xs);
+  background:
+    linear-gradient(var(--color-picker-color), var(--color-picker-color)),
+    var(--mb-color-well-checker);
+  box-shadow: inset 0 0 0 var(--mb-hairline) var(--mb-color-well-edge);
+}
+
+.mb-color-well-input {
+  flex: 1;
+  min-width: 0;
+  height: var(--mb-control-height-sm);
+  margin: 0;
+  padding: 0 var(--mb-space-4);
+  border: 0;
+  border-radius: var(--mb-control-radius-sm);
+  background: var(--mb-bg-field);
+  box-shadow: inset 0 0 0 var(--mb-hairline) var(--mb-control-border);
+  color: var(--mb-label);
+  font: var(--mb-text-body);
+  font-family: var(--mb-font-mono);
+  letter-spacing: 0;
+  text-transform: uppercase;
+  /* A hex code reads left to right in every locale; without this RTL shows "EE5700#". */
+  direction: ltr;
+  outline: none;
+}
+
+.mb-color-well-input:focus {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: 0;
+}
+
+.mb-color-well-eyedropper {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--mb-control-height-sm);
+  height: var(--mb-control-height-sm);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--mb-control-radius-sm);
+  background: transparent;
+  color: var(--mb-label-secondary);
+  cursor: default;
+}
+
+.mb-color-well-eyedropper svg {
+  width: var(--mb-icon-size);
+  height: var(--mb-icon-size);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.mb-color-well-eyedropper[data-unsupported] {
+  display: none;
+}
+
+.mb-color-well-eyedropper:active {
+  background: var(--mb-fill-secondary);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-color-well-trigger:hover:not([data-open]) {
+    background: color-mix(in oklch, var(--mb-bg-control), var(--mb-ink) 5%);
+  }
+
+  .mb-color-well-eyedropper:hover {
+    background: var(--mb-fill-tertiary);
+    color: var(--mb-label);
+  }
+}
+
+.mb-color-well-presets {
+  --mb-color-well-preset: 24px;
+  display: grid;
+  grid-template-columns: repeat(6, var(--mb-color-well-preset));
+  justify-content: space-between;
+  row-gap: var(--mb-space-4);
+}
+
+.mb-color-well-preset {
+  position: relative;
+  aspect-ratio: 1;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--mb-radius-full);
+  background:
+    linear-gradient(var(--color-picker-color), var(--color-picker-color)),
+    var(--mb-color-well-checker);
+  box-shadow: inset 0 0 0 var(--mb-hairline) var(--mb-color-well-edge);
+  cursor: default;
+  transition: scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+.mb-color-well-preset[data-selected] {
+  outline: 2px solid var(--mb-label);
+  outline-offset: 2px;
+}
+
+.mb-color-well-preset:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: 2px;
+}
+
+.mb-color-well-preset:active {
+  scale: 0.9;
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  /* UIColorWell: the color in a circle, inside a ring of the spectrum. */
+  .mb-color-well-trigger {
+    --mb-color-well-spectrum: conic-gradient(
+      var(--mb-red),
+      var(--mb-yellow),
+      var(--mb-green),
+      var(--mb-teal),
+      var(--mb-blue),
+      var(--mb-purple),
+      var(--mb-pink),
+      var(--mb-red)
+    );
+    padding: 4px;
+    border-radius: var(--mb-radius-full);
+    background:
+      radial-gradient(closest-side, var(--mb-bg) calc(100% - 3px), transparent calc(100% - 2.5px)),
+      var(--mb-color-well-spectrum);
+    box-shadow: none;
+  }
+
+  .mb-color-well-trigger:active,
+  .mb-color-well-trigger[data-open] {
+    background:
+      radial-gradient(closest-side, var(--mb-bg) calc(100% - 3px), transparent calc(100% - 2.5px)),
+      var(--mb-color-well-spectrum);
+    scale: 0.92;
+  }
+
+  .mb-color-well-swatch {
+    border-radius: var(--mb-radius-full);
+  }
+
+  .mb-color-well-panel {
+    gap: var(--mb-space-6);
+    padding: var(--mb-space-6);
+  }
+
+  .mb-color-well-panel[data-presentation="sheet"] {
+    width: auto;
+    max-width: none;
+    padding-block-end: max(var(--mb-space-8), env(safe-area-inset-bottom));
+    border-radius: var(--mb-sheet-radius) var(--mb-sheet-radius) 0 0;
+    background: var(--mb-material-thick);
+  }
+
+  .mb-color-well-area {
+    height: 180px;
+    border-radius: var(--mb-radius-lg);
+  }
+
+  .mb-color-well-slider {
+    height: 28px;
+  }
+
+  .mb-color-well-thumb {
+    width: 28px;
+    height: 28px;
+    border-width: 4px;
+  }
+
+  .mb-color-well-preview,
+  .mb-color-well-input,
+  .mb-color-well-eyedropper {
+    height: 36px;
+  }
+
+  .mb-color-well-preview {
+    width: 36px;
+    border-radius: var(--mb-radius-sm);
+  }
+
+  .mb-color-well-input {
+    border-radius: var(--mb-radius-md);
+    background: var(--mb-fill-tertiary);
+    box-shadow: none;
+  }
+
+  .mb-color-well-eyedropper {
+    width: 36px;
+    color: var(--mb-accent-text);
+  }
+
+  .mb-color-well-presets {
+    --mb-color-well-preset: 34px;
+    row-gap: var(--mb-space-5);
+  }
+
+  /* The sheet's grabber. */
+  .mb-color-well-panel[data-presentation="sheet"]::before {
+    content: "";
+    align-self: center;
+    width: 36px;
+    height: 5px;
+    margin-block: calc(var(--mb-space-3) * -1) var(--mb-space-1);
+    border-radius: var(--mb-radius-full);
+    background: var(--mb-label-quaternary);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(:root:not([data-motion="full"])) {
+    .mb-color-well-panel[data-starting-style],
+    .mb-color-well-panel[data-ending-style] {
+      scale: 1 !important;
+    }
+
+    .mb-color-well-trigger:active,
+    .mb-color-well-thumb:active,
+    .mb-color-well-preset:active {
+      scale: 1 !important;
+    }
+  }
+}

@@ -4,7 +4,7 @@ import {
   DisclosureItem,
   DisclosurePanel,
   DisclosureTrigger,
-} from "@dreambase/stardust/disclosure"
+} from "macbetter/disclosure"
 
 const topics = [
   {
@@ -27,7 +27,7 @@ const topics = [
 export default function Example() {
   return (
     // A grouped box sits on the grouped background, the way iOS Settings draws it.
-    <div style={{ width: "100%", maxWidth: 512, padding: 16, borderRadius: 16, background: "var(--sd-bg-grouped)" }}>
+    <div style={{ width: "100%", maxWidth: 512, padding: 16, borderRadius: 16, background: "var(--mb-bg-grouped)" }}>
       <DisclosureGroup defaultValue={["backup"]}>
         {topics.map((topic) => (
           <DisclosureItem key={topic.value} value={topic.value}>

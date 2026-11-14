@@ -1,0 +1,261 @@
+/* Sidebar — the macOS and iPadOS source list: section headers, rows with tinted icons, a filled selection. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-sidebar-row-height: 28px;
+  --mb-sidebar-row-gap: 1px;
+  --mb-sidebar-row-padding: 8px;
+  --mb-sidebar-row-radius: var(--mb-radius-md);
+  --mb-sidebar-icon-size: 16px;
+  --mb-sidebar-inset: 10px;
+  --mb-sidebar-font: 400 13px/16px var(--mb-font);
+  --mb-sidebar-header-font: 600 11px/14px var(--mb-font);
+  /* Secondary, not tertiary: 11px headers need 4.5:1 over the sidebar material in light mode. */
+  --mb-sidebar-header-color: var(--mb-label-secondary);
+  --mb-sidebar-header-height: 26px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-sidebar-row-height: 44px;
+  --mb-sidebar-row-gap: 2px;
+  --mb-sidebar-row-padding: 12px;
+  --mb-sidebar-row-radius: var(--mb-radius-lg);
+  --mb-sidebar-icon-size: 22px;
+  --mb-sidebar-inset: 16px;
+  --mb-sidebar-font: 400 17px/22px var(--mb-font);
+  --mb-sidebar-header-font: 700 20px/25px var(--mb-font-display);
+  --mb-sidebar-header-color: var(--mb-label);
+  --mb-sidebar-header-height: 44px;
+}
+
+.mb-sidebar {
+  --mb-sidebar-selected-bg: var(--mb-accent);
+  --mb-sidebar-selected-fg: var(--mb-on-accent);
+  --mb-sidebar-selected-icon: var(--mb-on-accent);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--mb-space-3);
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--mb-sidebar-padding-top, var(--mb-space-4)) var(--mb-sidebar-inset) var(--mb-space-6);
+  background: var(--mb-sidebar-bg, var(--mb-material-sidebar));
+  -webkit-backdrop-filter: var(--mb-sidebar-filter, var(--mb-material-filter));
+  backdrop-filter: var(--mb-sidebar-filter, var(--mb-material-filter));
+  color: var(--mb-label);
+  font: var(--mb-sidebar-font);
+  letter-spacing: var(--mb-tracking-body);
+  user-select: none;
+  -webkit-user-select: none;
+  scrollbar-width: thin;
+}
+
+.mb-sidebar[data-selection="gray"] {
+  --mb-sidebar-selected-bg: var(--mb-fill);
+  --mb-sidebar-selected-fg: var(--mb-label);
+  --mb-sidebar-selected-icon: var(--mb-sidebar-icon-color, var(--mb-accent-text));
+}
+
+/* Behind the key window, the selection goes gray, as it does on the Mac. */
+:where(.mb-window[data-inactive]) .mb-sidebar[data-selection] {
+  --mb-sidebar-selected-bg: var(--mb-fill-secondary);
+  --mb-sidebar-selected-fg: var(--mb-label);
+  --mb-sidebar-selected-icon: var(--mb-label-secondary);
+}
+
+/* Sections */
+.mb-sidebar-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.mb-sidebar-section-header {
+  display: flex;
+  align-items: center;
+  gap: var(--mb-space-2);
+  width: 100%;
+  min-height: var(--mb-sidebar-header-height);
+  margin: 0;
+  padding: var(--mb-space-3) var(--mb-sidebar-row-padding) var(--mb-space-1);
+  border: 0;
+  border-radius: var(--mb-sidebar-row-radius);
+  background: transparent;
+  color: var(--mb-sidebar-header-color);
+  font: var(--mb-sidebar-header-font);
+  letter-spacing: var(--mb-tracking-caption);
+  text-align: start;
+  cursor: default;
+}
+
+.mb-sidebar-section:first-child > .mb-sidebar-section-header {
+  padding-top: var(--mb-space-1);
+}
+
+.mb-sidebar-section-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mb-sidebar-section-chevron {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0;
+  rotate: 0deg;
+  transition:
+    rotate var(--mb-spring-snappy-duration) var(--mb-spring-snappy),
+    opacity var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-sidebar-section-header[data-open] .mb-sidebar-section-chevron {
+  rotate: 90deg;
+}
+
+:where([dir="rtl"]) .mb-sidebar-section-header:not([data-open]) .mb-sidebar-section-chevron {
+  rotate: 180deg;
+}
+
+/* macOS shows the chevron only under the pointer; touch keeps it visible, in the accent color. */
+.mb-sidebar-section-header:is(:focus-visible, [data-closed]) .mb-sidebar-section-chevron,
+.mb-sidebar-section:hover .mb-sidebar-section-chevron {
+  opacity: 1;
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .mb-sidebar-section-chevron {
+    width: 16px;
+    height: 16px;
+    opacity: 1;
+    color: var(--mb-accent-text);
+  }
+}
+
+.mb-sidebar-section-header:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: -2px;
+}
+
+.mb-sidebar-section-panel {
+  height: var(--collapsible-panel-height);
+  overflow: hidden;
+  transition: height var(--mb-spring-smooth-duration) var(--mb-spring-smooth);
+}
+
+.mb-sidebar-section-panel[data-starting-style],
+.mb-sidebar-section-panel[data-ending-style] {
+  height: 0;
+}
+
+.mb-sidebar-section-panel[data-ending-style] {
+  transition-duration: var(--mb-duration-base);
+  transition-timing-function: var(--mb-ease-out);
+}
+
+.mb-sidebar-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mb-sidebar-row-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mb-sidebar-list-item {
+  display: block;
+}
+
+/* Rows */
+.mb-sidebar-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--mb-space-3);
+  width: 100%;
+  min-height: var(--mb-sidebar-row-height);
+  margin: 0;
+  padding: 0 var(--mb-sidebar-row-padding);
+  border: 0;
+  border-radius: var(--mb-sidebar-row-radius);
+  background: transparent;
+  color: var(--mb-label);
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: start;
+  text-decoration: none;
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mb-sidebar-item-icon {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: calc(var(--mb-sidebar-icon-size) + 4px);
+  height: var(--mb-sidebar-icon-size);
+  color: var(--mb-sidebar-icon-color, var(--mb-accent-text));
+}
+
+.mb-sidebar-item-icon :where(svg) {
+  width: var(--mb-sidebar-icon-size);
+  height: var(--mb-sidebar-icon-size);
+  stroke-width: 1.8;
+}
+
+.mb-sidebar-item-label {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mb-sidebar-item-badge {
+  flex: none;
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-callout);
+  font-variant-numeric: tabular-nums;
+}
+
+.mb-sidebar-item:active {
+  background: var(--mb-fill-tertiary);
+}
+
+.mb-sidebar-item[data-current] {
+  background: var(--mb-sidebar-selected-bg);
+  color: var(--mb-sidebar-selected-fg);
+}
+
+.mb-sidebar-item[data-current] .mb-sidebar-item-icon {
+  color: var(--mb-sidebar-selected-icon);
+}
+
+.mb-sidebar-item[data-current] .mb-sidebar-item-badge {
+  color: color-mix(in oklch, var(--mb-sidebar-selected-fg) 72%, transparent);
+}
+
+.mb-sidebar-item:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: -1px;
+}
+
+.mb-sidebar-item[data-current]:focus-visible {
+  outline-offset: 1px;
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .mb-sidebar-item:active:not([data-current]) {
+    background: var(--mb-fill-secondary);
+  }
+
+  .mb-sidebar-item-badge {
+    font: var(--mb-text-body);
+  }
+}

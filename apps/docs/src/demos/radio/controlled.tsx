@@ -1,6 +1,6 @@
 "use client"
 
-import { Radio, RadioGroup } from "@dreambase/stardust/radio"
+import { Radio, RadioGroup } from "macbetter/radio"
 import { useState } from "react"
 
 const prices = { monthly: "$4.99 a month", yearly: "$49.99 a year, two months free" }
@@ -16,7 +16,7 @@ export default function Example() {
         <Radio value="monthly">Monthly</Radio>
         <Radio value="yearly">Yearly</Radio>
       </RadioGroup>
-      <span style={{ color: "var(--sd-label-secondary)" }}>{prices[plan]}</span>
+      <span style={{ color: "var(--mb-label-secondary)" }}>{prices[plan]}</span>
     </div>
   )
 }

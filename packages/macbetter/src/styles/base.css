@@ -1,0 +1,89 @@
+/* Base: what every Macbetter surface shares. */
+
+:where(.mb-root, [data-macbetter]) {
+  background: var(--mb-bg);
+  color: var(--mb-label);
+  font: var(--mb-text-body);
+  letter-spacing: var(--mb-tracking-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-optical-sizing: auto;
+  -webkit-tap-highlight-color: transparent;
+  accent-color: var(--mb-accent);
+  scrollbar-color: var(--mb-label-quaternary) transparent;
+}
+
+:where(.mb-root, [data-macbetter]) ::selection {
+  background: var(--mb-selection);
+}
+
+:where([class^="mb-"], [class*=" mb-"]) {
+  box-sizing: border-box;
+}
+
+:where([class^="mb-"], [class*=" mb-"])::before,
+:where([class^="mb-"], [class*=" mb-"])::after {
+  box-sizing: border-box;
+}
+
+/* Closed popups stay hidden before ui-sdk's own CSS arrives on hydration. */
+:where([data-slot][hidden]:not([hidden="until-found"])) {
+  display: none !important;
+}
+
+/* One focus ring everywhere: the HIG's accent-colored halo. */
+:where([class^="mb-"], [class*=" mb-"]):focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: var(--mb-focus-ring-offset);
+}
+
+/* Text styles. */
+.mb-text-large-title { font: var(--mb-text-large-title); letter-spacing: var(--mb-tracking-large-title); }
+.mb-text-title-1 { font: var(--mb-text-title-1); letter-spacing: var(--mb-tracking-title); }
+.mb-text-title-2 { font: var(--mb-text-title-2); letter-spacing: var(--mb-tracking-title); }
+.mb-text-title-3 { font: var(--mb-text-title-3); letter-spacing: var(--mb-tracking-title); }
+.mb-text-headline { font: var(--mb-text-headline); letter-spacing: var(--mb-tracking-body); }
+.mb-text-body { font: var(--mb-text-body); letter-spacing: var(--mb-tracking-body); }
+.mb-text-callout { font: var(--mb-text-callout); letter-spacing: var(--mb-tracking-body); }
+.mb-text-subheadline { font: var(--mb-text-subheadline); letter-spacing: var(--mb-tracking-body); }
+.mb-text-footnote { font: var(--mb-text-footnote); letter-spacing: var(--mb-tracking-caption); }
+.mb-text-caption { font: var(--mb-text-caption); letter-spacing: var(--mb-tracking-caption); }
+.mb-text-mono { font-family: var(--mb-font-mono); letter-spacing: 0; }
+.mb-text-rounded { font-family: var(--mb-font-rounded); }
+
+.mb-label { color: var(--mb-label); }
+.mb-label-secondary { color: var(--mb-label-secondary); }
+.mb-label-tertiary { color: var(--mb-label-tertiary); }
+.mb-label-accent { color: var(--mb-accent-text); }
+
+.mb-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/*
+ * Reduce Motion shortens everything, unless <html> carries data-motion="full"
+ * (for a page that exists to show the motion). Motion that carries meaning (a spinner)
+ * opts out with data-motion="essential" and supplies its own calmer version:
+ * an !important here can't be beaten from the components layer.
+ */
+@media (prefers-reduced-motion: reduce) {
+  :where(:root:not([data-motion="full"])) {
+    :where([class^="mb-"], [class*=" mb-"]):not([data-motion="essential"]),
+    :where([class^="mb-"], [class*=" mb-"]):not([data-motion="essential"])::before,
+    :where([class^="mb-"], [class*=" mb-"]):not([data-motion="essential"])::after {
+      transition-duration: 0.01ms !important;
+      transition-delay: 0ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+}

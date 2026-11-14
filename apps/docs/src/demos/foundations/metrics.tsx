@@ -1,21 +1,21 @@
 "use client"
 
-import { Button } from "@dreambase/stardust/button"
+import { Button } from "macbetter/button"
 import { useEffect, useRef, useState } from "react"
 
 const tokens = [
-  ["--sd-control-height-sm", "Small control"],
-  ["--sd-control-height", "Control"],
-  ["--sd-control-height-lg", "Large control"],
-  ["--sd-row-height", "List row"],
-  ["--sd-menu-item-height", "Menu item"],
-  ["--sd-hit-target", "Minimum hit target"],
-  ["--sd-icon-size", "Icon"],
-  ["--sd-bar-height", "Toolbar or navigation bar"],
-  ["--sd-content-padding", "Content margin"],
+  ["--mb-control-height-sm", "Small control"],
+  ["--mb-control-height", "Control"],
+  ["--mb-control-height-lg", "Large control"],
+  ["--mb-row-height", "List row"],
+  ["--mb-menu-item-height", "Menu item"],
+  ["--mb-hit-target", "Minimum hit target"],
+  ["--mb-icon-size", "Icon"],
+  ["--mb-bar-height", "Toolbar or navigation bar"],
+  ["--mb-content-padding", "Content margin"],
 ] as const
 
-const heights = { sm: "--sd-control-height-sm", md: "--sd-control-height", lg: "--sd-control-height-lg" }
+const heights = { sm: "--mb-control-height-sm", md: "--mb-control-height", lg: "--mb-control-height-lg" }
 
 export default function Metrics() {
   const probe = useRef<HTMLDivElement>(null)
@@ -75,7 +75,7 @@ export default function Metrics() {
                 className="pointer-events-none absolute rounded-[6px] border border-dashed border-accent-text"
                 style={{
                   insetInline: 0,
-                  insetBlock: `calc(min(0px, var(${heights[size]}) - var(--sd-hit-target)) / 2)`,
+                  insetBlock: `calc(min(0px, var(${heights[size]}) - var(--mb-hit-target)) / 2)`,
                 }}
               />
               <Button size={size}>Reply</Button>

@@ -1,7 +1,7 @@
 "use client"
 
-import { Button } from "@dreambase/stardust/button"
-import { Progress, ProgressLabel, ProgressValue } from "@dreambase/stardust/progress"
+import { Button } from "macbetter/button"
+import { Progress, ProgressLabel, ProgressValue } from "macbetter/progress"
 import { useEffect, useState } from "react"
 
 export default function Example() {

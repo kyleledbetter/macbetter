@@ -40,8 +40,8 @@ export default function ExerciseYear() {
       style={{ width: "100%", maxWidth: 760 }}
     >
       <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 12 }}>
-        <span style={{ font: "var(--sd-text-headline)" }}>{closed} days with your Exercise ring closed</span>
-        <span style={{ color: "var(--sd-label-secondary)", font: "var(--sd-text-footnote)" }}>Nov 2025–Nov 2026</span>
+        <span style={{ font: "var(--mb-text-headline)" }}>{closed} days with your Exercise ring closed</span>
+        <span style={{ color: "var(--mb-label-secondary)", font: "var(--mb-text-footnote)" }}>Nov 2025–Nov 2026</span>
       </div>
       <div style={{ height: 150 }}>
         {config && chartOptions ? (

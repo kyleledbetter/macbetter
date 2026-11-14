@@ -1,0 +1,229 @@
+/* Avatar — a circular photo with a monogram fallback, or the rounded square of an app icon. */
+
+.mb-avatar,
+.mb-avatar-group {
+  --mb-avatar-size: 36px;
+}
+
+.mb-avatar[data-size="xs"], .mb-avatar-group[data-size="xs"] { --mb-avatar-size: 20px; }
+.mb-avatar[data-size="sm"], .mb-avatar-group[data-size="sm"] { --mb-avatar-size: 28px; }
+.mb-avatar[data-size="md"], .mb-avatar-group[data-size="md"] { --mb-avatar-size: 36px; }
+.mb-avatar[data-size="lg"], .mb-avatar-group[data-size="lg"] { --mb-avatar-size: 52px; }
+.mb-avatar[data-size="xl"], .mb-avatar-group[data-size="xl"] { --mb-avatar-size: 80px; }
+
+/* An avatar without a size takes its group's. */
+.mb-avatar-group > .mb-avatar:not([data-size]) {
+  --mb-avatar-size: inherit;
+}
+
+.mb-avatar {
+  --mb-avatar-color: var(--mb-tint);
+  --mb-avatar-radius: 50%;
+
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--mb-avatar-size);
+  height: var(--mb-avatar-size);
+  border-radius: var(--mb-avatar-radius);
+  vertical-align: middle;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* App icon: Apple's 22.37% corner, with a true continuous curve where the browser can draw one. */
+.mb-avatar[data-shape="app"] {
+  --mb-avatar-radius: 22.5%;
+}
+
+@supports (corner-shape: squircle) {
+  .mb-avatar[data-shape="app"] {
+    --mb-avatar-radius: 34%;
+    corner-shape: superellipse(1.6);
+  }
+
+  .mb-avatar[data-shape="app"] > :is(.mb-avatar-image, .mb-avatar-fallback) {
+    corner-shape: superellipse(1.6);
+  }
+}
+
+.mb-avatar[data-color="gray"] {
+  --mb-avatar-color: light-dark(
+    oklch(from var(--mb-tint) 0.62 calc(c * 0.5) h),
+    oklch(from var(--mb-tint) 0.5 calc(c * 0.5) h)
+  );
+}
+.mb-avatar[data-color="red"] { --mb-avatar-color: var(--mb-red); }
+.mb-avatar[data-color="orange"] { --mb-avatar-color: var(--mb-orange); }
+.mb-avatar[data-color="yellow"] { --mb-avatar-color: var(--mb-yellow); }
+.mb-avatar[data-color="green"] { --mb-avatar-color: var(--mb-green); }
+.mb-avatar[data-color="mint"] { --mb-avatar-color: var(--mb-mint); }
+.mb-avatar[data-color="teal"] { --mb-avatar-color: var(--mb-teal); }
+.mb-avatar[data-color="cyan"] { --mb-avatar-color: var(--mb-cyan); }
+.mb-avatar[data-color="blue"] { --mb-avatar-color: var(--mb-blue); }
+.mb-avatar[data-color="indigo"] { --mb-avatar-color: var(--mb-indigo); }
+.mb-avatar[data-color="purple"] { --mb-avatar-color: var(--mb-purple); }
+.mb-avatar[data-color="pink"] { --mb-avatar-color: var(--mb-pink); }
+.mb-avatar[data-color="brown"] { --mb-avatar-color: var(--mb-brown); }
+
+.mb-avatar-image,
+.mb-avatar-fallback {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.mb-avatar-image {
+  object-fit: cover;
+  background: var(--mb-fill-tertiary);
+}
+
+/*
+ * A soft top-to-bottom gradient of one hue, like the Contacts monogram. Lightness
+ * is capped a little below Apple's so white initials hold 4.5:1 where they sit.
+ */
+.mb-avatar-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-image: linear-gradient(
+    to bottom,
+    oklch(from var(--mb-avatar-color) clamp(0.44, calc(l + 0.06), 0.56) calc(c * 0.82) calc(h - 6)),
+    oklch(from var(--mb-avatar-color) clamp(0.34, calc(l - 0.06), 0.48) c h)
+  );
+  color: #ffffff;
+  font-family: var(--mb-font-rounded);
+  font-size: calc(var(--mb-avatar-size) * 0.4);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.mb-avatar[data-size="xs"] .mb-avatar-fallback {
+  font-size: calc(var(--mb-avatar-size) * 0.44);
+  letter-spacing: -0.02em;
+}
+
+/* Images and app icons get a faint inner edge so a white photo doesn't melt into a white page. */
+.mb-avatar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 var(--mb-hairline) light-dark(rgb(0 0 0 / 0.1), rgb(255 255 255 / 0.12));
+  pointer-events: none;
+}
+
+@supports (corner-shape: squircle) {
+  .mb-avatar[data-shape="app"]::before {
+    corner-shape: superellipse(1.6);
+  }
+}
+
+.mb-avatar-placeholder {
+  width: 74%;
+  height: 74%;
+  margin-block-start: 26%;
+  fill: rgb(255 255 255 / 0.92);
+  stroke: none;
+}
+
+.mb-avatar-placeholder path {
+  fill: rgb(255 255 255 / 0.92);
+}
+
+/* Status: a dot on the bottom trailing edge, ringed in the surface color to cut it out of the photo. */
+.mb-avatar-status {
+  --mb-avatar-status-size: max(8px, calc(var(--mb-avatar-size) * 0.28));
+  --mb-avatar-status-color: var(--mb-green);
+
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-end: 0;
+  z-index: 2;
+  width: var(--mb-avatar-status-size);
+  height: var(--mb-avatar-status-size);
+  border-radius: 50%;
+  background: var(--mb-avatar-status-color);
+  box-shadow: 0 0 0 max(1.5px, calc(var(--mb-avatar-size) * 0.05)) var(--mb-avatar-ring, var(--mb-bg));
+}
+
+.mb-avatar[data-shape="app"] > .mb-avatar-status {
+  translate: 25% 25%;
+}
+
+:where([dir="rtl"]) .mb-avatar[data-shape="app"] > .mb-avatar-status {
+  translate: -25% 25%;
+}
+
+/* Yellow is under 3:1 on white, so in light mode the away dot gets a darker edge of its own hue. */
+.mb-avatar-status[data-status="away"] {
+  --mb-avatar-status-color: var(--mb-yellow);
+  background-image: radial-gradient(
+    circle,
+    var(--mb-yellow) 58%,
+    light-dark(color-mix(in oklch, var(--mb-yellow) 76%, black), var(--mb-yellow)) 62%
+  );
+}
+.mb-avatar-status[data-status="busy"] { --mb-avatar-status-color: var(--mb-red); }
+.mb-avatar-status[data-status="offline"] {
+  --mb-avatar-status-color: var(--mb-bg);
+  background-image: radial-gradient(circle, var(--mb-bg) 38%, var(--mb-label-tertiary) 40%);
+}
+
+/* Group: avatars overlap by a third, each cut out of the one behind by a ring of the surface color. */
+.mb-avatar-group {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  isolation: isolate;
+}
+
+.mb-avatar-group > .mb-avatar {
+  box-shadow: 0 0 0 max(1.5px, calc(var(--mb-avatar-size) * 0.06)) var(--mb-avatar-ring, var(--mb-bg));
+}
+
+.mb-avatar-group > .mb-avatar + .mb-avatar {
+  margin-inline-start: calc(var(--mb-avatar-size) * -0.3);
+}
+
+.mb-avatar-overflow {
+  background: var(--mb-bg-control);
+  background-image: linear-gradient(var(--mb-fill), var(--mb-fill));
+  color: var(--mb-label);
+  font-size: calc(var(--mb-avatar-size) * 0.34);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+.mb-avatar-overflow::before {
+  display: none;
+}
+
+/* Interactive avatars (rendered as a button or link) dim on press, like any image button. */
+.mb-avatar:is(button, a) {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: default;
+  transition: opacity var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-avatar:is(button, a):focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: var(--mb-focus-ring-offset);
+}
+
+.mb-avatar:is(button, a):active {
+  opacity: 0.7;
+  transition-duration: 0ms;
+}

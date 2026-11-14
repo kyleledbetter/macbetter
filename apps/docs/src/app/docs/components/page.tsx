@@ -4,13 +4,15 @@ import { ComponentPreview } from "@/components/component-previews"
 import { PageNavigation } from "@/components/page-navigation"
 import { docExists, docInfo } from "@/lib/docs"
 import { componentSections } from "@/lib/nav"
+import { socialMetadata } from "@/lib/og/routes"
 
-const description = "Every Stardust component, grouped the way the sidebar groups them. Each one adapts to macOS, iPadOS and iOS."
+const description = "Every Macbetter component, grouped the way the sidebar groups them. Each one adapts to macOS, iPadOS and iOS."
 
 export const metadata: Metadata = {
   title: "Components",
   description,
   alternates: { canonical: "/docs/components" },
+  ...socialMetadata({ path: "docs/components", title: "Components", description }),
 }
 
 const anchor = (title: string) => title.toLowerCase().replace(/[^a-z0-9]+/g, "-")

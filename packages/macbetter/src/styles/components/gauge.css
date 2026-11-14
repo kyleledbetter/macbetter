@@ -1,0 +1,239 @@
+/* Gauge — a reading in a range: the macOS level indicator, a linear capacity bar, and the open circular ring. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-gauge-linear-height: 6px;
+  --mb-gauge-level-height: 14px;
+  --mb-gauge-dial-sm: 44px;
+  --mb-gauge-dial: 64px;
+  --mb-gauge-dial-lg: 96px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-gauge-linear-height: 6px;
+  --mb-gauge-level-height: 18px;
+  --mb-gauge-dial-sm: 50px;
+  --mb-gauge-dial: 72px;
+  --mb-gauge-dial-lg: 110px;
+}
+
+.mb-gauge {
+  --mb-gauge-color: var(--mb-accent);
+  --mb-gauge-track-color: var(--mb-fill-tertiary);
+  --mb-gauge-edge: transparent;
+  --mb-gauge-good: var(--mb-green);
+  --mb-gauge-fair: var(--mb-yellow);
+  --mb-gauge-poor: var(--mb-red);
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  column-gap: var(--mb-space-4);
+  row-gap: var(--mb-space-3);
+  inline-size: 100%;
+  min-inline-size: 80px;
+}
+
+.mb-gauge[data-level="optimum"] { --mb-gauge-color: var(--mb-gauge-good); }
+/* Yellow is under 3:1 on white, so in light mode a fair reading gets a darker edge of its own hue. */
+.mb-gauge[data-level="suboptimal"] {
+  --mb-gauge-color: var(--mb-gauge-fair);
+  --mb-gauge-edge: light-dark(color-mix(in oklch, var(--mb-gauge-fair) 76%, black), transparent);
+}
+.mb-gauge[data-level="critical"] { --mb-gauge-color: var(--mb-gauge-poor); }
+
+.mb-gauge-label {
+  grid-column: 1;
+  min-width: 0;
+  font: var(--mb-text-body);
+  letter-spacing: var(--mb-tracking-body);
+  color: var(--mb-label);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mb-gauge-value {
+  grid-column: 2;
+  font: var(--mb-text-callout);
+  letter-spacing: var(--mb-tracking-body);
+  font-variant-numeric: tabular-nums;
+  color: var(--mb-label-secondary);
+  white-space: nowrap;
+}
+
+.mb-gauge-track {
+  grid-column: 1 / -1;
+}
+
+/* Linear: a capsule that fills with the reading's color. */
+.mb-gauge[data-variant="linear"] .mb-gauge-track {
+  height: var(--mb-gauge-linear-height);
+  border-radius: var(--mb-radius-full);
+  background: var(--mb-gauge-track-color);
+  overflow: hidden;
+}
+
+.mb-gauge[data-variant="linear"][data-size="sm"] .mb-gauge-track { height: calc(var(--mb-gauge-linear-height) - 2px); }
+.mb-gauge[data-variant="linear"][data-size="lg"] .mb-gauge-track { height: calc(var(--mb-gauge-linear-height) + 4px); }
+
+.mb-gauge-indicator {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--mb-gauge-color);
+  box-shadow: inset 0 0 0 1px var(--mb-gauge-edge);
+  transition:
+    width var(--mb-duration-slow) var(--mb-ease-out),
+    background-color var(--mb-duration-base) var(--mb-ease-out);
+}
+
+/* Level: discrete segments, all lit in one color that tells you whether the reading is fine. */
+.mb-gauge[data-variant="level"] .mb-gauge-track {
+  display: flex;
+  gap: 2px;
+  height: var(--mb-gauge-level-height);
+}
+
+.mb-gauge[data-variant="level"][data-size="sm"] .mb-gauge-track { height: calc(var(--mb-gauge-level-height) - 4px); }
+.mb-gauge[data-variant="level"][data-size="lg"] .mb-gauge-track { height: calc(var(--mb-gauge-level-height) + 6px); }
+
+.mb-gauge-segment {
+  flex: 1 1 0;
+  min-width: 3px;
+  border-radius: 2px;
+  background: var(--mb-gauge-track-color);
+  box-shadow: inset 0 0 0 var(--mb-hairline) var(--mb-separator);
+  transition: background-color var(--mb-duration-base) var(--mb-ease-out);
+}
+
+.mb-gauge-segment:first-child {
+  border-start-start-radius: 4px;
+  border-end-start-radius: 4px;
+}
+
+.mb-gauge-segment:last-child {
+  border-start-end-radius: 4px;
+  border-end-end-radius: 4px;
+}
+
+.mb-gauge-segment[data-lit] {
+  background: var(--mb-gauge-color);
+  box-shadow:
+    inset 0 0 0 1px var(--mb-gauge-edge),
+    inset 0 1.5px 0 rgb(255 255 255 / 0.22);
+}
+
+/* Circular: a 270° ring open at the bottom, with the value in the middle and the name below. */
+.mb-gauge[data-variant="circular"] {
+  --mb-gauge-dial-size: var(--mb-gauge-dial);
+
+  display: inline-grid;
+  grid-template-columns: var(--mb-gauge-dial-size);
+  grid-template-areas: "dial" "label";
+  justify-items: center;
+  align-items: center;
+  inline-size: auto;
+  min-inline-size: 0;
+  row-gap: var(--mb-space-1);
+}
+
+.mb-gauge[data-variant="circular"][data-size="sm"] { --mb-gauge-dial-size: var(--mb-gauge-dial-sm); }
+.mb-gauge[data-variant="circular"][data-size="lg"] { --mb-gauge-dial-size: var(--mb-gauge-dial-lg); }
+
+.mb-gauge-dial {
+  grid-area: dial;
+  display: grid;
+  width: var(--mb-gauge-dial-size);
+  height: var(--mb-gauge-dial-size);
+}
+
+.mb-gauge-dial > * {
+  grid-area: 1 / 1;
+  width: 100%;
+  height: 100%;
+}
+
+.mb-gauge[data-variant="circular"] .mb-gauge-value {
+  grid-area: dial;
+  padding-block-end: calc(var(--mb-gauge-dial-size) * 0.04);
+  font-family: var(--mb-font-rounded);
+  font-size: calc(var(--mb-gauge-dial-size) * 0.26);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--mb-label);
+}
+
+.mb-gauge[data-variant="circular"] .mb-gauge-label {
+  grid-area: label;
+  max-width: calc(var(--mb-gauge-dial-size) * 1.6);
+  font: var(--mb-text-footnote);
+  letter-spacing: var(--mb-tracking-caption);
+  color: var(--mb-label-secondary);
+  text-align: center;
+}
+
+.mb-gauge-ring {
+  /* The masked gradient is its own stacking context; this keeps the marker above it. */
+  position: relative;
+  overflow: visible;
+}
+
+.mb-gauge-arc-track,
+.mb-gauge-arc-edge,
+.mb-gauge-arc-fill {
+  fill: none;
+  stroke-width: 8;
+  stroke-linecap: round;
+}
+
+/* The edge is the same arc, a little wider, drawn under the fill. */
+.mb-gauge-arc-edge {
+  stroke-width: 10.5;
+  stroke: var(--mb-gauge-edge);
+  transition: stroke-dasharray var(--mb-duration-slow) var(--mb-ease-out);
+}
+
+.mb-gauge-arc-track {
+  stroke: var(--mb-gauge-track-color);
+}
+
+.mb-gauge-arc-fill {
+  stroke: var(--mb-gauge-color);
+  transition:
+    stroke-dasharray var(--mb-duration-slow) var(--mb-ease-out),
+    stroke var(--mb-duration-base) var(--mb-ease-out);
+}
+
+/* Gradient: the ring is painted around its own curve, so green sits at one end and red at the other. */
+.mb-gauge-gradient {
+  --mb-gauge-from: var(--mb-gauge-good);
+  --mb-gauge-to: var(--mb-gauge-poor);
+
+  background: conic-gradient(
+    from 225deg,
+    var(--mb-gauge-from) 0deg,
+    var(--mb-gauge-fair) 135deg,
+    var(--mb-gauge-to) 270deg,
+    var(--mb-gauge-to) 315deg,
+    var(--mb-gauge-from) 315deg
+  );
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M20.3 79.7A42 42 0 1 1 79.7 79.7' fill='none' stroke='black' stroke-width='8' stroke-linecap='round'/%3E%3C/svg%3E")
+    center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M20.3 79.7A42 42 0 1 1 79.7 79.7' fill='none' stroke='black' stroke-width='8' stroke-linecap='round'/%3E%3C/svg%3E")
+    center / 100% 100% no-repeat;
+}
+
+.mb-gauge[data-gradient="reverse"] .mb-gauge-gradient {
+  --mb-gauge-from: var(--mb-gauge-poor);
+  --mb-gauge-to: var(--mb-gauge-good);
+}
+
+/* The marker is cut out of the ring by a stroke in the surface color. */
+.mb-gauge-marker {
+  fill: #ffffff;
+  stroke: var(--mb-gauge-ring, var(--mb-bg));
+  stroke-width: 2;
+  transition:
+    cx var(--mb-duration-slow) var(--mb-ease-out),
+    cy var(--mb-duration-slow) var(--mb-ease-out);
+}

@@ -1,7 +1,7 @@
 "use client"
 
-import { Glass } from "@dreambase/stardust/glass"
-import { SegmentedControl, SegmentedControlItem } from "@dreambase/stardust/segmented-control"
+import { Glass } from "macbetter/glass"
+import { SegmentedControl, SegmentedControlItem } from "macbetter/segmented-control"
 import { usePreference } from "@ui-sdk/react/preferences"
 import { MoonIcon, SunIcon } from "lucide-react"
 import { colorScheme, theme, themeLabels, themes, type ThemeName } from "@/lib/preferences"

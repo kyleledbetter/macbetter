@@ -1,4 +1,4 @@
-import { createTheme, type ThemeSeeds } from "@dreambase/stardust/theme"
+import { createTheme, type ThemeSeeds } from "macbetter/theme"
 import { colorKeys, normalizeHex, type ThemeColors } from "./derive"
 
 const fonts = {
@@ -42,10 +42,10 @@ const appleGreen = { light: "#248a3d", dark: "#30d158" }
 
 const presets: Preset[] = [
   {
-    id: "dreambase",
-    label: "Dreambase",
+    id: "ember",
+    label: "Ember",
     description: "Trinidad orange on Racing Green.",
-    name: "dreambase",
+    name: "ember",
     radiusScale: 1,
     font: "system",
     colors: {
@@ -289,7 +289,7 @@ function exportTypeScript(theme: StudioTheme): string {
   }
   const slug = slugify(theme.name)
   const id = camelCase(theme.name)
-  return `import { themeVariables } from "@dreambase/stardust/theme"
+  return `import { themeVariables } from "macbetter/theme"
 
 export const ${id} = themeVariables({
 ${lines.join("\n")}

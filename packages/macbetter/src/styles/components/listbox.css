@@ -1,0 +1,160 @@
+/*
+ * Listbox — a list that stays on screen. On the Mac it's a bordered table:
+ * the selection is a solid accent fill that turns gray when the list loses
+ * focus. On iOS and iPadOS it's an inset grouped list with a trailing checkmark.
+ */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-listbox-padding: 5px;
+  --mb-listbox-radius: var(--mb-control-radius);
+  --mb-listbox-row-height: var(--mb-menu-item-height);
+  --mb-listbox-row-padding: 8px;
+  --mb-listbox-row-radius: var(--mb-radius-xs);
+  --mb-listbox-check-display: none;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-listbox-padding: 0px;
+  --mb-listbox-radius: var(--mb-group-radius);
+  --mb-listbox-row-height: var(--mb-row-height);
+  --mb-listbox-row-padding: var(--mb-row-padding);
+  --mb-listbox-row-radius: 0px;
+  --mb-listbox-check-display: inline-flex;
+}
+
+.mb-listbox {
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  max-height: 100%;
+  margin: 0;
+  padding: var(--mb-listbox-padding);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-radius: var(--mb-listbox-radius);
+  background: var(--mb-bg-field);
+  box-shadow: 0 0 0 var(--mb-hairline) var(--mb-control-border);
+  color: var(--mb-label);
+  font: var(--mb-text-body);
+  letter-spacing: var(--mb-tracking-body);
+  outline: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.mb-listbox[data-orientation="horizontal"] {
+  flex-direction: row;
+  overflow-x: auto;
+}
+
+.mb-listbox-item {
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  min-height: var(--mb-listbox-row-height);
+  padding-inline: var(--mb-listbox-row-padding);
+  border-radius: var(--mb-listbox-row-radius);
+  white-space: nowrap;
+  outline: none;
+  cursor: default;
+  touch-action: manipulation;
+}
+
+.mb-listbox-item[data-selected] {
+  background: var(--mb-accent);
+  color: var(--mb-on-accent);
+}
+
+/* The Mac's unemphasized selection: gray while another control has focus. */
+.mb-listbox:not(:focus-within) .mb-listbox-item[data-selected] {
+  background: var(--mb-fill);
+  color: var(--mb-label);
+}
+
+.mb-listbox-item[data-highlighted]:not([data-selected]) {
+  background: var(--mb-fill-quaternary);
+}
+
+.mb-listbox:focus-within .mb-listbox-item[data-highlighted]:focus-visible {
+  outline: 2px solid var(--mb-focus-ring);
+  outline-offset: -2px;
+}
+
+.mb-listbox-item[data-disabled] {
+  color: var(--mb-label-tertiary);
+}
+
+.mb-listbox-item-icon {
+  display: inline-flex;
+  flex: none;
+  width: var(--mb-menu-icon-size, 16px);
+  height: var(--mb-menu-icon-size, 16px);
+}
+
+.mb-listbox-item-icon :where(svg) {
+  width: 100%;
+  height: 100%;
+}
+
+.mb-listbox-item-indicator {
+  display: var(--mb-listbox-check-display);
+  flex: none;
+  width: 15px;
+  height: 15px;
+  margin-inline-start: auto;
+  color: var(--mb-accent-text);
+}
+
+.mb-listbox-item-indicator :where(svg) {
+  width: 100%;
+  height: 100%;
+}
+
+.mb-listbox-item-indicator:not([data-selected]) {
+  visibility: hidden;
+}
+
+.mb-listbox-group-label {
+  padding: 8px var(--mb-listbox-row-padding) 3px;
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-subheadline);
+  font-weight: 600;
+}
+
+.mb-listbox-separator {
+  height: 1px;
+  margin: 4px var(--mb-listbox-row-padding);
+  background: var(--mb-separator);
+}
+
+/* iOS: selection is the checkmark, rows are divided by inset hairlines, and a tap darkens the row. */
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .mb-listbox {
+    background: var(--mb-bg-grouped-secondary);
+    box-shadow: 0 0 0 var(--mb-hairline) var(--mb-separator);
+  }
+
+  .mb-listbox-item[data-selected],
+  .mb-listbox:not(:focus-within) .mb-listbox-item[data-selected] {
+    background: transparent;
+    color: var(--mb-label);
+  }
+
+  .mb-listbox-item + .mb-listbox-item::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto var(--mb-listbox-row-padding);
+    height: var(--mb-hairline);
+    background: var(--mb-separator);
+  }
+
+  .mb-listbox-item[data-highlighted]:not([data-selected]) {
+    background: transparent;
+  }
+
+  .mb-listbox-item:active:not([data-disabled]) {
+    background: var(--mb-fill-tertiary);
+  }
+}

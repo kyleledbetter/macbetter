@@ -1,4 +1,4 @@
-import { Avatar, AvatarGroup } from "@dreambase/stardust/avatar"
+import { Avatar, AvatarGroup } from "macbetter/avatar"
 
 
 export default function Example() {

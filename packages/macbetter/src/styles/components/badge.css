@@ -1,0 +1,204 @@
+/* Badge — capsule labels in system colors, and the red notification count from app icons and tab bars. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-badge-height: 18px;
+  --mb-badge-height-sm: 15px;
+  --mb-badge-padding: 7px;
+  --mb-badge-padding-sm: 5px;
+  --mb-badge-font: 600 11px/14px var(--mb-font);
+  --mb-badge-font-sm: 600 10px/12px var(--mb-font);
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-badge-height: 22px;
+  --mb-badge-height-sm: 18px;
+  --mb-badge-padding: 9px;
+  --mb-badge-padding-sm: 7px;
+  --mb-badge-font: 600 13px/16px var(--mb-font);
+  --mb-badge-font-sm: 600 11px/14px var(--mb-font);
+}
+
+.mb-badge {
+  --mb-badge-color: var(--mb-accent);
+  /* Text in the color itself, pushed dark in light mode and light in dark mode to hold 4.5:1. */
+  --mb-badge-text: light-dark(
+    oklch(from var(--mb-badge-color) min(l, 0.5) c h),
+    oklch(from var(--mb-badge-color) max(l, 0.8) calc(c * 0.9) h)
+  );
+  /*
+   * Filled: light hues (yellow, mint, cyan) keep their color and take a deep shade of
+   * it for text; the rest deepen just enough that white text holds 4.5:1.
+   */
+  --mb-badge-fill: oklch(
+    from var(--mb-badge-color)
+      calc(clamp(0, (l - 0.7) * 1000, 1) * l + (1 - clamp(0, (l - 0.7) * 1000, 1)) * min(l, 0.52)) c h
+  );
+  --mb-badge-on-color: oklch(from var(--mb-badge-color) clamp(0.2, (0.7 - l) * 1000, 1) calc(c * 0.3) h);
+
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  box-sizing: border-box;
+  height: var(--mb-badge-height);
+  min-width: var(--mb-badge-height);
+  padding-inline: var(--mb-badge-padding);
+  border-radius: var(--mb-radius-full);
+  font: var(--mb-badge-font);
+  letter-spacing: var(--mb-tracking-caption);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.mb-badge[data-size="sm"] {
+  height: var(--mb-badge-height-sm);
+  min-width: var(--mb-badge-height-sm);
+  padding-inline: var(--mb-badge-padding-sm);
+  font: var(--mb-badge-font-sm);
+  gap: 4px;
+}
+
+.mb-badge :where(svg) {
+  flex: none;
+  width: 1.1em;
+  height: 1.1em;
+  margin-inline-start: -0.2em;
+}
+
+/* Colors */
+.mb-badge[data-color="accent"] {
+  --mb-badge-color: var(--mb-accent);
+  --mb-badge-fill: var(--mb-accent);
+  --mb-badge-text: var(--mb-accent-text);
+  --mb-badge-on-color: var(--mb-on-accent);
+}
+.mb-badge[data-color="gray"] {
+  --mb-badge-color: var(--mb-tint);
+  --mb-badge-text: var(--mb-label-secondary);
+}
+.mb-badge[data-color="red"] { --mb-badge-color: var(--mb-red); }
+.mb-badge[data-color="orange"] { --mb-badge-color: var(--mb-orange); }
+.mb-badge[data-color="yellow"] { --mb-badge-color: var(--mb-yellow); }
+.mb-badge[data-color="green"] { --mb-badge-color: var(--mb-green); }
+.mb-badge[data-color="mint"] { --mb-badge-color: var(--mb-mint); }
+.mb-badge[data-color="teal"] { --mb-badge-color: var(--mb-teal); }
+.mb-badge[data-color="cyan"] { --mb-badge-color: var(--mb-cyan); }
+.mb-badge[data-color="blue"] { --mb-badge-color: var(--mb-blue); }
+.mb-badge[data-color="indigo"] { --mb-badge-color: var(--mb-indigo); }
+.mb-badge[data-color="purple"] { --mb-badge-color: var(--mb-purple); }
+.mb-badge[data-color="pink"] { --mb-badge-color: var(--mb-pink); }
+.mb-badge[data-color="brown"] { --mb-badge-color: var(--mb-brown); }
+
+/* Variants */
+.mb-badge[data-variant="tinted"] {
+  background: light-dark(
+    color-mix(in oklch, var(--mb-badge-color) 14%, transparent),
+    color-mix(in oklch, var(--mb-badge-color) 24%, transparent)
+  );
+  color: var(--mb-badge-text);
+}
+
+.mb-badge[data-variant="filled"] {
+  background: var(--mb-badge-fill);
+  color: var(--mb-badge-on-color);
+}
+
+.mb-badge[data-variant="outline"] {
+  box-shadow: inset 0 0 0 1px
+    light-dark(
+      color-mix(in oklch, var(--mb-badge-color) 62%, transparent),
+      color-mix(in oklch, var(--mb-badge-color) 70%, transparent)
+    );
+  color: var(--mb-badge-text);
+}
+
+.mb-badge[data-variant="dot"] {
+  justify-content: flex-start;
+  min-width: 0;
+  padding-inline: 0;
+  color: var(--mb-label-secondary);
+  font-weight: 500;
+}
+
+.mb-badge-dot {
+  flex: none;
+  width: 0.62em;
+  height: 0.62em;
+  border-radius: 50%;
+  background: var(--mb-badge-color);
+}
+
+/* Notification badge: always red, always white digits. */
+.mb-notification-badge {
+  --mb-notification-badge-size: 18px;
+  --mb-notification-badge-dot: 10px;
+  --mb-notification-badge-color: oklch(from var(--mb-red) min(l, 0.57) c h);
+
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  height: var(--mb-notification-badge-size);
+  min-width: var(--mb-notification-badge-size);
+  padding-inline: calc(var(--mb-notification-badge-size) * 0.3);
+  border-radius: var(--mb-radius-full);
+  background: var(--mb-notification-badge-color);
+  color: #ffffff;
+  font: 500 calc(var(--mb-notification-badge-size) * 0.68) / 1 var(--mb-font);
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.mb-notification-badge[data-size="sm"] {
+  --mb-notification-badge-size: 14px;
+  --mb-notification-badge-dot: 8px;
+}
+
+.mb-notification-badge[data-size="lg"] {
+  --mb-notification-badge-size: 24px;
+  --mb-notification-badge-dot: 12px;
+}
+
+.mb-notification-badge[data-dot] {
+  width: var(--mb-notification-badge-dot);
+  height: var(--mb-notification-badge-dot);
+  min-width: 0;
+  padding: 0;
+}
+
+.mb-badge-anchor {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  vertical-align: middle;
+}
+
+.mb-badge-anchor > .mb-notification-badge {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  translate: 45% -40%;
+  z-index: 1;
+}
+
+.mb-badge-anchor > .mb-notification-badge[data-dot] {
+  translate: 25% -25%;
+}
+
+:where([dir="rtl"]) .mb-badge-anchor > .mb-notification-badge {
+  translate: -45% -40%;
+}
+
+:where([dir="rtl"]) .mb-badge-anchor > .mb-notification-badge[data-dot] {
+  translate: -25% -25%;
+}

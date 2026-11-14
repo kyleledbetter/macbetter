@@ -1,4 +1,4 @@
-import { Artwork } from "@dreambase/stardust/artwork"
+import { Artwork } from "macbetter/artwork"
 
 const playlists = ["Morning Coffee", "Deep Focus", "Late Night Jazz", "Road Trip", "Rainy Day", "Sunday Soul"]
 
@@ -8,7 +8,7 @@ export default function Example() {
       {playlists.map((name) => (
         <figure key={name} style={{ margin: 0 }}>
           <Artwork seed={name} variant="ribbon" palette="dusk" />
-          <figcaption className="sd-text-subheadline" style={{ marginTop: 6 }}>
+          <figcaption className="mb-text-subheadline" style={{ marginTop: 6 }}>
             {name}
           </figcaption>
         </figure>

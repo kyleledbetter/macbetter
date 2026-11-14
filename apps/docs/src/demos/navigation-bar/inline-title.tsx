@@ -1,14 +1,14 @@
-import { DeviceFrame } from "@dreambase/stardust/device-frame"
-import { List, ListRow, ListRowAccessory, ListRowTitle, ListRowValue, ListSection } from "@dreambase/stardust/list"
-import { NavigationBar, NavigationBarBackButton, NavigationStack } from "@dreambase/stardust/navigation-bar"
-import { Switch } from "@dreambase/stardust/switch"
+import { DeviceFrame } from "macbetter/device-frame"
+import { List, ListRow, ListRowAccessory, ListRowTitle, ListRowValue, ListSection } from "macbetter/list"
+import { NavigationBar, NavigationBarBackButton, NavigationStack } from "macbetter/navigation-bar"
+import { Switch } from "macbetter/switch"
 
 const networks = ["Larkspur 5G", "Harbor Guest", "Cedar & Pine", "Studio 4"]
 
 export default function Example() {
   return (
     <DeviceFrame scale={0.78}>
-      <NavigationStack style={{ background: "var(--sd-bg-grouped)" }}>
+      <NavigationStack style={{ background: "var(--mb-bg-grouped)" }}>
         <NavigationBar title="Wi-Fi">
           <NavigationBarBackButton>Settings</NavigationBarBackButton>
         </NavigationBar>

@@ -1,0 +1,263 @@
+/*
+ * Materials: translucent layers that let content show through, so chrome
+ * reads as floating above it. Heavier materials for bigger surfaces.
+ *
+ *   <div class="mb-material" data-material="regular">
+ *   <div class="mb-glass" data-shape="capsule">
+ *
+ * Never put one material on another: legibility collapses.
+ */
+
+/* ── Material ──────────────────────────────────────────────────── */
+
+.mb-material {
+  --mb-material: var(--mb-material-regular);
+  /* A faint sheen from the top edge, so the layer reads as a pane, not a tint. */
+  --mb-material-sheen: light-dark(rgb(255 255 255 / 0.22), rgb(255 255 255 / 0.035));
+  /* Dark materials dim what's behind them, as Apple's do, so labels hold over bright content. */
+  --mb-material-scrim: light-dark(transparent, rgb(0 0 0 / 0.24));
+
+  background-color: var(--mb-material);
+  background-image:
+    linear-gradient(to bottom, var(--mb-material-sheen), transparent 48px),
+    linear-gradient(var(--mb-material-scrim), var(--mb-material-scrim));
+  -webkit-backdrop-filter: var(--mb-material-filter);
+  backdrop-filter: var(--mb-material-filter);
+  box-shadow: var(--mb-glass-rim);
+  /* The fill runs under the hairline: clipping it to the padding box leaves a ring of raw, saturated backdrop. */
+  border: var(--mb-hairline) solid var(--mb-glass-border);
+}
+
+.mb-material[data-material="ultrathin"] {
+  --mb-material: var(--mb-material-ultrathin);
+  --mb-material-sheen: light-dark(rgb(255 255 255 / 0.3), rgb(255 255 255 / 0.05));
+}
+.mb-material[data-material="thin"] { --mb-material: var(--mb-material-thin); }
+.mb-material[data-material="thick"] {
+  --mb-material: var(--mb-material-thick);
+  --mb-material-sheen: light-dark(rgb(255 255 255 / 0.14), rgb(255 255 255 / 0.025));
+}
+.mb-material[data-material="chrome"] {
+  --mb-material: var(--mb-material-chrome);
+  --mb-material-sheen: transparent;
+}
+.mb-material[data-material="sidebar"] {
+  --mb-material: var(--mb-material-sidebar);
+  --mb-material-sheen: transparent;
+}
+.mb-material:is([data-material="thick"], [data-material="chrome"], [data-material="sidebar"]) {
+  --mb-material-scrim: light-dark(transparent, rgb(0 0 0 / 0.1));
+}
+
+/*
+ * Vibrancy, approximated: secondary text on a translucent layer is a little
+ * stronger than on an opaque one, so it holds 4.5:1 when bright content
+ * shows through. Increase Contrast keeps its own, stronger value.
+ */
+@media not (prefers-contrast: more) {
+  :is(.mb-material, .mb-glass):not([data-variant="tinted"]) {
+    --mb-label-secondary: light-dark(
+      color-mix(in oklch, var(--mb-ink) 72%, transparent),
+      color-mix(in oklch, var(--mb-ink) 80%, transparent)
+    );
+  }
+}
+
+/* ── Glass ─────────────────────────────────────────────────────── */
+
+/*
+ * Liquid Glass: the clear, lensing material for floating controls (tab bars,
+ * toolbar capsules, floating buttons). It blurs less than a material and
+ * bends light at its edges: a bright specular rim that's strongest at the
+ * top-leading and bottom-trailing corners, an inner glow that gives it
+ * thickness, and a soft caustic where light gathers at the bottom.
+ */
+.mb-glass {
+  --mb-glass-fill: light-dark(
+    color-mix(in oklch, var(--mb-bg-elevated) 50%, transparent),
+    color-mix(in oklch, var(--mb-bg-elevated) 66%, transparent)
+  );
+  --mb-glass-filter: blur(14px) saturate(190%);
+  --mb-glass-sheen: light-dark(rgb(255 255 255 / 0.46), rgb(255 255 255 / 0.1));
+  --mb-glass-caustic: light-dark(rgb(255 255 255 / 0.3), rgb(255 255 255 / 0.06));
+  --mb-glass-glow: light-dark(rgb(255 255 255 / 0.36), rgb(255 255 255 / 0.05));
+  --mb-glass-specular: light-dark(rgb(255 255 255 / 0.95), rgb(255 255 255 / 0.38));
+  --mb-glass-specular-soft: light-dark(rgb(255 255 255 / 0.22), rgb(255 255 255 / 0.05));
+  --mb-glass-shadow: var(--mb-shadow-3);
+  --mb-glass-radius: var(--mb-radius-xl);
+
+  position: relative;
+  isolation: isolate;
+  border-radius: var(--mb-glass-radius);
+  background-color: var(--mb-glass-fill);
+  background-image:
+    linear-gradient(to bottom, var(--mb-glass-sheen), transparent 52%),
+    radial-gradient(120% 70% at 50% 115%, var(--mb-glass-caustic), transparent 62%);
+  -webkit-backdrop-filter: var(--mb-glass-filter);
+  backdrop-filter: var(--mb-glass-filter);
+  border: var(--mb-hairline) solid var(--mb-glass-border);
+  box-shadow:
+    inset 0 1px 0 0 var(--mb-glass-edge),
+    inset 0 -0.5px 0 0 var(--mb-glass-edge-soft),
+    inset 0 0 14px 0 var(--mb-glass-glow),
+    var(--mb-glass-shadow);
+  transition:
+    background-color var(--mb-duration-fast) var(--mb-ease-out),
+    box-shadow var(--mb-duration-fast) var(--mb-ease-out),
+    scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+/* The specular rim: a one-pixel ring masked out of a diagonal highlight. */
+.mb-glass::before {
+  content: "";
+  position: absolute;
+  inset: calc(var(--mb-hairline) * -1);
+  z-index: -1;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    var(--mb-glass-specular) 0%,
+    var(--mb-glass-specular-soft) 28%,
+    transparent 46%,
+    transparent 62%,
+    var(--mb-glass-specular-soft) 82%,
+    var(--mb-glass-specular) 100%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+  pointer-events: none;
+}
+
+.mb-glass[data-shape="capsule"] {
+  --mb-glass-radius: var(--mb-radius-full);
+}
+
+.mb-glass[data-shape="circle"] {
+  --mb-glass-radius: 50%;
+  aspect-ratio: 1;
+}
+
+/* Clear: for glass over photos and video. More of the content comes through, so keep what's on it bold. */
+.mb-glass[data-variant="clear"] {
+  --mb-glass-fill: light-dark(
+    color-mix(in oklch, var(--mb-bg-elevated) 18%, transparent),
+    color-mix(in oklch, var(--mb-bg-elevated) 26%, transparent)
+  );
+  --mb-glass-filter: blur(6px) saturate(160%);
+  --mb-glass-sheen: light-dark(rgb(255 255 255 / 0.3), rgb(255 255 255 / 0.08));
+  --mb-glass-glow: light-dark(rgb(255 255 255 / 0.3), rgb(255 255 255 / 0.08));
+}
+
+/* Tinted: the accent, seen through glass. For the one prominent floating action. */
+.mb-glass[data-variant="tinted"] {
+  --mb-glass-fill: color-mix(in oklch, var(--mb-accent) 78%, transparent);
+  --mb-glass-sheen: rgb(255 255 255 / 0.28);
+  --mb-glass-caustic: rgb(255 255 255 / 0.2);
+  --mb-glass-glow: rgb(255 255 255 / 0.18);
+  --mb-glass-specular: rgb(255 255 255 / 0.75);
+  color: var(--mb-on-accent);
+}
+
+/* Interactive glass brightens under the pointer and glows from inside when pressed. */
+@media (hover: hover) and (pointer: fine) {
+  .mb-glass:is([data-interactive], button, a[href]):hover {
+    --mb-glass-fill: color-mix(in oklch, var(--mb-bg-elevated) 66%, transparent);
+  }
+
+  .mb-glass[data-variant="tinted"]:is([data-interactive], button, a[href]):hover {
+    --mb-glass-fill: color-mix(in oklch, oklch(from var(--mb-accent) calc(l + 0.04) c h) 84%, transparent);
+  }
+}
+
+.mb-glass:is([data-interactive], button, a[href]):active {
+  --mb-glass-fill: color-mix(in oklch, var(--mb-bg-elevated) 76%, transparent);
+  --mb-glass-glow: light-dark(rgb(255 255 255 / 0.6), rgb(255 255 255 / 0.14));
+  transition-duration: 0ms, 0ms, var(--mb-duration-instant);
+}
+
+.mb-glass[data-variant="tinted"]:is([data-interactive], button, a[href]):active {
+  --mb-glass-fill: color-mix(in oklch, oklch(from var(--mb-accent) calc(l - 0.04) c h) 88%, transparent);
+  --mb-glass-glow: rgb(255 255 255 / 0.3);
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .mb-glass:is([data-interactive], button, a[href]):active {
+    scale: 1.04;
+  }
+}
+
+.mb-glass:is([data-interactive], button, a[href]):focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: var(--mb-focus-ring-offset);
+}
+
+/* ── Accessibility fallbacks ───────────────────────────────────── */
+
+/* Reduce Transparency: solid, frosted surfaces. The edges stay so the shape still reads. */
+@media (prefers-reduced-transparency: reduce) {
+  :where(:root:not([data-transparency="full"])) {
+    .mb-material {
+      background-image: none;
+    }
+
+    /* The color itself, not --mb-glass-fill, so clear glass and hover fills can't bring the see-through back. */
+    .mb-glass {
+      background-color: var(--mb-bg-elevated);
+      background-image: none;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+
+    .mb-glass[data-variant="tinted"] {
+      background-color: var(--mb-accent);
+    }
+
+    .mb-glass::before {
+      opacity: 0.5;
+    }
+  }
+}
+
+/* Increase Contrast: opaque, with a real edge instead of a highlight. */
+@media (prefers-contrast: more) {
+  .mb-material,
+  .mb-glass {
+    background-image: none;
+    border-color: var(--mb-control-border);
+  }
+
+  .mb-glass {
+    background-color: var(--mb-bg-elevated);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow:
+      0 0 0 var(--mb-hairline) var(--mb-control-border),
+      var(--mb-glass-shadow);
+  }
+
+  .mb-glass[data-variant="tinted"] {
+    background-color: var(--mb-accent);
+  }
+
+  .mb-glass::before {
+    display: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .mb-material,
+  .mb-glass {
+    border: 1px solid CanvasText;
+    background: Canvas;
+  }
+
+  .mb-glass::before {
+    display: none;
+  }
+}

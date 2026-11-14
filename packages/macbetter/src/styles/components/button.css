@@ -1,0 +1,298 @@
+/* Button — HIG push buttons: bezeled, filled, tinted, plain and glass. */
+
+.mb-button {
+  --mb-button-height: var(--mb-control-height);
+  --mb-button-padding: var(--mb-control-padding);
+  --mb-button-radius: var(--mb-control-radius);
+  --mb-button-tone: var(--mb-accent);
+  --mb-button-tone-text: var(--mb-accent-text);
+  --mb-button-on-tone: var(--mb-on-accent);
+  --mb-button-bg: transparent;
+  --mb-button-fg: var(--mb-label);
+
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: var(--mb-control-gap);
+  min-width: var(--mb-button-height);
+  height: var(--mb-button-height);
+  margin: 0;
+  padding: 0 var(--mb-button-padding);
+  border: 0;
+  border-radius: var(--mb-button-radius);
+  background: var(--mb-button-bg);
+  color: var(--mb-button-fg);
+  font: var(--mb-control-font);
+  letter-spacing: var(--mb-tracking-body);
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  transition:
+    background-color var(--mb-duration-fast) var(--mb-ease-out),
+    color var(--mb-duration-fast) var(--mb-ease-out),
+    box-shadow var(--mb-duration-fast) var(--mb-ease-out),
+    opacity var(--mb-duration-fast) var(--mb-ease-out),
+    scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+/* A touch target never drops below the platform minimum, whatever it looks like. */
+.mb-button::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: max(100%, var(--mb-hit-target));
+  height: max(100%, var(--mb-hit-target));
+  translate: -50% -50%;
+}
+
+.mb-button :where(svg) {
+  flex: none;
+  width: var(--mb-icon-size);
+  height: var(--mb-icon-size);
+}
+
+.mb-button[data-tone="neutral"] {
+  --mb-button-tone: var(--mb-ink);
+  --mb-button-tone-text: var(--mb-label);
+  --mb-button-on-tone: var(--mb-bg);
+}
+
+.mb-button[data-tone="destructive"] {
+  --mb-button-tone: var(--mb-destructive);
+  --mb-button-tone-text: var(--mb-destructive-text);
+  --mb-button-on-tone: var(--mb-on-destructive);
+}
+
+/* Sizes */
+.mb-button[data-size="sm"] {
+  --mb-button-height: var(--mb-control-height-sm);
+  --mb-button-padding: var(--mb-control-padding-sm);
+  --mb-button-radius: var(--mb-control-radius-sm);
+  font: var(--mb-control-font-sm);
+}
+
+.mb-button[data-size="lg"] {
+  --mb-button-height: var(--mb-control-height-lg);
+  --mb-button-padding: var(--mb-control-padding-lg);
+  --mb-button-radius: var(--mb-control-radius-lg);
+  font: var(--mb-control-font-lg);
+}
+
+/* Shapes */
+.mb-button[data-shape="capsule"] {
+  --mb-button-radius: var(--mb-radius-full);
+}
+
+.mb-button[data-shape="circle"] {
+  --mb-button-radius: var(--mb-radius-full);
+  width: var(--mb-button-height);
+  padding: 0;
+}
+
+.mb-button[data-block] {
+  display: flex;
+  width: 100%;
+}
+
+/* Bezeled: the standard push button. A raised control on macOS, a gray fill on touch. */
+.mb-button[data-variant="bezeled"] {
+  /* Like AppKit: a soft hairline and drop shadow in light, a lit top edge in dark. The
+     label names the button, so its edge needn't hold 3:1; Increase Contrast restores it. */
+  --mb-button-edge: light-dark(
+    color-mix(in oklch, var(--mb-ink) 20%, transparent),
+    color-mix(in oklch, var(--mb-ink) 10%, transparent)
+  );
+  --mb-button-bg: var(--mb-bg-control);
+  --mb-button-fg: var(--mb-label);
+  box-shadow:
+    inset 0 0.5px 0 light-dark(rgb(255 255 255 / 0), rgb(255 255 255 / 0.12)),
+    0 0 0 var(--mb-hairline) var(--mb-button-edge),
+    0 0.5px 1.5px var(--mb-shadow-color);
+}
+
+@media (prefers-contrast: more) {
+  .mb-button[data-variant="bezeled"] {
+    --mb-button-edge: var(--mb-control-border);
+  }
+}
+
+.mb-button[data-variant="bezeled"][data-tone="destructive"] {
+  /* The text tokens are tuned for the page; the dark gray bezel needs a lighter red for 4.5:1. */
+  --mb-button-fg: light-dark(var(--mb-destructive-text), oklch(from var(--mb-red) max(calc(l + 0.12), 0.82) c h));
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .mb-button[data-variant="bezeled"] {
+    --mb-button-bg: var(--mb-fill-secondary);
+    /* Lifted in dark so tinted text holds 4.5:1 on the gray fill. */
+    --mb-button-fg: light-dark(
+      oklch(from var(--mb-button-tone-text) calc(l - 0.04) c h),
+      oklch(from var(--mb-button-tone-text) max(l, 0.78) c h)
+    );
+    box-shadow: none;
+  }
+
+  .mb-button[data-variant="bezeled"][data-tone="destructive"] {
+    --mb-button-fg: light-dark(var(--mb-destructive-text), oklch(from var(--mb-red) max(calc(l + 0.12), 0.85) c h));
+  }
+}
+
+/* Filled: the prominent, default action. One per view. */
+.mb-button[data-variant="filled"] {
+  --mb-button-bg: var(--mb-button-tone);
+  --mb-button-fg: var(--mb-button-on-tone);
+  font-weight: 600;
+  box-shadow:
+    inset 0 0.5px 0 rgb(255 255 255 / 0.28),
+    0 0.5px 1.5px var(--mb-shadow-color);
+}
+
+/* White on system red is under 4.5:1 in dark (and in light for the brighter reds); deepen it. */
+.mb-button[data-variant="filled"][data-tone="destructive"] {
+  --mb-button-tone: light-dark(
+    oklch(from var(--mb-destructive) min(l, 0.58) c h),
+    oklch(from var(--mb-destructive) min(l, 0.58) c h)
+  );
+}
+
+/* Tinted: a quieter filled button that still carries the accent. */
+.mb-button[data-variant="tinted"] {
+  --mb-button-bg: color-mix(in oklch, var(--mb-button-tone) 16%, transparent);
+  /* A touch deeper in light: the tint behind the text costs about 0.3 of contrast. */
+  --mb-button-fg: light-dark(oklch(from var(--mb-button-tone-text) calc(l - 0.04) c h), var(--mb-button-tone-text));
+}
+
+/* Plain: text only. Toolbars, navigation bars and inline actions. */
+.mb-button[data-variant="plain"] {
+  --mb-button-fg: var(--mb-button-tone-text);
+}
+
+/* Glass: floats over content. Never on another material. */
+.mb-button[data-variant="glass"] {
+  /* Material tokens, so Reduce Transparency and Increase Contrast make it opaque. */
+  --mb-button-bg: var(--mb-material-thin);
+  --mb-button-fg: var(--mb-label);
+  -webkit-backdrop-filter: var(--mb-material-filter);
+  backdrop-filter: var(--mb-material-filter);
+  box-shadow:
+    inset 0 1px 0 0 var(--mb-glass-edge),
+    inset 0 0 0 var(--mb-hairline) var(--mb-glass-edge-soft),
+    0 0 0 var(--mb-hairline) var(--mb-glass-border),
+    var(--mb-shadow-2);
+}
+
+/* Hover: pointer platforms only. Touch has no hover, and a stuck one looks broken. */
+@media (hover: hover) and (pointer: fine) {
+  .mb-button[data-variant="bezeled"]:hover {
+    --mb-button-bg: color-mix(in oklch, var(--mb-bg-control), var(--mb-ink) 5%);
+  }
+
+  .mb-button[data-variant="filled"]:hover {
+    --mb-button-bg: oklch(from var(--mb-button-tone) calc(l + 0.035) c h);
+  }
+
+  .mb-button[data-variant="tinted"]:hover {
+    --mb-button-bg: color-mix(in oklch, var(--mb-button-tone) 24%, transparent);
+  }
+
+  .mb-button[data-variant="plain"]:hover {
+    --mb-button-bg: var(--mb-fill-tertiary);
+  }
+
+  .mb-button[data-variant="glass"]:hover {
+    --mb-button-bg: var(--mb-material-regular);
+  }
+}
+
+/* Press: instant, on pointer-down. macOS darkens; touch also gives slightly. */
+.mb-button:active {
+  transition-duration: 0ms, 0ms, 0ms, 0ms, var(--mb-duration-instant);
+}
+
+.mb-button[data-variant="bezeled"]:active {
+  --mb-button-bg: color-mix(in oklch, var(--mb-bg-control), var(--mb-ink) 12%);
+}
+
+.mb-button[data-variant="filled"]:active {
+  --mb-button-bg: oklch(from var(--mb-button-tone) calc(l - 0.06) c h);
+}
+
+.mb-button[data-variant="tinted"]:active {
+  --mb-button-bg: color-mix(in oklch, var(--mb-button-tone) 32%, transparent);
+}
+
+.mb-button[data-variant="plain"]:active {
+  --mb-button-bg: var(--mb-fill-secondary);
+}
+
+.mb-button[data-variant="glass"]:active {
+  --mb-button-bg: var(--mb-material-thick);
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .mb-button:active {
+    scale: 0.97;
+  }
+
+  .mb-button[data-variant="bezeled"]:active {
+    --mb-button-bg: var(--mb-fill);
+  }
+
+  .mb-button[data-variant="plain"]:active {
+    --mb-button-bg: transparent;
+    opacity: 0.45;
+  }
+}
+
+.mb-button:where([data-disabled], :disabled) {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.mb-button[data-pending] {
+  cursor: progress;
+}
+
+.mb-button:not([data-pending]) [data-show="pending"],
+.mb-button[data-pending] [data-show="idle"] {
+  display: none;
+}
+
+.mb-button-spinner {
+  width: var(--mb-icon-size);
+  height: var(--mb-icon-size);
+  border-radius: 50%;
+  border: 2px solid color-mix(in oklch, currentColor 28%, transparent);
+  border-top-color: currentColor;
+  animation: mb-button-spin 0.7s linear infinite;
+}
+
+@keyframes mb-button-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(:root:not([data-motion="full"])) {
+    /* The spinner is data-motion="essential": it keeps turning, just slower. */
+    .mb-button-spinner {
+      animation-duration: 1.6s;
+    }
+  }
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  @media (prefers-reduced-motion: reduce) {
+  :where(:root:not([data-motion="full"])) {
+      .mb-button:active {
+        scale: none;
+      }
+  }
+}
+}

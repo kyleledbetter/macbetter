@@ -1,4 +1,4 @@
-import { Artwork, artworkPalettes } from "@dreambase/stardust/artwork"
+import { Artwork, artworkPalettes } from "macbetter/artwork"
 
 export default function Example() {
   return (
@@ -6,7 +6,7 @@ export default function Example() {
       {artworkPalettes.map((palette) => (
         <figure key={palette} style={{ margin: 0 }}>
           <Artwork seed="Palettes" variant="aurora" palette={palette} />
-          <figcaption className="sd-text-subheadline" style={{ marginTop: 6 }}>
+          <figcaption className="mb-text-subheadline" style={{ marginTop: 6 }}>
             {palette}
           </figcaption>
         </figure>

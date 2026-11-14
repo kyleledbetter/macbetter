@@ -1,7 +1,7 @@
 "use client"
 
-import { Button } from "@dreambase/stardust/button"
-import { toast } from "@dreambase/stardust/toast"
+import { Button } from "macbetter/button"
+import { toast } from "macbetter/toast"
 
 export default function Example() {
   return (
@@ -10,7 +10,7 @@ export default function Example() {
       onClick={() =>
         toast("Hollis Grant", {
           description: "Can you review the Q3 roadmap before Friday’s planning meeting?",
-          data: { icon: <img src="/dreambase-logo-mark.svg" alt="" /> },
+          data: { icon: <img src="/app-icon.svg" alt="" /> },
         })
       }
     >

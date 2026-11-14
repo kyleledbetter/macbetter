@@ -1,4 +1,4 @@
-import { contrastRatio } from "@dreambase/stardust/theme"
+import { contrastRatio } from "macbetter/theme"
 
 const palette = [
   { name: "Trinidad", hex: "#EE5700", role: "Accent and orange, light" },

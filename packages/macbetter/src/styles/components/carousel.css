@@ -1,0 +1,210 @@
+/* Carousel — a paging scroll view: cards snap into place and the next one peeks in. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-carousel-item-size: 44%;
+  --mb-carousel-gap: 12px;
+  --mb-carousel-inset: 0px;
+  --mb-carousel-button-size: 28px;
+  --mb-carousel-button-glyph: 11px;
+  --mb-carousel-dot: 7px;
+  --mb-carousel-dot-gap: 8px;
+}
+
+:where([data-platform="ipados"]) {
+  --mb-carousel-item-size: 46%;
+  --mb-carousel-gap: 16px;
+  --mb-carousel-inset: 20px;
+  --mb-carousel-button-size: 36px;
+  --mb-carousel-button-glyph: 14px;
+  --mb-carousel-dot: 8px;
+  --mb-carousel-dot-gap: 9px;
+}
+
+:where([data-platform="ios"]) {
+  --mb-carousel-item-size: 86%;
+  --mb-carousel-gap: 10px;
+  --mb-carousel-inset: 16px;
+  --mb-carousel-button-size: 36px;
+  --mb-carousel-button-glyph: 14px;
+  --mb-carousel-dot: 8px;
+  --mb-carousel-dot-gap: 9px;
+}
+
+.mb-carousel {
+  position: relative;
+  display: grid;
+  grid-template: "stage" auto "dots" auto / minmax(0, 1fr);
+  row-gap: var(--mb-space-5);
+  min-width: 0;
+}
+
+.mb-carousel[data-layout="full"] {
+  --mb-carousel-item-size: 100%;
+}
+
+.mb-carousel-viewport {
+  grid-area: stage;
+  min-width: 0;
+  scroll-padding-inline: var(--mb-carousel-inset);
+  scrollbar-width: none;
+  border-radius: inherit;
+}
+
+.mb-carousel-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.mb-carousel-viewport:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: var(--mb-focus-ring-offset);
+}
+
+.mb-carousel-content {
+  display: flex;
+  gap: var(--mb-carousel-gap);
+  padding-inline: var(--mb-carousel-inset);
+}
+
+.mb-carousel-item {
+  flex: 0 0 var(--mb-carousel-item-size);
+  min-width: 0;
+  transition: opacity var(--mb-duration-base) var(--mb-ease-out);
+}
+
+.mb-carousel-button {
+  grid-area: stage;
+  z-index: 1;
+  align-self: center;
+  display: grid;
+  place-items: center;
+  width: var(--mb-carousel-button-size);
+  height: var(--mb-carousel-button-size);
+  margin: 0 var(--mb-space-4);
+  padding: 0;
+  border: 0;
+  border-radius: var(--mb-radius-full);
+  /* Material tokens, so the arrows turn opaque under Reduce Transparency. */
+  background: var(--mb-material-regular);
+  color: var(--mb-label);
+  -webkit-backdrop-filter: var(--mb-material-filter);
+  backdrop-filter: var(--mb-material-filter);
+  box-shadow:
+    inset 0 1px 0 0 var(--mb-glass-edge),
+    inset 0 0 0 var(--mb-hairline) var(--mb-glass-edge-soft),
+    0 0 0 var(--mb-hairline) var(--mb-glass-border),
+    var(--mb-shadow-2);
+  cursor: default;
+  opacity: 0;
+  scale: 0.9;
+  transition:
+    opacity var(--mb-duration-base) var(--mb-ease-out),
+    scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy),
+    background-color var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-carousel-previous {
+  justify-self: start;
+}
+
+.mb-carousel-next {
+  justify-self: end;
+}
+
+.mb-carousel-button svg {
+  width: var(--mb-carousel-button-glyph);
+  height: var(--mb-carousel-button-glyph);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+:where([dir="rtl"]) .mb-carousel-button svg {
+  scale: -1 1;
+}
+
+/* Arrows are for pointers: they show while the carousel is hovered or has focus. Touch swipes. */
+@media (hover: hover) and (pointer: fine) {
+  .mb-carousel:is(:hover, :focus-within) .mb-carousel-button:not([data-disabled]),
+  .mb-carousel-button:focus-visible {
+    opacity: 1;
+    scale: 1;
+  }
+
+  .mb-carousel-button:hover {
+    background: var(--mb-material-thick);
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .mb-carousel-button:not(:focus-visible) {
+    visibility: hidden;
+  }
+}
+
+.mb-carousel-button:active {
+  scale: 0.92;
+  transition-duration: var(--mb-duration-base), 0ms, 0ms;
+}
+
+.mb-carousel-button[data-disabled] {
+  pointer-events: none;
+}
+
+.mb-carousel-button:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: var(--mb-focus-ring-offset);
+}
+
+.mb-carousel-indicators {
+  grid-area: dots;
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  gap: var(--mb-carousel-dot-gap);
+  padding: 6px 10px;
+}
+
+.mb-carousel-indicator {
+  position: relative;
+  flex: none;
+  width: var(--mb-carousel-dot);
+  height: var(--mb-carousel-dot);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--mb-radius-full);
+  /* The control-edge token holds 3:1, so an idle dot still reads as a control. */
+  background: var(--mb-control-border);
+  cursor: default;
+  transition:
+    background-color var(--mb-duration-base) var(--mb-ease-out),
+    scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+.mb-carousel-indicator::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: calc(var(--mb-carousel-dot) + var(--mb-carousel-dot-gap));
+  height: max(var(--mb-hit-target), 24px);
+  translate: -50% -50%;
+}
+
+.mb-carousel-indicator[data-selected] {
+  background: var(--mb-label);
+}
+
+.mb-carousel-indicator:active {
+  scale: 0.85;
+}
+
+.mb-carousel-indicator:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: 2px;
+}
+
+.mb-carousel-indicator[hidden] {
+  display: none;
+}

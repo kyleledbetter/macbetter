@@ -55,8 +55,8 @@ page.on("requestfailed", (request) => console.error("failed:", request.url()))
 if (options.scheme || options.theme) {
   await page.addInitScript(
     ([scheme, theme]) => {
-      if (scheme) localStorage.setItem("stardust-scheme", scheme)
-      if (theme) localStorage.setItem("stardust-theme", theme)
+      if (scheme) localStorage.setItem("macbetter-scheme", scheme)
+      if (theme) localStorage.setItem("macbetter-theme", theme)
     },
     [options.scheme, options.theme]
   )

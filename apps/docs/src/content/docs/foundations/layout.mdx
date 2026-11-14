@@ -1,6 +1,6 @@
 export const metadata = {
   title: "Layout and shape",
-  description: "The 4pt spacing scale, radius tokens and --sd-radius-scale, control metrics, hit targets, safe areas and concentric corners.",
+  description: "The 4pt spacing scale, radius tokens and --mb-radius-scale, control metrics, hit targets, safe areas and concentric corners.",
 }
 
 # Layout and shape
@@ -13,9 +13,9 @@ Spacing follows a 4pt grid, with 2px and 6px steps for tight optical adjustments
 
 <Demo name="foundations/spacing" hideCode />
 
-Use the tokens for padding, gaps and margins: `gap: var(--sd-space-4)`. Spacing is the same on every platform; what changes is the size of the things being spaced. For the margin between content and the edge of a window or screen, use `--sd-content-padding`: 20px on macOS and iPadOS, 16px on iPhone.
+Use the tokens for padding, gaps and margins: `gap: var(--mb-space-4)`. Spacing is the same on every platform; what changes is the size of the things being spaced. For the margin between content and the edge of a window or screen, use `--mb-content-padding`: 20px on macOS and iPadOS, 16px on iPhone.
 
-Group related controls tightly and separate groups generously. A settings group might use `--sd-space-4` between rows' contents and `--sd-space-8` between groups.
+Group related controls tightly and separate groups generously. A settings group might use `--mb-space-4` between rows' contents and `--mb-space-8` between groups.
 
 ## Radius
 
@@ -23,20 +23,20 @@ Seven radius tokens and a capsule:
 
 | Token | At scale 1 | Typical use |
 | --- | --- | --- |
-| `--sd-radius-xs` | 4px | Small marks, checkbox corners |
-| `--sd-radius-sm` | 6px | Small controls, list row highlights on macOS |
-| `--sd-radius-md` | 8px | macOS controls, rows on touch |
-| `--sd-radius-lg` | 12px | macOS menus and grouped lists |
-| `--sd-radius-xl` | 16px | macOS popovers and sheets |
-| `--sd-radius-2xl` | 22px | Menus, popovers and grouped lists on touch |
-| `--sd-radius-3xl` | 30px | Sheets on touch |
-| `--sd-radius-full` | 9999px | Capsules and circles |
+| `--mb-radius-xs` | 4px | Small marks, checkbox corners |
+| `--mb-radius-sm` | 6px | Small controls, list row highlights on macOS |
+| `--mb-radius-md` | 8px | macOS controls, rows on touch |
+| `--mb-radius-lg` | 12px | macOS menus and grouped lists |
+| `--mb-radius-xl` | 16px | macOS popovers and sheets |
+| `--mb-radius-2xl` | 22px | Menus, popovers and grouped lists on touch |
+| `--mb-radius-3xl` | 30px | Sheets on touch |
+| `--mb-radius-full` | 9999px | Capsules and circles |
 
-Every token except `--sd-radius-full` is multiplied by the `--sd-radius-scale` seed. A theme sets it once to make the whole system squarer or rounder:
+Every token except `--mb-radius-full` is multiplied by the `--mb-radius-scale` seed. A theme sets it once to make the whole system squarer or rounder:
 
 <Demo name="foundations/radius" hideCode />
 
-Components use the platform's role tokens rather than the scale directly: `--sd-control-radius`, `--sd-row-radius`, `--sd-menu-radius`, `--sd-popup-radius`, `--sd-sheet-radius` and `--sd-group-radius`. On iPadOS and iOS, control radii are `--sd-radius-full`, which is why buttons and segmented controls become capsules on touch.
+Components use the platform's role tokens rather than the scale directly: `--mb-control-radius`, `--mb-row-radius`, `--mb-menu-radius`, `--mb-popup-radius`, `--mb-sheet-radius` and `--mb-group-radius`. On iPadOS and iOS, control radii are `--mb-radius-full`, which is why buttons and segmented controls become capsules on touch.
 
 ## Concentric corners
 
@@ -46,17 +46,17 @@ When one rounded shape sits inside another, make the corners concentric: the inn
 
 ```css
 .card {
-  --card-padding: var(--sd-space-4);
-  border-radius: var(--sd-radius-2xl);
+  --card-padding: var(--mb-space-4);
+  border-radius: var(--mb-radius-2xl);
   padding: var(--card-padding);
 }
 
 .card > .thumbnail {
-  border-radius: max(var(--sd-radius-xs), calc(var(--sd-radius-2xl) - var(--card-padding)));
+  border-radius: max(var(--mb-radius-xs), calc(var(--mb-radius-2xl) - var(--card-padding)));
 }
 ```
 
-Stardust's own components do this. The segmented control's indicator, for example, uses its track's radius minus the 2px inset.
+Macbetter's own components do this. The segmented control's indicator, for example, uses its track's radius minus the 2px inset.
 
 ## Control metrics
 
@@ -64,22 +64,22 @@ Control heights, row heights and icon sizes change with the platform. Pick one i
 
 <Demo name="foundations/metrics" hideCode />
 
-Size your own controls and rows with these tokens, and they'll match Stardust's on every platform:
+Size your own controls and rows with these tokens, and they'll match Macbetter's on every platform:
 
 ```css
 .toolbar-field {
-  height: var(--sd-control-height);
-  padding-inline: var(--sd-control-padding);
-  border-radius: var(--sd-control-radius);
-  font: var(--sd-control-font);
+  height: var(--mb-control-height);
+  padding-inline: var(--mb-control-padding);
+  border-radius: var(--mb-control-radius);
+  font: var(--mb-control-font);
 }
 ```
 
 ## Hit targets
 
-`--sd-hit-target` is the smallest area a control should respond to: 24px on macOS, where a pointer is precise, and 44px on iPadOS and iOS, the HIG's minimum for a finger. The dashed outlines in the preview above show the area each button responds to.
+`--mb-hit-target` is the smallest area a control should respond to: 24px on macOS, where a pointer is precise, and 44px on iPadOS and iOS, the HIG's minimum for a finger. The dashed outlines in the preview above show the area each button responds to.
 
-A control can look smaller than its hit target. Stardust's buttons extend their hit area with a centered, invisible `::after` that's at least `--sd-hit-target` in each direction. Use the same technique for your own small controls:
+A control can look smaller than its hit target. Macbetter's buttons extend their hit area with a centered, invisible `::after` that's at least `--mb-hit-target` in each direction. Use the same technique for your own small controls:
 
 ```css
 .close-button {
@@ -90,8 +90,8 @@ A control can look smaller than its hit target. Stardust's buttons extend their 
   content: "";
   position: absolute;
   inset: 50% auto auto 50%;
-  width: max(100%, var(--sd-hit-target));
-  height: max(100%, var(--sd-hit-target));
+  width: max(100%, var(--mb-hit-target));
+  height: max(100%, var(--mb-hit-target));
   translate: -50% -50%;
 }
 ```
@@ -100,13 +100,13 @@ Leave enough space between neighbouring controls that their hit areas don't over
 
 ## Safe areas
 
-Stardust doesn't add safe area padding for you. On devices with a notch, rounded corners or a home indicator, set `viewport-fit=cover` in the viewport meta tag and pad edge-to-edge bars with the browser's `env()` insets:
+Macbetter doesn't add safe area padding for you. On devices with a notch, rounded corners or a home indicator, set `viewport-fit=cover` in the viewport meta tag and pad edge-to-edge bars with the browser's `env()` insets:
 
 ```css
 .bottom-bar {
-  padding-bottom: max(var(--sd-space-4), env(safe-area-inset-bottom));
-  padding-left: max(var(--sd-content-padding), env(safe-area-inset-left));
-  padding-right: max(var(--sd-content-padding), env(safe-area-inset-right));
+  padding-bottom: max(var(--mb-space-4), env(safe-area-inset-bottom));
+  padding-left: max(var(--mb-content-padding), env(safe-area-inset-left));
+  padding-right: max(var(--mb-content-padding), env(safe-area-inset-right));
 }
 ```
 

@@ -1,0 +1,222 @@
+/*
+ * Combo Box — a text field joined to a list of suggestions. On the Mac the
+ * field carries an accent cap with a chevron, like a pop-up button's; on
+ * iOS and iPadOS it's a filled field with a quiet chevron. The list is a menu.
+ */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-combo-box-radius: var(--mb-control-radius-sm);
+  --mb-combo-box-padding: 8px;
+  --mb-combo-box-bg: var(--mb-bg-field);
+  --mb-combo-box-border: var(--mb-control-border);
+  --mb-combo-box-cap-inset: 3px;
+  --mb-combo-box-cap-bg: var(--mb-accent);
+  --mb-combo-box-cap-fg: var(--mb-on-accent);
+  --mb-combo-box-chevron: 11px;
+  --mb-combo-box-font: 400 13px/16px var(--mb-font);
+  --mb-combo-box-width: 240px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-combo-box-radius: var(--mb-radius-md);
+  --mb-combo-box-padding: 12px;
+  --mb-combo-box-bg: var(--mb-fill-tertiary);
+  --mb-combo-box-border: transparent;
+  --mb-combo-box-cap-inset: 4px;
+  --mb-combo-box-cap-bg: transparent;
+  --mb-combo-box-cap-fg: var(--mb-label-secondary);
+  --mb-combo-box-chevron: 16px;
+  --mb-combo-box-font: 400 17px/22px var(--mb-font);
+  --mb-combo-box-width: 300px;
+}
+
+.mb-combo-box-control {
+  --mb-combo-box-height: var(--mb-control-height);
+  --mb-combo-box-cap: calc(var(--mb-combo-box-height) - var(--mb-combo-box-cap-inset) * 2);
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: var(--mb-combo-box-width);
+  max-width: 100%;
+}
+
+.mb-combo-box-label {
+  color: var(--mb-label);
+  font: var(--mb-text-body);
+}
+
+.mb-combo-box-label[data-disabled] {
+  color: var(--mb-label-tertiary);
+}
+
+.mb-combo-box-input {
+  width: 100%;
+  min-width: 0;
+  height: var(--mb-combo-box-height, var(--mb-control-height));
+  margin: 0;
+  padding-block: 0;
+  padding-inline: var(--mb-combo-box-padding) calc(var(--mb-combo-box-cap, 0px) + var(--mb-combo-box-cap-inset) + 6px);
+  border: 0;
+  border-radius: var(--mb-combo-box-radius);
+  background: var(--mb-combo-box-bg);
+  box-shadow: inset 0 0 0 var(--mb-hairline) var(--mb-combo-box-border);
+  color: var(--mb-label);
+  font: var(--mb-combo-box-font);
+  letter-spacing: var(--mb-tracking-body);
+  outline: none;
+  appearance: none;
+  transition: outline-color var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-combo-box-control:has(.mb-combo-box-clear) .mb-combo-box-input {
+  padding-inline-end: calc(var(--mb-combo-box-cap) + var(--mb-combo-box-cap-inset) + 28px);
+}
+
+.mb-combo-box-input::placeholder {
+  color: var(--mb-placeholder);
+}
+
+/* Text fields show the focus ring whenever they're editing, as on the Mac. */
+.mb-combo-box-input:focus {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: 0;
+}
+
+.mb-combo-box-input[data-disabled] {
+  opacity: 0.5;
+}
+
+.mb-combo-box-trigger {
+  position: absolute;
+  inset-inline-end: var(--mb-combo-box-cap-inset);
+  top: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--mb-combo-box-cap);
+  height: var(--mb-combo-box-cap);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: max(3px, calc(var(--mb-combo-box-radius) - var(--mb-combo-box-cap-inset)));
+  background: var(--mb-combo-box-cap-bg);
+  color: var(--mb-combo-box-cap-fg);
+  translate: 0 -50%;
+  cursor: default;
+}
+
+.mb-combo-box-trigger::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: max(100%, var(--mb-hit-target));
+  height: max(100%, var(--mb-hit-target));
+  translate: -50% -50%;
+}
+
+.mb-combo-box-trigger :where(svg) {
+  width: var(--mb-combo-box-chevron);
+  height: var(--mb-combo-box-chevron);
+}
+
+.mb-combo-box-trigger:active {
+  filter: brightness(0.92);
+}
+
+.mb-combo-box-trigger:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: 1px;
+}
+
+.mb-combo-box-clear {
+  position: absolute;
+  inset-inline-end: calc(var(--mb-combo-box-cap) + var(--mb-combo-box-cap-inset) + 6px);
+  top: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--mb-label-tertiary);
+  translate: 0 -50%;
+  cursor: default;
+}
+
+.mb-combo-box-clear::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: var(--mb-hit-target);
+  height: var(--mb-hit-target);
+  translate: -50% -50%;
+}
+
+.mb-combo-box-clear :where(svg) {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── The list ───────────────────────────────────────────────── */
+
+.mb-menu-content.mb-combo-box-content {
+  --mb-menu-lead: calc(var(--mb-menu-row-padding) + var(--mb-menu-gutter));
+
+  min-width: var(--anchor-width);
+  max-height: min(var(--available-height), 320px);
+}
+
+/* Autocomplete lists hold suggestions, not a value, so there's nothing to check. */
+.mb-menu-content.mb-combo-box-content:not(:has(.mb-menu-checkable)) {
+  --mb-menu-lead: var(--mb-menu-row-padding);
+}
+
+.mb-combo-box-item-indicator:not([data-selected]) {
+  visibility: hidden;
+}
+
+.mb-combo-box-item-text mark {
+  background: none;
+  color: inherit;
+  font-weight: 600;
+}
+
+/* As a bottom sheet the input moves into the header, under menu.css's grabber, as an iOS search field. */
+.mb-menu-content.mb-combo-box-content[data-presentation="sheet"] {
+  min-width: 0;
+  max-height: 85dvh;
+}
+
+.mb-combo-box-content > [data-slot$="-header"] {
+  padding: 0 16px 8px;
+}
+
+.mb-combo-box-content > [data-slot$="-header"] .mb-combo-box-input {
+  --mb-combo-box-height: 36px;
+
+  padding-inline: 10px;
+  border-radius: var(--mb-radius-md);
+  background: var(--mb-fill-tertiary);
+  box-shadow: none;
+}
+
+/* iOS fields don't draw a focus ring; the caret shows where typing goes. */
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .mb-combo-box-content > [data-slot$="-header"] .mb-combo-box-input:focus {
+    outline: none;
+  }
+}
+
+.mb-combo-box-empty:not(:empty),
+.mb-combo-box-status:not(:empty) {
+  padding: 4px var(--mb-menu-row-padding);
+  color: var(--mb-label-secondary);
+}
+
+.mb-combo-box-content:has(.mb-combo-box-empty:not(:empty)) .mb-combo-box-list:empty {
+  display: none;
+}

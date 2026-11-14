@@ -3,7 +3,7 @@
 import * as React from "react"
 import { baseOption, ChartFrame, EChart, formatters, valueAxis, type ChartTheme, type Scrub } from "@/components/charts"
 
-/** DRMB daily open, close, low and high for the last 22 trading days. */
+/** MCBT daily open, close, low and high for the last 22 trading days. */
 const days = [
   ["Oct 15", 238.6, 236.9, 235.2, 239.8], ["Oct 16", 236.9, 234.1, 233.0, 237.5], ["Oct 19", 234.0, 235.8, 232.6, 236.4],
   ["Oct 20", 235.9, 233.2, 232.1, 236.8], ["Oct 21", 233.0, 229.4, 228.7, 233.6], ["Oct 22", 229.6, 230.8, 227.9, 231.5],
@@ -54,14 +54,14 @@ export default function Candlesticks() {
   const up = close >= open
   return (
     <ChartFrame
-      title="DRMB daily prices, last 22 trading days"
-      summary="DRMB fell from 238.60 to a low of 218.90 on October 29, then recovered to close at 231.40."
+      title="MCBT daily prices, last 22 trading days"
+      summary="MCBT fell from 238.60 to a low of 218.90 on October 29, then recovered to close at 231.40."
       table={{ columns: ["Day", "Open", "Close", "Low", "High"], rows: days.map((d) => [d[0], ...d.slice(1).map((v) => formatters.price.format(v as number))]) }}
       style={{ width: "100%", maxWidth: 600 }}
     >
-      <dl style={{ display: "flex", flexWrap: "wrap", gap: "4px 18px", margin: 0, font: "var(--sd-text-footnote)", fontVariantNumeric: "tabular-nums" }}>
+      <dl style={{ display: "flex", flexWrap: "wrap", gap: "4px 18px", margin: 0, font: "var(--mb-text-footnote)", fontVariantNumeric: "tabular-nums" }}>
         <div style={{ display: "flex", gap: 6 }}>
-          <dt style={{ color: "var(--sd-label-secondary)" }}>{scrub ? "Day" : "Last"}</dt>
+          <dt style={{ color: "var(--mb-label-secondary)" }}>{scrub ? "Day" : "Last"}</dt>
           <dd style={{ margin: 0, fontWeight: 600 }}>{label}</dd>
         </div>
         {(
@@ -73,8 +73,8 @@ export default function Candlesticks() {
           ] as const
         ).map(([name, value]) => (
           <div key={name} style={{ display: "flex", gap: 6 }}>
-            <dt style={{ color: "var(--sd-label-secondary)" }}>{name}</dt>
-            <dd style={{ margin: 0, fontWeight: 600, color: name === "Close" ? (up ? "var(--sd-green)" : "var(--sd-red)") : undefined }}>
+            <dt style={{ color: "var(--mb-label-secondary)" }}>{name}</dt>
+            <dd style={{ margin: 0, fontWeight: 600, color: name === "Close" ? (up ? "var(--mb-green)" : "var(--mb-red)") : undefined }}>
               {formatters.price.format(value)}
             </dd>
           </div>

@@ -1,36 +1,36 @@
-import { Button } from "@dreambase/stardust/button"
-import { Checkbox } from "@dreambase/stardust/checkbox"
-import { SegmentedControl, SegmentedControlItem } from "@dreambase/stardust/segmented-control"
-import { Slider } from "@dreambase/stardust/slider"
-import { Switch } from "@dreambase/stardust/switch"
+import { Button } from "macbetter/button"
+import { Checkbox } from "macbetter/checkbox"
+import { SegmentedControl, SegmentedControlItem } from "macbetter/segmented-control"
+import { Slider } from "macbetter/slider"
+import { Switch } from "macbetter/switch"
 import Link from "next/link"
 import { CodeBlock } from "@/components/code-block"
 import { SectionHeading } from "./section-heading"
 
 const cards = [
-  { theme: "dreambase", name: "Dreambase", note: "Orange on racing green." },
+  { theme: "ember", name: "Ember", note: "Orange on racing green." },
   { theme: "system", name: "System", note: "Apple’s blue on true grays." },
   { theme: "nebula", name: "Nebula", note: "Violet on cool ink, rounder corners." },
   { theme: "graphite", name: "Graphite", note: "Monochrome and squared off." },
 ]
 
 const seeds = `[data-theme="acme"] {
-  --sd-accent: light-dark(#6d3df5, #9b7bff);
-  --sd-accent-secondary: light-dark(#c026a8, #ff7ad9);
-  --sd-ink: light-dark(#14102b, #f3f1ff);
-  --sd-bg: light-dark(#ffffff, #100c24);
-  --sd-tint: light-dark(#66618a, #9a94c9);
-  --sd-radius-scale: 1.15;
+  --mb-accent: light-dark(#6d3df5, #9b7bff);
+  --mb-accent-secondary: light-dark(#c026a8, #ff7ad9);
+  --mb-ink: light-dark(#14102b, #f3f1ff);
+  --mb-bg: light-dark(#ffffff, #100c24);
+  --mb-tint: light-dark(#66618a, #9a94c9);
+  --mb-radius-scale: 1.15;
 }`
 
 function ThemeCard({ theme, name, note }: (typeof cards)[number]) {
   return (
-    <figure className="lp-theme-card" data-theme={theme} data-platform="macos" data-stardust="">
+    <figure className="lp-theme-card" data-theme={theme} data-platform="macos" data-macbetter="">
       <figcaption className="lp-theme-card-head">
         <span className="lp-theme-card-swatches" aria-hidden="true">
-          <span style={{ background: "var(--sd-accent)" }} />
-          <span style={{ background: "var(--sd-accent-secondary)" }} />
-          <span style={{ background: "var(--sd-ink)" }} />
+          <span style={{ background: "var(--mb-accent)" }} />
+          <span style={{ background: "var(--mb-accent-secondary)" }} />
+          <span style={{ background: "var(--mb-ink)" }} />
         </span>
         <span className="lp-theme-card-name">{name}</span>
         <span className="lp-theme-card-note">{note}</span>

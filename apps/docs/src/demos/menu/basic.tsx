@@ -10,7 +10,7 @@ import {
   MenuSubContent,
   MenuSubTrigger,
   MenuTrigger,
-} from "@dreambase/stardust/menu"
+} from "macbetter/menu"
 import { ArchiveIcon, CopyIcon, FolderIcon, PencilIcon, PinIcon, ShareIcon, TrashIcon } from "lucide-react"
 
 export default function Example() {

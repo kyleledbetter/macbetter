@@ -1,21 +1,25 @@
-import { StardustScript } from "@dreambase/stardust"
-import { Toaster } from "@dreambase/stardust/toast"
+import { MacbetterScript } from "macbetter"
+import { Toaster } from "macbetter/toast"
 import type { Metadata, Viewport } from "next"
 import { Geist_Mono } from "next/font/google"
 import { AppPreferences } from "@/components/app-preferences"
 import { EffectsNotice } from "@/components/effects-notice"
+import { ogImageUrl, ogSize, tagline } from "@/lib/og/routes"
 import "./globals.css"
 
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://stardust.dreambase.ai"),
-  title: { default: "Stardust — macOS, iPadOS and iOS for the web", template: "%s · Stardust" },
+  metadataBase: new URL("https://macbetter.dev"),
+  title: { default: `Macbetter — ${tagline}`, template: "%s · Macbetter" },
   description:
-    "Stardust is Dreambase's design system: Apple-grade components for the web, themeable to any brand and built on ui-sdk.",
-  applicationName: "Stardust",
-  openGraph: { type: "website", siteName: "Stardust", locale: "en_US" },
-  twitter: { card: "summary_large_image" },
+    "Macbetter is a design system: Apple-grade components for the web, themeable to any brand and built on ui-sdk.",
+  applicationName: "Macbetter",
+  authors: [{ name: "Kyle Ledbetter", url: "https://github.com/kyleledbetter" }],
+  creator: "Kyle Ledbetter",
+  // Pages without a card of their own (the 404) share the home page's.
+  openGraph: { type: "website", siteName: "Macbetter", locale: "en_US", images: [{ url: ogImageUrl(""), ...ogSize }] },
+  twitter: { card: "summary_large_image", images: [{ url: ogImageUrl(""), ...ogSize }] },
 }
 
 export const viewport: Viewport = {
@@ -30,14 +34,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      data-theme="dreambase"
+      data-theme="ember"
       data-color-scheme="dark"
       data-scroll-behavior="smooth"
       className={geistMono.variable}
       suppressHydrationWarning
     >
-      <body data-stardust="">
-        <StardustScript />
+      <body data-macbetter="">
+        <MacbetterScript />
         <AppPreferences>
           {children}
           <Toaster />

@@ -1,6 +1,6 @@
 "use client"
 
-import { Slider } from "@dreambase/stardust/slider"
+import { Slider } from "macbetter/slider"
 import { useState } from "react"
 
 export default function Example() {
@@ -8,7 +8,7 @@ export default function Example() {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12, width: "100%", maxWidth: 360 }}>
-      <span style={{ font: "var(--sd-text-title-2)", fontVariantNumeric: "tabular-nums" }}>{minutes} min</span>
+      <span style={{ font: "var(--mb-text-title-2)", fontVariantNumeric: "tabular-nums" }}>{minutes} min</span>
       <Slider
         value={minutes}
         onValueChange={(value) => setMinutes(value as number)}

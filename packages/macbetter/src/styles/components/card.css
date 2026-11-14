@@ -1,0 +1,100 @@
+/* Card — a content container: a macOS group box, or an iOS grouped cell or widget. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-card-padding: 16px;
+  --mb-card-gap: 12px;
+  --mb-card-radius: var(--mb-radius-lg);
+  --mb-card-title-font: 600 13px/16px var(--mb-font);
+  --mb-card-description-font: 400 12px/15px var(--mb-font);
+  --mb-card-grouped-bg: var(--mb-fill-quaternary);
+  --mb-card-grouped-edge: var(--mb-separator);
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-card-padding: 16px;
+  --mb-card-gap: 14px;
+  --mb-card-radius: var(--mb-group-radius);
+  --mb-card-title-font: 600 17px/22px var(--mb-font);
+  --mb-card-description-font: 400 15px/20px var(--mb-font);
+  --mb-card-grouped-bg: var(--mb-bg-grouped-secondary);
+  --mb-card-grouped-edge: transparent;
+}
+
+.mb-card {
+  --mb-card-bg: var(--mb-card-grouped-bg);
+
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--mb-card-gap);
+  min-width: 0;
+  padding: var(--mb-card-padding);
+  border-radius: var(--mb-card-radius);
+  background: var(--mb-card-bg);
+  color: var(--mb-label);
+  box-shadow: inset 0 0 0 var(--mb-hairline) var(--mb-card-grouped-edge);
+}
+
+/* Apple's corners are continuous: the curve eases into the straight edge. */
+@supports (corner-shape: squircle) {
+  .mb-card {
+    border-radius: calc(var(--mb-card-radius) * 1.6);
+    corner-shape: squircle;
+  }
+}
+
+.mb-card[data-variant="elevated"] {
+  --mb-card-bg: var(--mb-bg-elevated);
+  box-shadow:
+    0 0 0 var(--mb-hairline) var(--mb-glass-border),
+    var(--mb-shadow-2);
+}
+
+.mb-card[data-variant="material"] {
+  --mb-card-bg: var(--mb-material-regular);
+  -webkit-backdrop-filter: var(--mb-material-filter);
+  backdrop-filter: var(--mb-material-filter);
+  box-shadow: var(--mb-glass-rim), 0 0 0 var(--mb-hairline) var(--mb-glass-border), var(--mb-shadow-2);
+}
+
+.mb-card[data-variant="outline"] {
+  --mb-card-bg: transparent;
+  box-shadow: inset 0 0 0 1px var(--mb-separator-strong);
+}
+
+.mb-card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.mb-card-title {
+  margin: 0;
+  color: var(--mb-label);
+  font: var(--mb-card-title-font);
+  letter-spacing: var(--mb-tracking-body);
+}
+
+.mb-card-description {
+  margin: 0;
+  color: var(--mb-label-secondary);
+  font: var(--mb-card-description-font);
+  letter-spacing: var(--mb-tracking-caption);
+  text-wrap: pretty;
+}
+
+.mb-card-content {
+  min-width: 0;
+  font: var(--mb-text-body);
+  letter-spacing: var(--mb-tracking-body);
+}
+
+.mb-card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--mb-space-4);
+}

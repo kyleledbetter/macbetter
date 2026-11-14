@@ -18,9 +18,9 @@ export default function Spacing() {
     <div className="flex w-full flex-col gap-1.5">
       {steps.map(([step, size]) => (
         <div key={step} className="grid grid-cols-[110px_44px_1fr] items-center gap-3">
-          <code className="font-mono text-[12px] text-label">--sd-space-{step}</code>
+          <code className="font-mono text-[12px] text-label">--mb-space-{step}</code>
           <span className="text-end font-mono text-[12px] text-label-tertiary tabular-nums">{size}px</span>
-          <div className="h-3 rounded-[3px] bg-accent" style={{ width: `var(--sd-space-${step})` }} />
+          <div className="h-3 rounded-[3px] bg-accent" style={{ width: `var(--mb-space-${step})` }} />
         </div>
       ))}
     </div>

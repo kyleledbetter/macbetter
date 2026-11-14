@@ -23,7 +23,7 @@ import {
   PopoverDescription,
   PopoverTitle,
   PopoverTrigger,
-} from "@dreambase/stardust/popover"
+} from "macbetter/popover"
 ```
 
 `PopoverContent` draws its arrow and grows out of the trigger. It opens below the trigger and flips or shifts when there isn’t room; the arrow keeps pointing at the trigger. Give it a `PopoverTitle` to name it.
@@ -69,18 +69,18 @@ Takes every [ui-sdk Popover](https://ui-sdk.dev/docs/components/popover) root pr
   ]}
 />
 
-`PopoverTrigger`, `PopoverTitle`, `PopoverDescription` and `PopoverClose` take ui-sdk’s props. Render a Stardust `Button` with `render={<Button />}`. `createPopoverController` is re-exported from ui-sdk.
+`PopoverTrigger`, `PopoverTitle`, `PopoverDescription` and `PopoverClose` take ui-sdk’s props. Render a Macbetter `Button` with `render={<Button />}`. `createPopoverController` is re-exported from ui-sdk.
 
 | Data attribute | On | Meaning |
 | --- | --- | --- |
-| `data-side`, `data-align` | `.sd-popover`, `.sd-popover-arrow` | Where it landed |
-| `data-arrow` | `.sd-popover` | It has an arrow |
-| `data-presentation` | `.sd-popover` | `popover` or `sheet` |
-| `data-starting-style`, `data-ending-style` | `.sd-popover` | Entering and leaving |
+| `data-side`, `data-align` | `.mb-popover`, `.mb-popover-arrow` | Where it landed |
+| `data-arrow` | `.mb-popover` | It has an arrow |
+| `data-presentation` | `.mb-popover` | `popover` or `sheet` |
+| `data-starting-style`, `data-ending-style` | `.mb-popover` | Entering and leaving |
 
 | CSS variable | Default |
 | --- | --- |
-| `--sd-popover-radius` | `--sd-radius-lg` on macOS, `--sd-popup-radius` on touch |
-| `--sd-popover-padding` | 14px on macOS, 16px on touch |
-| `--sd-popover-max-width` | 320px on macOS, 360px on touch |
+| `--mb-popover-radius` | `--mb-radius-lg` on macOS, `--mb-popup-radius` on touch |
+| `--mb-popover-padding` | 14px on macOS, 16px on touch |
+| `--mb-popover-max-width` | 320px on macOS, 360px on touch |
 | `--transform-origin`, `--arrow-offset` | Set by ui-sdk |

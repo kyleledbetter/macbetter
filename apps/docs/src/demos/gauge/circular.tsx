@@ -1,4 +1,4 @@
-import { Gauge, GaugeLabel, GaugeValue } from "@dreambase/stardust/gauge"
+import { Gauge, GaugeLabel, GaugeValue } from "macbetter/gauge"
 
 export default function Example() {
   return (

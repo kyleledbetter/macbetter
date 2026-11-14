@@ -1,5 +1,5 @@
-import { Button } from "@dreambase/stardust/button"
-import { Popover, PopoverContent, PopoverDescription, PopoverTitle, PopoverTrigger } from "@dreambase/stardust/popover"
+import { Button } from "macbetter/button"
+import { Popover, PopoverContent, PopoverDescription, PopoverTitle, PopoverTrigger } from "macbetter/popover"
 import { InfoIcon } from "lucide-react"
 
 export default function Example() {

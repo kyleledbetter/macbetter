@@ -1,7 +1,7 @@
 "use client"
 
-import { Button } from "@dreambase/stardust/button"
-import { Checkbox } from "@dreambase/stardust/checkbox"
+import { Button } from "macbetter/button"
+import { Checkbox } from "macbetter/checkbox"
 import { useState } from "react"
 
 export default function Example() {

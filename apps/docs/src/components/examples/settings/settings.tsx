@@ -1,6 +1,6 @@
 "use client"
 
-import { Avatar } from "@dreambase/stardust/avatar"
+import { Avatar } from "macbetter/avatar"
 import {
   List,
   ListRow,
@@ -10,16 +10,16 @@ import {
   ListRowTitle,
   ListRowValue,
   ListSection,
-} from "@dreambase/stardust/list"
+} from "macbetter/list"
 import {
   NavigationBar,
   NavigationBarBackButton,
   NavigationStack,
-} from "@dreambase/stardust/navigation-bar"
-import { SearchField } from "@dreambase/stardust/search-field"
-import { Sidebar, SidebarItem, SidebarSection } from "@dreambase/stardust/sidebar"
-import { Toolbar, ToolbarButton, ToolbarGroup, ToolbarTitle } from "@dreambase/stardust/toolbar"
-import { Window, WindowBody, WindowSidebar, WindowTitlebar, WindowTrafficLights } from "@dreambase/stardust/window"
+} from "macbetter/navigation-bar"
+import { SearchField } from "macbetter/search-field"
+import { Sidebar, SidebarItem, SidebarSection } from "macbetter/sidebar"
+import { Toolbar, ToolbarButton, ToolbarGroup, ToolbarTitle } from "macbetter/toolbar"
+import { Window, WindowBody, WindowSidebar, WindowTitlebar, WindowTrafficLights } from "macbetter/window"
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
 import * as React from "react"
 import "./settings.css"
@@ -56,7 +56,7 @@ function useSettingsTheme(s: SettingsState, platform: "macos" | "ipados" | "ios"
 
 function Tile({ pane, size = 20 }: { pane: Pane; size?: number }) {
   const Glyph = pane.icon
-  const color = pane.color === "gray" ? "light-dark(#8e8e93, #636366)" : `var(--sd-${pane.color})`
+  const color = pane.color === "gray" ? "light-dark(#8e8e93, #636366)" : `var(--mb-${pane.color})`
   return (
     <span className="ex-tile" style={{ "--ex-tile": color, "--ex-tile-size": `${size}px` } as React.CSSProperties}>
       <Glyph aria-hidden="true" />

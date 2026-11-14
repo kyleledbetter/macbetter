@@ -17,8 +17,8 @@ A context menu holds the most useful commands for one object: a file, a message,
 ## Usage
 
 ```tsx
-import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from "@dreambase/stardust/context-menu"
-import { MenuItem, MenuSeparator } from "@dreambase/stardust/menu"
+import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from "macbetter/context-menu"
+import { MenuItem, MenuSeparator } from "macbetter/menu"
 ```
 
 `ContextMenu` is a [Menu](/docs/components/menu) whose trigger is an area instead of a button. Fill `ContextMenuContent` with the menu's own items, icons, checkboxes and submenus. Give the area `tabIndex={0}` and an accessible name so the keyboard can reach it.
@@ -37,8 +37,8 @@ The context-menu key opens the menu for the focused area, with focus on its firs
 <PropsTable
   rows={[
     { name: "ContextMenu", type: "MenuProps", description: "The root. Takes the Menu's props, like onAction. Always presents as a popover." },
-    { name: "ContextMenuTrigger", type: "disabled, payload", description: "The area. Classes: sd-menu-context-trigger sd-context-menu-trigger." },
+    { name: "ContextMenuTrigger", type: "disabled, payload", description: "The area. Classes: mb-menu-context-trigger mb-context-menu-trigger." },
     { name: "ContextMenuContent", type: "MenuContent props", description: "The menu. Opens at the pointer." },
-    { name: "--sd-context-menu-enter-scale", type: "number", default: "1 · 0.6", description: "How small the menu starts, on the Mac · on touch." },
+    { name: "--mb-context-menu-enter-scale", type: "number", default: "1 · 0.6", description: "How small the menu starts, on the Mac · on touch." },
   ]}
 />

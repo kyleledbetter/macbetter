@@ -1,9 +1,9 @@
 "use client"
 
-import { Avatar } from "@dreambase/stardust/avatar"
-import { MenuItem, MenuItemIcon, MenuSeparator } from "@dreambase/stardust/menu"
-import { TextArea } from "@dreambase/stardust/text-area"
-import { TextField } from "@dreambase/stardust/text-field"
+import { Avatar } from "macbetter/avatar"
+import { MenuItem, MenuItemIcon, MenuSeparator } from "macbetter/menu"
+import { TextArea } from "macbetter/text-area"
+import { TextField } from "macbetter/text-field"
 import {
   ArchiveIcon,
   FlagIcon,
@@ -26,7 +26,7 @@ function MessageSummary({ message }: { message: Message }) {
       <span aria-hidden="true" className="ex-mail-dot" data-unread={message.unread ? "" : undefined} />
       <span className="ex-mail-row-top">
         <span className="ex-mail-from">
-          {message.unread ? <span className="sd-visually-hidden">Unread, </span> : null}
+          {message.unread ? <span className="mb-visually-hidden">Unread, </span> : null}
           {message.from}
         </span>
         {message.attachment ? <PaperclipIcon aria-label="Has attachment" className="ex-mail-glyph" /> : null}

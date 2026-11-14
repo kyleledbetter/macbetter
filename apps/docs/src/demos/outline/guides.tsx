@@ -5,7 +5,7 @@ import {
   OutlineItemIcon,
   OutlineItemLabel,
   OutlineItemText,
-} from "@dreambase/stardust/outline"
+} from "macbetter/outline"
 import { FileIcon, FolderIcon } from "lucide-react"
 
 export default function Example() {

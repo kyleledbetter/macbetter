@@ -8,11 +8,11 @@ import {
   AlertDescription,
   AlertIcon,
   AlertTitle,
-} from "@dreambase/stardust/alert"
-import { Badge } from "@dreambase/stardust/badge"
-import { Button } from "@dreambase/stardust/button"
-import { Card } from "@dreambase/stardust/card"
-import { Gauge, GaugeLabel, GaugeValue } from "@dreambase/stardust/gauge"
+} from "macbetter/alert"
+import { Badge } from "macbetter/badge"
+import { Button } from "macbetter/button"
+import { Card } from "macbetter/card"
+import { Gauge, GaugeLabel, GaugeValue } from "macbetter/gauge"
 import {
   List,
   ListRow,
@@ -21,15 +21,15 @@ import {
   ListRowTitle,
   ListRowValue,
   ListSection,
-} from "@dreambase/stardust/list"
-import { Menu, MenuContent, MenuItem, MenuItemIcon, MenuSeparator, MenuTrigger } from "@dreambase/stardust/menu"
-import { NavigationBar, NavigationBarTrailing, NavigationStack } from "@dreambase/stardust/navigation-bar"
-import { Progress, ProgressLabel, ProgressValue } from "@dreambase/stardust/progress"
-import { SegmentedControl, SegmentedControlItem } from "@dreambase/stardust/segmented-control"
-import { Select, SelectContent, SelectItem, SelectList, SelectTrigger } from "@dreambase/stardust/select"
-import { Sidebar, SidebarItem, SidebarSection } from "@dreambase/stardust/sidebar"
-import { Switch } from "@dreambase/stardust/switch"
-import { TabBar, TabBarItem, TabBarList, TabBarPanel } from "@dreambase/stardust/tab-bar"
+} from "macbetter/list"
+import { Menu, MenuContent, MenuItem, MenuItemIcon, MenuSeparator, MenuTrigger } from "macbetter/menu"
+import { NavigationBar, NavigationBarTrailing, NavigationStack } from "macbetter/navigation-bar"
+import { Progress, ProgressLabel, ProgressValue } from "macbetter/progress"
+import { SegmentedControl, SegmentedControlItem } from "macbetter/segmented-control"
+import { Select, SelectContent, SelectItem, SelectList, SelectTrigger } from "macbetter/select"
+import { Sidebar, SidebarItem, SidebarSection } from "macbetter/sidebar"
+import { Switch } from "macbetter/switch"
+import { TabBar, TabBarItem, TabBarList, TabBarPanel } from "macbetter/tab-bar"
 import {
   Table,
   TableBody,
@@ -38,16 +38,16 @@ import {
   TableHeader,
   TableRow,
   type TableSort,
-} from "@dreambase/stardust/table"
-import { toast } from "@dreambase/stardust/toast"
+} from "macbetter/table"
+import { toast } from "macbetter/toast"
 import {
   Toolbar,
   ToolbarButton,
   ToolbarSearchField,
   ToolbarSpacer,
   ToolbarTitle,
-} from "@dreambase/stardust/toolbar"
-import { Window, WindowBody, WindowSidebar, WindowTitlebar, WindowTrafficLights } from "@dreambase/stardust/window"
+} from "macbetter/toolbar"
+import { Window, WindowBody, WindowSidebar, WindowTitlebar, WindowTrafficLights } from "macbetter/window"
 import {
   BellIcon,
   BotIcon,
@@ -119,7 +119,7 @@ function KpiCard({ kpi }: { kpi: Kpi }) {
       <div className="ex-kpi-value ex-mono">{kpi.value}</div>
       <div className="ex-kpi-foot">
         <span className="ex-delta" data-good={kpi.good ? "" : undefined}>
-          <span className="sd-visually-hidden">{kpi.good ? "Improved" : "Worsened"} by </span>
+          <span className="mb-visually-hidden">{kpi.good ? "Improved" : "Worsened"} by </span>
           {kpi.delta}
         </span>
         <Sparkline values={kpi.trend} good={kpi.good} />
@@ -153,8 +153,8 @@ function UsersChart({ range, compact }: { range: Range; compact?: boolean }) {
       title="Active users"
       description={`Daily active users over ${long}, against the period before. Up ${Math.round((total / previous.reduce((a, b) => a + b, 0) - 1) * 100)}%.`}
       legend={[
-        { name: "This period", color: "var(--sd-accent)" },
-        { name: "Previous period", color: "var(--sd-accent-secondary)", dashed: true },
+        { name: "This period", color: "var(--mb-accent)" },
+        { name: "Previous period", color: "var(--mb-accent-secondary)", dashed: true },
       ]}
       table={{
         columns: ["Date", "This period", "Previous period"],
@@ -258,7 +258,7 @@ function DatasetTable({ store, limit }: { store: Store; limit?: number }) {
         <TableColumn value="status">Status</TableColumn>
         <TableColumn>Owner</TableColumn>
         <TableColumn>
-          <span className="sd-visually-hidden">Actions</span>
+          <span className="mb-visually-hidden">Actions</span>
         </TableColumn>
       </TableHeader>
       <TableBody>
@@ -447,7 +447,7 @@ function MacAnalytics({ store }: { store: Store }) {
   const label = pages.find((p) => p.id === page)?.label ?? "Overview"
   return (
     <MacFrame>
-      <Window aria-label="Dreambase">
+      <Window aria-label="Macbetter">
         <WindowSidebar>
           <WindowTrafficLights />
           <Sidebar aria-label="Workspace">
@@ -457,7 +457,7 @@ function MacAnalytics({ store }: { store: Store }) {
               </span>
               <span>
                 <strong>Northwind</strong>
-                <span>Dreambase workspace</span>
+                <span>Macbetter workspace</span>
               </span>
             </div>
             <SidebarSection title="Analytics">
@@ -475,9 +475,9 @@ function MacAnalytics({ store }: { store: Store }) {
             </SidebarSection>
             <SidebarSection title="Sources" collapsible>
               {[
-                { name: "Supabase", tint: "var(--sd-green)" },
-                { name: "Stripe", tint: "var(--sd-indigo)" },
-                { name: "PostHog", tint: "var(--sd-yellow)" },
+                { name: "Supabase", tint: "var(--mb-green)" },
+                { name: "Stripe", tint: "var(--mb-indigo)" },
+                { name: "PostHog", tint: "var(--mb-yellow)" },
               ].map((source) => (
                 <SidebarItem key={source.name} tint={source.tint} icon={<CircleIcon fill="currentColor" strokeWidth={0} />} onClick={() => setPage("datasets")}>
                   {source.name}
@@ -553,7 +553,7 @@ function MacAnalytics({ store }: { store: Store }) {
 
 function PhoneAnalytics({ store }: { store: Store }) {
   return (
-    <Phone label="Dreambase on iPhone">
+    <Phone label="Macbetter on iPhone">
       <div className="ex-app-root">
         <TabBar defaultValue="overview">
           <TabBarPanel value="overview">
@@ -612,7 +612,7 @@ function PhoneAnalytics({ store }: { store: Store }) {
               <AlertsPage />
             </NavigationStack>
           </TabBarPanel>
-          <TabBarList aria-label="Dreambase">
+          <TabBarList aria-label="Macbetter">
             <TabBarItem value="overview" icon={<GaugeIcon />}>
               Overview
             </TabBarItem>

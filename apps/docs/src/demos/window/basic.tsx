@@ -1,4 +1,4 @@
-import { Window, WindowBody, WindowTitle, WindowTitlebar, WindowTrafficLights } from "@dreambase/stardust/window"
+import { Window, WindowBody, WindowTitle, WindowTitlebar, WindowTrafficLights } from "macbetter/window"
 
 export default function Example() {
   return (
@@ -10,8 +10,8 @@ export default function Example() {
         </WindowTitlebar>
         <WindowBody style={{ display: "grid", placeItems: "center", textAlign: "center", padding: 16 }}>
           <div>
-            <div className="sd-text-title-2">MacBook Pro</div>
-            <div className="sd-text-subheadline sd-label-secondary">14-inch, 2025 · Apple M5</div>
+            <div className="mb-text-title-2">MacBook Pro</div>
+            <div className="mb-text-subheadline mb-label-secondary">14-inch, 2025 · Apple M5</div>
           </div>
         </WindowBody>
       </Window>
@@ -21,7 +21,7 @@ export default function Example() {
           <WindowTitle align="center">Notes</WindowTitle>
         </WindowTitlebar>
         <WindowBody style={{ padding: 16 }}>
-          <p className="sd-text-body sd-label-secondary" style={{ margin: 0 }}>
+          <p className="mb-text-body mb-label-secondary" style={{ margin: 0 }}>
             Behind the key window, traffic lights turn gray and the title dims.
           </p>
         </WindowBody>

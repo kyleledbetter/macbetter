@@ -1,0 +1,188 @@
+/* Disclosure — SwiftUI's DisclosureGroup: a row whose chevron turns to show what's inside. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-disclosure-row-height: 28px;
+  --mb-disclosure-row-height-grouped: 36px;
+  --mb-disclosure-padding-inline: 10px;
+  --mb-disclosure-font: 400 13px/16px var(--mb-font);
+  --mb-disclosure-chevron-width: 5.5px;
+  --mb-disclosure-chevron-height: 10px;
+  --mb-disclosure-chevron-stroke: 1.7;
+  --mb-disclosure-chevron-color: var(--mb-label-secondary);
+  --mb-disclosure-chevron-order: 0;
+  --mb-disclosure-gap: 8px;
+  /* The content lines up with the label, past the leading chevron. */
+  --mb-disclosure-content-indent: calc(var(--mb-disclosure-chevron-height) + var(--mb-disclosure-gap));
+  --mb-disclosure-radius: var(--mb-radius-md);
+  --mb-disclosure-group-bg: var(--mb-fill-quaternary);
+  --mb-disclosure-group-edge: var(--mb-separator);
+  --mb-disclosure-pressed: var(--mb-fill-tertiary);
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-disclosure-row-height: 44px;
+  --mb-disclosure-row-height-grouped: 48px;
+  --mb-disclosure-padding-inline: 16px;
+  --mb-disclosure-font: 400 17px/22px var(--mb-font);
+  --mb-disclosure-chevron-width: 7px;
+  --mb-disclosure-chevron-height: 12.5px;
+  --mb-disclosure-chevron-stroke: 2.1;
+  --mb-disclosure-chevron-color: var(--mb-accent-text);
+  --mb-disclosure-chevron-order: 1;
+  --mb-disclosure-gap: 8px;
+  --mb-disclosure-content-indent: 0px;
+  --mb-disclosure-radius: var(--mb-group-radius);
+  --mb-disclosure-group-bg: var(--mb-bg-grouped-secondary);
+  --mb-disclosure-group-edge: transparent;
+  --mb-disclosure-pressed: var(--mb-fill);
+}
+
+.mb-disclosure-group,
+.mb-disclosure {
+  --mb-disclosure-height: var(--mb-disclosure-row-height);
+
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  color: var(--mb-label);
+  font: var(--mb-disclosure-font);
+  letter-spacing: var(--mb-tracking-body);
+}
+
+.mb-disclosure-group[data-variant="grouped"],
+.mb-disclosure[data-variant="grouped"] {
+  --mb-disclosure-height: var(--mb-disclosure-row-height-grouped);
+  overflow: hidden;
+  border-radius: var(--mb-disclosure-radius);
+  background: var(--mb-disclosure-group-bg);
+  box-shadow: inset 0 0 0 var(--mb-hairline) var(--mb-disclosure-group-edge);
+}
+
+.mb-disclosure-item {
+  position: relative;
+}
+
+.mb-disclosure-group[data-variant="grouped"] .mb-disclosure-item + .mb-disclosure-item::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset-block-start: 0;
+  inset-inline: var(--mb-disclosure-padding-inline) 0;
+  height: var(--mb-hairline);
+  background: var(--mb-separator);
+}
+
+.mb-disclosure-header {
+  margin: 0;
+  font: inherit;
+}
+
+.mb-disclosure-trigger {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--mb-disclosure-gap);
+  width: 100%;
+  min-height: var(--mb-disclosure-height);
+  margin: 0;
+  padding: 0 var(--mb-disclosure-padding-inline);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: start;
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: background-color var(--mb-duration-base) var(--mb-ease-out);
+}
+
+.mb-disclosure-group[data-variant="plain"] .mb-disclosure-trigger,
+.mb-disclosure[data-variant="plain"] .mb-disclosure-trigger {
+  padding-inline: 0;
+}
+
+.mb-disclosure-group[data-variant="grouped"] .mb-disclosure-trigger:active,
+.mb-disclosure[data-variant="grouped"] .mb-disclosure-trigger:active {
+  background: var(--mb-disclosure-pressed);
+  transition-duration: 0ms;
+}
+
+.mb-disclosure-trigger:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: calc(var(--mb-focus-ring-width) * -1);
+  border-radius: var(--mb-radius-sm);
+}
+
+.mb-disclosure-group[data-variant="grouped"] .mb-disclosure-trigger:focus-visible {
+  border-radius: 0;
+}
+
+.mb-disclosure-label {
+  flex: 1;
+  min-width: 0;
+  padding-block: 4px;
+}
+
+.mb-disclosure-chevron {
+  flex: none;
+  order: var(--mb-disclosure-chevron-order);
+  box-sizing: content-box;
+  width: var(--mb-disclosure-chevron-width);
+  height: var(--mb-disclosure-chevron-height);
+  /* A square box, so the turn pivots on the chevron's center. */
+  padding-inline: calc((var(--mb-disclosure-chevron-height) - var(--mb-disclosure-chevron-width)) / 2);
+  overflow: visible;
+  fill: none;
+  stroke: var(--mb-disclosure-chevron-color);
+  stroke-width: var(--mb-disclosure-chevron-stroke);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: rotate var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+.mb-disclosure-trigger[data-open] .mb-disclosure-chevron {
+  rotate: 90deg;
+}
+
+/* In right to left the closed chevron points left, so it turns the other way to point down. */
+:where([dir="rtl"]) .mb-disclosure-chevron {
+  scale: -1 1;
+}
+
+:where([dir="rtl"]) .mb-disclosure-trigger[data-open] .mb-disclosure-chevron {
+  rotate: -90deg;
+}
+
+.mb-disclosure-panel {
+  height: var(--accordion-panel-height, var(--collapsible-panel-height, auto));
+  overflow: hidden;
+  transition: height var(--mb-spring-smooth-duration) var(--mb-spring-smooth);
+}
+
+.mb-disclosure-panel:is([data-starting-style], [data-ending-style]) {
+  height: 0;
+}
+
+.mb-disclosure-panel[data-ending-style] {
+  transition-duration: var(--mb-duration-slow);
+  transition-timing-function: var(--mb-ease-out);
+}
+
+.mb-disclosure-content {
+  text-wrap: pretty;
+  padding-block: 2px 12px;
+  padding-inline: calc(var(--mb-disclosure-padding-inline) + var(--mb-disclosure-content-indent))
+    var(--mb-disclosure-padding-inline);
+}
+
+.mb-disclosure-group[data-variant="plain"] .mb-disclosure-content,
+.mb-disclosure[data-variant="plain"] .mb-disclosure-content {
+  padding-inline: var(--mb-disclosure-content-indent) 0;
+}
+

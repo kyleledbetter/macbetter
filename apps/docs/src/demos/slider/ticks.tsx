@@ -1,4 +1,4 @@
-import { Slider } from "@dreambase/stardust/slider"
+import { Slider } from "macbetter/slider"
 
 export default function Example() {
   return (
@@ -6,7 +6,7 @@ export default function Example() {
       <Slider defaultValue={3} min={1} max={5} step={1} ticks thumbLabel="Key repeat rate" />
       <div
         aria-hidden="true"
-        style={{ display: "flex", justifyContent: "space-between", color: "var(--sd-label-secondary)", font: "var(--sd-text-caption)" }}
+        style={{ display: "flex", justifyContent: "space-between", color: "var(--mb-label-secondary)", font: "var(--mb-text-caption)" }}
       >
         <span>Slow</span>
         <span>Fast</span>

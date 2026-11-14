@@ -31,7 +31,7 @@ import {
   ListRowTitle,
   ListRowValue,
   ListSection,
-} from "@dreambase/stardust/list"
+} from "macbetter/list"
 ```
 
 ### Rows that navigate, act or hold a control
@@ -54,7 +54,7 @@ A checkmark marks the chosen row in a short list of options. Mark the chosen row
 
 ### Styles
 
-`inset-grouped`, the default, floats rounded groups inside the margins. `grouped` runs the groups edge to edge between hairlines. `plain` drops the groups and pins each section header to the top while its rows scroll, like Contacts. Inside a [navigation stack](/docs/components/navigation-bar) the headers pin just below the bar, using the `--sd-content-inset-top` the stack sets.
+`inset-grouped`, the default, floats rounded groups inside the margins. `grouped` runs the groups edge to edge between hairlines. `plain` drops the groups and pins each section header to the top while its rows scroll, like Contacts. Inside a [navigation stack](/docs/components/navigation-bar) the headers pin just below the bar, using the `--mb-content-inset-top` the stack sets.
 
 <Demo name="list/variants" platforms={["ios", "macos"]} fill />
 
@@ -67,7 +67,7 @@ A checkmark marks the chosen row in a short list of options. Mark the chosen row
 ## Accessibility
 
 - Rows are real links and buttons, so Tab reaches them and Enter (and Space, for buttons) activates them. Static rows aren't focusable; the control inside them is.
-- A row's accessible name is its text: title, subtitle and value read together, like "Wi-Fi, Dreambase HQ".
+- A row's accessible name is its text: title, subtitle and value read together, like "Wi-Fi, Macbetter HQ".
 - Icon tiles and accessory glyphs are `aria-hidden`.
 - A disabled row's button can't be pressed and its contents dim.
 - Keyboard focus draws the accent ring inside the row, so the group's rounded corners don't clip it.
@@ -118,14 +118,14 @@ A checkmark marks the chosen row in a short list of options. Mark the chosen row
 
 | Attribute or variable | On | Meaning |
 | --- | --- | --- |
-| `data-variant` | `.sd-list` | `inset-grouped`, `grouped` or `plain`. |
-| `data-interactive` | `.sd-list-row` | The row is a link or a button. |
-| `data-disabled` | `.sd-list-item` | The row is disabled. |
-| `data-color` | `.sd-list-row-icon` | The tile's color. |
-| `data-type` | `.sd-list-row-accessory` | `disclosure`, `checkmark` or `info`. |
-| `--sd-list-row-height`, `--sd-list-row-height-icon` | platform | Minimum row heights. |
-| `--sd-list-row-padding-inline` | platform | Leading and trailing padding, which the headers and footers share. |
-| `--sd-list-icon-size`, `--sd-list-icon-radius`, `--sd-list-icon-gap` | platform | The icon tile. |
-| `--sd-list-separator-start`, `--sd-list-separator-start-icon`, `--sd-list-separator-end` | platform | Where hairlines start and end on macOS, and on iOS rows without a `ListRowTitle`. |
-| `--sd-content-inset-top` | inherited | Where a plain list's headers pin. Set by `NavigationStack`; 0 otherwise. |
-| `--sd-list-bg`, `--sd-list-group-bg`, `--sd-list-pressed` | platform | Surfaces and the pressed fill. |
+| `data-variant` | `.mb-list` | `inset-grouped`, `grouped` or `plain`. |
+| `data-interactive` | `.mb-list-row` | The row is a link or a button. |
+| `data-disabled` | `.mb-list-item` | The row is disabled. |
+| `data-color` | `.mb-list-row-icon` | The tile's color. |
+| `data-type` | `.mb-list-row-accessory` | `disclosure`, `checkmark` or `info`. |
+| `--mb-list-row-height`, `--mb-list-row-height-icon` | platform | Minimum row heights. |
+| `--mb-list-row-padding-inline` | platform | Leading and trailing padding, which the headers and footers share. |
+| `--mb-list-icon-size`, `--mb-list-icon-radius`, `--mb-list-icon-gap` | platform | The icon tile. |
+| `--mb-list-separator-start`, `--mb-list-separator-start-icon`, `--mb-list-separator-end` | platform | Where hairlines start and end on macOS, and on iOS rows without a `ListRowTitle`. |
+| `--mb-content-inset-top` | inherited | Where a plain list's headers pin. Set by `NavigationStack`; 0 otherwise. |
+| `--mb-list-bg`, `--mb-list-group-bg`, `--mb-list-pressed` | platform | Surfaces and the pressed fill. |

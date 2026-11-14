@@ -10,7 +10,7 @@ import {
   MenuSubContent,
   MenuSubTrigger,
   MenuTrigger,
-} from "@dreambase/stardust/menu"
+} from "macbetter/menu"
 import {
   CopyIcon,
   FolderIcon,

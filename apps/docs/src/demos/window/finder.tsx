@@ -1,6 +1,6 @@
 "use client"
 
-import { Sidebar, SidebarItem, SidebarSection } from "@dreambase/stardust/sidebar"
+import { Sidebar, SidebarItem, SidebarSection } from "macbetter/sidebar"
 import {
   Toolbar,
   ToolbarButton,
@@ -10,8 +10,8 @@ import {
   ToolbarTitle,
   ToolbarToggle,
   ToolbarToggleGroup,
-} from "@dreambase/stardust/toolbar"
-import { Window, WindowBody, WindowSidebar, WindowTitlebar, WindowTrafficLights } from "@dreambase/stardust/window"
+} from "macbetter/toolbar"
+import { Window, WindowBody, WindowSidebar, WindowTitlebar, WindowTrafficLights } from "macbetter/window"
 import {
   AppWindowIcon,
   ChevronLeftIcon,
@@ -43,9 +43,9 @@ const favorites = [
 ]
 
 const tags = [
-  { name: "Launch", color: "var(--sd-orange)" },
-  { name: "Research", color: "var(--sd-green)" },
-  { name: "Finance", color: "var(--sd-blue)" },
+  { name: "Launch", color: "var(--mb-orange)" },
+  { name: "Research", color: "var(--mb-green)" },
+  { name: "Finance", color: "var(--mb-blue)" },
 ]
 
 const files = [
@@ -159,10 +159,10 @@ export default function Example() {
                   width={56}
                   height={56}
                   strokeWidth={1.1}
-                  fill={folder ? "color-mix(in oklch, var(--sd-cyan) 55%, transparent)" : "var(--sd-bg-elevated)"}
-                  color={folder ? "var(--sd-cyan)" : "var(--sd-label-secondary)"}
+                  fill={folder ? "color-mix(in oklch, var(--mb-cyan) 55%, transparent)" : "var(--mb-bg-elevated)"}
+                  color={folder ? "var(--mb-cyan)" : "var(--mb-label-secondary)"}
                 />
-                <span className="sd-text-callout">{file.name}</span>
+                <span className="mb-text-callout">{file.name}</span>
               </div>
             )
           })}

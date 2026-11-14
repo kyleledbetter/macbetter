@@ -1,6 +1,6 @@
 "use client"
 
-import { Sidebar, SidebarItem, SidebarSection } from "@dreambase/stardust/sidebar"
+import { Sidebar, SidebarItem, SidebarSection } from "macbetter/sidebar"
 import { ArchiveIcon, FileIcon, InboxIcon, SendIcon, StarIcon, Trash2Icon, FolderIcon } from "lucide-react"
 import { useState } from "react"
 
@@ -21,7 +21,7 @@ export default function Example() {
   return (
     <Sidebar
       aria-label="Mailboxes"
-      style={{ width: 260, height: 420, borderRadius: 16, boxShadow: "var(--sd-glass-rim), var(--sd-shadow-menu)" }}
+      style={{ width: 260, height: 420, borderRadius: 16, boxShadow: "var(--mb-glass-rim), var(--mb-shadow-menu)" }}
     >
       <SidebarSection title="Favorites">
         {mailboxes.map(({ name, icon: Icon, count }) => (
@@ -36,7 +36,7 @@ export default function Example() {
           </SidebarItem>
         ))}
       </SidebarSection>
-      <SidebarSection title="Dreambase" collapsible>
+      <SidebarSection title="Macbetter" collapsible>
         {folders.map((name) => (
           <SidebarItem key={name} icon={<FolderIcon />} current={current === name} onClick={() => setCurrent(name)}>
             {name}

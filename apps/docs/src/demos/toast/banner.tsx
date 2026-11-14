@@ -1,7 +1,7 @@
 "use client"
 
-import { Button } from "@dreambase/stardust/button"
-import { createToaster, Toaster } from "@dreambase/stardust/toast"
+import { Button } from "macbetter/button"
+import { createToaster, Toaster } from "macbetter/toast"
 import { useState } from "react"
 
 export default function Example() {
@@ -13,7 +13,7 @@ export default function Example() {
         onClick={() =>
           notify("Kofi Mensah", {
             description: "Lunch on Thursday? There’s a new ramen place on Valencia.",
-            data: { icon: <img src="/dreambase-logo-mark.svg" alt="" /> },
+            data: { icon: <img src="/app-icon.svg" alt="" /> },
           })
         }
       >

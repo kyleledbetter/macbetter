@@ -1,4 +1,4 @@
-import { Switch } from "@dreambase/stardust/switch"
+import { Switch } from "macbetter/switch"
 
 export default function Example() {
   return (

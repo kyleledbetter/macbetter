@@ -32,7 +32,7 @@ const examples = [
     slug: "analytics",
     title: "Analytics",
     description:
-      "A Dreambase dashboard for Supabase data: KPI cards, charts with accessible tables, a sortable dataset table, plan usage gauges and a confirm-before-delete alert.",
+      "A Macbetter dashboard for Supabase data: KPI cards, charts with accessible tables, a sortable dataset table, plan usage gauges and a confirm-before-delete alert.",
     platforms: ["macOS", "iOS"],
     App: AnalyticsApp,
     mac: { width: 1240, height: 780 },
@@ -96,7 +96,7 @@ function ExamplesGallery() {
       <div className="ex-index-inner">
         <h1 className="ex-index-title">Examples</h1>
         <p className="ex-index-lead">
-          Full app screens built only from Stardust components. Each one runs live, keeps its own state, and switches
+          Full app screens built only from Macbetter components. Each one runs live, keeps its own state, and switches
           between the Mac, iPad and iPhone idioms.
         </p>
         <div className="ex-index-grid">
@@ -120,7 +120,7 @@ function ExamplesGallery() {
                 <div className="ex-card-actions" data-platform="macos">
                   <Link
                     href={`/examples/${example.slug}`}
-                    className="sd-button"
+                    className="mb-button"
                     data-variant="filled"
                     data-tone="accent"
                     data-size="md"
@@ -132,7 +132,7 @@ function ExamplesGallery() {
                   </Link>
                   <Link
                     href={`/examples/${example.slug}?view=code`}
-                    className="sd-button"
+                    className="mb-button"
                     data-variant="bezeled"
                     data-tone="neutral"
                     data-size="md"

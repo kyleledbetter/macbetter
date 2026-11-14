@@ -1,4 +1,4 @@
-import { Slider } from "@dreambase/stardust/slider"
+import { Slider } from "macbetter/slider"
 
 export default function Example() {
   return (

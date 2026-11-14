@@ -1,4 +1,4 @@
-import { Radio, RadioGroup } from "@dreambase/stardust/radio"
+import { Radio, RadioGroup } from "macbetter/radio"
 
 export default function Example() {
   return (

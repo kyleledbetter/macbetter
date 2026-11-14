@@ -1,11 +1,11 @@
 "use client"
 
-import type { Platform } from "@dreambase/stardust"
-import { Button } from "@dreambase/stardust/button"
-import { DeviceFrame } from "@dreambase/stardust/device-frame"
-import { Menu, MenuContent, MenuItem, MenuItemIcon, MenuTrigger } from "@dreambase/stardust/menu"
-import { SegmentedControl, SegmentedControlItem } from "@dreambase/stardust/segmented-control"
-import { Select, SelectContent, SelectItem, SelectList, SelectTrigger } from "@dreambase/stardust/select"
+import type { Platform } from "macbetter"
+import { Button } from "macbetter/button"
+import { DeviceFrame } from "macbetter/device-frame"
+import { Menu, MenuContent, MenuItem, MenuItemIcon, MenuTrigger } from "macbetter/menu"
+import { SegmentedControl, SegmentedControlItem } from "macbetter/segmented-control"
+import { Select, SelectContent, SelectItem, SelectList, SelectTrigger } from "macbetter/select"
 import { usePreference } from "@ui-sdk/react/preferences"
 import { CheckIcon, ChevronLeftIcon, CopyIcon, FilesIcon, MoonIcon, PackageIcon, SunIcon } from "lucide-react"
 import Link from "next/link"
@@ -58,7 +58,7 @@ function Phone({ children, label }: { children: React.ReactNode; label: string }
   const { frameless, width, height } = useStage()
   if (frameless) {
     return (
-      <div data-platform="ios" data-stardust="" className="ex-screen" role="region" aria-label={label}>
+      <div data-platform="ios" data-macbetter="" className="ex-screen" role="region" aria-label={label}>
         {children}
       </div>
     )
@@ -289,7 +289,7 @@ function ExampleShell({ title, platforms, children }: ExampleShellProps) {
   return (
     <div className="ex-page ex-wallpaper" data-narrow={narrow ? "" : undefined}>
       <div className="ex-strip-row">
-        <div data-platform="macos" className="ex-strip sd-glass" data-shape="capsule">
+        <div data-platform="macos" className="ex-strip mb-glass" data-shape="capsule">
           <Link href="/examples" className="ex-strip-back" aria-label="All examples">
             <ChevronLeftIcon aria-hidden="true" />
           </Link>

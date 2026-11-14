@@ -18,10 +18,10 @@ Use a menu, or pull-down button, when a button stands for several related comman
 ## Usage
 
 ```tsx
-import { Menu, MenuContent, MenuItem, MenuTrigger } from "@dreambase/stardust/menu"
+import { Menu, MenuContent, MenuItem, MenuTrigger } from "macbetter/menu"
 ```
 
-`MenuTrigger` is a Stardust [button](/docs/components/button) with a pull-down chevron, and takes the button's `variant`, `tone`, `size` and `shape`. Turn the chevron off with `indicator={false}` for an icon-only trigger, and name it with `aria-label`.
+`MenuTrigger` is a Macbetter [button](/docs/components/button) with a pull-down chevron, and takes the button's `variant`, `tone`, `size` and `shape`. Turn the chevron off with `indicator={false}` for an icon-only trigger, and name it with `aria-label`.
 
 ### Icons, shortcuts and submenus
 
@@ -53,7 +53,7 @@ The menu follows the WAI-ARIA menu button pattern. Enter, Space and the arrow ke
 
 ## API
 
-Every part takes the props of its ui-sdk part. Stardust adds the following.
+Every part takes the props of its ui-sdk part. Macbetter adds the following.
 
 ### MenuTrigger
 
@@ -89,11 +89,11 @@ Every part takes the props of its ui-sdk part. Stardust adds the following.
     { name: "data-destructive", type: "item", description: "Set by `destructive`." },
     { name: "data-has-icons", type: "content", description: "Some item has an icon; the rest line up with it." },
     { name: "data-presentation", type: "content", description: "`popover` or `sheet`: how the menu is showing this time." },
-    { name: "--sd-menu-row-padding", type: "length", default: "9px · 16px", description: "Row inset on the Mac · on touch." },
-    { name: "--sd-menu-gutter", type: "length", default: "13px · 24px", description: "Width of the check column." },
-    { name: "--sd-menu-highlight", type: "color", default: "accent · gray", description: "The highlighted row's fill." },
-    { name: "--sd-menu-min-width", type: "length", default: "180px · 250px", description: "The narrowest a menu gets." },
-    { name: "--sd-menu-material", type: "color", default: "thick material, denser", description: "The popup's background. Turns opaque with Reduce Transparency." },
-    { name: "--sd-menu-destructive-text", type: "color", default: "destructive text, lifted in dark", description: "The color of destructive items." },
+    { name: "--mb-menu-row-padding", type: "length", default: "9px · 16px", description: "Row inset on the Mac · on touch." },
+    { name: "--mb-menu-gutter", type: "length", default: "13px · 24px", description: "Width of the check column." },
+    { name: "--mb-menu-highlight", type: "color", default: "accent · gray", description: "The highlighted row's fill." },
+    { name: "--mb-menu-min-width", type: "length", default: "180px · 250px", description: "The narrowest a menu gets." },
+    { name: "--mb-menu-material", type: "color", default: "thick material, denser", description: "The popup's background. Turns opaque with Reduce Transparency." },
+    { name: "--mb-menu-destructive-text", type: "color", default: "destructive text, lifted in dark", description: "The color of destructive items." },
   ]}
 />

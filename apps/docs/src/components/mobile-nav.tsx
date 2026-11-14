@@ -1,6 +1,6 @@
 "use client"
 
-import { Button } from "@dreambase/stardust/button"
+import { Button } from "macbetter/button"
 import {
   Sheet,
   SheetBody,
@@ -9,7 +9,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@dreambase/stardust/sheet"
+} from "macbetter/sheet"
 import { MenuIcon } from "lucide-react"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
@@ -40,11 +40,11 @@ function MobileNav({ sections }: { sections: NavSection[] }) {
       >
         <MenuIcon aria-hidden="true" />
       </SheetTrigger>
-      {/* The platform goes on a wrapper: Stardust's @scope rules don't match an element that is its own boundary. */}
+      {/* The platform goes on a wrapper: Macbetter's @scope rules don't match an element that is its own boundary. */}
       <div data-platform={platform} className="contents">
         <SheetContent className="docs-nav-sheet">
           <SheetHeader className="docs-nav-sheet-header">
-            <SheetTitle>Stardust</SheetTitle>
+            <SheetTitle>Macbetter</SheetTitle>
             <SheetClose>Done</SheetClose>
           </SheetHeader>
           <SheetBody data-docs-scroller="" className="docs-nav-sheet-body">

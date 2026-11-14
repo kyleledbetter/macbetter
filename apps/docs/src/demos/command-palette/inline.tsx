@@ -1,6 +1,6 @@
 "use client"
 
-import { Command, CommandInput } from "@dreambase/stardust/command-palette"
+import { Command, CommandInput } from "macbetter/command-palette"
 import { Results } from "./results"
 
 export default function Example() {

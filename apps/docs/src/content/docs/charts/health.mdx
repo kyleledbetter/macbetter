@@ -1,6 +1,6 @@
 export const metadata = {
   title: "Health charts",
-  description: "Steps, heart rate ranges, sleep stages, trends and highlights, drawn the way the Health app draws them, with ECharts and the Stardust adapter.",
+  description: "Steps, heart rate ranges, sleep stages, trends and highlights, drawn the way the Health app draws them, with ECharts and the Macbetter adapter.",
 }
 
 # Health
@@ -33,7 +33,7 @@ Heart rate is a range, not a value, so each hour is a capsule from its lowest to
 
 A night of sleep is a timeline in four lanes: Awake, REM, Core and Deep. Each stretch is a rounded bar in its lane, and hairlines shaded from one stage's color to the next join them, the way the Sleep chart does. The legend gives each stage's time in words.
 
-The stages are drawn with an ECharts `custom` series. `--sd-chart-awake`, `--sd-chart-rem`, `--sd-chart-core` and `--sd-chart-deep` set the colors.
+The stages are drawn with an ECharts `custom` series. `--mb-chart-awake`, `--mb-chart-rem`, `--mb-chart-core` and `--mb-chart-deep` set the colors.
 
 <Demo name="charts/health-sleep" />
 

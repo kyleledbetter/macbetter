@@ -1,1 +1,1 @@
-export * from "@dreambase/stardust/derive"
+export * from "macbetter/derive"

@@ -9,18 +9,14 @@ import { Reveal } from "@/components/landing/reveal"
 import { Platforms } from "@/components/landing/platforms"
 import { Themes } from "@/components/landing/themes"
 import "@/components/landing/landing.css"
+import { socialMetadata, tagline } from "@/lib/og/routes"
 
 export const metadata: Metadata = {
-  title: { absolute: "Stardust — macOS, iPadOS and iOS. One web framework." },
+  title: { absolute: `Macbetter — ${tagline}` },
   description:
-    "Stardust is Dreambase's design system: Apple-grade React components for macOS, iPadOS and iOS, themeable to any brand and built on ui-sdk.",
-  openGraph: {
-    title: "Stardust — macOS, iPadOS and iOS. One web framework.",
-    description: "Apple-grade components for React, themeable to any brand, built on ui-sdk.",
-    url: "/",
-    siteName: "Stardust",
-    type: "website",
-  },
+    "Macbetter is a design system: Apple-grade React components for macOS, iPadOS and iOS, themeable to any brand and built on ui-sdk.",
+  alternates: { canonical: "/" },
+  ...socialMetadata({ path: "", description: "Apple-grade components for React, themeable to any brand, built on ui-sdk." }),
 }
 
 export default function Home() {

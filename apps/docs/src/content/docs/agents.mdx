@@ -1,15 +1,15 @@
 export const metadata = {
   title: "Built for agents",
-  description: "Stardust components are ui-sdk components, so agents can read and operate them by name. How it works, and how to ask a coding agent to build with Stardust.",
+  description: "Macbetter components are ui-sdk components, so agents can read and operate them by name. How it works, and how to ask a coding agent to build with Macbetter.",
 }
 
 # Built for agents
 
-<Lead>Agents meet Stardust twice: as users of the interfaces you build, and as the engineers building them. Both depend on the same thing, controls with names.</Lead>
+<Lead>Agents meet Macbetter twice: as users of the interfaces you build, and as the engineers building them. Both depend on the same thing, controls with names.</Lead>
 
 ## Agents that use your interface
 
-Every interactive Stardust component is a ui-sdk component with a class and some data attributes added. Stardust doesn't replace ui-sdk's behavior, so it doesn't hide anything from ui-sdk's **agent bridge** either.
+Every interactive Macbetter component is a ui-sdk component with a class and some data attributes added. Macbetter doesn't replace ui-sdk's behavior, so it doesn't hide anything from ui-sdk's **agent bridge** either.
 
 The bridge comes from `@ui-sdk/react/agent`. Create it once, in the browser:
 
@@ -71,42 +71,42 @@ The exact state keys and action names depend on each component. Read them from a
 </Button>
 ```
 
-Stardust passes every extra prop to the ui-sdk part, so these attributes work on any component.
+Macbetter passes every extra prop to the ui-sdk part, so these attributes work on any component.
 
-## Agents that build with Stardust
+## Agents that build with Macbetter
 
 The repository is set up for coding agents. Its `AGENTS.md` is the working agreement every component follows, and its rules are the ones that keep the system consistent:
 
 - **Wrap ui-sdk, don't reimplement it.** A component is a ui-sdk part plus a class and data attributes. No hand-written `role=` for anything ui-sdk ships.
-- **Classes and variants.** `sd-<component>` and `sd-<component>-<part>`; variants as `data-variant`, `data-size` and `data-tone`.
-- **Tokens only.** Every color, radius, shadow, duration and font is a `--sd-*` token, written to work in light and dark and on every platform.
+- **Classes and variants.** `mb-<component>` and `mb-<component>-<part>`; variants as `data-variant`, `data-size` and `data-tone`.
+- **Tokens only.** Every color, radius, shadow, duration and font is a `--mb-*` token, written to work in light and dark and on every platform.
 - **Platforms nest.** Per-platform numbers are inherited variables; per-platform rules use `@scope … to (:scope [data-platform])`.
 - **Name every control**, in demos and in app code.
 - **Look at it.** A change is checked in a real browser, in light and dark, on macOS and iOS.
 
 ### A prompt for your agent
 
-Paste this into a coding agent working in an app that uses Stardust:
+Paste this into a coding agent working in an app that uses Macbetter:
 
 ```text
-This app uses Stardust (@dreambase/stardust), a design system built on ui-sdk
+This app uses Macbetter (macbetter), a design system built on ui-sdk
 that renders macOS, iPadOS and iOS from one set of React components.
 
 Before writing UI:
 1. Read node_modules/@ui-sdk/react/docs/llms.txt for how ui-sdk components behave,
    and follow the ui-sdk skill if it's installed.
-2. Read the Stardust component you're about to use in
-   node_modules/@dreambase/stardust/src/components/<name>.tsx.
+2. Read the Macbetter component you're about to use in
+   node_modules/macbetter/src/components/<name>.tsx.
 
 When you write UI:
-- Import components from their own entries, like @dreambase/stardust/button.
-- Use Stardust components for anything interactive. Don't hand-write role= for
-  something ui-sdk or Stardust already ships.
+- Import components from their own entries, like macbetter/button.
+- Use Macbetter components for anything interactive. Don't hand-write role= for
+  something ui-sdk or Macbetter already ships.
 - Give every control an accessible name: visible text, a <label>, or aria-label.
-- Style your own layout with Stardust's tokens (var(--sd-space-*), --sd-label-*,
-  --sd-bg-*, --sd-radius-*), never raw hex colors or pixel font sizes.
-- Size things with platform tokens (--sd-control-height, --sd-row-height,
-  --sd-hit-target, --sd-text-*) so the layout adapts to macOS, iPadOS and iOS.
+- Style your own layout with Macbetter's tokens (var(--mb-space-*), --mb-label-*,
+  --mb-bg-*, --mb-radius-*), never raw hex colors or pixel font sizes.
+- Size things with platform tokens (--mb-control-height, --mb-row-height,
+  --mb-hit-target, --mb-text-*) so the layout adapts to macOS, iPadOS and iOS.
 - Wrap hover styles in @media (hover: hover) and (pointer: fine).
 - Check the result in a browser in light and dark, with data-platform set to
   macos and to ios.

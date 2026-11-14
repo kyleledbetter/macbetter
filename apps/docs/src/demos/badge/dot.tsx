@@ -1,4 +1,4 @@
-import { Badge } from "@dreambase/stardust/badge"
+import { Badge } from "macbetter/badge"
 
 const services = [
   { name: "API", status: "Operational", color: "green" },

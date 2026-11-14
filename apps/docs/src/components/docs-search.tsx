@@ -12,7 +12,7 @@ import {
   CommandPalette,
   CommandPaletteContent,
   CommandPaletteTrigger,
-} from "@dreambase/stardust/command-palette"
+} from "macbetter/command-palette"
 import { usePreference } from "@ui-sdk/react/preferences"
 import {
   ArrowUpRightIcon,
@@ -95,7 +95,7 @@ function DocsSearch({ entries }: DocsSearchProps) {
   const [query, setQuery] = useState("")
   const [platform, setPlatform] = useState<string>("macos")
   const scheme = usePreference(colorScheme).resolved
-  const current = (usePreference(theme).value ?? "dreambase") as ThemeName
+  const current = (usePreference(theme).value ?? "ember") as ThemeName
 
   const commands = useMemo<Row[]>(() => {
     const next = scheme === "dark" ? "light" : "dark"
@@ -116,14 +116,14 @@ function DocsSearch({ entries }: DocsSearchProps) {
       {
         value: "go:/examples",
         label: "Go to Examples",
-        detail: "Whole apps built with Stardust",
+        detail: "Whole apps built with Macbetter",
         icon: <ArrowUpRightIcon />,
         score: 0,
       },
       {
-        value: "open:https://github.com/DreambaseAI/stardust",
+        value: "open:https://github.com/kyleledbetter/macbetter",
         label: "Open GitHub",
-        detail: "DreambaseAI/stardust",
+        detail: "kyleledbetter/macbetter",
         icon: <ArrowUpRightIcon />,
         score: 0,
       },

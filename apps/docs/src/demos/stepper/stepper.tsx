@@ -1,6 +1,6 @@
 "use client"
 
-import { Stepper } from "@dreambase/stardust/stepper"
+import { Stepper } from "macbetter/stepper"
 import { useState } from "react"
 
 export default function Example() {

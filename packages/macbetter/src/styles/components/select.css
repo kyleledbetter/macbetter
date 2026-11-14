@@ -1,0 +1,290 @@
+/*
+ * Select — the Mac's pop-up button (a bezel with an accent cap holding a
+ * double chevron) and the iOS menu picker (accent text and an up-and-down
+ * chevron). The list is a menu with a checkmark beside the chosen item.
+ */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-select-plain-fg: var(--mb-label);
+  --mb-select-padding-start: 10px;
+  --mb-select-cap-inset: 4px;
+  --mb-select-chevron-size: 12px;
+  --mb-select-font: 400 13px/16px var(--mb-font);
+  /* Lines the menu's text up with the button's, as the Mac does. */
+  --mb-select-content-shift: calc(var(--mb-select-padding-start) - var(--mb-menu-inset) - var(--mb-menu-row-padding) - var(--mb-menu-gutter));
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-select-plain-fg: var(--mb-accent-text);
+  --mb-select-padding-start: 16px;
+  --mb-select-cap-inset: 6px;
+  --mb-select-chevron-size: 15px;
+  --mb-select-font: 400 17px/22px var(--mb-font);
+  --mb-select-content-shift: 0px;
+}
+
+.mb-select-trigger {
+  --mb-select-height: var(--mb-control-height);
+  --mb-select-bg: var(--mb-bg-control);
+  --mb-select-fg: var(--mb-label);
+  --mb-select-shadow: 0 0 0 var(--mb-hairline) var(--mb-control-border), 0 0.5px 1.5px var(--mb-shadow-color);
+  --mb-select-cap-bg: var(--mb-accent);
+  --mb-select-cap-fg: var(--mb-on-accent);
+  --mb-select-cap-size: calc(var(--mb-select-height) - var(--mb-select-cap-inset) * 2);
+  --mb-select-radius: var(--mb-control-radius);
+
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  height: var(--mb-select-height);
+  margin: 0;
+  padding-block: 0;
+  padding-inline: var(--mb-select-padding-start) var(--mb-select-cap-inset);
+  border: 0;
+  border-radius: var(--mb-select-radius);
+  background: var(--mb-select-bg);
+  box-shadow: var(--mb-select-shadow);
+  color: var(--mb-select-fg);
+  font: var(--mb-select-font);
+  letter-spacing: var(--mb-tracking-body);
+  text-align: start;
+  white-space: nowrap;
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  transition:
+    background-color var(--mb-duration-fast) var(--mb-ease-out),
+    opacity var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-select-trigger::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: max(100%, var(--mb-hit-target));
+  height: max(100%, var(--mb-hit-target));
+  translate: -50% -50%;
+}
+
+.mb-select-trigger[data-size="sm"] {
+  --mb-select-height: var(--mb-control-height-sm);
+  --mb-select-cap-inset: 3px;
+  --mb-select-radius: var(--mb-control-radius-sm);
+  font: var(--mb-control-font-sm);
+  font-weight: 400;
+}
+
+.mb-select-trigger[data-size="lg"] {
+  --mb-select-height: var(--mb-control-height-lg);
+  --mb-select-radius: var(--mb-control-radius-lg);
+}
+
+.mb-select-value {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mb-select-value[data-placeholder] {
+  color: var(--mb-label-secondary);
+}
+
+.mb-select-value-icon {
+  display: inline-flex;
+  flex: none;
+}
+
+.mb-select-value-icon :where(svg) {
+  width: var(--mb-menu-icon-size);
+  height: var(--mb-menu-icon-size);
+}
+
+.mb-select-trigger-cap {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--mb-select-cap-size);
+  height: var(--mb-select-cap-size);
+  margin-inline-start: auto;
+  border-radius: max(3px, calc(var(--mb-select-radius) - var(--mb-select-cap-inset)));
+  background: var(--mb-select-cap-bg);
+  color: var(--mb-select-cap-fg);
+  box-shadow: inset 0 0.5px 0 rgb(255 255 255 / 0.28);
+}
+
+.mb-select-trigger-cap svg {
+  width: var(--mb-select-chevron-size);
+  height: var(--mb-select-chevron-size);
+}
+
+/* Plain: text and a chevron, for toolbars, forms and inline choices. */
+.mb-select-trigger[data-variant="plain"] {
+  --mb-select-bg: transparent;
+  --mb-select-shadow: none;
+  --mb-select-fg: var(--mb-select-plain-fg);
+  --mb-select-cap-bg: transparent;
+  --mb-select-cap-fg: currentColor;
+  --mb-select-cap-size: var(--mb-select-chevron-size);
+  gap: 4px;
+  padding-inline: 0;
+}
+
+.mb-select-trigger[data-variant="plain"] .mb-select-trigger-cap {
+  box-shadow: none;
+  opacity: 0.85;
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .mb-select-trigger[data-variant="auto"] {
+    --mb-select-bg: transparent;
+    --mb-select-shadow: none;
+    --mb-select-fg: var(--mb-select-plain-fg);
+    --mb-select-cap-bg: transparent;
+    --mb-select-cap-fg: currentColor;
+    --mb-select-cap-size: var(--mb-select-chevron-size);
+    gap: 4px;
+    padding-inline: 0;
+  }
+
+  .mb-select-trigger[data-variant="auto"] .mb-select-trigger-cap {
+    box-shadow: none;
+    opacity: 0.85;
+  }
+
+  .mb-select-trigger[data-variant="bezeled"] {
+    --mb-select-bg: var(--mb-fill-secondary);
+    --mb-select-shadow: none;
+    --mb-select-fg: var(--mb-accent-text);
+    --mb-select-cap-bg: transparent;
+    --mb-select-cap-fg: currentColor;
+    --mb-select-cap-size: var(--mb-select-chevron-size);
+    padding-inline-end: var(--mb-select-padding-start);
+  }
+
+  .mb-select-trigger:active:not([data-disabled]),
+  .mb-select-trigger[data-open] {
+    opacity: 0.45;
+  }
+
+  .mb-select-trigger[data-variant="bezeled"]:is(:active, [data-open]) {
+    opacity: 1;
+    --mb-select-bg: var(--mb-fill);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-select-trigger:not([data-variant="plain"]):hover {
+    --mb-select-bg: color-mix(in oklch, var(--mb-bg-control), var(--mb-ink) 5%);
+  }
+}
+
+@scope (:root:not([data-platform]), [data-platform="macos"]) to (:scope [data-platform]) {
+  .mb-select-trigger:not([data-variant="plain"]):is(:active, [data-open]) {
+    --mb-select-bg: color-mix(in oklch, var(--mb-bg-control), var(--mb-ink) 10%);
+  }
+
+  .mb-select-trigger[data-variant="plain"]:is(:active, [data-open]) {
+    opacity: 0.7;
+  }
+}
+
+.mb-select-trigger:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: var(--mb-focus-ring-offset);
+}
+
+.mb-select-trigger:where([data-disabled], :disabled) {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.mb-select-trigger[data-readonly] .mb-select-trigger-cap {
+  visibility: hidden;
+}
+
+.mb-select-label {
+  color: var(--mb-label);
+  font: var(--mb-text-body);
+}
+
+.mb-select-label[data-disabled] {
+  color: var(--mb-label-tertiary);
+}
+
+/* ── The list ───────────────────────────────────────────────── */
+
+/* A pop-up menu always keeps its check column, so choices don't shift as the value changes. */
+.mb-menu-content.mb-select-content {
+  --mb-menu-lead: calc(var(--mb-menu-row-padding) + var(--mb-menu-gutter));
+
+  min-width: max(var(--mb-menu-min-width), calc(var(--anchor-width) - var(--mb-select-content-shift)));
+}
+
+/* The sheet's translate belongs to its drag, so only the popover shifts. */
+.mb-menu-content.mb-select-content:not([data-presentation="sheet"]) {
+  translate: var(--mb-select-content-shift) 0;
+}
+
+.mb-menu-content.mb-select-content:not([data-presentation="sheet"]):where([dir="rtl"] *) {
+  translate: calc(var(--mb-select-content-shift) * -1) 0;
+}
+
+/* As a bottom sheet it spans the screen; menu.css draws the grabber and the scrim. */
+.mb-menu-content.mb-select-content[data-presentation="sheet"] {
+  min-width: 0;
+}
+
+.mb-select-item-indicator:not([data-selected]) {
+  visibility: hidden;
+}
+
+.mb-select-item-text mark,
+.mb-select-item-text [data-matched] {
+  background: none;
+  color: inherit;
+  font-weight: 600;
+}
+
+.mb-select-input {
+  display: block;
+  width: calc(100% - var(--mb-menu-row-padding));
+  height: var(--mb-menu-item-height);
+  margin: 2px auto 4px;
+  padding-inline: 8px;
+  border: 0;
+  border-radius: var(--mb-menu-row-radius);
+  background: var(--mb-fill-tertiary);
+  color: var(--mb-label);
+  font: inherit;
+  outline: none;
+}
+
+.mb-select-input::placeholder {
+  color: var(--mb-placeholder);
+}
+
+.mb-select-input:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: 0;
+}
+
+.mb-select-empty:not(:empty),
+.mb-select-status:not(:empty) {
+  padding: 6px var(--mb-menu-row-padding);
+  color: var(--mb-label-secondary);
+}
+
+.mb-select-clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: none;
+  color: var(--mb-label-secondary);
+}

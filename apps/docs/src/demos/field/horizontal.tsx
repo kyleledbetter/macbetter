@@ -1,6 +1,6 @@
-import { Field, FieldDescription, FieldGroup, FieldLabel } from "@dreambase/stardust/field"
-import { SecureField } from "@dreambase/stardust/secure-field"
-import { TextField } from "@dreambase/stardust/text-field"
+import { Field, FieldDescription, FieldGroup, FieldLabel } from "macbetter/field"
+import { SecureField } from "macbetter/secure-field"
+import { TextField } from "macbetter/text-field"
 
 export default function Example() {
   return (

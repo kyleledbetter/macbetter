@@ -1,0 +1,24 @@
+/*
+ * Ember: the default theme, restated so it can be named.
+ * Trinidad and Gold Drop carry the action; Racing Green is the stage.
+ *
+ *   Trinidad #EE5700 · Gold Drop #F67F01 · Neon Carrot #F9943C · Rajah #F8B16D
+ *   Racing Green #0A1C13 · Stromboli #25604E · Observatory #028F71
+ *   Emerald #44BD8B · Puerto Rico #52C6A0
+ */
+[data-theme="ember"] {
+  --mb-accent: light-dark(#ee5700, #f67f01);
+  --mb-on-accent: #0a1c13;
+  --mb-accent-text: light-dark(#b84300, #f9943c);
+  --mb-accent-secondary: light-dark(#028f71, #52c6a0);
+  --mb-ink: light-dark(#0a1c13, #f1f7f3);
+  --mb-bg: light-dark(#ffffff, #0a1c13);
+  --mb-bg-secondary: light-dark(#f2f5f2, #0f251a);
+  --mb-bg-tertiary: light-dark(#ffffff, #163224);
+  --mb-bg-elevated: light-dark(#ffffff, #14301f);
+  --mb-bg-sidebar: light-dark(#eaf0ec, #0c2117);
+  --mb-tint: light-dark(#5b6b62, #7fa894);
+  --mb-orange: light-dark(#ee5700, #f67f01);
+  --mb-green: light-dark(#028f71, #44bd8b);
+  --mb-mint: light-dark(#17a58c, #52c6a0);
+}

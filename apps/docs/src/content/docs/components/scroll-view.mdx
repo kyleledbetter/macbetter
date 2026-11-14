@@ -20,7 +20,7 @@ Use a scroll view when a region of a page scrolls on its own: a sidebar, a log, 
 ## Usage
 
 ```tsx
-import { ScrollView } from "@dreambase/stardust/scroll-view"
+import { ScrollView } from "macbetter/scroll-view"
 ```
 
 `ScrollView` puts its children in a viewport from ui-sdk's Scroll Area and draws the scroll bars for you. `viewportProps` reach the element that scrolls, like `tabIndex` or `onScroll`.
@@ -72,7 +72,7 @@ Takes the props of ui-sdk's [Scroll Area](https://ui-sdk.dev/docs/react/componen
 
 | Attribute or variable | On | Meaning |
 | --- | --- | --- |
-| `data-orientation`, `data-fade`, `data-variant` | `.sd-scroll-view` | The props above. |
-| `data-visible`, `data-dragging` | `.sd-scroll-view-scrollbar` | The bar is showing, or its thumb is being dragged. |
-| `--sd-scroll-view-thumb`, `--sd-scroll-view-thumb-hover` | platform | The thumb's thickness, at rest and under the pointer. |
-| `--sd-scroll-view-fade` | platform | How long the edge fades grow. |
+| `data-orientation`, `data-fade`, `data-variant` | `.mb-scroll-view` | The props above. |
+| `data-visible`, `data-dragging` | `.mb-scroll-view-scrollbar` | The bar is showing, or its thumb is being dragged. |
+| `--mb-scroll-view-thumb`, `--mb-scroll-view-thumb-hover` | platform | The thumb's thickness, at rest and under the pointer. |
+| `--mb-scroll-view-fade` | platform | How long the edge fades grow. |

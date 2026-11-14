@@ -1,0 +1,248 @@
+/* Tabs — the macOS tab view: a segmented strip on the edge of a framed panel. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-tabs-height: 24px;
+  --mb-tabs-padding: 12px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-tabs-height: 34px;
+  --mb-tabs-padding: 14px;
+}
+
+.mb-tabs {
+  --mb-tabs-inset: 2px;
+  --mb-tabs-radius: var(--mb-control-radius);
+
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  color: var(--mb-label);
+  font: var(--mb-text-body);
+  letter-spacing: var(--mb-tracking-body);
+}
+
+.mb-tabs-list {
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+  display: inline-flex;
+  flex: none;
+  align-self: center;
+  align-items: stretch;
+  max-width: 100%;
+  height: var(--mb-tabs-height);
+  padding: var(--mb-tabs-inset);
+  border-radius: var(--mb-tabs-radius);
+  background: var(--mb-bg-secondary);
+  box-shadow: inset 0 0 0 var(--mb-hairline) var(--mb-separator);
+  font: var(--mb-control-font);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* The strip sits on a solid backing so the panel's frame doesn't show through it. */
+.mb-tabs-list::before {
+  content: "";
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--mb-fill-tertiary);
+}
+
+.mb-tabs-indicator {
+  position: absolute;
+  z-index: -1;
+  top: var(--active-tab-top, 0);
+  left: var(--active-tab-left, 0);
+  width: var(--active-tab-width, 0);
+  height: var(--active-tab-height, 0);
+  border-radius: calc(var(--mb-tabs-radius) - var(--mb-tabs-inset));
+  background: light-dark(#ffffff, color-mix(in oklch, var(--mb-tint) 46%, var(--mb-bg)));
+  box-shadow:
+    0 0 0 var(--mb-hairline) var(--mb-separator),
+    0 1px 2px var(--mb-shadow-color),
+    0 2px 6px -2px var(--mb-shadow-color);
+  transition:
+    left var(--mb-spring-snappy-duration) var(--mb-spring-snappy),
+    top var(--mb-spring-snappy-duration) var(--mb-spring-snappy),
+    width var(--mb-spring-snappy-duration) var(--mb-spring-snappy),
+    height var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+.mb-tabs-indicator[data-activation-direction="none"] {
+  transition: none;
+}
+
+.mb-tabs-tab {
+  position: relative;
+  display: inline-flex;
+  flex: 0 1 auto;
+  align-items: center;
+  justify-content: center;
+  gap: var(--mb-control-gap);
+  min-width: 0;
+  margin: 0;
+  padding: 0 var(--mb-tabs-padding);
+  border: 0;
+  border-radius: calc(var(--mb-tabs-radius) - var(--mb-tabs-inset));
+  background: transparent;
+  color: var(--mb-label);
+  font: inherit;
+  letter-spacing: inherit;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: default;
+  touch-action: manipulation;
+  transition: color var(--mb-duration-fast) var(--mb-ease-out), opacity var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-tabs-tab::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: 100%;
+  height: max(100%, var(--mb-hit-target));
+  translate: -50% -50%;
+}
+
+.mb-tabs-tab-icon {
+  display: inline-flex;
+}
+
+.mb-tabs-tab-icon :where(svg) {
+  width: var(--mb-icon-size);
+  height: var(--mb-icon-size);
+}
+
+:where([dir="rtl"]) .mb-tabs-tab-icon[data-mirror] {
+  scale: -1 1;
+}
+
+.mb-tabs-tab[data-selected] {
+  font-weight: 600;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-tabs-tab:not([data-selected]):hover {
+    background: var(--mb-fill-quaternary);
+  }
+}
+
+.mb-tabs-tab:not([data-selected]):active {
+  opacity: 0.6;
+}
+
+.mb-tabs-tab:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: -1px;
+}
+
+.mb-tabs-tab[data-disabled] {
+  opacity: 0.4;
+}
+
+/* Bordered: the strip straddles the top edge of a recessed, framed box. */
+.mb-tabs[data-variant="bordered"] > .mb-tabs-list {
+  margin-bottom: calc(var(--mb-tabs-height) / -2);
+}
+
+.mb-tabs-panel {
+  min-width: 0;
+  outline: none;
+}
+
+.mb-tabs[data-variant="bordered"] > .mb-tabs-panel {
+  padding: calc(var(--mb-tabs-height) / 2 + var(--mb-space-6)) var(--mb-space-7) var(--mb-space-7);
+  border-radius: var(--mb-radius-md);
+  background: light-dark(rgb(0 0 0 / 0.03), rgb(255 255 255 / 0.03));
+  box-shadow: inset 0 0 0 var(--mb-hairline) var(--mb-separator-strong);
+}
+
+.mb-tabs[data-variant="plain"] > .mb-tabs-panel {
+  padding-top: var(--mb-space-6);
+}
+
+.mb-tabs-panel:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: var(--mb-focus-ring-offset);
+}
+
+/* Plain: no track and no frame; a soft capsule slides behind the selected label. */
+.mb-tabs[data-variant="plain"] > .mb-tabs-list {
+  align-self: flex-start;
+  background: transparent;
+  box-shadow: none;
+  gap: var(--mb-space-1);
+  --mb-tabs-radius: var(--mb-radius-full);
+}
+
+.mb-tabs[data-variant="plain"] > .mb-tabs-list::before {
+  content: none;
+}
+
+.mb-tabs[data-variant="plain"] .mb-tabs-indicator {
+  background: var(--mb-fill);
+  box-shadow: none;
+}
+
+.mb-tabs[data-variant="plain"] .mb-tabs-tab {
+  color: var(--mb-label-secondary);
+  font-weight: 500;
+}
+
+.mb-tabs[data-variant="plain"] .mb-tabs-tab[data-selected] {
+  color: var(--mb-label);
+  font-weight: 600;
+}
+
+/* Vertical */
+.mb-tabs[data-orientation="vertical"] {
+  flex-direction: row;
+  gap: var(--mb-space-6);
+}
+
+.mb-tabs-list[data-orientation="vertical"] {
+  flex-direction: column;
+  align-self: flex-start;
+  height: auto;
+  margin-bottom: 0;
+}
+
+.mb-tabs-list[data-orientation="vertical"] .mb-tabs-tab {
+  justify-content: flex-start;
+  min-height: calc(var(--mb-tabs-height) - var(--mb-tabs-inset) * 2);
+}
+
+.mb-tabs[data-orientation="vertical"] > .mb-tabs-panel {
+  flex: 1;
+  margin: 0;
+}
+
+/* Touch: a full-width segmented control above the content, as iOS and iPadOS present it. */
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .mb-tabs-list[data-orientation="horizontal"] {
+    display: flex;
+    align-self: stretch;
+  }
+
+  .mb-tabs-list[data-orientation="horizontal"] .mb-tabs-tab {
+    flex: 1 1 0;
+  }
+
+  .mb-tabs[data-variant="bordered"] > .mb-tabs-list {
+    margin-bottom: var(--mb-space-6);
+  }
+
+  .mb-tabs[data-variant="bordered"] > .mb-tabs-panel {
+    padding: var(--mb-space-6);
+    border-radius: var(--mb-group-radius);
+    background: var(--mb-bg-grouped-secondary);
+    box-shadow: none;
+  }
+
+  .mb-tabs-list:has(.mb-tabs-tab[data-selected]:active) .mb-tabs-indicator {
+    scale: 0.96;
+  }
+}

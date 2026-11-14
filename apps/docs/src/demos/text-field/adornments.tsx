@@ -3,7 +3,7 @@ import {
   TextFieldAdornment,
   TextFieldClear,
   TextFieldGroup,
-} from "@dreambase/stardust/text-field"
+} from "macbetter/text-field"
 import { AtSignIcon } from "lucide-react"
 
 export default function Example() {
@@ -11,7 +11,7 @@ export default function Example() {
     <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%", maxWidth: 300 }}>
       <TextFieldGroup>
         <TextFieldAdornment>https://</TextFieldAdornment>
-        <TextField aria-label="Website" defaultValue="dreambase.ai" />
+        <TextField aria-label="Website" defaultValue="macbetter.dev" />
         <TextFieldClear aria-label="Clear website" />
       </TextFieldGroup>
       <TextFieldGroup>

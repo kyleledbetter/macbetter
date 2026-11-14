@@ -29,7 +29,7 @@ import {
   DisclosureItem,
   DisclosurePanel,
   DisclosureTrigger,
-} from "@dreambase/stardust/disclosure"
+} from "macbetter/disclosure"
 ```
 
 ### A group
@@ -44,7 +44,7 @@ import {
 
 ### Styles
 
-`variant="grouped"` draws the rows in an inset grouped box, like a Settings list, and is the default for a group. On iOS the box is white in light appearance, so put it on `--sd-bg-grouped` as Settings does, or it disappears into a white page. `plain` draws bare rows, and is the default for a single disclosure.
+`variant="grouped"` draws the rows in an inset grouped box, like a Settings list, and is the default for a group. On iOS the box is white in light appearance, so put it on `--mb-bg-grouped` as Settings does, or it disappears into a white page. `plain` draws bare rows, and is the default for a single disclosure.
 
 ## Platform behavior
 
@@ -82,8 +82,8 @@ Takes every prop of ui-sdk's [Collapsible](https://ui-sdk.dev/docs/react/compone
 
 | Attribute or variable | On | Meaning |
 | --- | --- | --- |
-| `data-variant` | `.sd-disclosure-group`, `.sd-disclosure` | `grouped` or `plain`. |
-| `data-open`, `data-closed` | `.sd-disclosure-trigger`, `.sd-disclosure-panel` | Whether the content is showing. |
-| `--sd-disclosure-chevron-order` | platform | `0` puts the chevron before the label, `1` after it. |
-| `--sd-disclosure-chevron-color` | platform | The chevron's color. |
-| `--sd-disclosure-row-height`, `--sd-disclosure-row-height-grouped` | platform | Row heights. |
+| `data-variant` | `.mb-disclosure-group`, `.mb-disclosure` | `grouped` or `plain`. |
+| `data-open`, `data-closed` | `.mb-disclosure-trigger`, `.mb-disclosure-panel` | Whether the content is showing. |
+| `--mb-disclosure-chevron-order` | platform | `0` puts the chevron before the label, `1` after it. |
+| `--mb-disclosure-chevron-color` | platform | The chevron's color. |
+| `--mb-disclosure-row-height`, `--mb-disclosure-row-height-grouped` | platform | Row heights. |

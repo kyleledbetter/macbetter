@@ -4,9 +4,9 @@ import * as React from "react"
 import type { ChartConfig } from "./evil/ui/echarts-chart"
 
 /*
- * The Stardust adapter for ECharts and EvilCharts.
+ * The Macbetter adapter for ECharts and EvilCharts.
  *
- * Stardust colors are CSS: light-dark(), color-mix() and oklch(), resolved
+ * Macbetter colors are CSS: light-dark(), color-mix() and oklch(), resolved
  * per element by data-theme, data-scheme and data-platform. A canvas can't
  * read CSS, so the adapter paints each token on a probe inside the chart's
  * own container, reads back a plain rgba() string, and does it again whenever
@@ -16,49 +16,49 @@ import type { ChartConfig } from "./evil/ui/echarts-chart"
 
 type Platform = "macos" | "ipados" | "ios"
 
-/** Token names the adapter resolves; `--sd-chart-*` ones are set in charts.css. */
+/** Token names the adapter resolves; `--mb-chart-*` ones are set in charts.css. */
 const tokens = {
-  accent: "--sd-accent",
-  accentSecondary: "--sd-accent-secondary",
-  red: "--sd-red",
-  orange: "--sd-orange",
-  yellow: "--sd-yellow",
-  green: "--sd-green",
-  mint: "--sd-mint",
-  teal: "--sd-teal",
-  cyan: "--sd-cyan",
-  blue: "--sd-blue",
-  indigo: "--sd-indigo",
-  purple: "--sd-purple",
-  pink: "--sd-pink",
-  label: "--sd-label",
-  label2: "--sd-label-secondary",
-  label3: "--sd-label-tertiary",
-  label4: "--sd-label-quaternary",
-  fill: "--sd-fill",
-  fill2: "--sd-fill-secondary",
-  fill3: "--sd-fill-tertiary",
-  fill4: "--sd-fill-quaternary",
-  bg: "--sd-chart-surface",
-  grid: "--sd-chart-grid",
-  gridStrong: "--sd-chart-grid-strong",
-  axis: "--sd-chart-axis",
-  rule: "--sd-chart-rule",
-  up: "--sd-chart-up",
-  down: "--sd-chart-down",
-  move: "--sd-chart-move",
-  exercise: "--sd-chart-exercise",
-  stand: "--sd-chart-stand",
-  awake: "--sd-chart-awake",
-  rem: "--sd-chart-rem",
-  core: "--sd-chart-core",
-  deep: "--sd-chart-deep",
-  series1: "--sd-chart-1",
-  series2: "--sd-chart-2",
-  series3: "--sd-chart-3",
-  series4: "--sd-chart-4",
-  series5: "--sd-chart-5",
-  series6: "--sd-chart-6",
+  accent: "--mb-accent",
+  accentSecondary: "--mb-accent-secondary",
+  red: "--mb-red",
+  orange: "--mb-orange",
+  yellow: "--mb-yellow",
+  green: "--mb-green",
+  mint: "--mb-mint",
+  teal: "--mb-teal",
+  cyan: "--mb-cyan",
+  blue: "--mb-blue",
+  indigo: "--mb-indigo",
+  purple: "--mb-purple",
+  pink: "--mb-pink",
+  label: "--mb-label",
+  label2: "--mb-label-secondary",
+  label3: "--mb-label-tertiary",
+  label4: "--mb-label-quaternary",
+  fill: "--mb-fill",
+  fill2: "--mb-fill-secondary",
+  fill3: "--mb-fill-tertiary",
+  fill4: "--mb-fill-quaternary",
+  bg: "--mb-chart-surface",
+  grid: "--mb-chart-grid",
+  gridStrong: "--mb-chart-grid-strong",
+  axis: "--mb-chart-axis",
+  rule: "--mb-chart-rule",
+  up: "--mb-chart-up",
+  down: "--mb-chart-down",
+  move: "--mb-chart-move",
+  exercise: "--mb-chart-exercise",
+  stand: "--mb-chart-stand",
+  awake: "--mb-chart-awake",
+  rem: "--mb-chart-rem",
+  core: "--mb-chart-core",
+  deep: "--mb-chart-deep",
+  series1: "--mb-chart-1",
+  series2: "--mb-chart-2",
+  series3: "--mb-chart-3",
+  series4: "--mb-chart-4",
+  series5: "--mb-chart-5",
+  series6: "--mb-chart-6",
 } as const
 
 type ChartColor = keyof typeof tokens
@@ -124,7 +124,7 @@ function resolveChartTheme(element: HTMLElement): ChartTheme {
     colors[name] = toRgba(getComputedStyle(probe).color)
   }
   probe.style.color = ""
-  probe.style.font = "var(--sd-text-caption)"
+  probe.style.font = "var(--mb-text-caption)"
   const style = getComputedStyle(probe)
   const font = style.fontFamily
   const fontSize = Number.parseFloat(style.fontSize) || 11
@@ -278,7 +278,7 @@ function paint(theme: ChartTheme, name: string) {
 }
 
 /**
- * An EvilCharts config from Stardust colors. EvilCharts takes light and dark
+ * An EvilCharts config from Macbetter colors. EvilCharts takes light and dark
  * colors per series; the adapter already resolved them for this chart's
  * scheme, so both get the same value. A color is a chart color name, with an
  * optional opacity ("exercise/40"), or an rgba() string.
@@ -317,7 +317,7 @@ export type { ChartColor, ChartTheme, Platform }
 type EvilSeries = Parameters<typeof evilConfig>[1]
 
 /**
- * Everything an EvilCharts chart needs from Stardust: put `ref` on an
+ * Everything an EvilCharts chart needs from Macbetter: put `ref` on an
  * ancestor (a ChartFrame), pass `config` and `chartOptions` to the chart.
  * Both are null until the theme resolves on the client. Keep `series` stable.
  */

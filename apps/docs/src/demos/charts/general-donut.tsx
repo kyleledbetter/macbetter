@@ -20,7 +20,7 @@ const series = {
 
 const total = data.reduce((sum, d) => sum + d.minutes, 0)
 const time = (m: number) => `${Math.floor(m / 60)}h ${m % 60}m`
-const swatches = ["var(--sd-chart-3)", "var(--sd-chart-2)", "var(--sd-chart-1)", "var(--sd-fill)"]
+const swatches = ["var(--mb-chart-3)", "var(--mb-chart-2)", "var(--mb-chart-1)", "var(--mb-fill)"]
 
 export default function ScreenTimeDonut() {
   const { ref, config, chartOptions } = useEvilChart(series)
@@ -40,8 +40,8 @@ export default function ScreenTimeDonut() {
           </EChartsPieChart>
         ) : null}
         <div aria-hidden="true" style={{ position: "absolute", inset: 0, display: "grid", placeContent: "center", textAlign: "center", pointerEvents: "none" }}>
-          <span style={{ font: "var(--sd-text-title-2)", fontFamily: "var(--sd-font-rounded)", fontVariantNumeric: "tabular-nums" }}>{time(total)}</span>
-          <span style={{ color: "var(--sd-label-secondary)", font: "var(--sd-text-footnote)" }}>Today</span>
+          <span style={{ font: "var(--mb-text-title-2)", fontFamily: "var(--mb-font-rounded)", fontVariantNumeric: "tabular-nums" }}>{time(total)}</span>
+          <span style={{ color: "var(--mb-label-secondary)", font: "var(--mb-text-footnote)" }}>Today</span>
         </div>
       </div>
       <ChartLegend

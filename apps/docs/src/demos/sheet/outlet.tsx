@@ -1,4 +1,4 @@
-import { Button } from "@dreambase/stardust/button"
+import { Button } from "macbetter/button"
 import {
   Sheet,
   SheetBody,
@@ -8,9 +8,9 @@ import {
   SheetOutlet,
   SheetTitle,
   SheetTrigger,
-} from "@dreambase/stardust/sheet"
-import { Field, FieldLabel } from "@dreambase/stardust/field"
-import { TextField } from "@dreambase/stardust/text-field"
+} from "macbetter/sheet"
+import { Field, FieldLabel } from "macbetter/field"
+import { TextField } from "macbetter/text-field"
 
 const messages = [
   { from: "Inès", text: "The proofs are back from the printer." },
@@ -21,7 +21,7 @@ const messages = [
 export default function Example() {
   return (
     <Sheet detents={["large"]}>
-      <SheetOutlet style={{ width: "100%", padding: 16, background: "var(--sd-bg)" }}>
+      <SheetOutlet style={{ width: "100%", padding: 16, background: "var(--mb-bg)" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <strong>Inbox</strong>
           <SheetTrigger render={<Button variant="filled" size="sm" />}>Compose</SheetTrigger>
@@ -30,7 +30,7 @@ export default function Example() {
           {messages.map((message) => (
             <li key={message.from}>
               <div style={{ fontWeight: 600 }}>{message.from}</div>
-              <div style={{ color: "var(--sd-label-secondary)" }}>{message.text}</div>
+              <div style={{ color: "var(--mb-label-secondary)" }}>{message.text}</div>
             </li>
           ))}
         </ul>

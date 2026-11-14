@@ -1,0 +1,193 @@
+/* Token Field — text where each entry is a rounded token tinted with the accent, as in Mail's address fields. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-token-field-token-height: 18px;
+  --mb-token-field-token-radius: var(--mb-radius-xs);
+  --mb-token-field-token-pad: 6px;
+  --mb-token-field-token-font: 400 12px/18px var(--mb-font);
+  --mb-token-field-pad-block: 4px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-token-field-token-height: 28px;
+  --mb-token-field-token-radius: var(--mb-radius-full);
+  --mb-token-field-token-pad: 10px;
+  --mb-token-field-token-font: 400 16px/28px var(--mb-font);
+  --mb-token-field-pad-block: 7px;
+}
+
+.mb-token-field {
+  --mb-token-field-bg: var(--mb-text-field-auto-bg);
+  --mb-token-field-edge: var(--mb-text-field-auto-edge);
+  --mb-token-field-ring: var(--mb-focus-ring);
+  --mb-token-field-tint: var(--mb-accent);
+
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: var(--mb-control-height);
+  margin: 0;
+  padding: var(--mb-token-field-pad-block) var(--mb-text-field-padding);
+  border-radius: var(--mb-text-field-radius);
+  background: var(--mb-token-field-bg);
+  box-shadow: var(--mb-token-field-edge);
+  color: var(--mb-label);
+  font: var(--mb-text-field-font);
+  line-height: calc(var(--mb-token-field-token-height) + 2px);
+  letter-spacing: var(--mb-tracking-body);
+  caret-color: var(--mb-accent);
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+  cursor: text;
+  outline: var(--mb-focus-ring-width) solid transparent;
+  outline-offset: 2px;
+  transition:
+    outline-color var(--mb-duration-fast) var(--mb-ease-out),
+    outline-offset var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-token-field[data-size="sm"] {
+  min-height: var(--mb-control-height-sm);
+  padding-block: calc(var(--mb-token-field-pad-block) - 2px);
+  font: var(--mb-text-field-font-sm);
+  line-height: calc(var(--mb-token-field-token-height));
+}
+
+.mb-token-field[data-size="lg"] {
+  min-height: var(--mb-control-height-lg);
+  font: var(--mb-text-field-font-lg);
+  line-height: calc(var(--mb-token-field-token-height) + 6px);
+}
+
+.mb-token-field[data-variant="bordered"] {
+  --mb-token-field-bg: var(--mb-bg-field);
+  --mb-token-field-edge: inset 0 0 0 var(--mb-hairline) var(--mb-control-border),
+    inset 0 0.5px 1px light-dark(rgb(0 0 0 / 0.07), rgb(0 0 0 / 0.2));
+}
+
+.mb-token-field[data-variant="filled"] {
+  --mb-token-field-bg: var(--mb-fill-tertiary);
+  --mb-token-field-edge: inset 0 0 0 0 transparent;
+}
+
+.mb-token-field:focus,
+.mb-token-field:focus-within {
+  outline-color: var(--mb-token-field-ring);
+  outline-offset: 0px;
+}
+
+.mb-token-field[data-empty]::before {
+  content: attr(aria-placeholder);
+  position: absolute;
+  inset-inline: var(--mb-text-field-padding);
+  color: var(--mb-field-placeholder);
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mb-token-field[data-disabled] {
+  --mb-token-field-bg: var(--mb-fill-quaternary);
+  --mb-token-field-edge: inset 0 0 0 var(--mb-hairline) var(--mb-separator);
+  color: var(--mb-label-tertiary);
+  cursor: default;
+}
+
+.mb-token-field:is([data-invalid], [aria-invalid="true"]) {
+  --mb-token-field-edge: inset 0 0 0 1px var(--mb-destructive);
+  --mb-token-field-ring: color-mix(in oklch, var(--mb-destructive) 80%, transparent);
+}
+
+.mb-token-field-token {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  box-sizing: border-box;
+  height: var(--mb-token-field-token-height);
+  margin-inline: 1px 3px;
+  padding-inline: var(--mb-token-field-token-pad);
+  border-radius: var(--mb-token-field-token-radius);
+  background: light-dark(
+    color-mix(in oklch, var(--mb-token-field-tint) 18%, transparent),
+    color-mix(in oklch, var(--mb-token-field-tint) 30%, transparent)
+  );
+  box-shadow: inset 0 0 0 var(--mb-hairline) color-mix(in oklch, var(--mb-token-field-tint) 45%, transparent);
+  color: var(--mb-label);
+  font: var(--mb-token-field-token-font);
+  letter-spacing: var(--mb-tracking-body);
+  vertical-align: middle;
+  white-space: nowrap;
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+  transition:
+    background-color var(--mb-duration-fast) var(--mb-ease-out),
+    color var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-token-field-token:not([data-selected]):hover {
+    background: light-dark(
+      color-mix(in oklch, var(--mb-token-field-tint) 26%, transparent),
+      color-mix(in oklch, var(--mb-token-field-tint) 40%, transparent)
+    );
+  }
+}
+
+/* A selected token fills with the accent, like a selected row. */
+.mb-token-field-token[data-selected] {
+  background: var(--mb-token-field-tint);
+  box-shadow: none;
+  color: var(--mb-on-accent);
+}
+
+.mb-token-field-token[data-pending] {
+  opacity: 0.6;
+}
+
+.mb-token-field-token[data-unresolved] {
+  --mb-token-field-tint: var(--mb-destructive);
+}
+
+.mb-token-field-token :where(svg:not(.mb-token-field-token-remove svg)) {
+  width: 12px;
+  height: 12px;
+}
+
+.mb-token-field-token-remove {
+  position: relative;
+  display: inline-flex;
+  width: 12px;
+  height: 12px;
+  margin-inline: 1px -3px;
+  color: color-mix(in oklch, currentColor 55%, transparent);
+  cursor: default;
+}
+
+.mb-token-field-token-remove::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: max(var(--mb-token-field-token-height), 20px);
+  height: max(var(--mb-token-field-token-height), 20px);
+  translate: -50% -50%;
+}
+
+.mb-token-field-token-remove :where(svg) {
+  width: 100%;
+  height: 100%;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-token-field-token-remove:hover {
+    color: currentColor;
+  }
+}
+
+.mb-token-field-token-remove[data-readonly],
+.mb-token-field-token-remove[data-disabled] {
+  display: none;
+}

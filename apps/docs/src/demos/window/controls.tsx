@@ -1,7 +1,7 @@
 "use client"
 
-import { Button } from "@dreambase/stardust/button"
-import { Window, WindowBody, WindowTitle, WindowTitlebar, WindowTrafficLights } from "@dreambase/stardust/window"
+import { Button } from "macbetter/button"
+import { Window, WindowBody, WindowTitle, WindowTitlebar, WindowTrafficLights } from "macbetter/window"
 import { useState } from "react"
 
 export default function Example() {
@@ -23,7 +23,7 @@ export default function Example() {
         <WindowTitle align="center">Calculator</WindowTitle>
       </WindowTitlebar>
       <WindowBody style={{ display: "grid", placeItems: "end", padding: "16px 20px" }}>
-        <output className="sd-text-large-title" style={{ fontVariantNumeric: "tabular-nums" }}>
+        <output className="mb-text-large-title" style={{ fontVariantNumeric: "tabular-nums" }}>
           1,280
         </output>
       </WindowBody>

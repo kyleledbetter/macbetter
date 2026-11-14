@@ -27,7 +27,7 @@ import {
   NavigationBarLeading,
   NavigationBarTrailing,
   NavigationStack,
-} from "@dreambase/stardust/navigation-bar"
+} from "macbetter/navigation-bar"
 ```
 
 Put the bar first inside a `NavigationStack`, the screen's scroll view. The stack's scroll position drives the bar, so the bar stays pinned while content scrolls under it.
@@ -59,9 +59,9 @@ Put actions in `NavigationBarTrailing`, and anything that isn't a back button, l
 
 ## Platform behavior
 
-- **iOS and iPadOS.** The bar is 44 points tall on iPhone and 50 on iPad, below the status bar, with a 17-point semibold title and a 34-point bold large title. It sits below `--sd-safe-top`, which a [device frame](/docs/components/device-frame) sets and which is the device's real safe area in a full-screen web app.
+- **iOS and iPadOS.** The bar is 44 points tall on iPhone and 50 on iPad, below the status bar, with a 17-point semibold title and a 34-point bold large title. It sits below `--mb-safe-top`, which a [device frame](/docs/components/device-frame) sets and which is the device's real safe area in a full-screen web app.
 - **iPad with a tab bar.** A floating [tab bar](/docs/components/tab-bar) sits in the center of the bar on iPadOS, so the inline title steps out of sight there and stays the heading for assistive technology. Use a large title on those screens.
-- **Sticky content.** `NavigationStack` sets `--sd-content-inset-top` to the bar's height, so a plain [list](/docs/components/list)'s section headers pin below the bar instead of sliding under it.
+- **Sticky content.** `NavigationStack` sets `--mb-content-inset-top` to the bar's height, so a plain [list](/docs/components/list)'s section headers pin below the bar instead of sliding under it.
 - **The material appears only when it's needed.** At the top of the scroll view the bar is clear and the content shows through. Once content scrolls under it, the chrome material and the hairline fade in over the first few points of scroll, as UIKit does with its scroll edge appearance.
 - **macOS.** Mac apps don't use navigation bars. On a Mac page the bar takes the platform's 13-point metrics, for previews, but prefer a window toolbar.
 
@@ -103,12 +103,12 @@ Containers for the bar's buttons. Take the props of a `div`.
 
 | Attribute or variable | On | Meaning |
 | --- | --- | --- |
-| `data-large-title` | `.sd-navigation-bar` | The bar collapses a large title. |
-| `data-scrolled` | `.sd-navigation-stack` | Content is under the bar. Only set in browsers without scroll-driven animations. |
-| `--sd-navigation-offset` | `.sd-navigation-stack` | The scroll position, set only in browsers without scroll-driven animations. |
-| `--sd-safe-top`, `--sd-safe-left`, `--sd-safe-right` | inherited | The device's safe area. Defaults to `env(safe-area-inset-*)`; a [device frame](/docs/components/device-frame) sets it for its screen. |
-| `--sd-content-inset-top` | `.sd-navigation-stack` | Set to the bar's height (with the safe area), for sticky content inside the stack. |
-| `--sd-content-inset-bottom` | inherited | Space below the content, like a tab bar's height. Set by `TabBar`; falls back to `--sd-safe-bottom`. |
-| `--sd-navigation-bar-row` | inherited | The height of the bar's row: 44px on iPhone, 50px on iPad, the bar height on macOS. |
-| `--sd-navigation-large-title-height` | inherited | The large title's row, and the scroll distance over which it collapses. |
-| `--sd-navigation-bar-title-clip` | inherited | A `clip-path` for the inline title. An iPadOS tab bar sets it to hide the title visually. |
+| `data-large-title` | `.mb-navigation-bar` | The bar collapses a large title. |
+| `data-scrolled` | `.mb-navigation-stack` | Content is under the bar. Only set in browsers without scroll-driven animations. |
+| `--mb-navigation-offset` | `.mb-navigation-stack` | The scroll position, set only in browsers without scroll-driven animations. |
+| `--mb-safe-top`, `--mb-safe-left`, `--mb-safe-right` | inherited | The device's safe area. Defaults to `env(safe-area-inset-*)`; a [device frame](/docs/components/device-frame) sets it for its screen. |
+| `--mb-content-inset-top` | `.mb-navigation-stack` | Set to the bar's height (with the safe area), for sticky content inside the stack. |
+| `--mb-content-inset-bottom` | inherited | Space below the content, like a tab bar's height. Set by `TabBar`; falls back to `--mb-safe-bottom`. |
+| `--mb-navigation-bar-row` | inherited | The height of the bar's row: 44px on iPhone, 50px on iPad, the bar height on macOS. |
+| `--mb-navigation-large-title-height` | inherited | The large title's row, and the scroll distance over which it collapses. |
+| `--mb-navigation-bar-title-clip` | inherited | A `clip-path` for the inline title. An iPadOS tab bar sets it to hide the title visually. |

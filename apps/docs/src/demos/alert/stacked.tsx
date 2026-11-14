@@ -7,8 +7,8 @@ import {
   AlertIcon,
   AlertTitle,
   AlertTrigger,
-} from "@dreambase/stardust/alert"
-import { Button } from "@dreambase/stardust/button"
+} from "macbetter/alert"
+import { Button } from "macbetter/button"
 
 export default function Example() {
   return (
@@ -16,7 +16,7 @@ export default function Example() {
       <AlertTrigger render={<Button />}>Close Document</AlertTrigger>
       <AlertContent>
         <AlertIcon>
-          <img src="/dreambase-logo-mark.svg" alt="" />
+          <img src="/app-icon.svg" alt="" />
         </AlertIcon>
         <AlertTitle>Do you want to save the changes you made to “Q3 Roadmap”?</AlertTitle>
         <AlertDescription>Your changes will be lost if you don’t save them.</AlertDescription>

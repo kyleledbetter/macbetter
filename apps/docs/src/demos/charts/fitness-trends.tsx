@@ -2,11 +2,11 @@ import { ArrowDownIcon, ArrowUpIcon } from "lucide-react"
 
 /** The last 90 days against the last 365, as Fitness compares them. */
 const trends = [
-  { label: "Move", color: "var(--sd-chart-move)", now: "512", before: "468", unit: "KCAL/DAY", up: true },
-  { label: "Exercise", color: "var(--sd-chart-exercise)", now: "36", before: "29", unit: "MIN/DAY", up: true },
-  { label: "Stand", color: "var(--sd-chart-stand)", now: "11", before: "12", unit: "HR/DAY", up: false },
-  { label: "Distance", color: "var(--sd-blue)", now: "4.2", before: "3.6", unit: "MI/DAY", up: true },
-  { label: "Walking Pace", color: "var(--sd-teal)", now: "17′42″", before: "18′05″", unit: "/MI", up: true, note: "Faster than 18′05″" },
+  { label: "Move", color: "var(--mb-chart-move)", now: "512", before: "468", unit: "KCAL/DAY", up: true },
+  { label: "Exercise", color: "var(--mb-chart-exercise)", now: "36", before: "29", unit: "MIN/DAY", up: true },
+  { label: "Stand", color: "var(--mb-chart-stand)", now: "11", before: "12", unit: "HR/DAY", up: false },
+  { label: "Distance", color: "var(--mb-blue)", now: "4.2", before: "3.6", unit: "MI/DAY", up: true },
+  { label: "Walking Pace", color: "var(--mb-teal)", now: "17′42″", before: "18′05″", unit: "/MI", up: true, note: "Faster than 18′05″" },
 ]
 
 export default function FitnessTrends() {
@@ -28,19 +28,19 @@ export default function FitnessTrends() {
                 // Going down is drawn as an outline, so it doesn't rely on color alone.
                 background: t.up ? t.color : "transparent",
                 boxShadow: t.up ? "none" : `inset 0 0 0 2px ${t.color}`,
-                color: t.up ? "var(--sd-bg)" : t.color,
+                color: t.up ? "var(--mb-bg)" : t.color,
               }}
             >
               <Arrow style={{ width: 18, height: 18 }} strokeWidth={3} />
             </span>
             <div style={{ display: "grid", gap: 1, minWidth: 0 }}>
-              <span style={{ color: t.color, font: "var(--sd-text-subheadline)", fontWeight: 600 }}>{t.label}</span>
-              <span style={{ font: "var(--sd-text-title-3)", fontFamily: "var(--sd-font-rounded)", fontVariantNumeric: "tabular-nums" }}>
+              <span style={{ color: t.color, font: "var(--mb-text-subheadline)", fontWeight: 600 }}>{t.label}</span>
+              <span style={{ font: "var(--mb-text-title-3)", fontFamily: "var(--mb-font-rounded)", fontVariantNumeric: "tabular-nums" }}>
                 {t.now}
-                <span style={{ color: "var(--sd-label-secondary)", font: "var(--sd-text-footnote)", fontWeight: 600 }}> {t.unit}</span>
+                <span style={{ color: "var(--mb-label-secondary)", font: "var(--mb-text-footnote)", fontWeight: 600 }}> {t.unit}</span>
               </span>
             </div>
-            <span style={{ marginInlineStart: "auto", color: "var(--sd-label-secondary)", font: "var(--sd-text-footnote)", textAlign: "end" }}>
+            <span style={{ marginInlineStart: "auto", color: "var(--mb-label-secondary)", font: "var(--mb-text-footnote)", textAlign: "end" }}>
               {"note" in t ? t.note : `${t.up ? "Up" : "Down"} from ${t.before}`}
             </span>
           </li>

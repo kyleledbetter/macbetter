@@ -1,11 +1,11 @@
-import { contrastRatio } from "@dreambase/stardust/theme"
+import { contrastRatio } from "macbetter/theme"
 
 type Seeds = { accent: string; onAccent: string; accentText: string; bg: string; ink: string }
 
 // The seed values from each built-in theme's stylesheet.
 const themes: Array<{ name: string; light: Seeds; dark: Seeds }> = [
   {
-    name: "Dreambase",
+    name: "Ember",
     light: { accent: "#ee5700", onAccent: "#0a1c13", accentText: "#b84300", bg: "#ffffff", ink: "#0a1c13" },
     dark: { accent: "#f67f01", onAccent: "#0a1c13", accentText: "#f9943c", bg: "#0a1c13", ink: "#f1f7f3" },
   },
@@ -37,7 +37,7 @@ function Cell({ value, target }: { value: number; target: number }) {
   const pass = value >= target
   return (
     <td className="px-3 py-2 text-end font-mono text-[12px] whitespace-nowrap tabular-nums">
-      <span className={pass ? "text-label" : "font-semibold text-(--sd-destructive-text)"}>
+      <span className={pass ? "text-label" : "font-semibold text-(--mb-destructive-text)"}>
         {value.toFixed(2)}
         {pass ? "" : " ✕"}
       </span>

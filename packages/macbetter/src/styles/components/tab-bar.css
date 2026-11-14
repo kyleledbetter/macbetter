@@ -1,0 +1,223 @@
+/* Tab Bar — iOS's floating glass capsule or classic full-width bar; a compact capsule at the top on iPadOS. */
+
+.mb-tab-bar {
+  --mb-tab-bar-height: 62px;
+  --mb-tab-bar-margin: max(12px, calc(var(--mb-safe-bottom, 0px) - 13px));
+  --mb-content-inset-bottom: calc(var(--mb-tab-bar-height) + var(--mb-tab-bar-margin) + 12px);
+
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.mb-tab-bar:has(> .mb-tab-bar-list[data-variant="classic"]) {
+  --mb-tab-bar-height: 49px;
+  --mb-content-inset-bottom: calc(var(--mb-tab-bar-height) + var(--mb-safe-bottom, 0px));
+}
+
+.mb-tab-bar-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.mb-tab-bar-panel > * {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.mb-tab-bar-panel:focus-visible {
+  outline: none;
+}
+
+/* Floating capsule */
+.mb-tab-bar-list {
+  position: absolute;
+  z-index: var(--mb-z-floating);
+  inset-inline: 20px;
+  bottom: var(--mb-tab-bar-margin);
+  display: flex;
+  align-items: stretch;
+  height: var(--mb-tab-bar-height);
+  padding: 4px;
+  border-radius: var(--mb-radius-full);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.mb-tab-bar-indicator {
+  position: absolute;
+  z-index: 0;
+  top: var(--active-tab-top);
+  left: var(--active-tab-left);
+  width: var(--active-tab-width);
+  height: var(--active-tab-height);
+  border-radius: var(--mb-radius-full);
+  background: light-dark(rgb(0 0 0 / 0.07), rgb(255 255 255 / 0.11));
+  box-shadow:
+    inset 0 0.5px 0 light-dark(rgb(255 255 255 / 0.9), rgb(255 255 255 / 0.16)),
+    inset 0 0 0 var(--mb-hairline) light-dark(rgb(0 0 0 / 0.04), rgb(255 255 255 / 0.06));
+  transition:
+    left var(--mb-spring-snappy-duration) var(--mb-spring-snappy),
+    top var(--mb-spring-snappy-duration) var(--mb-spring-snappy),
+    width var(--mb-spring-snappy-duration) var(--mb-spring-snappy),
+    height var(--mb-spring-snappy-duration) var(--mb-spring-snappy),
+    scale var(--mb-spring-bouncy-duration) var(--mb-spring-bouncy);
+}
+
+.mb-tab-bar-indicator[data-activation-direction="none"] {
+  transition: none;
+}
+
+/* The pill swells under the finger, as the glass does on iOS 26. */
+.mb-tab-bar-list:has(.mb-tab-bar-item[data-selected]:active) .mb-tab-bar-indicator {
+  scale: 1.08;
+}
+
+.mb-tab-bar-item {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  min-width: 0;
+  margin: 0;
+  padding: 0 2px;
+  border: 0;
+  border-radius: var(--mb-radius-full);
+  background: transparent;
+  color: var(--mb-label);
+  font: 600 10px/12px var(--mb-font);
+  letter-spacing: 0.01em;
+  cursor: default;
+  touch-action: manipulation;
+  transition: color var(--mb-duration-fast) var(--mb-ease-out), scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+.mb-tab-bar-item-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+}
+
+.mb-tab-bar-item-icon :where(svg) {
+  width: 24px;
+  height: 24px;
+  stroke-width: 2;
+}
+
+.mb-tab-bar-item-label {
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.mb-tab-bar-item[data-selected] {
+  color: var(--mb-accent-text);
+}
+
+.mb-tab-bar-item[data-selected] .mb-tab-bar-item-icon :where(svg) {
+  stroke-width: 2.4;
+}
+
+.mb-tab-bar-item:active {
+  scale: 0.94;
+  transition-duration: 0ms, var(--mb-duration-instant);
+}
+
+.mb-tab-bar-item:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: -3px;
+}
+
+.mb-tab-bar-item[data-disabled] {
+  opacity: 0.4;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-tab-bar-item:not([data-selected]):hover {
+    color: color-mix(in oklch, var(--mb-label) 75%, transparent);
+  }
+}
+
+/* Classic: the full-width translucent bar of iOS 18 and earlier. */
+.mb-tab-bar-list[data-variant="classic"] {
+  inset-inline: 0;
+  bottom: 0;
+  height: calc(var(--mb-tab-bar-height) + var(--mb-safe-bottom, 0px));
+  padding: 0 var(--mb-space-2) var(--mb-safe-bottom, 0px);
+  border-radius: 0;
+  background: var(--mb-material-chrome);
+  -webkit-backdrop-filter: var(--mb-material-filter);
+  backdrop-filter: var(--mb-material-filter);
+  box-shadow: inset 0 var(--mb-hairline) 0 var(--mb-separator);
+}
+
+.mb-tab-bar-list[data-variant="classic"] .mb-tab-bar-item {
+  justify-content: flex-start;
+  padding-top: 6px;
+  gap: 2px;
+  font-weight: 500;
+  color: var(--mb-label-tertiary);
+}
+
+.mb-tab-bar-list[data-variant="classic"] .mb-tab-bar-item[data-selected] {
+  color: var(--mb-accent-text);
+}
+
+.mb-tab-bar-list[data-variant="classic"] .mb-tab-bar-item:active {
+  scale: 1;
+}
+
+/* iPadOS: a compact capsule centered at the top, labels only. */
+@scope ([data-platform="ipados"]) to (:scope [data-platform]) {
+  .mb-tab-bar:has(> .mb-tab-bar-list[data-variant="floating"]) {
+    --mb-tab-bar-height: 44px;
+    --mb-content-inset-bottom: var(--mb-safe-bottom, 0px);
+    /* The capsule takes the center of the bar, so an inline title steps out of sight (it stays the heading). */
+    --mb-navigation-bar-title-clip: inset(50%);
+  }
+
+  .mb-tab-bar-list[data-variant="floating"] {
+    /* Centered in the navigation bar's row, which it shares. */
+    top: calc(var(--mb-safe-top, 0px) + (var(--mb-bar-height) - var(--mb-tab-bar-height)) / 2);
+    bottom: auto;
+    inset-inline: 0;
+    width: fit-content;
+    max-width: calc(100% - 320px);
+    margin-inline: auto;
+  }
+
+  .mb-tab-bar-list[data-variant="floating"] .mb-tab-bar-item {
+    flex: none;
+    padding: 0 18px;
+    font: 500 15px/20px var(--mb-font);
+    letter-spacing: -0.01em;
+  }
+
+  .mb-tab-bar-list[data-variant="floating"] .mb-tab-bar-item-icon {
+    display: none;
+  }
+
+  .mb-tab-bar-list[data-variant="floating"] .mb-tab-bar-item[data-selected] {
+    font-weight: 600;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(:root:not([data-motion="full"])) {
+    .mb-tab-bar-item:active,
+    .mb-tab-bar-list:has(.mb-tab-bar-item[data-selected]:active) .mb-tab-bar-indicator {
+      scale: 1;
+    }
+  }
+}

@@ -6,7 +6,7 @@ import {
   CommandItemIcon,
   CommandList,
   CommandShortcut,
-} from "@dreambase/stardust/command-palette"
+} from "macbetter/command-palette"
 import {
   CalendarIcon,
   FileTextIcon,
@@ -19,10 +19,10 @@ import {
 } from "lucide-react"
 
 const apps = [
-  { value: "notes", label: "Notes", icon: NotebookPenIcon, color: "var(--sd-yellow)" },
-  { value: "calendar", label: "Calendar", icon: CalendarIcon, color: "var(--sd-red)" },
-  { value: "mail", label: "Mail", icon: MailIcon, color: "var(--sd-blue)" },
-  { value: "maps", label: "Maps", icon: MapIcon, color: "var(--sd-green)" },
+  { value: "notes", label: "Notes", icon: NotebookPenIcon, color: "var(--mb-yellow)" },
+  { value: "calendar", label: "Calendar", icon: CalendarIcon, color: "var(--mb-red)" },
+  { value: "mail", label: "Mail", icon: MailIcon, color: "var(--mb-blue)" },
+  { value: "maps", label: "Maps", icon: MapIcon, color: "var(--mb-green)" },
 ]
 
 const actions = [

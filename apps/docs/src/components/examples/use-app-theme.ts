@@ -22,9 +22,9 @@ function useAppTheme({ accent, scheme, platform }: AppThemeOptions) {
   const { value } = usePreference(theme)
   const style = accent
     ? ({
-        "--sd-accent": accent,
-        "--sd-accent-text": accent,
-        "--sd-on-accent": "#ffffff",
+        "--mb-accent": accent,
+        "--mb-accent-text": accent,
+        "--mb-on-accent": "#ffffff",
       } as React.CSSProperties)
     : undefined
   return {

@@ -1,4 +1,4 @@
-import { NumberField } from "@dreambase/stardust/stepper"
+import { NumberField } from "macbetter/stepper"
 
 export default function Example() {
   return (

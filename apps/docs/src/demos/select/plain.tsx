@@ -1,4 +1,4 @@
-import { Select, SelectContent, SelectItem, SelectLabel, SelectTrigger } from "@dreambase/stardust/select"
+import { Select, SelectContent, SelectItem, SelectLabel, SelectTrigger } from "macbetter/select"
 
 const sorts = [
   { value: "date", label: "Date" },

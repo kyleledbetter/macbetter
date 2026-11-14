@@ -7,11 +7,11 @@ import {
   ListRowSubtitle,
   ListRowTitle,
   ListRowValue,
-} from "@dreambase/stardust/list"
-import { Select, SelectContent, SelectItem, SelectList, SelectTrigger } from "@dreambase/stardust/select"
-import { Slider } from "@dreambase/stardust/slider"
-import { Switch } from "@dreambase/stardust/switch"
-import type { ListRowIconProps } from "@dreambase/stardust/list"
+} from "macbetter/list"
+import { Select, SelectContent, SelectItem, SelectList, SelectTrigger } from "macbetter/select"
+import { Slider } from "macbetter/slider"
+import { Switch } from "macbetter/switch"
+import type { ListRowIconProps } from "macbetter/list"
 import type * as React from "react"
 
 type Icon = React.ComponentType<React.SVGProps<SVGSVGElement>>

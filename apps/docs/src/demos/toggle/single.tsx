@@ -1,4 +1,4 @@
-import { Toggle, ToggleGroup, ToggleIcon } from "@dreambase/stardust/toggle"
+import { Toggle, ToggleGroup, ToggleIcon } from "macbetter/toggle"
 import { TextAlignCenterIcon, TextAlignEndIcon, TextAlignJustifyIcon, TextAlignStartIcon } from "lucide-react"
 
 export default function Example() {

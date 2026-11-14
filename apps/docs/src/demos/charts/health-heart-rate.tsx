@@ -1,6 +1,6 @@
 "use client"
 
-import { SegmentedControl, SegmentedControlItem } from "@dreambase/stardust/segmented-control"
+import { SegmentedControl, SegmentedControlItem } from "macbetter/segmented-control"
 import * as React from "react"
 import { baseOption, categoryAxis, ChartFrame, ChartHeader, EChart, valueAxis, type ChartTheme, type Scrub } from "@/components/charts"
 

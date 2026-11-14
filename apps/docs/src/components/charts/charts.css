@@ -1,5 +1,5 @@
 /*
- * Stardust charts.
+ * Macbetter charts.
  *
  * Chart colors are named variables, so a theme can retune them without
  * touching chart code. They default to the system palette, which the theme
@@ -8,177 +8,177 @@
  */
 
 /* Restated at every theme boundary, like the tokens they derive from. */
-:where(:root, [data-theme], .sd-chart, .sd-echart) {
-  --sd-chart-surface: var(--sd-card-bg, var(--sd-bg));
-  --sd-chart-grid: light-dark(
-    color-mix(in oklch, var(--sd-ink) 9%, transparent),
-    color-mix(in oklch, var(--sd-ink) 12%, transparent)
+:where(:root, [data-theme], .mb-chart, .mb-echart) {
+  --mb-chart-surface: var(--mb-card-bg, var(--mb-bg));
+  --mb-chart-grid: light-dark(
+    color-mix(in oklch, var(--mb-ink) 9%, transparent),
+    color-mix(in oklch, var(--mb-ink) 12%, transparent)
   );
-  --sd-chart-grid-strong: var(--sd-separator-strong);
-  --sd-chart-axis: var(--sd-label-secondary);
-  --sd-chart-rule: var(--sd-label-tertiary);
+  --mb-chart-grid-strong: var(--mb-separator-strong);
+  --mb-chart-axis: var(--mb-label-secondary);
+  --mb-chart-rule: var(--mb-label-tertiary);
 
   /* Stocks */
-  --sd-chart-up: var(--sd-green);
-  --sd-chart-down: var(--sd-red);
+  --mb-chart-up: var(--mb-green);
+  --mb-chart-down: var(--mb-red);
 
   /* Fitness: the three rings */
-  --sd-chart-move: var(--sd-pink);
-  --sd-chart-exercise: light-dark(
-    oklch(from var(--sd-green) l c 135),
-    oklch(from var(--sd-green) max(l, 0.82) max(c, 0.2) 128)
+  --mb-chart-move: var(--mb-pink);
+  --mb-chart-exercise: light-dark(
+    oklch(from var(--mb-green) l c 135),
+    oklch(from var(--mb-green) max(l, 0.82) max(c, 0.2) 128)
   );
-  --sd-chart-stand: var(--sd-cyan);
+  --mb-chart-stand: var(--mb-cyan);
 
   /* Health: sleep stages */
-  --sd-chart-awake: light-dark(#f2703f, #ff8a65);
-  --sd-chart-rem: var(--sd-cyan);
-  --sd-chart-core: var(--sd-blue);
-  --sd-chart-deep: var(--sd-indigo);
+  --mb-chart-awake: light-dark(#f2703f, #ff8a65);
+  --mb-chart-rem: var(--mb-cyan);
+  --mb-chart-core: var(--mb-blue);
+  --mb-chart-deep: var(--mb-indigo);
 
   /* The categorical palette, in order. */
-  --sd-chart-1: var(--sd-accent);
-  --sd-chart-2: var(--sd-accent-secondary);
-  --sd-chart-3: var(--sd-blue);
-  --sd-chart-4: var(--sd-purple);
-  --sd-chart-5: var(--sd-yellow);
-  --sd-chart-6: var(--sd-pink);
+  --mb-chart-1: var(--mb-accent);
+  --mb-chart-2: var(--mb-accent-secondary);
+  --mb-chart-3: var(--mb-blue);
+  --mb-chart-4: var(--mb-purple);
+  --mb-chart-5: var(--mb-yellow);
+  --mb-chart-6: var(--mb-pink);
 }
 
-.sd-chart {
+.mb-chart {
   display: grid;
   gap: 12px;
   min-width: 0;
   margin: 0;
-  color: var(--sd-label);
+  color: var(--mb-label);
 }
 
 /* ── Drawing ───────────────────────────────────────────────────── */
 
-.sd-echart {
+.mb-echart {
   position: relative;
   min-width: 0;
-  border-radius: var(--sd-radius-md);
+  border-radius: var(--mb-radius-md);
   user-select: none;
   -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
 
 /* A horizontal drag scrubs; a vertical one still scrolls the page. */
-.sd-echart[data-scrub] {
+.mb-echart[data-scrub] {
   touch-action: pan-y;
   cursor: crosshair;
 }
 
-.sd-echart:focus-visible {
-  outline: var(--sd-focus-ring-width) solid var(--sd-focus-ring);
+.mb-echart:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
   outline-offset: 2px;
 }
 
-.sd-echart-canvas {
+.mb-echart-canvas {
   position: absolute;
   inset: 0;
 }
 
 /* ── Header (Health) ───────────────────────────────────────────── */
 
-.sd-chart-header {
+.mb-chart-header {
   display: grid;
   gap: 1px;
   min-width: 0;
 }
 
-.sd-chart-eyebrow {
-  color: var(--sd-label-secondary);
-  font: var(--sd-text-footnote);
+.mb-chart-eyebrow {
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-footnote);
   font-weight: 600;
   letter-spacing: 0.02em;
   text-transform: uppercase;
 }
 
-.sd-chart-reading {
+.mb-chart-reading {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
   gap: 0 4px;
 }
 
-.sd-chart-value {
-  font: var(--sd-text-large-title);
-  font-family: var(--sd-font-rounded);
+.mb-chart-value {
+  font: var(--mb-text-large-title);
+  font-family: var(--mb-font-rounded);
   font-weight: 600;
-  letter-spacing: var(--sd-tracking-large-title);
+  letter-spacing: var(--mb-tracking-large-title);
   font-variant-numeric: tabular-nums;
 }
 
-.sd-chart-unit {
-  color: var(--sd-label-secondary);
-  font: var(--sd-text-headline);
-  font-family: var(--sd-font-rounded);
+.mb-chart-unit {
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-headline);
+  font-family: var(--mb-font-rounded);
 }
 
-.sd-chart-detail {
-  color: var(--sd-label-secondary);
-  font: var(--sd-text-subheadline);
+.mb-chart-detail {
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-subheadline);
   font-weight: 500;
   font-variant-numeric: tabular-nums;
 }
 
 /* ── Legend ────────────────────────────────────────────────────── */
 
-.sd-chart-legend {
+.mb-chart-legend {
   display: flex;
   flex-wrap: wrap;
   gap: 4px 14px;
   margin: 0;
   padding: 0;
   list-style: none;
-  color: var(--sd-label-secondary);
-  font: var(--sd-text-footnote);
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-footnote);
 }
 
-.sd-chart-legend li {
+.mb-chart-legend li {
   display: inline-flex;
   align-items: center;
   gap: 6px;
 }
 
-.sd-chart-legend-value {
-  color: var(--sd-label);
+.mb-chart-legend-value {
+  color: var(--mb-label);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
 
-.sd-chart-swatch {
+.mb-chart-swatch {
   flex: none;
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--sd-chart-swatch);
+  background: var(--mb-chart-swatch);
 }
 
-.sd-chart-swatch[data-shape="bar"] {
+.mb-chart-swatch[data-shape="bar"] {
   width: 10px;
   height: 10px;
   border-radius: 3px;
 }
 
-.sd-chart-swatch[data-shape="line"] {
+.mb-chart-swatch[data-shape="line"] {
   width: 14px;
   height: 3px;
   border-radius: 2px;
 }
 
-.sd-chart-swatch[data-shape="dashed"] {
+.mb-chart-swatch[data-shape="dashed"] {
   width: 14px;
   height: 2px;
   border-radius: 0;
-  background: repeating-linear-gradient(90deg, var(--sd-chart-swatch) 0 3px, transparent 3px 5px);
+  background: repeating-linear-gradient(90deg, var(--mb-chart-swatch) 0 3px, transparent 3px 5px);
 }
 
 /* ── Callout (Stocks scrub readout) ────────────────────────────── */
 
-.sd-chart-callout {
+.mb-chart-callout {
   position: absolute;
   top: 0;
   z-index: 1;
@@ -190,14 +190,14 @@
   font-variant-numeric: tabular-nums;
 }
 
-.sd-chart-callout strong {
-  font: var(--sd-text-headline);
+.mb-chart-callout strong {
+  font: var(--mb-text-headline);
   font-variant-numeric: tabular-nums;
 }
 
-.sd-chart-callout span {
-  color: var(--sd-label-secondary);
-  font: var(--sd-text-caption);
+.mb-chart-callout span {
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-caption);
   font-variant-numeric: tabular-nums;
 }
 
@@ -205,62 +205,62 @@
 /*
  * EvilCharts reads shadcn's color utilities (text-muted-foreground,
  * text-border, bg-background…) off probe elements and draws its tooltip and
- * legend with them. Inside a Stardust chart they map onto Stardust tokens.
+ * legend with them. Inside a Macbetter chart they map onto Macbetter tokens.
  */
 
-.sd-chart [data-chart] {
-  font-family: var(--sd-font);
+.mb-chart [data-chart] {
+  font-family: var(--mb-font);
 }
 
-.sd-chart [data-chart] .text-muted-foreground {
-  color: var(--sd-chart-axis);
+.mb-chart [data-chart] .text-muted-foreground {
+  color: var(--mb-chart-axis);
 }
 
-.sd-chart [data-chart] .text-foreground,
-.sd-chart [data-chart] .text-primary {
-  color: var(--sd-label);
+.mb-chart [data-chart] .text-foreground,
+.mb-chart [data-chart] .text-primary {
+  color: var(--mb-label);
 }
 
-.sd-chart [data-chart] .text-background {
-  color: var(--sd-chart-surface);
+.mb-chart [data-chart] .text-background {
+  color: var(--mb-chart-surface);
 }
 
-.sd-chart [data-chart] .text-border {
-  color: var(--sd-chart-grid);
+.mb-chart [data-chart] .text-border {
+  color: var(--mb-chart-grid);
 }
 
-.sd-chart [data-chart] .text-border\/60,
-.sd-chart [data-chart] .dark\:text-border\/50 {
-  color: color-mix(in oklch, var(--sd-chart-grid) 60%, transparent);
+.mb-chart [data-chart] .text-border\/60,
+.mb-chart [data-chart] .dark\:text-border\/50 {
+  color: color-mix(in oklch, var(--mb-chart-grid) 60%, transparent);
 }
 
-.sd-chart [data-chart] .bg-background,
-.sd-chart [data-chart] .bg-background\/50 {
-  background: var(--sd-material-popup);
-  -webkit-backdrop-filter: var(--sd-material-filter);
-  backdrop-filter: var(--sd-material-filter);
+.mb-chart [data-chart] .bg-background,
+.mb-chart [data-chart] .bg-background\/50 {
+  background: var(--mb-material-popup);
+  -webkit-backdrop-filter: var(--mb-material-filter);
+  backdrop-filter: var(--mb-material-filter);
 }
 
-.sd-chart [data-chart] .border-border\/50 {
-  border-color: var(--sd-glass-border);
+.mb-chart [data-chart] .border-border\/50 {
+  border-color: var(--mb-glass-border);
   border-width: 0;
-  box-shadow: var(--sd-glass-rim), var(--sd-shadow-menu);
+  box-shadow: var(--mb-glass-rim), var(--mb-shadow-menu);
 }
 
-.sd-chart [data-chart] .shadow-xl {
-  box-shadow: var(--sd-glass-rim), var(--sd-shadow-menu);
+.mb-chart [data-chart] .shadow-xl {
+  box-shadow: var(--mb-glass-rim), var(--mb-shadow-menu);
 }
 
-.sd-chart [data-chart] .rounded-lg,
-.sd-chart [data-chart] .rounded-md {
-  border-radius: var(--sd-radius-lg);
+.mb-chart [data-chart] .rounded-lg,
+.mb-chart [data-chart] .rounded-md {
+  border-radius: var(--mb-radius-lg);
 }
 
-.sd-chart [data-chart] .text-xs {
-  font: var(--sd-text-callout);
+.mb-chart [data-chart] .text-xs {
+  font: var(--mb-text-callout);
 }
 
-.sd-chart [data-chart] .font-mono {
-  font-family: var(--sd-font);
+.mb-chart [data-chart] .font-mono {
+  font-family: var(--mb-font);
   font-variant-numeric: tabular-nums;
 }

@@ -59,9 +59,9 @@ export default function HourlyActivity() {
     >
       {rows.map((row, i) => (
         <div key={row.label} style={{ display: "grid", gap: 4 }}>
-          <div style={{ font: "var(--sd-text-subheadline)", fontWeight: 600 }}>
+          <div style={{ font: "var(--mb-text-subheadline)", fontWeight: 600 }}>
             {row.label}{" "}
-            <span style={{ color: `var(--sd-chart-${row.color})`, fontFamily: "var(--sd-font-rounded)", fontVariantNumeric: "tabular-nums" }}>
+            <span style={{ color: `var(--mb-chart-${row.color})`, fontFamily: "var(--mb-font-rounded)", fontVariantNumeric: "tabular-nums" }}>
               {row.total} {row.unit}
             </span>
           </div>

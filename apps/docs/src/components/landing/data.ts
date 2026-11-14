@@ -1,4 +1,4 @@
-import type { SystemColor } from "@dreambase/stardust"
+import type { SystemColor } from "macbetter"
 
 type Status = "todo" | "doing" | "review" | "done"
 
@@ -24,7 +24,7 @@ const TODAY = 14
 const projects: Project[] = [
   {
     id: "launch",
-    name: "Stardust launch",
+    name: "Macbetter launch",
     color: "orange",
     tasks: [
       { id: "l1", title: "Write the theming guide", owner: ME, due: 18, status: "doing" },

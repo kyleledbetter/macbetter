@@ -1,6 +1,6 @@
 "use client"
 
-import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from "@dreambase/stardust/context-menu"
+import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from "macbetter/context-menu"
 import {
   MenuItem,
   MenuItemIcon,
@@ -8,7 +8,7 @@ import {
   MenuSub,
   MenuSubContent,
   MenuSubTrigger,
-} from "@dreambase/stardust/menu"
+} from "macbetter/menu"
 import { CopyIcon, LinkIcon, MailIcon, MessageCircleIcon, PinIcon, ShareIcon, TrashIcon } from "lucide-react"
 
 export default function Example() {
@@ -20,15 +20,15 @@ export default function Example() {
         style={{
           width: 300,
           padding: 16,
-          background: "var(--sd-bg-elevated)",
-          boxShadow: "var(--sd-shadow-2)",
+          background: "var(--mb-bg-elevated)",
+          boxShadow: "var(--mb-shadow-2)",
           display: "grid",
           gap: 4,
         }}
       >
-        <strong style={{ font: "var(--sd-text-headline)" }}>Weekend trip</strong>
-        <span style={{ color: "var(--sd-label-secondary)" }}>Pack the tent, book the ferry, and check the tide times.</span>
-        <span style={{ color: "var(--sd-label-tertiary)", font: "var(--sd-text-footnote)" }}>
+        <strong style={{ font: "var(--mb-text-headline)" }}>Weekend trip</strong>
+        <span style={{ color: "var(--mb-label-secondary)" }}>Pack the tent, book the ferry, and check the tide times.</span>
+        <span style={{ color: "var(--mb-label-tertiary)", font: "var(--mb-text-footnote)" }}>
           Right-click or long-press the note
         </span>
       </ContextMenuTrigger>

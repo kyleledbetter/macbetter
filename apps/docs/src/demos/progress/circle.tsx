@@ -1,4 +1,4 @@
-import { ProgressCircle } from "@dreambase/stardust/progress"
+import { ProgressCircle } from "macbetter/progress"
 import { SquareIcon } from "lucide-react"
 
 export default function Example() {

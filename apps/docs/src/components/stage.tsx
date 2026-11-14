@@ -1,8 +1,8 @@
 "use client"
 
-import { SegmentedControl, SegmentedControlItem } from "@dreambase/stardust/segmented-control"
-import { Button } from "@dreambase/stardust/button"
-import type { Platform } from "@dreambase/stardust"
+import { SegmentedControl, SegmentedControlItem } from "macbetter/segmented-control"
+import { Button } from "macbetter/button"
+import type { Platform } from "macbetter"
 import { ContrastIcon, MaximizeIcon, MinimizeIcon } from "lucide-react"
 import { usePreference } from "@ui-sdk/react/preferences"
 import { useEffect, useRef, useState } from "react"
@@ -124,14 +124,14 @@ function Stage({
         {wallpaper ? null : <div aria-hidden="true" className="docs-grid absolute inset-0" />}
         <div
           data-platform={platform}
-          data-stardust=""
+          data-macbetter=""
           data-device={width ? "" : undefined}
           className={
             fill
               ? "docs-stage-screen relative mx-auto w-full"
               : "docs-stage-screen relative mx-auto flex w-full flex-wrap items-center justify-center gap-4 p-8"
           }
-          style={{ maxWidth: width, minHeight, color: "var(--sd-label)" }}
+          style={{ maxWidth: width, minHeight, color: "var(--mb-label)" }}
         >
           {children}
         </div>

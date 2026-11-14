@@ -1,4 +1,4 @@
-import { Glass } from "@dreambase/stardust/glass"
+import { Glass } from "macbetter/glass"
 import { PauseIcon, SkipBackIcon, SkipForwardIcon } from "lucide-react"
 
 export default function Example() {
@@ -18,7 +18,7 @@ export default function Example() {
     >
       <Glass style={{ display: "grid", gap: 2, padding: "14px 18px", width: 280 }}>
         <span style={{ fontWeight: 600 }}>Yosemite Valley</span>
-        <span style={{ color: "var(--sd-label-secondary)" }}>Sunrise 6:48 AM · 54°</span>
+        <span style={{ color: "var(--mb-label-secondary)" }}>Sunrise 6:48 AM · 54°</span>
       </Glass>
       <Glass shape="capsule" style={{ display: "flex", alignItems: "center", gap: 14, padding: "10px 20px" }}>
         <SkipBackIcon aria-hidden="true" size={20} />

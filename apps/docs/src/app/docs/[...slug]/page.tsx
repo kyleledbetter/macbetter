@@ -5,13 +5,14 @@ import { PageNavigation } from "@/components/page-navigation"
 import { CopyPageButton } from "@/components/page-actions"
 import { allDocSlugs } from "@/lib/docs"
 import { flatNav } from "@/lib/nav"
+import { socialMetadata } from "@/lib/og/routes"
 
 type DocModule = {
   default: React.ComponentType
   metadata?: { title?: string; description?: string }
 }
 
-const repo = "https://github.com/DreambaseAI/stardust"
+const repo = "https://github.com/kyleledbetter/macbetter"
 
 async function load(slug: string[]): Promise<DocModule | null> {
   if (!allDocSlugs().some((known) => known.join("/") === slug.join("/"))) return null
@@ -33,15 +34,7 @@ export async function generateMetadata({ params }: PageProps<"/docs/[...slug]">)
     title,
     description,
     alternates: { canonical: `/docs/${slug.join("/")}` },
-    // A page's own openGraph replaces the root one, so it names the shared image again.
-    openGraph: {
-      title: title ? `${title} · Stardust` : undefined,
-      description,
-      url: `/docs/${slug.join("/")}`,
-      siteName: "Stardust",
-      type: "article",
-      images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Stardust — macOS, iPadOS and iOS for the web" }],
-    },
+    ...socialMetadata({ path: `docs/${slug.join("/")}`, title, description, type: "article" }),
   }
 }
 

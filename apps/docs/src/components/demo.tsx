@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs"
 import { join } from "node:path"
-import type { Platform } from "@dreambase/stardust"
+import type { Platform } from "macbetter"
 import { CodeBlock } from "@/components/code-block"
 import { Stage } from "@/components/stage"
 

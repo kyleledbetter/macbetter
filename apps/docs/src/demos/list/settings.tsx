@@ -6,8 +6,8 @@ import {
   ListRowTitle,
   ListRowValue,
   ListSection,
-} from "@dreambase/stardust/list"
-import { Switch } from "@dreambase/stardust/switch"
+} from "macbetter/list"
+import { Switch } from "macbetter/switch"
 import {
   AntennaIcon,
   BellIcon,
@@ -39,7 +39,7 @@ export default function Example() {
             <WifiIcon aria-hidden="true" />
           </ListRowIcon>
           <ListRowTitle>Wi-Fi</ListRowTitle>
-          <ListRowValue>Dreambase HQ</ListRowValue>
+          <ListRowValue>Macbetter HQ</ListRowValue>
           <ListRowAccessory type="disclosure" />
         </ListRow>
         <ListRow href="#bluetooth">

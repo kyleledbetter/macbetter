@@ -1,4 +1,4 @@
-import { Button } from "@dreambase/stardust/button"
+import { Button } from "macbetter/button"
 
 export default function Example() {
   return (

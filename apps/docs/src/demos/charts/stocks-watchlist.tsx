@@ -5,8 +5,8 @@ import { Sparkline } from "@/components/charts"
 /** Today's 5-minute closes, trimmed to 24 points; enough for a sparkline. */
 const watchlist = [
   {
-    symbol: "DRMB",
-    name: "Dreambase Inc.",
+    symbol: "MCBT",
+    name: "Macbetter Inc.",
     price: 231.4,
     previousClose: 228.28,
     today: [228.9, 229.3, 228.7, 228.4, 229.1, 229.6, 229.2, 229.0, 229.4, 229.9, 229.5, 229.8, 230.4, 230.1, 230.6, 231.0, 230.7, 231.2, 231.6, 231.3, 231.8, 232.0, 231.6, 231.4],
@@ -52,15 +52,15 @@ export default function Watchlist() {
               alignItems: "center",
               gap: 12,
               padding: "10px 0",
-              borderBottom: "0.5px solid var(--sd-separator)",
+              borderBottom: "0.5px solid var(--mb-separator)",
             }}
           >
             <div style={{ minWidth: 0 }}>
-              <div style={{ font: "var(--sd-text-headline)" }}>{stock.symbol}</div>
+              <div style={{ font: "var(--mb-text-headline)" }}>{stock.symbol}</div>
               <div
                 style={{
-                  color: "var(--sd-label-secondary)",
-                  font: "var(--sd-text-footnote)",
+                  color: "var(--mb-label-secondary)",
+                  font: "var(--mb-text-footnote)",
                   overflow: "hidden",
                   textOverflow: "ellipsis",
                   whiteSpace: "nowrap",
@@ -71,7 +71,7 @@ export default function Watchlist() {
             </div>
             <Sparkline values={stock.today} baseline={stock.previousClose} width={64} height={30} />
             <div style={{ display: "grid", justifyItems: "end", gap: 3, fontVariantNumeric: "tabular-nums" }}>
-              <span style={{ font: "var(--sd-text-headline)", fontWeight: 500 }}>{price.format(stock.price)}</span>
+              <span style={{ font: "var(--mb-text-headline)", fontWeight: 500 }}>{price.format(stock.price)}</span>
               <span
                 style={{
                   minWidth: 64,
@@ -80,12 +80,12 @@ export default function Watchlist() {
                   textAlign: "end",
                   color: "#fff",
                   // Darkened just enough for white text to hold 4.5:1.
-                  background: `oklch(from var(${up ? "--sd-green" : "--sd-red"}) min(l, 0.52) c h)`,
-                  font: "var(--sd-text-footnote)",
+                  background: `oklch(from var(${up ? "--mb-green" : "--mb-red"}) min(l, 0.52) c h)`,
+                  font: "var(--mb-text-footnote)",
                   fontWeight: 600,
                 }}
               >
-                <span className="sd-visually-hidden">{up ? "Up" : "Down"} </span>
+                <span className="mb-visually-hidden">{up ? "Up" : "Down"} </span>
                 {up ? "+" : "−"}
                 {Math.abs(percent).toFixed(2)}%
               </span>

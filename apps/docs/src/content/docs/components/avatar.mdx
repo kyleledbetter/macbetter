@@ -20,7 +20,7 @@ Keep sizes consistent within a list. iOS and macOS use one size per context, suc
 ## Usage
 
 ```tsx
-import { Avatar, AvatarGroup } from "@dreambase/stardust/avatar"
+import { Avatar, AvatarGroup } from "macbetter/avatar"
 ```
 
 Pass `name` and `src`. The name becomes the image's alt text and the fallback's initials, and a screen reader reads it in either state.
@@ -37,7 +37,7 @@ The fallback is a soft gradient of one system color. `gray` is the Contacts mono
 
 <Demo name="avatar/status" />
 
-<Callout type="note">The ring is drawn in `--sd-bg`. On another surface, such as a grouped list row, set `--sd-avatar-ring` to that surface's color.</Callout>
+<Callout type="note">The ring is drawn in `--mb-bg`. On another surface, such as a grouped list row, set `--mb-avatar-ring` to that surface's color.</Callout>
 
 ### Groups
 
@@ -101,8 +101,8 @@ Avatars look the same on every platform: the sizes are absolute, because a photo
 
 | Attribute or variable | On | Description |
 | --- | --- | --- |
-| `data-loading-status` | `.sd-avatar` | `idle`, `loading`, `loaded` or `error`, from ui-sdk. |
-| `data-size`, `data-shape`, `data-color` | `.sd-avatar` | The props, for styling. |
-| `data-status` | `.sd-avatar-status` | The status. |
-| `--sd-avatar-size` | `.sd-avatar`, `.sd-avatar-group` | Set any size, not just the five named ones. |
-| `--sd-avatar-ring` | any ancestor | The color of the cut-out ring in groups and around the status dot. Defaults to `--sd-bg`. |
+| `data-loading-status` | `.mb-avatar` | `idle`, `loading`, `loaded` or `error`, from ui-sdk. |
+| `data-size`, `data-shape`, `data-color` | `.mb-avatar` | The props, for styling. |
+| `data-status` | `.mb-avatar-status` | The status. |
+| `--mb-avatar-size` | `.mb-avatar`, `.mb-avatar-group` | Set any size, not just the five named ones. |
+| `--mb-avatar-ring` | any ancestor | The color of the cut-out ring in groups and around the status dot. Defaults to `--mb-bg`. |

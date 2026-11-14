@@ -1,4 +1,4 @@
-import { ColorWell } from "@dreambase/stardust/color-well"
+import { ColorWell } from "macbetter/color-well"
 
 const brand = ["#ee5700", "#f67f01", "#028f71", "#52c6a0", "#0a1c13", "#f1f7f3"]
 

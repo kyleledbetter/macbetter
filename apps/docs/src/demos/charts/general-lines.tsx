@@ -37,9 +37,9 @@ export default function AverageHighs() {
     >
       <ChartLegend
         items={[
-          { label: "Cupertino", color: "var(--sd-chart-1)", shape: "line" },
-          { label: "Seattle", color: "var(--sd-chart-3)", shape: "line" },
-          { label: "Austin", color: "var(--sd-chart-4)", shape: "line" },
+          { label: "Cupertino", color: "var(--mb-chart-1)", shape: "line" },
+          { label: "Seattle", color: "var(--mb-chart-3)", shape: "line" },
+          { label: "Austin", color: "var(--mb-chart-4)", shape: "line" },
         ]}
       />
       <div style={{ height: 240 }}>

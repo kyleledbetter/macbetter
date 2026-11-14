@@ -28,7 +28,7 @@ import {
   OutlineItemIcon,
   OutlineItemLabel,
   OutlineItemText,
-} from "@dreambase/stardust/outline"
+} from "macbetter/outline"
 ```
 
 An `OutlineItem` with an `OutlineGroup` inside it is a branch. `OutlineItemLabel` is the row, and draws the disclosure triangle for you; leaves keep its space so their icons line up under their parent's.
@@ -96,8 +96,8 @@ Takes every prop of ui-sdk's [Tree](https://ui-sdk.dev/docs/react/components/tre
 
 | Attribute or variable | On | Meaning |
 | --- | --- | --- |
-| `data-guides` | `.sd-outline` | Indentation guides are on. |
-| `data-selected`, `data-expanded`, `data-branch`, `data-disabled` | `.sd-outline-row` | The row's state, from ui-sdk. |
-| `--sd-outline-row-height`, `--sd-outline-indent` | platform | Row height and the indent per level. |
-| `--sd-outline-icon-color` | `.sd-outline` | The icons' color. Defaults to the accent. |
-| `--sd-outline-indicator-order`, `--sd-outline-indicator-color` | platform | `0` leads the row with the triangle (macOS), `1` trails it (iOS); and its color. |
+| `data-guides` | `.mb-outline` | Indentation guides are on. |
+| `data-selected`, `data-expanded`, `data-branch`, `data-disabled` | `.mb-outline-row` | The row's state, from ui-sdk. |
+| `--mb-outline-row-height`, `--mb-outline-indent` | platform | Row height and the indent per level. |
+| `--mb-outline-icon-color` | `.mb-outline` | The icons' color. Defaults to the accent. |
+| `--mb-outline-indicator-order`, `--mb-outline-indicator-color` | platform | `0` leads the row with the triangle (macOS), `1` trails it (iOS); and its color. |

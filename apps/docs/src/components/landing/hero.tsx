@@ -1,4 +1,4 @@
-import { Button } from "@dreambase/stardust/button"
+import { Button } from "macbetter/button"
 import Link from "next/link"
 import { HeroScene } from "./hero-scene"
 
@@ -11,7 +11,7 @@ function Hero() {
           {" "}<span className="lp-muted">One web framework.</span>
         </h1>
         <p className="lp-hero-lead lp-enter" style={{ "--i": 1 } as React.CSSProperties}>
-          Stardust is a set of Apple-grade components for React. Theme it to any brand, ship it to every screen, and
+          Macbetter is a set of Apple-grade components for React. Theme it to any brand, ship it to every screen, and
           let ui-sdk handle the keyboard, focus and accessibility.
         </p>
         <div className="lp-hero-actions lp-enter" style={{ "--i": 2 } as React.CSSProperties} data-platform="macos">

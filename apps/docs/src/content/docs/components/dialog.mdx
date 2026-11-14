@@ -29,7 +29,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@dreambase/stardust/dialog"
+} from "macbetter/dialog"
 ```
 
 Write the dialog once. `DialogHeader` holds the title, `DialogBody` the content and `DialogFooter` the buttons. Mark the footer’s buttons with `variant="cancel"` and `variant="primary"`: on the Mac they line up at the bottom right; on iPhone and iPad they move into the navigation bar as Cancel and Done, around the title. `DialogContent` brings its own dimmed backdrop.
@@ -93,14 +93,14 @@ Takes every [ui-sdk Dialog](https://ui-sdk.dev/docs/components/dialog) root prop
 
 | Data attribute | On | Meaning |
 | --- | --- | --- |
-| `data-size` | `.sd-dialog` | Its width |
-| `data-presentation` | `.sd-dialog` | `dialog` or `sheet`, decided each time it opens |
-| `data-starting-style`, `data-ending-style` | `.sd-dialog`, `.sd-dialog-backdrop` | Entering and leaving |
-| `data-variant`, `data-tone` | `.sd-dialog-close` | Its role and color |
+| `data-size` | `.mb-dialog` | Its width |
+| `data-presentation` | `.mb-dialog` | `dialog` or `sheet`, decided each time it opens |
+| `data-starting-style`, `data-ending-style` | `.mb-dialog`, `.mb-dialog-backdrop` | Entering and leaving |
+| `data-variant`, `data-tone` | `.mb-dialog-close` | Its role and color |
 
 | CSS variable | Default |
 | --- | --- |
-| `--sd-dialog-width-sm`, `--sd-dialog-width`, `--sd-dialog-width-lg` | 360/480/640px on macOS, 420/540/704px on iPadOS |
-| `--sd-dialog-radius` | `--sd-popup-radius` on macOS, `--sd-sheet-radius` on touch |
-| `--sd-dialog-height` | 620px form sheet on iPadOS |
-| `--sd-dialog-scrim` | A lighter `--sd-scrim` on macOS, `--sd-scrim` on touch |
+| `--mb-dialog-width-sm`, `--mb-dialog-width`, `--mb-dialog-width-lg` | 360/480/640px on macOS, 420/540/704px on iPadOS |
+| `--mb-dialog-radius` | `--mb-popup-radius` on macOS, `--mb-sheet-radius` on touch |
+| `--mb-dialog-height` | 620px form sheet on iPadOS |
+| `--mb-dialog-scrim` | A lighter `--mb-scrim` on macOS, `--mb-scrim` on touch |

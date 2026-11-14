@@ -1,5 +1,5 @@
-import { Button } from "@dreambase/stardust/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@dreambase/stardust/card"
+import { Button } from "macbetter/button"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "macbetter/card"
 
 export default function Example() {
   return (
@@ -12,7 +12,7 @@ export default function Example() {
         width: "100%",
         padding: 16,
         borderRadius: 16,
-        background: "var(--sd-bg-grouped)",
+        background: "var(--mb-bg-grouped)",
       }}
     >
       <Card variant="grouped">

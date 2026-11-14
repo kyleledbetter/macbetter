@@ -1,5 +1,5 @@
-import { Button } from "@dreambase/stardust/button"
-import { SeparatorLabel } from "@dreambase/stardust/separator"
+import { Button } from "macbetter/button"
+import { SeparatorLabel } from "macbetter/separator"
 
 export default function Example() {
   return (

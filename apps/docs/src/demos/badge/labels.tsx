@@ -1,4 +1,4 @@
-import { Badge } from "@dreambase/stardust/badge"
+import { Badge } from "macbetter/badge"
 
 const colors = ["accent", "red", "yellow", "green", "teal", "blue", "indigo", "purple", "gray"] as const
 

@@ -1,6 +1,6 @@
-import { Sidebar, SidebarItem, SidebarSection } from "@dreambase/stardust/sidebar"
-import { SplitView, SplitViewDivider, SplitViewPane } from "@dreambase/stardust/split-view"
-import { Window, WindowBody, WindowTitle, WindowTitlebar, WindowTrafficLights } from "@dreambase/stardust/window"
+import { Sidebar, SidebarItem, SidebarSection } from "macbetter/sidebar"
+import { SplitView, SplitViewDivider, SplitViewPane } from "macbetter/split-view"
+import { Window, WindowBody, WindowTitle, WindowTitlebar, WindowTrafficLights } from "macbetter/window"
 import { ArchiveIcon, FileTextIcon, InboxIcon, SendIcon, Trash2Icon } from "lucide-react"
 
 const mailboxes = [
@@ -49,11 +49,11 @@ export default function Example() {
                     gap: 2,
                     margin: "0 8px",
                     padding: "10px 12px 10px 18px",
-                    borderRadius: "var(--sd-row-radius)",
+                    borderRadius: "var(--mb-row-radius)",
                     position: "relative",
-                    backgroundColor: index === 0 ? "var(--sd-accent)" : undefined,
-                    color: index === 0 ? "var(--sd-on-accent)" : undefined,
-                    backgroundImage: index === 0 ? undefined : "linear-gradient(var(--sd-separator), var(--sd-separator))",
+                    backgroundColor: index === 0 ? "var(--mb-accent)" : undefined,
+                    color: index === 0 ? "var(--mb-on-accent)" : undefined,
+                    backgroundImage: index === 0 ? undefined : "linear-gradient(var(--mb-separator), var(--mb-separator))",
                     backgroundSize: "calc(100% - 24px) 1px",
                     backgroundPosition: "bottom",
                     backgroundRepeat: "no-repeat",
@@ -69,18 +69,18 @@ export default function Example() {
                           width: 7,
                           height: 7,
                           borderRadius: 9,
-                          background: index === 0 ? "var(--sd-on-accent)" : "var(--sd-accent)",
+                          background: index === 0 ? "var(--mb-on-accent)" : "var(--mb-accent)",
                         }}
                       />
                     ) : null}
-                    <strong className="sd-text-headline">
-                      {message.unread ? <span className="sd-visually-hidden">Unread, </span> : null}
+                    <strong className="mb-text-headline">
+                      {message.unread ? <span className="mb-visually-hidden">Unread, </span> : null}
                       {message.from}
                     </strong>
-                    <span className="sd-text-callout" style={{ opacity: 0.7 }}>{message.time}</span>
+                    <span className="mb-text-callout" style={{ opacity: 0.7 }}>{message.time}</span>
                   </span>
-                  <span className="sd-text-callout">{message.subject}</span>
-                  <span className="sd-text-callout" style={{ opacity: 0.7 }}>{message.preview}</span>
+                  <span className="mb-text-callout">{message.subject}</span>
+                  <span className="mb-text-callout" style={{ opacity: 0.7 }}>{message.preview}</span>
                 </li>
               ))}
             </ul>
@@ -89,8 +89,8 @@ export default function Example() {
           <SplitViewPane minSize={30}>
             <article style={{ padding: "20px 24px", display: "grid", gap: 12 }}>
               <div style={{ display: "grid", gap: 2 }}>
-                <span className="sd-text-title-3">Launch checklist</span>
-                <span className="sd-text-callout sd-label-secondary">Inès Moreau · To: Design team · 9:41 AM</span>
+                <span className="mb-text-title-3">Launch checklist</span>
+                <span className="mb-text-callout mb-label-secondary">Inès Moreau · To: Design team · 9:41 AM</span>
               </div>
               <p style={{ margin: 0 }}>
                 Everything is green except the App Store screenshots. Kofi is reshooting them on the new devices this

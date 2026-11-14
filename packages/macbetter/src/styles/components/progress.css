@@ -1,0 +1,228 @@
+/* Progress — the thin Apple bar, its indeterminate sweep, and the circular ring. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-progress-height-sm: 4px;
+  --mb-progress-height: 5px;
+  --mb-progress-height-lg: 8px;
+  --mb-progress-circle-size-sm: 16px;
+  --mb-progress-circle-size: 24px;
+  --mb-progress-circle-size-lg: 36px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-progress-height-sm: 3px;
+  --mb-progress-height: 4px;
+  --mb-progress-height-lg: 8px;
+  --mb-progress-circle-size-sm: 20px;
+  --mb-progress-circle-size: 28px;
+  --mb-progress-circle-size-lg: 44px;
+}
+
+.mb-progress,
+.mb-progress-circle {
+  --mb-progress-tone: var(--mb-accent);
+  --mb-progress-track-color: var(--mb-fill-tertiary);
+}
+
+:is(.mb-progress, .mb-progress-circle)[data-tone="neutral"] {
+  --mb-progress-tone: var(--mb-label-secondary);
+}
+
+:is(.mb-progress, .mb-progress-circle)[data-tone="destructive"] {
+  --mb-progress-tone: var(--mb-destructive);
+}
+
+/* Linear */
+.mb-progress {
+  --mb-progress-h: var(--mb-progress-height);
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  column-gap: var(--mb-space-4);
+  row-gap: var(--mb-space-3);
+  inline-size: 100%;
+  min-inline-size: 80px;
+}
+
+.mb-progress[data-size="sm"] {
+  --mb-progress-h: var(--mb-progress-height-sm);
+}
+
+.mb-progress[data-size="lg"] {
+  --mb-progress-h: var(--mb-progress-height-lg);
+}
+
+.mb-progress-label {
+  grid-column: 1;
+  min-width: 0;
+  font: var(--mb-text-body);
+  letter-spacing: var(--mb-tracking-body);
+  color: var(--mb-label);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mb-progress-value {
+  grid-column: 2;
+  font: var(--mb-text-callout);
+  letter-spacing: var(--mb-tracking-body);
+  font-variant-numeric: tabular-nums;
+  color: var(--mb-label-secondary);
+  white-space: nowrap;
+}
+
+.mb-progress-track {
+  position: relative;
+  grid-column: 1 / -1;
+  height: var(--mb-progress-h);
+  border-radius: var(--mb-radius-full);
+  background: var(--mb-progress-track-color);
+  overflow: hidden;
+  /* Keeps the rounded clip on the sliding segment in Safari. */
+  isolation: isolate;
+}
+
+.mb-progress-indicator {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--mb-progress-tone);
+  transition: width var(--mb-duration-slow) var(--mb-ease-out);
+}
+
+/* Indeterminate: a short segment glides across and comes back around, never a barber pole. */
+.mb-progress-indicator[data-indeterminate] {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 36%;
+  animation: mb-progress-slide 1.45s var(--mb-ease-in-out) infinite;
+}
+
+:where([dir="rtl"]) .mb-progress-indicator[data-indeterminate] {
+  animation-name: mb-progress-slide-rtl;
+}
+
+@keyframes mb-progress-slide {
+  from {
+    translate: -105% 0;
+  }
+  to {
+    translate: 285% 0;
+  }
+}
+
+@keyframes mb-progress-slide-rtl {
+  from {
+    translate: 105% 0;
+  }
+  to {
+    translate: -285% 0;
+  }
+}
+
+/* Circular */
+.mb-progress-circle {
+  --mb-progress-circle-size-current: var(--mb-progress-circle-size);
+
+  position: relative;
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: var(--mb-progress-circle-size-current);
+  height: var(--mb-progress-circle-size-current);
+  color: var(--mb-progress-tone);
+}
+
+.mb-progress-circle[data-size="sm"] {
+  --mb-progress-circle-size-current: var(--mb-progress-circle-size-sm);
+}
+
+.mb-progress-circle[data-size="lg"] {
+  --mb-progress-circle-size-current: var(--mb-progress-circle-size-lg);
+}
+
+.mb-progress-circle > * {
+  grid-area: 1 / 1;
+}
+
+.mb-progress-circle-ring {
+  width: 100%;
+  height: 100%;
+  rotate: -90deg;
+  overflow: visible;
+}
+
+.mb-progress-circle-track,
+.mb-progress-circle-fill {
+  fill: none;
+  stroke-width: 3;
+}
+
+.mb-progress-circle[data-size="lg"] :is(.mb-progress-circle-track, .mb-progress-circle-fill) {
+  stroke-width: 2.5;
+}
+
+.mb-progress-circle-track {
+  stroke: var(--mb-progress-track-color);
+}
+
+.mb-progress-circle-fill {
+  stroke: var(--mb-progress-tone);
+  stroke-linecap: round;
+  transition: stroke-dasharray var(--mb-duration-slow) var(--mb-ease-out);
+}
+
+/* A zero-length round cap still paints a dot; hide it until there's progress. */
+.mb-progress-circle-fill[stroke-dasharray^="0 "] {
+  stroke-linecap: butt;
+}
+
+.mb-progress-circle[data-indeterminate] .mb-progress-circle-ring {
+  animation: mb-progress-spin 0.9s linear infinite;
+}
+
+@keyframes mb-progress-spin {
+  from {
+    rotate: -90deg;
+  }
+  to {
+    rotate: 270deg;
+  }
+}
+
+/* What sits inside the ring: a stop square, a glyph, a percentage. */
+.mb-progress-circle > :not(svg) {
+  display: grid;
+  place-items: center;
+  font: 600 calc(var(--mb-progress-circle-size-current) * 0.28) / 1 var(--mb-font);
+  font-variant-numeric: tabular-nums;
+  color: var(--mb-progress-tone);
+}
+
+.mb-progress-circle > :where(svg:not(.mb-progress-circle-ring)) {
+  width: 36%;
+  height: 36%;
+}
+
+/* Reduced motion: the segment stops sliding and fills the track, dimmed, as a still "busy" state. */
+@media (prefers-reduced-motion: reduce) {
+  :where(:root:not([data-motion="full"])) {
+    .mb-progress-circle[data-indeterminate] .mb-progress-circle-ring {
+      animation: none;
+    }
+
+    .mb-progress-indicator[data-indeterminate] {
+      width: 100%;
+      translate: none;
+      opacity: 0.4;
+      animation: none;
+    }
+
+    .mb-progress-circle[data-indeterminate] .mb-progress-circle-fill {
+      stroke-dasharray: 100 100;
+      opacity: 0.4;
+    }
+  }
+}

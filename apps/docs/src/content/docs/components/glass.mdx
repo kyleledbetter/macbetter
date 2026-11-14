@@ -13,7 +13,7 @@ export const metadata = {
 
 Apple uses translucency for the layer that sits above content: bars, sidebars, menus, popovers, sheets, and floating controls. It keeps people oriented, because they can see what's underneath, while the chrome stays out of the way.
 
-Stardust has two kinds:
+Macbetter has two kinds:
 
 - **Materials** are frosted panes for surfaces: a toolbar, a sidebar, a popover, a sheet. They blur heavily and come in thicknesses.
 - **Glass** is Liquid Glass, for controls that float over content: a tab bar, a capsule of toolbar buttons, a floating action. It blurs less and bends light at its edges, with a bright rim and an inner glow.
@@ -36,10 +36,10 @@ Thicker materials hide more of what's behind them. Use a thicker one for bigger 
 ## Usage
 
 ```tsx
-import { Glass, GlassGroup, Material } from "@dreambase/stardust/glass"
+import { Glass, GlassGroup, Material } from "macbetter/glass"
 ```
 
-`Material` is a `div` with the `sd-material` class and `data-material`. Use `render` to make it another element, such as `<nav />` or `<aside />`. Component styles use the same tokens directly: `background: var(--sd-material-regular)` with `backdrop-filter: var(--sd-material-filter)`.
+`Material` is a `div` with the `mb-material` class and `data-material`. Use `render` to make it another element, such as `<nav />` or `<aside />`. Component styles use the same tokens directly: `background: var(--mb-material-regular)` with `backdrop-filter: var(--mb-material-filter)`.
 
 ### Liquid Glass
 
@@ -106,10 +106,10 @@ The classes work without the components, in any markup.
 
 | Class, attribute or token | Description |
 | --- | --- |
-| `.sd-material` with `data-material` | A material pane. |
-| `.sd-glass` with `data-variant`, `data-shape`, `data-interactive` | A Liquid Glass pane. |
-| `--sd-material-ultrathin` … `--sd-material-sidebar` | Each material's fill, for component styles. |
-| `--sd-material-filter` | The backdrop filter every material uses. |
-| `--sd-glass-rim`, `--sd-glass-edge`, `--sd-glass-border` | The bright top edge and hairline border. |
-| `--sd-glass-fill`, `--sd-glass-filter`, `--sd-glass-radius`, `--sd-glass-shadow` | Set on a `.sd-glass` element to adjust one pane. |
-| `--sd-material-scrim` | Set on a `.sd-material` element: the dimming layer under a dark material. Transparent in light mode. |
+| `.mb-material` with `data-material` | A material pane. |
+| `.mb-glass` with `data-variant`, `data-shape`, `data-interactive` | A Liquid Glass pane. |
+| `--mb-material-ultrathin` … `--mb-material-sidebar` | Each material's fill, for component styles. |
+| `--mb-material-filter` | The backdrop filter every material uses. |
+| `--mb-glass-rim`, `--mb-glass-edge`, `--mb-glass-border` | The bright top edge and hairline border. |
+| `--mb-glass-fill`, `--mb-glass-filter`, `--mb-glass-radius`, `--mb-glass-shadow` | Set on a `.mb-glass` element to adjust one pane. |
+| `--mb-material-scrim` | Set on a `.mb-material` element: the dimming layer under a dark material. Transparent in light mode. |

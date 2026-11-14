@@ -1,0 +1,438 @@
+/*
+ * Menu — compact rows with a solid accent highlight on macOS; the roomy
+ * pull-down menu with trailing icons and row separators on iOS and iPadOS.
+ * Select, Combo Box and Context Menu popups reuse these parts.
+ */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-menu-inset: var(--mb-menu-padding);
+  --mb-menu-row-padding: 9px;
+  --mb-menu-row-padding-block: 2px;
+  --mb-menu-row-radius: var(--mb-row-radius);
+  --mb-menu-gutter: 13px;
+  --mb-menu-icon-size: 15px;
+  --mb-menu-icon-gap: 7px;
+  --mb-menu-icon-align: 1;
+  --mb-menu-min-width: 180px;
+  --mb-menu-label-font: 600 11px/14px var(--mb-font);
+  --mb-menu-label-padding: 6px 9px 3px;
+  --mb-menu-check-size: 11px;
+  --mb-menu-chevron-size: 11px;
+  --mb-menu-highlight: var(--mb-accent);
+  --mb-menu-on-highlight: var(--mb-on-accent);
+  --mb-menu-enter-scale: 0.98;
+  --mb-menu-enter-duration: var(--mb-duration-fast);
+  --mb-menu-enter-easing: var(--mb-ease-out);
+  --mb-menu-exit-duration: var(--mb-duration-instant);
+  --mb-menu-exit-scale: 1;
+  --mb-menu-nested-enter-scale: 1;
+  --mb-menu-shortcut-display: inline;
+  /*
+   * Menus open over anything, so they run denser than the thick material to keep
+   * text and the highlight legible. Mixing toward the opaque surface keeps the
+   * reduced-transparency collapse intact.
+   */
+  --mb-menu-material: color-mix(in oklch, var(--mb-material-thick) 50%, var(--mb-bg-elevated));
+  /* A dark menu over a white window greys out; lift destructive red enough to hold 4.5:1. */
+  --mb-menu-destructive-text: light-dark(
+    var(--mb-destructive-text),
+    oklch(from var(--mb-destructive-text) max(l, 0.76) c h)
+  );
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-menu-inset: 0px;
+  --mb-menu-row-padding: 16px;
+  --mb-menu-row-padding-block: 11px;
+  --mb-menu-row-radius: 0px;
+  --mb-menu-gutter: 24px;
+  --mb-menu-icon-size: 20px;
+  --mb-menu-icon-gap: 12px;
+  --mb-menu-icon-align: 0;
+  --mb-menu-min-width: 250px;
+  --mb-menu-label-font: 400 13px/18px var(--mb-font);
+  --mb-menu-label-padding: 11px 16px 8px;
+  --mb-menu-check-size: 15px;
+  --mb-menu-chevron-size: 15px;
+  --mb-menu-highlight: light-dark(
+    color-mix(in oklch, var(--mb-ink) 14%, transparent),
+    color-mix(in oklch, var(--mb-ink) 20%, transparent)
+  );
+  --mb-menu-on-highlight: var(--mb-label);
+  /* The menu grows out of its button on a critically damped spring: menus don't bounce. */
+  --mb-menu-enter-scale: 0.5;
+  --mb-menu-enter-duration: var(--mb-spring-snappy-duration);
+  --mb-menu-enter-easing: var(--mb-spring-snappy);
+  --mb-menu-exit-duration: var(--mb-duration-fast);
+  --mb-menu-exit-scale: 0.9;
+  --mb-menu-nested-enter-scale: 0.6;
+  --mb-menu-thick-separator: light-dark(rgb(0 0 0 / 0.08), rgb(0 0 0 / 0.3));
+}
+
+:where([data-platform="ipados"]) {
+  --mb-menu-shortcut-display: inline;
+}
+
+:where([data-platform="ios"]) {
+  --mb-menu-shortcut-display: none;
+}
+
+/* ── The popup ───────────────────────────────────────────────── */
+
+.mb-menu-content {
+  --mb-menu-lead: var(--mb-menu-row-padding);
+  --mb-menu-icon-space: 0px;
+
+  box-sizing: border-box;
+  min-width: var(--mb-menu-min-width);
+  max-width: calc(100vw - 16px);
+  max-height: var(--available-height);
+  margin: 0;
+  padding: var(--mb-menu-inset);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 0;
+  border-radius: var(--mb-menu-radius);
+  background: var(--mb-menu-material);
+  -webkit-backdrop-filter: var(--mb-material-filter);
+  backdrop-filter: var(--mb-material-filter);
+  box-shadow: var(--mb-glass-rim), var(--mb-shadow-menu);
+  color: var(--mb-label);
+  font: var(--mb-menu-font);
+  letter-spacing: var(--mb-tracking-body);
+  outline: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  transform-origin: var(--transform-origin);
+  transition:
+    opacity var(--mb-duration-fast) var(--mb-ease-out),
+    scale var(--mb-menu-enter-duration) var(--mb-menu-enter-easing);
+}
+
+/* The leading check column appears only in a menu that has something to check. */
+.mb-menu-content:has(> .mb-menu-checkable, > :not(.mb-menu-content) > .mb-menu-checkable) {
+  --mb-menu-lead: calc(var(--mb-menu-row-padding) + var(--mb-menu-gutter));
+}
+
+.mb-menu-content[data-has-icons] {
+  --mb-menu-icon-space: calc((var(--mb-menu-icon-size) + var(--mb-menu-icon-gap)) * var(--mb-menu-icon-align));
+}
+
+.mb-menu-content[data-starting-style] {
+  opacity: 0;
+  scale: var(--mb-menu-enter-scale);
+}
+
+.mb-menu-content[data-ending-style] {
+  opacity: 0;
+  scale: var(--mb-menu-exit-scale);
+  transition-duration: var(--mb-menu-exit-duration);
+  transition-timing-function: var(--mb-ease-out);
+}
+
+.mb-menu-content[data-nested][data-starting-style] {
+  scale: var(--mb-menu-nested-enter-scale);
+}
+
+/* As a sheet, ui-sdk slides the menu up and follows the finger; this only shapes it. */
+.mb-menu-content[data-presentation="sheet"] {
+  --sheet-backdrop: var(--mb-scrim);
+
+  width: 100%;
+  max-width: none;
+  max-height: 85dvh;
+  padding: 20px 0 max(8px, env(safe-area-inset-bottom));
+  border-radius: var(--mb-sheet-radius) var(--mb-sheet-radius) 0 0;
+  background: var(--mb-material-thick);
+  box-shadow: var(--mb-glass-rim), var(--mb-shadow-window);
+  transform-origin: 50% 0;
+  /* A sheet opened on top of this one pushes it back. */
+  scale: calc(1 - var(--drawer-stack, 0) * 0.05);
+  transition: scale var(--mb-spring-sheet-duration) var(--mb-spring-sheet);
+}
+
+.mb-menu-content[data-presentation="sheet"]:is([data-starting-style], [data-ending-style]) {
+  opacity: 1;
+  scale: calc(1 - var(--drawer-stack, 0) * 0.05);
+}
+
+/* The grabber. */
+.mb-menu-content[data-presentation="sheet"]:not([data-nested])::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 6px;
+  inset-inline-start: calc(50% - 18px);
+  width: 36px;
+  height: 5px;
+  border-radius: var(--mb-radius-full);
+  background: var(--mb-label-tertiary);
+  pointer-events: none;
+}
+
+/* A submenu opens in place inside the sheet: no second surface, just its rows under the trigger. */
+.mb-menu-content[data-presentation="sheet"][data-nested] {
+  min-width: 0;
+  max-height: none;
+  padding: 0;
+  overflow: visible;
+  border-radius: 0;
+  border-block-start: var(--mb-hairline) solid var(--mb-separator);
+  background: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: none;
+  scale: none;
+}
+
+.mb-menu-content[data-presentation="sheet"] .mb-menu-sub-trigger-indicator {
+  transition: rotate var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+.mb-menu-content[data-presentation="sheet"] .mb-menu-sub-trigger[data-open] .mb-menu-sub-trigger-indicator {
+  rotate: 90deg;
+}
+
+/* The chevron is mirrored in right to left, so it turns the other way to point down. */
+.mb-menu-content[data-presentation="sheet"] .mb-menu-sub-trigger[data-open] .mb-menu-sub-trigger-indicator:where([dir="rtl"] *) {
+  rotate: -90deg;
+}
+
+.mb-menu-content[data-presentation="sheet"] .mb-menu-sub-trigger[data-open]:not([data-highlighted]) {
+  background: none;
+}
+
+/* ── Rows ───────────────────────────────────────────────────── */
+
+.mb-menu-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--mb-menu-icon-gap);
+  min-height: var(--mb-menu-item-height);
+  margin: 0;
+  padding-block: var(--mb-menu-row-padding-block);
+  padding-inline: var(--mb-menu-lead) var(--mb-menu-row-padding);
+  border-radius: var(--mb-menu-row-radius);
+  color: var(--mb-label);
+  white-space: nowrap;
+  outline: none;
+  cursor: default;
+  scroll-margin-block: var(--mb-menu-inset);
+  touch-action: manipulation;
+}
+
+.mb-menu-item:not([data-has-icon]) {
+  padding-inline-start: calc(var(--mb-menu-lead) + var(--mb-menu-icon-space));
+}
+
+.mb-menu-item:focus-visible {
+  outline: none;
+}
+
+.mb-menu-item[data-highlighted]:not([data-disabled]),
+.mb-menu-sub-trigger[data-open]:not([data-disabled]) {
+  background: var(--mb-menu-highlight);
+  color: var(--mb-menu-on-highlight);
+}
+
+.mb-menu-item[data-disabled] {
+  color: var(--mb-label-tertiary);
+}
+
+.mb-menu-item[data-destructive] {
+  color: var(--mb-menu-destructive-text);
+}
+
+.mb-menu-item[data-destructive][data-highlighted]:not([data-disabled]) {
+  --mb-menu-highlight: var(--mb-destructive);
+  --mb-menu-on-highlight: var(--mb-on-destructive);
+}
+
+.mb-menu-item[data-pending] {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.mb-menu-item-icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--mb-menu-icon-size);
+  height: var(--mb-menu-icon-size);
+}
+
+.mb-menu-item-icon :where(svg) {
+  width: 100%;
+  height: 100%;
+}
+
+.mb-menu-item-icon[data-mirror]:where([dir="rtl"] *) {
+  scale: -1 1;
+}
+
+.mb-menu-item-indicator {
+  position: absolute;
+  inset-inline-start: calc(var(--mb-menu-row-padding) - 1px);
+  top: 50%;
+  display: flex;
+  width: var(--mb-menu-check-size);
+  height: var(--mb-menu-check-size);
+  translate: 0 -50%;
+}
+
+.mb-menu-item-indicator :where(svg) {
+  width: 100%;
+  height: 100%;
+}
+
+.mb-menu-item-indicator[data-unchecked] {
+  visibility: hidden;
+}
+
+.mb-menu-item > :is(.mb-menu-shortcut, [data-slot="menu-shortcut"]) {
+  display: var(--mb-menu-shortcut-display);
+  margin-inline-start: auto;
+  padding-inline-start: 24px;
+  color: var(--mb-label-secondary);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+.mb-menu-item[data-highlighted]:not([data-disabled]) > :is(.mb-menu-shortcut, [data-slot="menu-shortcut"]) {
+  color: inherit;
+}
+
+.mb-menu-item[data-disabled] > :is(.mb-menu-shortcut, [data-slot="menu-shortcut"]) {
+  color: var(--mb-label-quaternary);
+}
+
+.mb-menu-sub-trigger-indicator {
+  display: inline-flex;
+  flex: none;
+  width: var(--mb-menu-chevron-size);
+  height: var(--mb-menu-chevron-size);
+  margin-inline: auto -2px;
+  padding-inline-start: 0;
+  color: var(--mb-label-secondary);
+}
+
+.mb-menu-sub-trigger-indicator :where(svg) {
+  width: 100%;
+  height: 100%;
+}
+
+.mb-menu-sub-trigger-indicator:where([dir="rtl"] *) {
+  scale: -1 1;
+}
+
+.mb-menu-sub-trigger:is([data-highlighted], [data-open]):not([data-disabled]) .mb-menu-sub-trigger-indicator {
+  color: inherit;
+}
+
+/* ── Groups and separators ──────────────────────────────────── */
+
+.mb-menu-group {
+  display: block;
+}
+
+.mb-menu-group-label {
+  padding: var(--mb-menu-label-padding);
+  padding-inline-start: calc(var(--mb-menu-lead) + var(--mb-menu-icon-space));
+  color: var(--mb-label-secondary);
+  font: var(--mb-menu-label-font);
+  letter-spacing: var(--mb-tracking-caption);
+  white-space: nowrap;
+}
+
+.mb-menu-separator {
+  height: 1px;
+  margin: 5px var(--mb-menu-row-padding);
+  background: var(--mb-separator);
+}
+
+/* ── iOS and iPadOS: flush rows, hairlines between them, a thick band between groups ── */
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .mb-menu-item::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: var(--mb-hairline);
+    background: var(--mb-separator);
+    pointer-events: none;
+  }
+
+  .mb-menu-content > .mb-menu-item:first-child::before,
+  .mb-menu-content > .mb-menu-group:first-child > .mb-menu-item:first-child::before,
+  .mb-menu-separator + .mb-menu-item::before,
+  .mb-menu-separator + .mb-menu-group > .mb-menu-item:first-child::before,
+  .mb-menu-item[data-highlighted]::before,
+  .mb-menu-item[data-highlighted] + .mb-menu-item::before {
+    content: none;
+  }
+
+  .mb-menu-separator {
+    height: 8px;
+    margin: 0;
+    background: var(--mb-menu-thick-separator);
+  }
+
+  .mb-menu-item-icon {
+    order: 3;
+    margin-inline-start: auto;
+    padding-inline-start: 16px;
+    box-sizing: content-box;
+  }
+
+  .mb-menu-item-icon ~ .mb-menu-sub-trigger-indicator {
+    order: 4;
+    margin-inline-start: 0;
+  }
+
+  .mb-menu-item[data-destructive] .mb-menu-item-icon {
+    color: var(--mb-menu-destructive-text);
+  }
+
+  .mb-menu-item:active:not([data-disabled]) {
+    background: var(--mb-menu-highlight);
+  }
+}
+
+/* ── The pull-down button ───────────────────────────────────── */
+
+.mb-menu-trigger-indicator {
+  display: inline-flex;
+  flex: none;
+  width: calc(var(--mb-icon-size) * 0.7);
+  height: calc(var(--mb-icon-size) * 0.7);
+  margin-inline-end: -2px;
+  opacity: 0.8;
+}
+
+.mb-menu-trigger-indicator svg {
+  width: 100%;
+  height: 100%;
+}
+
+.mb-menu-trigger[data-open][data-variant="bezeled"] {
+  --mb-button-bg: color-mix(in oklch, var(--mb-bg-control), var(--mb-ink) 10%);
+}
+
+.mb-menu-trigger[data-open][data-variant="plain"] {
+  --mb-button-bg: var(--mb-fill-tertiary);
+}
+
+.mb-menu-trigger[data-open][data-variant="filled"] {
+  --mb-button-bg: var(--mb-accent-pressed);
+}
+
+/* ── Context areas ──────────────────────────────────────────── */
+
+.mb-menu-context-trigger {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}

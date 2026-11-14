@@ -12,7 +12,7 @@ import {
   CommandPalette,
   CommandPaletteContent,
   CommandPaletteTrigger,
-} from "@dreambase/stardust/command-palette"
+} from "macbetter/command-palette"
 import { BookOpenIcon, BoxIcon, PaletteIcon, SwatchBookIcon } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"

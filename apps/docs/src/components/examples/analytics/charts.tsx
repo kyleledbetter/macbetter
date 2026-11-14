@@ -19,7 +19,7 @@ import { EChartsPieChart } from "@/components/charts/evil/charts/echarts-pie-cha
 
 /*
  * The dashboard's charts. They draw with ECharts (an external library, see
- * /docs/charts/overview): the trend and sparklines through the Stardust
+ * /docs/charts/overview): the trend and sparklines through the Macbetter
  * adapter's EChart, the bars and donut as EvilCharts components themed by it.
  */
 
@@ -146,12 +146,12 @@ function TrendChart({ series, labels, height = 220, xTicks = 6 }: TrendChartProp
   return (
     <div className="ex-trend">
       {scrub ? (
-        <div className="sd-chart-callout ex-trend-callout" style={{ left: Math.min(Math.max(scrub.x, 70), scrub.width - 80) }}>
+        <div className="mb-chart-callout ex-trend-callout" style={{ left: Math.min(Math.max(scrub.x, 70), scrub.width - 80) }}>
           <span>{labels[scrub.index]}</span>
           <div>
             {series.map((s) => (
               <b key={s.name} data-dashed={s.dashed ? "" : undefined}>
-                <i style={{ background: `var(--sd-${s.color === "accentSecondary" ? "accent-secondary" : s.color})` }} />
+                <i style={{ background: `var(--mb-${s.color === "accentSecondary" ? "accent-secondary" : s.color})` }} />
                 {s.values[scrub.index]!.toLocaleString("en")}
               </b>
             ))}

@@ -1,9 +1,9 @@
-import { Field, FieldDescription, FieldLabel } from "@dreambase/stardust/field"
-import { Switch } from "@dreambase/stardust/switch"
+import { Field, FieldDescription, FieldLabel } from "macbetter/field"
+import { Switch } from "macbetter/switch"
 
 // The label and description on the leading side, the switch on the trailing edge.
 const row = { display: "grid", gridTemplateColumns: "1fr auto", alignItems: "center", gap: "2px 16px" }
-const title = { gridColumn: 1, padding: 0, color: "var(--sd-label)", font: "var(--sd-text-body)" }
+const title = { gridColumn: 1, padding: 0, color: "var(--mb-label)", font: "var(--mb-text-body)" }
 
 export default function Example() {
   return (

@@ -1,4 +1,4 @@
-import { Listbox, ListboxItem } from "@dreambase/stardust/listbox"
+import { Listbox, ListboxItem } from "macbetter/listbox"
 
 export default function Example() {
   return (

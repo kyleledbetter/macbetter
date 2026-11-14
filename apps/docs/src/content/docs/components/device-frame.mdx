@@ -11,7 +11,7 @@ export const metadata = {
 
 ## When to use it
 
-Use a device frame to show an iPhone or iPad layout on a page people read on a computer: a product tour, a design review, or a live preview beside a settings panel. The screen inside the frame switches to the iOS or iPadOS platform, so every Stardust component in it takes the touch metrics on its own.
+Use a device frame to show an iPhone or iPad layout on a page people read on a computer: a product tour, a design review, or a live preview beside a settings panel. The screen inside the frame switches to the iOS or iPadOS platform, so every Macbetter component in it takes the touch metrics on its own.
 
 The frame is presentation, not emulation. It draws the hardware and publishes its safe areas; it doesn't rotate, scroll or respond to the home indicator. On a real phone, render your layout without a frame: the same safe-area tokens then read the device's own insets.
 
@@ -20,7 +20,7 @@ To present a Mac app, use a [window](/docs/components/window).
 ## Usage
 
 ```tsx
-import { DeviceFrame } from "@dreambase/stardust/device-frame"
+import { DeviceFrame } from "macbetter/device-frame"
 ```
 
 ### iPhone
@@ -37,27 +37,27 @@ Set `device="ipad"` for an 11-inch iPad Air, landscape by default. Its status ba
 
 ### Safe areas
 
-The screen publishes how much of each edge the hardware covers, as the same `--sd-safe-*` tokens that read `env(safe-area-inset-*)` on a real device. Pad your content with them and it clears the status bar and home indicator both inside a frame and on a phone:
+The screen publishes how much of each edge the hardware covers, as the same `--mb-safe-*` tokens that read `env(safe-area-inset-*)` on a real device. Pad your content with them and it clears the status bar and home indicator both inside a frame and on a phone:
 
 ```css
 .screen-header {
-  padding-top: calc(var(--sd-safe-top) + 8px);
+  padding-top: calc(var(--mb-safe-top) + 8px);
 }
 
 .screen-footer {
-  padding-bottom: var(--sd-safe-bottom);
+  padding-bottom: var(--mb-safe-bottom);
 }
 ```
 
-Stardust's bars do this for you, and leave insets of their own for the content beneath them:
+Macbetter's bars do this for you, and leave insets of their own for the content beneath them:
 
 | Variable | Set by | Read by |
 | --- | --- | --- |
-| `--sd-safe-top`, `--sd-safe-bottom`, `--sd-safe-left`, `--sd-safe-right` | `tokens.css` (from `env()`), overridden by the device frame's screen | Navigation bar, tab bar, sheets, your own layouts |
-| `--sd-content-inset-top` | `NavigationStack` | List section headers, which stick below the bar instead of under it |
-| `--sd-content-inset-bottom` | `TabBar` | Navigation stack and scrolling content, which leave room for the bar |
+| `--mb-safe-top`, `--mb-safe-bottom`, `--mb-safe-left`, `--mb-safe-right` | `tokens.css` (from `env()`), overridden by the device frame's screen | Navigation bar, tab bar, sheets, your own layouts |
+| `--mb-content-inset-top` | `NavigationStack` | List section headers, which stick below the bar instead of under it |
+| `--mb-content-inset-bottom` | `TabBar` | Navigation stack and scrolling content, which leave room for the bar |
 
-The screen also sets `--sd-safe-area-top` and `--sd-safe-area-bottom` to the same values for code written before the shared tokens. Use `--sd-safe-*` in new code.
+The screen also sets `--mb-safe-area-top` and `--mb-safe-area-bottom` to the same values for code written before the shared tokens. Use `--mb-safe-*` in new code.
 
 ## Platform behavior
 
@@ -93,10 +93,10 @@ It also takes the props of a `div`.
 
 | Name | On | Description |
 | --- | --- | --- |
-| `data-device` | `.sd-device-frame` | `iphone` or `ipad`. |
-| `data-orientation` | `.sd-device-frame` | `portrait` or `landscape`. |
-| `--sd-device-scale` | `.sd-device-frame` | Set by `scale`. |
-| `--sd-device-screen-width`, `--sd-device-screen-height` | `.sd-device-frame` | The screen's size in points. Override both to draw another model. |
-| `--sd-device-screen-radius` | `.sd-device-frame` | The screen's corner radius. |
-| `--sd-device-safe-top`, `--sd-device-safe-bottom` | `.sd-device-frame` | The hardware insets the screen publishes. |
-| `--sd-safe-top`, `--sd-safe-bottom`, `--sd-safe-left`, `--sd-safe-right` | `.sd-device-frame-screen` | The shared safe-area tokens, set from the device. |
+| `data-device` | `.mb-device-frame` | `iphone` or `ipad`. |
+| `data-orientation` | `.mb-device-frame` | `portrait` or `landscape`. |
+| `--mb-device-scale` | `.mb-device-frame` | Set by `scale`. |
+| `--mb-device-screen-width`, `--mb-device-screen-height` | `.mb-device-frame` | The screen's size in points. Override both to draw another model. |
+| `--mb-device-screen-radius` | `.mb-device-frame` | The screen's corner radius. |
+| `--mb-device-safe-top`, `--mb-device-safe-bottom` | `.mb-device-frame` | The hardware insets the screen publishes. |
+| `--mb-safe-top`, `--mb-safe-bottom`, `--mb-safe-left`, `--mb-safe-right` | `.mb-device-frame-screen` | The shared safe-area tokens, set from the device. |

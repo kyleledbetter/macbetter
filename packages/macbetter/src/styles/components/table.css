@@ -1,0 +1,313 @@
+/* Table — the macOS table view: compact rows, sortable headers and accent-filled selection. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-table-row-height: 24px;
+  --mb-table-header-height: 28px;
+  --mb-table-cell-padding: 8px;
+  --mb-table-inset: 8px;
+  --mb-table-row-radius: var(--mb-radius-sm);
+  --mb-table-font: 400 13px/16px var(--mb-font);
+  --mb-table-header-font: 500 11px/14px var(--mb-font);
+  --mb-table-header-divider: var(--mb-separator);
+  --mb-table-row-divider: transparent;
+  --mb-table-sort-size: 9px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-table-row-height: 44px;
+  --mb-table-header-height: 34px;
+  --mb-table-cell-padding: 16px;
+  /* iOS rows run edge to edge like a plain list, so their hairlines stay straight. */
+  --mb-table-inset: 0px;
+  --mb-table-row-radius: 0px;
+  --mb-table-font: 400 17px/22px var(--mb-font);
+  --mb-table-header-font: 600 13px/18px var(--mb-font);
+  --mb-table-header-divider: transparent;
+  --mb-table-row-divider: var(--mb-separator);
+  --mb-table-sort-size: 11px;
+}
+
+.mb-table {
+  /* Inactive selection: a gray that still stands apart from alternating rows, like macOS's unemphasized fill. */
+  --mb-table-selected: light-dark(color-mix(in oklch, var(--mb-label) 16%, transparent), var(--mb-fill));
+  --mb-table-on-selected: var(--mb-label);
+  --mb-table-on-selected-secondary: color-mix(in oklch, var(--mb-label) 80%, transparent);
+  --mb-table-bg: var(--mb-bg);
+
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: var(--mb-label);
+  font: var(--mb-table-font);
+  letter-spacing: var(--mb-tracking-body);
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+  -webkit-user-select: none;
+  outline: none;
+}
+
+/* Selection is the accent while the table has focus, and gray once it leaves, as on macOS. */
+.mb-table:focus-within {
+  --mb-table-selected: var(--mb-accent);
+  --mb-table-on-selected: var(--mb-on-accent);
+  /* Dimmed white on the accent drops under 4.5:1, so secondary text goes full white, as on macOS. */
+  --mb-table-on-selected-secondary: var(--mb-on-accent);
+}
+
+.mb-table-column {
+  position: sticky;
+  z-index: 2;
+  top: 0;
+  box-sizing: border-box;
+  height: var(--mb-table-header-height);
+  padding: 0 var(--mb-table-cell-padding);
+  background: var(--mb-table-bg);
+  box-shadow: inset 0 calc(var(--mb-hairline) * -1) 0 var(--mb-separator);
+  color: var(--mb-label-secondary);
+  font: var(--mb-table-header-font);
+  letter-spacing: var(--mb-tracking-caption);
+  text-align: start;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.mb-table-column:first-child {
+  padding-inline-start: calc(var(--mb-table-inset) + var(--mb-table-cell-padding));
+}
+
+.mb-table-column:last-child {
+  padding-inline-end: calc(var(--mb-table-inset) + var(--mb-table-cell-padding));
+}
+
+.mb-table-column + .mb-table-column::before {
+  content: "";
+  position: absolute;
+  inset-block: 7px;
+  inset-inline-start: 0;
+  width: var(--mb-hairline);
+  background: var(--mb-table-header-divider);
+}
+
+.mb-table-column[data-align="center"],
+.mb-table-cell[data-align="center"] {
+  text-align: center;
+}
+
+.mb-table-column[data-align="end"],
+.mb-table-cell[data-align="end"] {
+  text-align: end;
+}
+
+.mb-table-column:has(> .mb-table-sort) {
+  padding: 0;
+}
+
+.mb-table-sort {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--mb-space-2);
+  width: 100%;
+  height: var(--mb-table-header-height);
+  margin: 0;
+  padding: 0 var(--mb-table-cell-padding);
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: inherit;
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-table-column:first-child > .mb-table-sort {
+  padding-inline-start: calc(var(--mb-table-inset) + var(--mb-table-cell-padding));
+}
+
+.mb-table-column:last-child > .mb-table-sort {
+  padding-inline-end: calc(var(--mb-table-inset) + var(--mb-table-cell-padding));
+}
+
+.mb-table-column[data-align="end"] > .mb-table-sort {
+  flex-direction: row-reverse;
+}
+
+.mb-table-column[data-align="center"] > .mb-table-sort {
+  justify-content: center;
+}
+
+.mb-table-column[data-sorted] {
+  color: var(--mb-label);
+}
+
+.mb-table-sort:active {
+  background: var(--mb-fill-tertiary);
+  transition-duration: 0ms;
+}
+
+.mb-table-sort:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: calc(var(--mb-focus-ring-width) * -1);
+  border-radius: var(--mb-radius-sm);
+}
+
+.mb-table-sort-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mb-table-sort-indicator {
+  flex: none;
+  width: var(--mb-table-sort-size);
+  height: calc(var(--mb-table-sort-size) * 0.6);
+  margin-inline-start: auto;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0;
+  transition:
+    rotate var(--mb-spring-snappy-duration) var(--mb-spring-snappy),
+    opacity var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-table-column[data-align="end"] .mb-table-sort-indicator {
+  margin-inline: 0 auto;
+}
+
+.mb-table-column[data-sorted] .mb-table-sort-indicator {
+  opacity: 1;
+}
+
+.mb-table-column[data-sorted="ascending"] .mb-table-sort-indicator {
+  rotate: 180deg;
+}
+
+.mb-table-row {
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mb-table[data-alternating] .mb-table-row:nth-child(even):not([data-selected]) {
+  --mb-table-row-bg: var(--mb-fill-quaternary);
+}
+
+.mb-table-row[data-selected] {
+  --mb-table-row-bg: var(--mb-table-selected);
+  color: var(--mb-table-on-selected);
+}
+
+.mb-table[role="grid"] .mb-table-row:active:not([data-selected]) {
+  --mb-table-row-bg: var(--mb-fill-tertiary);
+}
+
+/*
+ * A row's fill is drawn by its cells, inset from the table's edges by a
+ * transparent border on the outer cells and rounded there, like Finder's list.
+ * Table rows can't carry positioned pseudo-elements: Chrome makes them cells.
+ */
+.mb-table-cell {
+  box-sizing: border-box;
+  height: var(--mb-table-row-height);
+  padding: 0 var(--mb-table-cell-padding);
+  border: 0 solid transparent;
+  background: var(--mb-table-row-bg, transparent) padding-box;
+  box-shadow: inset 0 calc(var(--mb-hairline) * -1) 0 var(--mb-table-row-divider);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.mb-table-cell:first-child {
+  border-inline-start-width: var(--mb-table-inset);
+  border-start-start-radius: calc(var(--mb-table-row-radius) + var(--mb-table-inset));
+  border-end-start-radius: calc(var(--mb-table-row-radius) + var(--mb-table-inset));
+}
+
+.mb-table-cell:last-child {
+  border-inline-end-width: var(--mb-table-inset);
+  border-start-end-radius: calc(var(--mb-table-row-radius) + var(--mb-table-inset));
+  border-end-end-radius: calc(var(--mb-table-row-radius) + var(--mb-table-inset));
+}
+
+.mb-table-row:last-child > .mb-table-cell,
+.mb-table-row[data-selected] > .mb-table-cell,
+.mb-table-row:has(+ .mb-table-row[data-selected]) > .mb-table-cell {
+  box-shadow: none;
+}
+
+/* Adjacent selected rows read as one block. */
+.mb-table-row[data-selected] + .mb-table-row[data-selected] > .mb-table-cell {
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
+}
+
+.mb-table-row[data-selected]:has(+ .mb-table-row[data-selected]) > .mb-table-cell {
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+}
+
+.mb-table-cell[data-secondary] {
+  color: var(--mb-label-secondary);
+}
+
+.mb-table-row[data-selected] .mb-table-cell[data-secondary] {
+  color: var(--mb-table-on-selected-secondary);
+}
+
+.mb-table-cell :where(svg) {
+  display: inline-block;
+  vertical-align: -3px;
+  width: var(--mb-icon-size);
+  height: var(--mb-icon-size);
+  margin-inline-end: var(--mb-space-3);
+}
+
+/*
+ * A row can't take a rounded outline, so its cells draw the focus ring with
+ * inset shadows that follow the selection's inset, rounded shape.
+ */
+.mb-table-row:focus-visible {
+  --mb-table-ring-color: var(--mb-focus-ring);
+  --mb-table-ring: var(--mb-focus-ring-width);
+}
+
+/* Inside a block of selected rows the accent ring would vanish, so the focused row gets a ring in the selection's text color. */
+.mb-table-row[data-selected]:focus-visible:is(:has(+ .mb-table-row[data-selected]), .mb-table-row[data-selected] + *) {
+  --mb-table-ring-color: var(--mb-table-on-selected);
+  --mb-table-ring: 2px;
+}
+
+.mb-table-row:focus-visible > .mb-table-cell {
+  box-shadow:
+    inset 0 var(--mb-table-ring) 0 var(--mb-table-ring-color),
+    inset 0 calc(var(--mb-table-ring) * -1) 0 var(--mb-table-ring-color);
+}
+
+.mb-table-row:focus-visible > .mb-table-cell:first-child {
+  box-shadow:
+    inset var(--mb-table-ring-start) 0 0 var(--mb-table-ring-color),
+    inset 0 var(--mb-table-ring) 0 var(--mb-table-ring-color),
+    inset 0 calc(var(--mb-table-ring) * -1) 0 var(--mb-table-ring-color);
+}
+
+.mb-table-row:focus-visible > .mb-table-cell:last-child {
+  box-shadow:
+    inset calc(var(--mb-table-ring-start) * -1) 0 0 var(--mb-table-ring-color),
+    inset 0 var(--mb-table-ring) 0 var(--mb-table-ring-color),
+    inset 0 calc(var(--mb-table-ring) * -1) 0 var(--mb-table-ring-color);
+}
+
+.mb-table-row {
+  --mb-table-ring-start: var(--mb-table-ring);
+}
+
+:where([dir="rtl"]) .mb-table-row {
+  --mb-table-ring-start: calc(var(--mb-table-ring) * -1);
+}

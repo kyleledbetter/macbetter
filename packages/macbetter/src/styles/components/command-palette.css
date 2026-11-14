@@ -1,0 +1,361 @@
+/*
+ * Command Palette — Spotlight: a large pane of glass near the top of the
+ * screen, a big search field with a magnifier, and grouped results whose
+ * highlighted row fills with the accent. On iOS and iPadOS it's the search
+ * screen's card: a capsule field and roomy rows.
+ */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-command-radius: var(--mb-radius-2xl);
+  --mb-command-width: 680px;
+  --mb-command-top: max(14vh, 24px);
+  --mb-command-search-height: 54px;
+  --mb-command-search-padding: 18px;
+  --mb-command-search-font: 300 22px/28px var(--mb-font-display);
+  --mb-command-search-icon: 22px;
+  --mb-command-search-field-bg: transparent;
+  --mb-command-search-field-radius: 0px;
+  --mb-command-search-field-margin: 0px;
+  --mb-command-list-padding: 6px;
+  --mb-command-row-height: 34px;
+  --mb-command-row-padding: 10px;
+  --mb-command-row-radius: var(--mb-radius-md);
+  --mb-command-icon: 22px;
+  --mb-command-font: 400 14px/18px var(--mb-font);
+  --mb-command-label-font: 600 11px/14px var(--mb-font);
+  --mb-command-highlight: var(--mb-accent);
+  --mb-command-on-highlight: var(--mb-on-accent);
+  --mb-command-shortcut-display: inline;
+  --mb-command-divider: 1;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-command-radius: var(--mb-radius-3xl);
+  --mb-command-width: 560px;
+  --mb-command-top: max(env(safe-area-inset-top), 12px);
+  --mb-command-search-height: 44px;
+  --mb-command-search-padding: 12px;
+  --mb-command-search-font: 400 17px/22px var(--mb-font);
+  --mb-command-search-icon: 18px;
+  --mb-command-search-field-bg: var(--mb-fill-tertiary);
+  --mb-command-search-field-radius: var(--mb-radius-lg);
+  --mb-command-search-field-margin: 12px;
+  --mb-command-list-padding: 6px;
+  --mb-command-row-height: 48px;
+  --mb-command-row-padding: 12px;
+  --mb-command-row-radius: var(--mb-radius-lg);
+  --mb-command-icon: 28px;
+  --mb-command-font: 400 17px/22px var(--mb-font);
+  --mb-command-label-font: 600 13px/18px var(--mb-font);
+  --mb-command-highlight: var(--mb-fill-secondary);
+  --mb-command-on-highlight: var(--mb-label);
+  --mb-command-shortcut-display: none;
+  --mb-command-divider: 0;
+}
+
+:where([data-platform="ipados"]) {
+  --mb-command-shortcut-display: inline;
+}
+
+/* ── The panel ──────────────────────────────────────────────── */
+
+/* Denser than the regular material so secondary text holds 4.5:1 over a busy or white backdrop. */
+.mb-command-palette,
+.mb-command {
+  --mb-command-material: color-mix(in oklch, var(--mb-material-thick) 50%, var(--mb-bg-elevated));
+}
+
+.mb-command-palette {
+  position: fixed;
+  inset: var(--mb-command-top) 0 auto;
+  display: flex;
+  flex-direction: column;
+  width: min(var(--mb-command-width), calc(100vw - 24px));
+  height: fit-content;
+  max-height: calc(100dvh - var(--mb-command-top) * 2);
+  margin: 0 auto;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--mb-command-radius);
+  background: var(--mb-command-material);
+  -webkit-backdrop-filter: var(--mb-material-filter);
+  backdrop-filter: var(--mb-material-filter);
+  box-shadow: var(--mb-glass-rim), var(--mb-shadow-window);
+  color: var(--mb-label);
+  outline: none;
+  transform-origin: 50% 0;
+  transition:
+    opacity var(--mb-duration-base) var(--mb-ease-out),
+    scale var(--mb-spring-smooth-duration) var(--mb-spring-smooth),
+    translate var(--mb-spring-smooth-duration) var(--mb-spring-smooth);
+}
+
+.mb-command-palette[data-starting-style] {
+  opacity: 0;
+  scale: 0.96;
+  translate: 0 -8px;
+}
+
+.mb-command-palette[data-ending-style] {
+  opacity: 0;
+  scale: 0.98;
+  transition-duration: var(--mb-duration-fast);
+  transition-timing-function: var(--mb-ease-out);
+}
+
+.mb-command-palette::backdrop {
+  background: transparent;
+}
+
+.mb-command-palette-backdrop {
+  position: fixed;
+  inset: 0;
+  background: color-mix(in oklch, var(--mb-scrim) 35%, transparent);
+  transition: opacity var(--mb-duration-base) var(--mb-ease-out);
+}
+
+.mb-command-palette-backdrop:is([data-starting-style], [data-ending-style]) {
+  opacity: 0;
+}
+
+/* ── Command: the search field and its results ─────────────── */
+
+.mb-command {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: var(--mb-command-radius);
+  background: var(--mb-command-material);
+  -webkit-backdrop-filter: var(--mb-material-filter);
+  backdrop-filter: var(--mb-material-filter);
+  box-shadow: var(--mb-glass-rim), var(--mb-shadow-menu);
+  color: var(--mb-label);
+  font: var(--mb-command-font);
+  letter-spacing: var(--mb-tracking-body);
+}
+
+/* Inside the palette the panel is the material; never one material on another. */
+.mb-command-palette .mb-command {
+  flex: 1 1 auto;
+  border-radius: 0;
+  background: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+
+.mb-command-search {
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 10px;
+  height: var(--mb-command-search-height);
+  margin: var(--mb-command-search-field-margin);
+  padding-inline: var(--mb-command-search-padding);
+  border-radius: var(--mb-command-search-field-radius);
+  background: var(--mb-command-search-field-bg);
+  color: var(--mb-label-secondary);
+}
+
+.mb-command-search > svg {
+  flex: none;
+  width: var(--mb-command-search-icon);
+  height: var(--mb-command-search-icon);
+}
+
+.mb-command-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--mb-label);
+  font: var(--mb-command-search-font);
+  letter-spacing: var(--mb-tracking-title);
+  outline: none;
+  appearance: none;
+}
+
+.mb-command-input::placeholder {
+  color: var(--mb-placeholder);
+}
+
+.mb-command-input::-webkit-search-cancel-button {
+  display: none;
+}
+
+/* A hairline divides the field from the results, only while there are some. */
+.mb-command:has(.mb-command-item) .mb-command-search::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: var(--mb-hairline);
+  background: var(--mb-separator);
+  opacity: var(--mb-command-divider);
+}
+
+.mb-command-list {
+  max-height: min(420px, 60dvh);
+  padding: var(--mb-command-list-padding);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-padding-block: var(--mb-command-list-padding);
+}
+
+.mb-command-list:not(:has(.mb-command-item)) {
+  display: none;
+}
+
+.mb-command-group-label {
+  padding: 8px var(--mb-command-row-padding) 4px;
+  color: var(--mb-label-secondary);
+  font: var(--mb-command-label-font);
+  letter-spacing: var(--mb-tracking-caption);
+}
+
+.mb-command-separator {
+  height: 1px;
+  margin: 6px var(--mb-command-row-padding);
+  background: var(--mb-separator);
+}
+
+.mb-command-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: var(--mb-command-row-height);
+  padding-inline: var(--mb-command-row-padding);
+  border-radius: var(--mb-command-row-radius);
+  color: var(--mb-label);
+  white-space: nowrap;
+  cursor: default;
+  outline: none;
+  scroll-margin-block: var(--mb-command-list-padding);
+}
+
+.mb-command-list[data-has-icons] .mb-command-item:not([data-has-icon]) {
+  padding-inline-start: calc(var(--mb-command-row-padding) + var(--mb-command-icon) + 10px);
+}
+
+.mb-command-item[data-highlighted] {
+  background: var(--mb-command-highlight);
+  color: var(--mb-command-on-highlight);
+}
+
+.mb-command-item[data-disabled] {
+  color: var(--mb-label-tertiary);
+}
+
+.mb-command-item[data-pending] {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.mb-command-item-icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--mb-command-icon);
+  height: var(--mb-command-icon);
+}
+
+.mb-command-item-icon :where(svg) {
+  width: 70%;
+  height: 70%;
+}
+
+.mb-command-item-text mark {
+  background: none;
+  color: inherit;
+  font-weight: 600;
+}
+
+.mb-command-item > :is(.mb-command-shortcut, [data-slot="command-shortcut"]) {
+  display: var(--mb-command-shortcut-display);
+  margin-inline-start: auto;
+  padding-inline-start: 24px;
+  color: var(--mb-label-secondary);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+.mb-command-item[data-highlighted] > :is(.mb-command-shortcut, [data-slot="command-shortcut"]) {
+  color: inherit;
+  opacity: 0.8;
+}
+
+.mb-command-empty:not(:empty),
+.mb-command-status:not(:empty) {
+  padding: 18px var(--mb-command-search-padding) 20px;
+  color: var(--mb-label-secondary);
+  text-align: center;
+}
+
+/* ── The trigger: a search field that opens the palette ─────── */
+
+.mb-command-palette-trigger {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 220px;
+  height: var(--mb-control-height);
+  margin: 0;
+  padding-inline: 8px 6px;
+  border: 0;
+  border-radius: var(--mb-control-radius);
+  background: var(--mb-fill-tertiary);
+  box-shadow: inset 0 0 0 var(--mb-hairline) var(--mb-separator);
+  color: var(--mb-label-secondary);
+  font: var(--mb-control-font);
+  font-weight: 400;
+  letter-spacing: var(--mb-tracking-body);
+  text-align: start;
+  cursor: default;
+  touch-action: manipulation;
+}
+
+.mb-command-palette-trigger > svg {
+  flex: none;
+  width: calc(var(--mb-icon-size) * 0.85);
+  height: calc(var(--mb-icon-size) * 0.85);
+}
+
+.mb-command-palette-trigger-label {
+  flex: 1 1 auto;
+}
+
+.mb-command-palette-trigger-shortcut {
+  display: var(--mb-command-shortcut-display);
+  padding: 1px 5px;
+  border-radius: var(--mb-radius-xs);
+  background: var(--mb-fill-tertiary);
+  color: var(--mb-label-secondary);
+  font: 500 11px/14px var(--mb-font);
+  letter-spacing: 0.04em;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-command-palette-trigger:hover {
+    background: var(--mb-fill-secondary);
+  }
+}
+
+.mb-command-palette-trigger:active,
+.mb-command-palette-trigger[data-open] {
+  background: var(--mb-fill);
+}
+
+.mb-command-palette-trigger:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: var(--mb-focus-ring-offset);
+}

@@ -1,9 +1,9 @@
 "use client"
 
-import type { Platform } from "@dreambase/stardust"
-import { Avatar } from "@dreambase/stardust/avatar"
-import { Badge } from "@dreambase/stardust/badge"
-import { Button } from "@dreambase/stardust/button"
+import type { Platform } from "macbetter"
+import { Avatar } from "macbetter/avatar"
+import { Badge } from "macbetter/badge"
+import { Button } from "macbetter/button"
 import {
   List,
   ListRow,
@@ -12,10 +12,10 @@ import {
   ListRowTitle,
   ListRowValue,
   ListSection,
-} from "@dreambase/stardust/list"
-import { Progress } from "@dreambase/stardust/progress"
-import { Radio, RadioGroup } from "@dreambase/stardust/radio"
-import { SegmentedControl, SegmentedControlItem } from "@dreambase/stardust/segmented-control"
+} from "macbetter/list"
+import { Progress } from "macbetter/progress"
+import { Radio, RadioGroup } from "macbetter/radio"
+import { SegmentedControl, SegmentedControlItem } from "macbetter/segmented-control"
 import {
   AppWindowIcon,
   ArchiveRestoreIcon,
@@ -225,8 +225,8 @@ function NetworkPane({ s, set }: PaneProps) {
           </ListRow>
         ))}
       </ListSection>
-      <ListSection header="VPN" footer="Dreambase VPN routes traffic for internal dashboards through the office network.">
-        <ToggleRow title="Dreambase VPN" subtitle={s.vpn ? "Connected · 00:12:48" : "Not connected"} checked={s.vpn} onCheckedChange={(v) => set("vpn", v)} />
+      <ListSection header="VPN" footer="Macbetter VPN routes traffic for internal dashboards through the office network.">
+        <ToggleRow title="Macbetter VPN" subtitle={s.vpn ? "Connected · 00:12:48" : "Not connected"} checked={s.vpn} onCheckedChange={(v) => set("vpn", v)} />
       </ListSection>
       <ListSection>
         <ToggleRow
@@ -347,7 +347,7 @@ function GeneralPane({ platform }: PaneProps) {
       <ListSection>
         <ValueRow title="About" icon={InfoIcon} color="gray" disclosure onClick={() => {}} />
         <ListRow onClick={() => {}}>
-          <span className="sd-list-row-icon" data-color="gray" aria-hidden="true">
+          <span className="mb-list-row-icon" data-color="gray" aria-hidden="true">
             <RefreshCwIcon />
           </span>
           <ListRowTitle>Software Update</ListRowTitle>
@@ -380,7 +380,7 @@ function AppearancePane({ s, set }: PaneProps) {
     <>
       <ListSection header="Appearance" footer="Auto follows the time of day: light by day, dark at night.">
         <ListRow className="ex-appearance-row">
-          <ListRowTitle className="sd-visually-hidden">Appearance</ListRowTitle>
+          <ListRowTitle className="mb-visually-hidden">Appearance</ListRowTitle>
           <SegmentedControl
             aria-label="Appearance"
             value={s.appearance}
@@ -464,7 +464,7 @@ function DisplaysPane({ s, set, platform }: PaneProps) {
     <>
       <ListSection header={mac ? "Built-in Liquid Retina XDR Display" : "Display"}>
         <ListRow className="ex-appearance-row">
-          <ListRowTitle className="sd-visually-hidden">Resolution</ListRowTitle>
+          <ListRowTitle className="mb-visually-hidden">Resolution</ListRowTitle>
           <SegmentedControl
             aria-label="Resolution"
             value={s.resolution}
@@ -545,8 +545,8 @@ function AccountPane({ platform }: PaneProps) {
     <>
       <div className="ex-account-hero">
         <Avatar name="Avery Chen" size="xl" color="orange" />
-        <div className="sd-text-title-2">Avery Chen</div>
-        <div className="sd-text-subheadline sd-label-secondary">avery.chen@icloud.com</div>
+        <div className="mb-text-title-2">Avery Chen</div>
+        <div className="mb-text-subheadline mb-label-secondary">avery.chen@icloud.com</div>
       </div>
       <ListSection>
         <ValueRow title="Personal Information" icon={UserIcon} color="gray" disclosure onClick={() => {}} />
@@ -653,7 +653,7 @@ const paneComponents: Partial<Record<PaneId, (props: PaneProps) => React.ReactNo
   battery: BatteryPane,
 }
 
-/** One settings pane, drawn with Stardust lists so it takes each platform's idiom on its own. */
+/** One settings pane, drawn with Macbetter lists so it takes each platform's idiom on its own. */
 function PaneContent({ id, ...props }: PaneProps & { id: PaneId }) {
   const Component = paneComponents[id]
   return <List className="ex-pane-list">{Component ? <Component {...props} /> : <SimplePane id={id} />}</List>

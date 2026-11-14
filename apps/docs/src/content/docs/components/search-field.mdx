@@ -18,7 +18,7 @@ Filter as people type when the results are local and fast. When a search costs a
 ## Usage
 
 ```tsx
-import { SearchField } from "@dreambase/stardust/search-field"
+import { SearchField } from "macbetter/search-field"
 ```
 
 `SearchField` renders the magnifier, a native `type="search"` input and a clear button. Props go to the input: `value`, `onValueChange`, `placeholder` (`"Search"` by default) and `name`. `groupClassName` styles the field's box.
@@ -60,7 +60,7 @@ import { SearchField } from "@dreambase/stardust/search-field"
 
 | Attribute | On | Values |
 | --- | --- | --- |
-| `data-size` | `.sd-search-field` | `sm`, `md`, `lg` |
+| `data-size` | `.mb-search-field` | `sm`, `md`, `lg` |
 | `data-filled` | Box, input, clear | Present while there's a query |
 | `data-disabled` | Box | Present when disabled |
 
@@ -68,7 +68,7 @@ import { SearchField } from "@dreambase/stardust/search-field"
 
 | Variable | macOS | iOS | What it sets |
 | --- | --- | --- | --- |
-| `--sd-search-field-height` | `28px` | `36px` | Height at `md` |
-| `--sd-search-field-radius` | `6px` | Capsule | Corner radius |
-| `--sd-search-field-bg` | Field white | Tertiary fill | Background |
-| `--sd-search-field-glyph` | `13px` | `16px` | Magnifier size |
+| `--mb-search-field-height` | `28px` | `36px` | Height at `md` |
+| `--mb-search-field-radius` | `6px` | Capsule | Corner radius |
+| `--mb-search-field-bg` | Field white | Tertiary fill | Background |
+| `--mb-search-field-glyph` | `13px` | `16px` | Magnifier size |

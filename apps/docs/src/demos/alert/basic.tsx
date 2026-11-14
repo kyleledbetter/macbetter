@@ -7,8 +7,8 @@ import {
   AlertIcon,
   AlertTitle,
   AlertTrigger,
-} from "@dreambase/stardust/alert"
-import { Button } from "@dreambase/stardust/button"
+} from "macbetter/alert"
+import { Button } from "macbetter/button"
 
 export default function Example() {
   return (
@@ -16,7 +16,7 @@ export default function Example() {
       <AlertTrigger render={<Button />}>Empty Trash…</AlertTrigger>
       <AlertContent>
         <AlertIcon>
-          <img src="/dreambase-logo-mark.svg" alt="" />
+          <img src="/app-icon.svg" alt="" />
         </AlertIcon>
         <AlertTitle>Are you sure you want to permanently erase the items in the Trash?</AlertTitle>
         <AlertDescription>You can’t undo this action.</AlertDescription>

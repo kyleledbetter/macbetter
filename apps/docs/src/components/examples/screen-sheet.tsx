@@ -1,6 +1,6 @@
 "use client"
 
-import { Sheet, SheetContent, SheetTitle } from "@dreambase/stardust/sheet"
+import { Sheet, SheetContent, SheetTitle } from "macbetter/sheet"
 import * as React from "react"
 import { useStage } from "./shell"
 
@@ -16,7 +16,7 @@ type ScreenSheetProps = {
 }
 
 /**
- * A full-height iOS sheet. On a phone it's Stardust's Sheet. Inside a device
+ * A full-height iOS sheet. On a phone it's Macbetter's Sheet. Inside a device
  * frame it's drawn in the frame's screen instead, because a Sheet lives in the
  * browser's top layer and would cover the whole page rather than the phone.
  */
@@ -26,7 +26,7 @@ function ScreenSheet({ open, onOpenChange, title, hideTitle = true, className, c
     return (
       <Sheet open={open} onOpenChange={(next) => onOpenChange(next)} detents={["large"]}>
         <SheetContent className={["ex-sheet", className].filter(Boolean).join(" ")}>
-          <SheetTitle className={hideTitle ? "sd-visually-hidden" : undefined}>{title}</SheetTitle>
+          <SheetTitle className={hideTitle ? "mb-visually-hidden" : undefined}>{title}</SheetTitle>
           {children}
         </SheetContent>
       </Sheet>
@@ -102,7 +102,7 @@ function FramedSheet({ open, onOpenChange, title, hideTitle, className, children
         className={["ex-framed-sheet", "ex-sheet", className].filter(Boolean).join(" ")}
       >
         <span aria-hidden="true" className="ex-framed-sheet-grabber" />
-        <h2 id={titleId} className={hideTitle ? "sd-visually-hidden" : "ex-framed-sheet-title"}>
+        <h2 id={titleId} className={hideTitle ? "mb-visually-hidden" : "ex-framed-sheet-title"}>
           {title}
         </h2>
         {children}

@@ -1,13 +1,13 @@
-import { ScrollView } from "@dreambase/stardust/scroll-view"
+import { ScrollView } from "macbetter/scroll-view"
 
 const albums = [
-  { id: "dunes", title: "Dunes", color: "var(--sd-orange)" },
-  { id: "forest", title: "Forest", color: "var(--sd-green)" },
-  { id: "glacier", title: "Glacier", color: "var(--sd-cyan)" },
-  { id: "canyon", title: "Canyon", color: "var(--sd-red)" },
-  { id: "meadow", title: "Meadow", color: "var(--sd-mint)" },
-  { id: "harbor", title: "Harbor", color: "var(--sd-blue)" },
-  { id: "dusk", title: "Dusk", color: "var(--sd-indigo)" },
+  { id: "dunes", title: "Dunes", color: "var(--mb-orange)" },
+  { id: "forest", title: "Forest", color: "var(--mb-green)" },
+  { id: "glacier", title: "Glacier", color: "var(--mb-cyan)" },
+  { id: "canyon", title: "Canyon", color: "var(--mb-red)" },
+  { id: "meadow", title: "Meadow", color: "var(--mb-mint)" },
+  { id: "harbor", title: "Harbor", color: "var(--mb-blue)" },
+  { id: "dusk", title: "Dusk", color: "var(--mb-indigo)" },
 ]
 
 export default function Example() {
@@ -17,7 +17,7 @@ export default function Example() {
         {albums.map((album) => (
           <figure key={album.id} style={{ margin: 0, width: 120 }}>
             <div style={{ height: 120, borderRadius: 12, background: `linear-gradient(160deg, ${album.color}, color-mix(in oklch, ${album.color} 55%, black))` }} />
-            <figcaption style={{ marginTop: 6, font: "var(--sd-text-subheadline)" }}>{album.title}</figcaption>
+            <figcaption style={{ marginTop: 6, font: "var(--mb-text-subheadline)" }}>{album.title}</figcaption>
           </figure>
         ))}
       </div>

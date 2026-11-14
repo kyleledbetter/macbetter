@@ -1,4 +1,4 @@
-import { Progress, ProgressLabel } from "@dreambase/stardust/progress"
+import { Progress, ProgressLabel } from "macbetter/progress"
 
 export default function Example() {
   return (

@@ -1,0 +1,195 @@
+/* Scroll View — Apple's overlay scrollbars, and edges that fade while there's more to see. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-scroll-view-bar: 14px;
+  --mb-scroll-view-thumb: 7px;
+  --mb-scroll-view-thumb-hover: 10px;
+  --mb-scroll-view-thumb-inset: 2px;
+  --mb-scroll-view-fade: 24px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-scroll-view-bar: 9px;
+  --mb-scroll-view-thumb: 3px;
+  --mb-scroll-view-thumb-hover: 3px;
+  --mb-scroll-view-thumb-inset: 3px;
+  --mb-scroll-view-fade: 32px;
+}
+
+.mb-scroll-view {
+  --mb-scroll-view-thumb-color: light-dark(rgb(0 0 0 / 0.42), rgb(255 255 255 / 0.42));
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.mb-scroll-view[data-variant="bordered"] {
+  border-radius: var(--mb-radius-md);
+  background: var(--mb-bg);
+}
+
+/* The frame sits above the content so rows scrolling under it don't cover it. */
+.mb-scroll-view[data-variant="bordered"]::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 var(--mb-hairline) var(--mb-separator-strong);
+  pointer-events: none;
+}
+
+.mb-scroll-view-viewport {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  max-height: inherit;
+  border-radius: inherit;
+  scrollbar-width: none;
+  overscroll-behavior: contain;
+}
+
+.mb-scroll-view-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.mb-scroll-view-viewport:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: calc(var(--mb-focus-ring-width) * -1);
+}
+
+.mb-scroll-view:is([data-orientation="horizontal"], [data-orientation="both"]) .mb-scroll-view-content {
+  /* ui-sdk sets min-width: fit-content inline, so this fills the viewport and still grows with wide content. */
+  width: 100%;
+}
+
+.mb-scroll-view-scrollbar {
+  z-index: 1;
+  display: flex;
+  box-sizing: border-box;
+  padding: var(--mb-scroll-view-thumb-inset);
+  opacity: 0;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  /* Fades out slowly once you stop, like the real one. */
+  transition:
+    opacity var(--mb-duration-slow) var(--mb-ease-out),
+    background-color var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-scroll-view-scrollbar[data-orientation="vertical"] {
+  justify-content: flex-end;
+  width: var(--mb-scroll-view-bar);
+  margin-block-end: var(--scroll-area-corner-height, 0px);
+}
+
+.mb-scroll-view-scrollbar[data-orientation="horizontal"] {
+  align-items: flex-end;
+  height: var(--mb-scroll-view-bar);
+  margin-inline-end: var(--scroll-area-corner-width, 0px);
+}
+
+.mb-scroll-view-scrollbar[data-visible] {
+  opacity: 1;
+  transition-duration: var(--mb-duration-fast), var(--mb-duration-fast);
+}
+
+.mb-scroll-view-thumb {
+  flex: none;
+  border-radius: var(--mb-radius-full);
+  background: var(--mb-scroll-view-thumb-color);
+  transition:
+    width var(--mb-spring-snappy-duration) var(--mb-spring-snappy),
+    height var(--mb-spring-snappy-duration) var(--mb-spring-snappy),
+    background-color var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-scroll-view-thumb[data-orientation="vertical"] {
+  width: var(--mb-scroll-view-thumb);
+}
+
+.mb-scroll-view-thumb[data-orientation="horizontal"] {
+  height: var(--mb-scroll-view-thumb);
+}
+
+/* Under the pointer, macOS widens the thumb and lays a faint track behind it. */
+@media (hover: hover) and (pointer: fine) {
+  .mb-scroll-view-scrollbar[data-visible]:is(:hover, [data-dragging]) {
+    background: var(--mb-fill-quaternary);
+  }
+
+  .mb-scroll-view-scrollbar[data-orientation="vertical"]:is(:hover, [data-dragging]) .mb-scroll-view-thumb {
+    width: var(--mb-scroll-view-thumb-hover);
+  }
+
+  .mb-scroll-view-scrollbar[data-orientation="horizontal"]:is(:hover, [data-dragging]) .mb-scroll-view-thumb {
+    height: var(--mb-scroll-view-thumb-hover);
+  }
+
+  .mb-scroll-view-scrollbar:is(:hover, [data-dragging]) {
+    --mb-scroll-view-thumb-color: light-dark(rgb(0 0 0 / 0.55), rgb(255 255 255 / 0.55));
+  }
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .mb-scroll-view-scrollbar {
+    background: none;
+  }
+}
+
+/* Fades grow with how far the content reaches past each edge, so they're gone at the ends. */
+.mb-scroll-view[data-fade][data-orientation="vertical"] {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 min(var(--mb-scroll-view-fade), var(--scroll-area-overflow-y-start, 0px)),
+    #000 calc(100% - min(var(--mb-scroll-view-fade), var(--scroll-area-overflow-y-end, 0px))),
+    transparent
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 min(var(--mb-scroll-view-fade), var(--scroll-area-overflow-y-start, 0px)),
+    #000 calc(100% - min(var(--mb-scroll-view-fade), var(--scroll-area-overflow-y-end, 0px))),
+    transparent
+  );
+}
+
+.mb-scroll-view[data-fade][data-orientation="horizontal"] {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 min(var(--mb-scroll-view-fade), var(--scroll-area-overflow-x-start, 0px)),
+    #000 calc(100% - min(var(--mb-scroll-view-fade), var(--scroll-area-overflow-x-end, 0px))),
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 min(var(--mb-scroll-view-fade), var(--scroll-area-overflow-x-start, 0px)),
+    #000 calc(100% - min(var(--mb-scroll-view-fade), var(--scroll-area-overflow-x-end, 0px))),
+    transparent
+  );
+}
+
+:where([dir="rtl"]) .mb-scroll-view[data-fade][data-orientation="horizontal"] {
+  -webkit-mask-image: linear-gradient(
+    to left,
+    transparent,
+    #000 min(var(--mb-scroll-view-fade), var(--scroll-area-overflow-x-start, 0px)),
+    #000 calc(100% - min(var(--mb-scroll-view-fade), var(--scroll-area-overflow-x-end, 0px))),
+    transparent
+  );
+  mask-image: linear-gradient(
+    to left,
+    transparent,
+    #000 min(var(--mb-scroll-view-fade), var(--scroll-area-overflow-x-start, 0px)),
+    #000 calc(100% - min(var(--mb-scroll-view-fade), var(--scroll-area-overflow-x-end, 0px))),
+    transparent
+  );
+}

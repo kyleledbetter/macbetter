@@ -20,7 +20,7 @@ Use artwork where a picture helps people tell things apart but you don't have on
 ## Usage
 
 ```tsx
-import { Artwork } from "@dreambase/stardust/artwork"
+import { Artwork } from "macbetter/artwork"
 ```
 
 Pass a `seed`. The picture is an inline SVG that fills its container's width, at the `aspect` you give it (square by default). It's drawn on the server, with no client JavaScript.
@@ -131,12 +131,12 @@ Every other prop goes to the outer `span`. `artworkVariants` and `artworkPalette
 
 | Attribute or variable | On | Description |
 | --- | --- | --- |
-| `data-variant`, `data-palette`, `data-shape`, `data-finish` | `.sd-artwork` | The resolved props, after `auto`. `data-palette` is `custom` with `colors`. |
-| `data-animated` | `.sd-artwork` | Present when `animated` is on. |
-| `--sd-artwork-1` … `--sd-artwork-4` | `.sd-artwork` | The hues. Set them in CSS to make a palette of your own. |
-| `--sd-artwork-ground` | `.sd-artwork` | The deep base most variants are painted on. |
-| `--sd-artwork-light` | `.sd-artwork` | Highlights, glows and suns. |
-| `--sd-artwork-paper`, `--sd-artwork-ink` | `.sd-artwork` | The pale ground some `glyph` and `halftone` pictures use, and the dark color drawn on it. |
-| `--sd-artwork-size` | `.sd-artwork` | The width, from `size`. |
-| `--sd-artwork-radius` | `.sd-artwork` | The corner radius, from `radius`. |
-| `--sd-artwork-aspect` | `.sd-artwork` | The aspect ratio, from `aspect`. |
+| `data-variant`, `data-palette`, `data-shape`, `data-finish` | `.mb-artwork` | The resolved props, after `auto`. `data-palette` is `custom` with `colors`. |
+| `data-animated` | `.mb-artwork` | Present when `animated` is on. |
+| `--mb-artwork-1` … `--mb-artwork-4` | `.mb-artwork` | The hues. Set them in CSS to make a palette of your own. |
+| `--mb-artwork-ground` | `.mb-artwork` | The deep base most variants are painted on. |
+| `--mb-artwork-light` | `.mb-artwork` | Highlights, glows and suns. |
+| `--mb-artwork-paper`, `--mb-artwork-ink` | `.mb-artwork` | The pale ground some `glyph` and `halftone` pictures use, and the dark color drawn on it. |
+| `--mb-artwork-size` | `.mb-artwork` | The width, from `size`. |
+| `--mb-artwork-radius` | `.mb-artwork` | The corner radius, from `radius`. |
+| `--mb-artwork-aspect` | `.mb-artwork` | The aspect ratio, from `aspect`. |

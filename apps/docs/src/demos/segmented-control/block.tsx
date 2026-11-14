@@ -1,4 +1,4 @@
-import { SegmentedControl, SegmentedControlItem } from "@dreambase/stardust/segmented-control"
+import { SegmentedControl, SegmentedControlItem } from "macbetter/segmented-control"
 
 export default function Example() {
   return (

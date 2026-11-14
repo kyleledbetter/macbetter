@@ -1,4 +1,4 @@
-import { Checkbox, CheckboxGroup } from "@dreambase/stardust/checkbox"
+import { Checkbox, CheckboxGroup } from "macbetter/checkbox"
 
 const folders = [
   { value: "desktop", label: "Desktop" },
@@ -10,7 +10,7 @@ const folders = [
 export default function Example() {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-      <span id="sync-folders" style={{ font: "var(--sd-text-headline)" }}>
+      <span id="sync-folders" style={{ font: "var(--mb-text-headline)" }}>
         Sync these folders
       </span>
       <CheckboxGroup aria-labelledby="sync-folders" defaultValue={["desktop", "documents"]}>

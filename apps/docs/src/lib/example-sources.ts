@@ -32,7 +32,7 @@ const SRC = join(process.cwd(), "src")
 const EXAMPLES = join(SRC, "components", "examples")
 const SOURCE_EXTENSIONS = [".tsx", ".ts", ".css"]
 const RESOLVE_SUFFIXES = ["", ".tsx", ".ts", ".css", "/index.tsx", "/index.ts"]
-const BASE_PACKAGES = ["@dreambase/stardust", "@ui-sdk/react", "@ui-sdk/core"]
+const BASE_PACKAGES = ["macbetter", "@ui-sdk/react", "@ui-sdk/core"]
 /** Packages a Next.js React app already has, so they're left out of the install command. */
 const PROVIDED_PACKAGES = new Set(["react", "react-dom", "next"])
 
@@ -121,7 +121,7 @@ function readExampleSources(slug: ExampleSlug): ExampleSourceSet {
   const queue = listedFiles(slug)
   const seen = new Set<string>()
   const files: SourceFile[] = []
-  const stardust = new Set<string>()
+  const macbetter = new Set<string>()
   const packages = new Set<string>()
   const stageImports = new Set<string>()
 
@@ -147,9 +147,9 @@ function readExampleSources(slug: ExampleSlug): ExampleSourceSet {
         continue
       }
       const name = packageOf(specifier)
-      if (name === "@dreambase/stardust") {
+      if (name === "macbetter") {
         const component = specifier.split("/")[2]
-        if (component) stardust.add(component)
+        if (component) macbetter.add(component)
       } else if (!name.startsWith("@ui-sdk/") && !PROVIDED_PACKAGES.has(name) && !specifier.startsWith("node:")) {
         packages.add(name)
       }
@@ -162,7 +162,7 @@ function readExampleSources(slug: ExampleSlug): ExampleSourceSet {
   }
 
   const pages = new Map(flatNav.map((item) => [item.href, item.title]))
-  const components = [...stardust]
+  const components = [...macbetter]
     .sort()
     .flatMap((name) => {
       const href = `/docs/components/${name}`

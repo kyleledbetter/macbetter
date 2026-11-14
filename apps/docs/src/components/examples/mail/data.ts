@@ -29,7 +29,7 @@ type Mailbox = { id: MailboxId; name: string; icon: Icon; tint?: string }
 const favorites: Mailbox[] = [
   { id: "inbox", name: "Inbox", icon: InboxIcon },
   { id: "vip", name: "VIP", icon: StarIcon },
-  { id: "flagged", name: "Flagged", icon: FlagIcon, tint: "var(--sd-orange)" },
+  { id: "flagged", name: "Flagged", icon: FlagIcon, tint: "var(--mb-orange)" },
   { id: "drafts", name: "Drafts", icon: FileTextIcon },
   { id: "sent", name: "Sent", icon: SendIcon },
   { id: "junk", name: "Junk", icon: OctagonXIcon },

@@ -1,4 +1,4 @@
-import { Rating } from "@dreambase/stardust/rating"
+import { Rating } from "macbetter/rating"
 
 export default function Example() {
   return (

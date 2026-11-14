@@ -18,7 +18,7 @@ Say where the code was sent in the description. When the code is wrong or expire
 ## Usage
 
 ```tsx
-import { CodeField } from "@dreambase/stardust/code-field"
+import { CodeField } from "macbetter/code-field"
 ```
 
 `length` sets how many cells it draws (six by default). `onValueCommit` runs once every cell is filled, the moment to verify the code.
@@ -76,8 +76,8 @@ To lay the cells out yourself, pass `CodeFieldGroup`, `CodeFieldSlot` and `CodeF
 
 | Variable | macOS | iOS | What it sets |
 | --- | --- | --- | --- |
-| `--sd-code-field-cell-width` | `34px` | `46px` | Cell width |
-| `--sd-code-field-cell-ratio` | `34 / 42` | `46 / 58` | Cell width to height; cells keep it as they narrow to fit |
-| `--sd-code-field-cell-radius` | `8px` | `12px` | Cell corners |
-| `--sd-code-field-cell-bg` | Field white | Tertiary fill | Cell background |
-| `--sd-code-field-font` | 22px medium | 28px semibold | Digit type |
+| `--mb-code-field-cell-width` | `34px` | `46px` | Cell width |
+| `--mb-code-field-cell-ratio` | `34 / 42` | `46 / 58` | Cell width to height; cells keep it as they narrow to fit |
+| `--mb-code-field-cell-radius` | `8px` | `12px` | Cell corners |
+| `--mb-code-field-cell-bg` | Field white | Tertiary fill | Cell background |
+| `--mb-code-field-font` | 22px medium | 28px semibold | Digit type |

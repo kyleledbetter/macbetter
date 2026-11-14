@@ -21,10 +21,10 @@ Use a tab bar for an app's two to five top-level sections, like Home, Library an
 ## Usage
 
 ```tsx
-import { TabBar, TabBarItem, TabBarList, TabBarPanel } from "@dreambase/stardust/tab-bar"
+import { TabBar, TabBarItem, TabBarList, TabBarPanel } from "macbetter/tab-bar"
 ```
 
-`TabBar` holds a `TabBarPanel` per section and the `TabBarList` of items. Give each item and its panel the same `value`, and name the list with `aria-label`. The bar floats over the panels; it sets `--sd-content-inset-bottom` so a [navigation stack](/docs/components/navigation-bar) inside a panel scrolls its last row clear of it.
+`TabBar` holds a `TabBarPanel` per section and the `TabBarList` of items. Give each item and its panel the same `value`, and name the list with `aria-label`. The bar floats over the panels; it sets `--mb-content-inset-bottom` so a [navigation stack](/docs/components/navigation-bar) inside a panel scrolls its last row clear of it.
 
 ### Floating
 
@@ -46,7 +46,7 @@ On iPadOS, the floating tab bar moves to the top of the screen as a compact caps
 
 - **iOS.** The floating bar is 62 points tall, inset 20 points from the screen's sides and sitting just above the home indicator. Labels are 10-point semibold under 24-point symbols. The classic bar is 49 points plus the home indicator's safe area, with 10-point medium labels.
 - **iPadOS.** The floating bar is a 44-point capsule at the top, labels only, centered in the 50-point navigation bar row. The classic bar stays at the bottom, as it was before iPadOS 18.
-- **Safe area.** The bar reads `--sd-safe-bottom` (and `--sd-safe-top` on iPad), which default to the device's `env(safe-area-inset-*)` and which a [device frame](/docs/components/device-frame) sets for its screen.
+- **Safe area.** The bar reads `--mb-safe-bottom` (and `--mb-safe-top` on iPad), which default to the device's `env(safe-area-inset-*)` and which a [device frame](/docs/components/device-frame) sets for its screen.
 - **macOS.** Mac apps don't use tab bars. Use a sidebar for an app's sections.
 - The tab bar has no hover state on touch. With a pointer, unselected tabs dim slightly on hover.
 
@@ -92,10 +92,10 @@ ui-sdk `TabsPanel`: `value` and `keepMounted`.
 
 | Attribute or variable | On | Meaning |
 | --- | --- | --- |
-| `data-variant` | `.sd-tab-bar-list` | `floating` or `classic`. |
-| `data-selected` | `.sd-tab-bar-item`, `.sd-tab-bar-panel` | The selected tab and its panel. |
-| `--sd-tab-bar-height` | `.sd-tab-bar` | The bar's height, without the safe area. |
-| `--sd-tab-bar-margin` | `.sd-tab-bar` | The floating bar's distance from the bottom edge. |
-| `--sd-content-inset-bottom` | `.sd-tab-bar` | The space content leaves for the bar. A `NavigationStack` inside a panel pads its end by it. |
-| `--sd-safe-top`, `--sd-safe-bottom` | inherited | The device's safe area, from `env()` or a device frame. |
-| `--active-tab-left`, `--active-tab-width` | `.sd-tab-bar-indicator` | The selected tab's box, from ui-sdk. |
+| `data-variant` | `.mb-tab-bar-list` | `floating` or `classic`. |
+| `data-selected` | `.mb-tab-bar-item`, `.mb-tab-bar-panel` | The selected tab and its panel. |
+| `--mb-tab-bar-height` | `.mb-tab-bar` | The bar's height, without the safe area. |
+| `--mb-tab-bar-margin` | `.mb-tab-bar` | The floating bar's distance from the bottom edge. |
+| `--mb-content-inset-bottom` | `.mb-tab-bar` | The space content leaves for the bar. A `NavigationStack` inside a panel pads its end by it. |
+| `--mb-safe-top`, `--mb-safe-bottom` | inherited | The device's safe area, from `env()` or a device frame. |
+| `--active-tab-left`, `--active-tab-width` | `.mb-tab-bar-indicator` | The selected tab's box, from ui-sdk. |

@@ -1,5 +1,5 @@
-import { Field, FieldDescription, FieldLabel } from "@dreambase/stardust/field"
-import { TokenField } from "@dreambase/stardust/token-field"
+import { Field, FieldDescription, FieldLabel } from "macbetter/field"
+import { TokenField } from "macbetter/token-field"
 
 export default function Example() {
   return (

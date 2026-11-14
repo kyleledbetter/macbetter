@@ -1,4 +1,4 @@
-import { SegmentedControl, SegmentedControlItem } from "@dreambase/stardust/segmented-control"
+import { SegmentedControl, SegmentedControlItem } from "macbetter/segmented-control"
 
 const sizes = ["sm", "md", "lg"] as const
 

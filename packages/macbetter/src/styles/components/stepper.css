@@ -1,0 +1,278 @@
+/* Stepper and NumberField — macOS's text field with a small up/down stepper attached,
+   and the − / + capsule stepper of iPadOS and iOS. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-stepper-width: 15px;
+  --mb-stepper-height: var(--mb-control-height);
+  --mb-stepper-height-sm: var(--mb-control-height-sm);
+  --mb-stepper-glyph: 9px;
+  --mb-number-field-width: 64px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-stepper-width: 94px;
+  --mb-stepper-height: 32px;
+  --mb-stepper-height-sm: 28px;
+  --mb-stepper-glyph: 16px;
+  --mb-number-field-width: 5ch;
+}
+
+.mb-number-field,
+.mb-stepper {
+  --mb-stepper-h: var(--mb-stepper-height);
+
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--mb-space-3);
+  color: var(--mb-label);
+  font: var(--mb-text-body);
+  letter-spacing: var(--mb-tracking-body);
+}
+
+:is(.mb-number-field, .mb-stepper)[data-size="sm"] {
+  --mb-stepper-h: var(--mb-stepper-height-sm);
+}
+
+.mb-number-field-group {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mb-space-2);
+}
+
+/* The text field. */
+.mb-number-field-input {
+  width: var(--mb-number-field-width);
+  height: var(--mb-stepper-h);
+  margin: 0;
+  padding: 0 var(--mb-space-3);
+  border: 0;
+  border-radius: var(--mb-control-radius-sm);
+  background: var(--mb-bg-field);
+  box-shadow:
+    inset 0 0 0 var(--mb-hairline) var(--mb-control-border),
+    inset 0 0.5px 1px var(--mb-shadow-color);
+  color: var(--mb-label);
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: inherit;
+  text-align: end;
+  outline: none;
+  transition: box-shadow var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-number-field-input::placeholder {
+  color: var(--mb-placeholder);
+}
+
+.mb-number-field-input:focus {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: 0;
+}
+
+.mb-number-field-input[data-invalid] {
+  box-shadow: inset 0 0 0 1.5px var(--mb-destructive);
+}
+
+/* The stepper: a narrow raised control split into up and down. */
+.mb-stepper-buttons {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  flex-direction: column-reverse;
+  width: var(--mb-stepper-width);
+  height: var(--mb-stepper-h);
+  border-radius: var(--mb-radius-xs);
+  background: var(--mb-bg-control);
+  box-shadow:
+    0 0 0 var(--mb-hairline) var(--mb-control-border),
+    0 0.5px 1.5px var(--mb-shadow-color);
+}
+
+.mb-stepper-button {
+  position: relative;
+  display: inline-flex;
+  flex: 1 1 0;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--mb-label);
+  cursor: default;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+/* Each half is 15×14 on macOS: grow the hit area outward (up for increment, down for
+   decrement, and to the sides) so the arrows are as easy to hit as NSStepper's. */
+.mb-stepper-button::after {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline: calc(var(--mb-space-2) * -1) calc(var(--mb-space-3) * -1);
+}
+
+.mb-stepper-button[data-step="increment"]::after {
+  inset-block-start: calc(var(--mb-space-3) * -1);
+}
+
+.mb-stepper-button[data-step="decrement"]::after {
+  inset-block-end: calc(var(--mb-space-3) * -1);
+}
+
+.mb-stepper-button[data-step="increment"] {
+  border-start-start-radius: inherit;
+  border-start-end-radius: inherit;
+}
+
+.mb-stepper-button[data-step="decrement"] {
+  border-end-start-radius: inherit;
+  border-end-end-radius: inherit;
+}
+
+.mb-stepper-button:active:not([data-disabled]) {
+  background: color-mix(in oklch, transparent, var(--mb-ink) 14%);
+  transition-duration: 0ms;
+}
+
+.mb-stepper-button[data-disabled] {
+  color: var(--mb-label-quaternary);
+}
+
+.mb-stepper-glyph {
+  flex: none;
+  width: var(--mb-stepper-glyph);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.mb-stepper-glyph[data-glyph="sign"] {
+  display: none;
+}
+
+/* The standalone stepper's field is hidden but focusable, so the ring goes on the buttons. */
+.mb-stepper-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  border: 0;
+  white-space: nowrap;
+  opacity: 0;
+}
+
+.mb-stepper-buttons:has(.mb-stepper-input:focus-visible) {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: var(--mb-focus-ring-offset);
+}
+
+:is(.mb-number-field, .mb-stepper)[data-disabled] {
+  opacity: 0.4;
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  /* A full touch-height row, so the capsule centers on a neighbouring label. */
+  .mb-number-field,
+  .mb-stepper {
+    min-height: var(--mb-hit-target);
+  }
+
+  .mb-number-field-group {
+    gap: var(--mb-space-5);
+  }
+
+  .mb-number-field-input {
+    width: var(--mb-number-field-width);
+    height: auto;
+    padding: 0;
+    border-radius: var(--mb-radius-xs);
+    background: transparent;
+    box-shadow: none;
+    font-weight: 500;
+  }
+
+  .mb-number-field-input:focus {
+    outline: none;
+  }
+
+  .mb-number-field-input:focus-visible {
+    outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+    outline-offset: var(--mb-focus-ring-offset);
+  }
+
+  .mb-stepper-buttons {
+    flex-direction: row;
+    border-radius: var(--mb-radius-full);
+    background: var(--mb-fill-tertiary);
+    box-shadow: none;
+  }
+
+  /* The hairline between − and +. */
+  .mb-stepper-buttons::before {
+    content: "";
+    position: absolute;
+    inset: 25% auto 25% 50%;
+    width: 1px;
+    margin-inline-start: -0.5px;
+    background: var(--mb-separator-strong);
+  }
+
+  .mb-stepper-button[data-step="decrement"] {
+    border-start-start-radius: inherit;
+    border-end-start-radius: inherit;
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+  }
+
+  .mb-stepper-button[data-step="increment"] {
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+    border-start-end-radius: inherit;
+    border-end-end-radius: inherit;
+  }
+
+  .mb-stepper-button:active:not([data-disabled]) {
+    background: var(--mb-fill);
+  }
+
+  /* 47×32 halves reach 44pt tall. */
+  .mb-stepper-button::after,
+  .mb-stepper-button[data-step]::after {
+    inset: calc((var(--mb-stepper-h) - var(--mb-hit-target)) / 2) 0;
+  }
+
+  .mb-stepper-glyph {
+    stroke-width: 1.8;
+  }
+
+  .mb-stepper-glyph[data-glyph="chevron"] {
+    display: none;
+  }
+
+  .mb-stepper-glyph[data-glyph="sign"] {
+    display: block;
+  }
+
+  .mb-stepper-buttons:has(.mb-stepper-input:focus-visible) {
+    outline-offset: var(--mb-focus-ring-offset);
+  }
+}
+
+/* UIStepper's capsule is a faint fill (about 1.2:1); Increase Contrast gives it a real edge. */
+@media (prefers-contrast: more) {
+  :is(.mb-number-field, .mb-stepper) .mb-stepper-buttons {
+    box-shadow: inset 0 0 0 1px var(--mb-control-border);
+  }
+}

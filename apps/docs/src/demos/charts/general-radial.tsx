@@ -37,9 +37,9 @@ export default function MonthlyGoals() {
       <ChartLegend
         style={{ display: "grid", gap: 8 }}
         items={[
-          { label: "Water", color: "var(--sd-cyan)", value: "92%" },
-          { label: "Mindful minutes", color: "var(--sd-mint)", value: "64%" },
-          { label: "Sleep", color: "var(--sd-chart-core)", value: "86%" },
+          { label: "Water", color: "var(--mb-cyan)", value: "92%" },
+          { label: "Mindful minutes", color: "var(--mb-mint)", value: "64%" },
+          { label: "Sleep", color: "var(--mb-chart-core)", value: "86%" },
         ]}
       />
     </ChartFrame>

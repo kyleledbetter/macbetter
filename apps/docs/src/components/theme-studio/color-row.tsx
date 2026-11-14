@@ -1,7 +1,7 @@
 "use client"
 
-import { ColorWell } from "@dreambase/stardust/color-well"
-import { TextField } from "@dreambase/stardust/text-field"
+import { ColorWell } from "macbetter/color-well"
+import { TextField } from "macbetter/text-field"
 import { useEffect, useId, useState } from "react"
 import { normalizeHex } from "./derive"
 

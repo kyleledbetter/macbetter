@@ -1,6 +1,6 @@
 "use client"
 
-import { MenuBar, MenuBarContent, MenuBarTrigger } from "@dreambase/stardust/menu-bar"
+import { MenuBar, MenuBarContent, MenuBarTrigger } from "macbetter/menu-bar"
 import {
   Menu,
   MenuCheckboxItem,
@@ -11,7 +11,7 @@ import {
   MenuSub,
   MenuSubContent,
   MenuSubTrigger,
-} from "@dreambase/stardust/menu"
+} from "macbetter/menu"
 
 export default function Example() {
   return (

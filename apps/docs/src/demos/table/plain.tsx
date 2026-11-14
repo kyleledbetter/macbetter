@@ -1,4 +1,4 @@
-import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@dreambase/stardust/table"
+import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "macbetter/table"
 
 const devices = [
   { id: "mbp", name: "MacBook Pro", os: "macOS 26.1", seen: "Now" },

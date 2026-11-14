@@ -1,8 +1,8 @@
 "use client"
 
-import { Button } from "@dreambase/stardust/button"
-import { Field, FieldError, FieldLabel } from "@dreambase/stardust/field"
-import { TextField } from "@dreambase/stardust/text-field"
+import { Button } from "macbetter/button"
+import { Field, FieldError, FieldLabel } from "macbetter/field"
+import { TextField } from "macbetter/text-field"
 
 export default function Example() {
   return (

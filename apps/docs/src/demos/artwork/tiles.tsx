@@ -1,5 +1,5 @@
-import { Artwork } from "@dreambase/stardust/artwork"
-import { List, ListRow, ListRowAccessory, ListRowSubtitle, ListRowTitle, ListSection } from "@dreambase/stardust/list"
+import { Artwork } from "macbetter/artwork"
+import { List, ListRow, ListRowAccessory, ListRowSubtitle, ListRowTitle, ListSection } from "macbetter/list"
 
 const shows = [
   { title: "Field Notes", host: "Inès Moreau", variant: "topo", palette: "forest" },

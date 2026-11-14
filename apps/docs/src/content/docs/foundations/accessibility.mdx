@@ -1,29 +1,29 @@
 export const metadata = {
   title: "Accessibility",
-  description: "What ui-sdk and Stardust handle for you, what's left to you, and how to test it.",
+  description: "What ui-sdk and Macbetter handle for you, what's left to you, and how to test it.",
 }
 
 # Accessibility
 
-<Lead>Stardust splits the work with ui-sdk. ui-sdk makes each control behave correctly for the keyboard and assistive technology; Stardust makes it look right, legible and responsive to system settings. A few things only you can do.</Lead>
+<Lead>Macbetter splits the work with ui-sdk. ui-sdk makes each control behave correctly for the keyboard and assistive technology; Macbetter makes it look right, legible and responsive to system settings. A few things only you can do.</Lead>
 
 ## What ui-sdk handles
 
-Every interactive Stardust component wraps a ui-sdk part, and ui-sdk owns its behavior:
+Every interactive Macbetter component wraps a ui-sdk part, and ui-sdk owns its behavior:
 
 - **Keyboard.** Arrow keys move through segmented controls, menus, lists and tabs; Space and Enter activate; Escape dismisses popups. Each component's page lists its keys.
 - **Focus.** Focus moves into a dialog or menu when it opens, stays inside while it's modal, and returns to the trigger when it closes.
 - **ARIA.** Roles, states and relationships (`aria-checked`, `aria-expanded`, `aria-controls` and the rest) are written for you and kept in sync with state.
 - **Right to left.** Components read the direction from the page; there's no provider to set up. Left and Right arrows swap on horizontal controls.
 
-Because Stardust doesn't hand-write roles or key handling, these behaviors are the same ones ui-sdk tests.
+Because Macbetter doesn't hand-write roles or key handling, these behaviors are the same ones ui-sdk tests.
 
-## What Stardust handles
+## What Macbetter handles
 
 - **The focus halo.** Keyboard focus shows a 3px ring in a translucent accent color on `:focus-visible`, as on macOS. Pointer clicks don't show it. Text fields show it whenever they're focused, including by pointer.
 - **Contrast.** The built-in themes are tuned so text reaches 4.5:1, and control edges, focus rings and selected fills reach 3:1, in light and dark. The table below checks the seed pairs.
-- **Hit targets.** Controls respond to at least `--sd-hit-target`: 24px on macOS and 44px on touch, even when they look smaller.
-- **Reduced motion.** Under `prefers-reduced-motion: reduce`, transitions and animations on Stardust elements shorten to almost nothing, and buttons stop scaling on press.
+- **Hit targets.** Controls respond to at least `--mb-hit-target`: 24px on macOS and 44px on touch, even when they look smaller.
+- **Reduced motion.** Under `prefers-reduced-motion: reduce`, transitions and animations on Macbetter elements shorten to almost nothing, and buttons stop scaling on press.
 - **Reduced transparency.** Under `prefers-reduced-transparency: reduce`, materials and glass become opaque and lose their blur.
 - **Increased contrast.** Under `prefers-contrast: more`, secondary and tertiary labels, separators and control borders get stronger, and materials become opaque.
 - **No stuck hover.** Hover styles only apply to devices with a fine pointer.
@@ -31,7 +31,7 @@ Because Stardust doesn't hand-write roles or key handling, these behaviors are t
 
 ## Showing effects on a demo page
 
-Stardust follows Reduce Motion and Reduce Transparency: motion is cut short and every material turns solid. A page that exists to show those effects, like this site, can let a visitor see them anyway by setting two attributes on `<html>`:
+Macbetter follows Reduce Motion and Reduce Transparency: motion is cut short and every material turns solid. A page that exists to show those effects, like this site, can let a visitor see them anyway by setting two attributes on `<html>`:
 
 ```html
 <html data-motion="full" data-transparency="full">
@@ -78,7 +78,7 @@ A red border doesn't tell everyone a field has an error. Pair color with text or
 
 ### Write content that fits
 
-Stardust can't stop a label from truncating. Let text wrap where it matters, use `min-height` rather than `height` for rows, and test with long translations.
+Macbetter can't stop a label from truncating. Let text wrap where it matters, use `min-height` rather than `height` for rows, and test with long translations.
 
 ### Check your own colors
 

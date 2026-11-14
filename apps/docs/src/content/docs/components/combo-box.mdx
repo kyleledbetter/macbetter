@@ -26,7 +26,7 @@ import {
   ComboboxLabel,
   ComboboxList,
   ComboboxTrigger,
-} from "@dreambase/stardust/combo-box"
+} from "macbetter/combo-box"
 ```
 
 `ComboboxControl` holds the input and places the trigger and the clear button at its trailing edge. `ComboboxTrigger` and `ComboboxClear` draw their own glyphs; name both with `aria-label`. `ComboboxItem` renders a checkmark beside the selected item.
@@ -71,6 +71,6 @@ The input has the combobox role and keeps focus while the arrow keys move the hi
     { name: "ComboboxEmpty, ComboboxStatus", type: "—", description: "What shows when nothing matches, and loading or error messages." },
     { name: "Combobox", type: "value, defaultValue, multiple, presentation", description: "The root. presentation is popover, sheet or auto." },
     { name: "Autocomplete…", type: "—", description: "The same parts for free text: Input, Trigger, Clear, Content, List, Item, Group, Empty." },
-    { name: "--sd-combo-box-width", type: "length", default: "240px · 300px", description: "The field's width on the Mac · on touch." },
+    { name: "--mb-combo-box-width", type: "length", default: "240px · 300px", description: "The field's width on the Mac · on touch." },
   ]}
 />

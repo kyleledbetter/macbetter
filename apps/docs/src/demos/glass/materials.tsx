@@ -1,4 +1,4 @@
-import { Material, type MaterialThickness } from "@dreambase/stardust/glass"
+import { Material, type MaterialThickness } from "macbetter/glass"
 
 const materials: Array<{ material: MaterialThickness; use: string }> = [
   { material: "ultrathin", use: "Over media, where the content is the point" },
@@ -31,7 +31,7 @@ export default function Example() {
           style={{ display: "grid", gap: 4, padding: 16, borderRadius: 14, minHeight: 104, alignContent: "end" }}
         >
           <span style={{ fontWeight: 600, textTransform: "capitalize" }}>{material}</span>
-          <span style={{ color: "var(--sd-label-secondary)" }}>{use}</span>
+          <span style={{ color: "var(--mb-label-secondary)" }}>{use}</span>
         </Material>
       ))}
     </div>

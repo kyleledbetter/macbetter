@@ -1,4 +1,4 @@
-import { Artwork } from "@dreambase/stardust/artwork"
+import { Artwork } from "macbetter/artwork"
 
 const albums = [
   { title: "Golden Hour Tapes", artist: "The Saltmarsh", variant: "bloom", palette: "sunset" },
@@ -12,8 +12,8 @@ export default function Example() {
       {albums.map((album) => (
         <div key={album.title}>
           <Artwork seed={album.title} variant={album.variant} palette={album.palette} />
-          <div className="sd-text-subheadline" style={{ marginTop: 8, fontWeight: 500 }}>{album.title}</div>
-          <div className="sd-text-subheadline sd-label-secondary">{album.artist}</div>
+          <div className="mb-text-subheadline" style={{ marginTop: 8, fontWeight: 500 }}>{album.title}</div>
+          <div className="mb-text-subheadline mb-label-secondary">{album.artist}</div>
         </div>
       ))}
     </div>

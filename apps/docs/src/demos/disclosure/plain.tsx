@@ -1,5 +1,5 @@
-import { Disclosure, DisclosureButton, DisclosureContent } from "@dreambase/stardust/disclosure"
-import { Switch } from "@dreambase/stardust/switch"
+import { Disclosure, DisclosureButton, DisclosureContent } from "macbetter/disclosure"
+import { Switch } from "macbetter/switch"
 
 export default function Example() {
   return (

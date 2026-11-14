@@ -48,10 +48,10 @@ export default function WeeklyRings() {
               width: 22,
               height: 22,
               borderRadius: "50%",
-              font: "var(--sd-text-footnote)",
+              font: "var(--mb-text-footnote)",
               fontWeight: 600,
-              color: i === week.length - 1 ? "var(--sd-bg)" : "var(--sd-label-secondary)",
-              background: i === week.length - 1 ? "var(--sd-label)" : "transparent",
+              color: i === week.length - 1 ? "var(--mb-bg)" : "var(--mb-label-secondary)",
+              background: i === week.length - 1 ? "var(--mb-label)" : "transparent",
             }}
           >
             {d.day}

@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { DocsSearch } from "@/components/docs-search"
-import { StardustLogo } from "@/components/logo"
+import { MacbetterLogo } from "@/components/logo"
 import { MainNav } from "@/components/main-nav"
 import { MobileNav } from "@/components/mobile-nav"
 import { SchemeToggle, ThemeMenu } from "@/components/theme-controls"
@@ -24,8 +24,8 @@ function SiteHeader({ children }: { children?: React.ReactNode }) {
     <header data-platform="macos" className="docs-header">
       <MobileNav sections={publishedNav()} />
       {children}
-      <Link href="/" aria-label="Stardust home" className="docs-header-home">
-        <StardustLogo />
+      <Link href="/" aria-label="Macbetter home" className="docs-header-home">
+        <MacbetterLogo />
       </Link>
       <div className="hidden md:flex">
         <MainNav />
@@ -36,11 +36,11 @@ function SiteHeader({ children }: { children?: React.ReactNode }) {
         <ThemeMenu />
         <SchemeToggle />
         <a
-          href="https://github.com/DreambaseAI/stardust"
+          href="https://github.com/kyleledbetter/macbetter"
           target="_blank"
           rel="noreferrer"
-          aria-label="Stardust on GitHub"
-          className="sd-button hidden sm:inline-flex"
+          aria-label="Macbetter on GitHub"
+          className="mb-button hidden sm:inline-flex"
           data-variant="plain"
           data-tone="neutral"
           data-size="md"

@@ -50,7 +50,7 @@ type ScrubConfig = {
 }
 
 type EChartProps = Omit<React.ComponentProps<"div">, "children"> & {
-  /** Builds the ECharts option from the resolved Stardust theme. Memoize it with useCallback. */
+  /** Builds the ECharts option from the resolved Macbetter theme. Memoize it with useCallback. */
   option: (theme: ChartTheme) => EChartsOption
   height?: number | string
   /**
@@ -62,7 +62,7 @@ type EChartProps = Omit<React.ComponentProps<"div">, "children"> & {
   onScrub?: (scrub: Scrub | null) => void
 }
 
-/** A canvas ECharts chart themed by Stardust. Redraws when the theme, scheme or platform changes. */
+/** A canvas ECharts chart themed by Macbetter. Redraws when the theme, scheme or platform changes. */
 function EChart({ option, height = 220, scrub, onScrub, className, style, ...props }: EChartProps) {
   const ref = React.useRef<HTMLDivElement>(null)
   const mountRef = React.useRef<HTMLDivElement>(null)
@@ -189,11 +189,11 @@ function EChart({ option, height = 220, scrub, onScrub, className, style, ...pro
       ref={ref}
       {...slider}
       {...props}
-      className={className ? `sd-echart ${className}` : "sd-echart"}
+      className={className ? `mb-echart ${className}` : "mb-echart"}
       data-scrub={scrub ? "" : undefined}
       style={{ height, ...style }}
     >
-      <div ref={mountRef} className="sd-echart-canvas" aria-hidden="true" />
+      <div ref={mountRef} className="mb-echart-canvas" aria-hidden="true" />
     </div>
   )
 }

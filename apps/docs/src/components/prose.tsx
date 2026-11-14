@@ -23,7 +23,7 @@ function Callout({
     >
       <Icon
         aria-hidden="true"
-        className={`mt-[3px] size-[18px] flex-none ${type === "warning" ? "text-(--sd-yellow)" : "text-accent-text"}`}
+        className={`mt-[3px] size-[18px] flex-none ${type === "warning" ? "text-(--mb-yellow)" : "text-accent-text"}`}
       />
       <div className="min-w-0">
         {title ? <p className="font-semibold text-label">{title}</p> : null}

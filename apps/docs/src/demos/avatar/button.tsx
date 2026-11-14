@@ -1,4 +1,4 @@
-import { Avatar } from "@dreambase/stardust/avatar"
+import { Avatar } from "macbetter/avatar"
 
 export default function Example() {
   return (

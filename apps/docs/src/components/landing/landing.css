@@ -1,6 +1,6 @@
 /*
  * Landing page. Everything is prefixed lp- and sits in the components layer,
- * above Stardust's own layer, so a single class can adjust a component.
+ * above Macbetter's own layer, so a single class can adjust a component.
  */
 
 @layer components {
@@ -8,17 +8,17 @@
     --lp-max: 1200px;
     --lp-gutter: clamp(16px, 4vw, 40px);
     --lp-radius: 28px;
-    --lp-tile: light-dark(color-mix(in oklch, var(--sd-bg-secondary) 70%, var(--sd-bg)), var(--sd-bg-secondary));
-    --lp-hairline: 0 0 0 1px var(--sd-separator);
+    --lp-tile: light-dark(color-mix(in oklch, var(--mb-bg-secondary) 70%, var(--mb-bg)), var(--mb-bg-secondary));
+    --lp-hairline: 0 0 0 1px var(--mb-separator);
 
     overflow-x: clip;
     padding-top: var(--docs-header-height);
-    color: var(--sd-label);
-    font-family: var(--sd-font);
+    color: var(--mb-label);
+    font-family: var(--mb-font);
   }
 
   .lp-muted {
-    color: var(--sd-label-tertiary);
+    color: var(--mb-label-tertiary);
   }
 
   .lp :where(h1, h2, h3, p) {
@@ -29,7 +29,7 @@
 
   .lp-hero-title {
     margin-inline: auto;
-    font-family: var(--sd-font-display);
+    font-family: var(--mb-font-display);
     font-size: clamp(40px, 6.6vw, 84px);
     font-weight: 700;
     line-height: 1.02;
@@ -40,7 +40,7 @@
   .lp-hero-lead {
     max-width: 36em;
     margin-inline: auto;
-    color: var(--sd-label-secondary);
+    color: var(--mb-label-secondary);
     font-size: clamp(17px, 1.6vw, 20px);
     line-height: 1.5;
     letter-spacing: -0.012em;
@@ -48,7 +48,7 @@
   }
 
   .lp-h2 {
-    font-family: var(--sd-font-display);
+    font-family: var(--mb-font-display);
     font-size: clamp(34px, 4.8vw, 58px);
     font-weight: 700;
     line-height: 1.04;
@@ -58,7 +58,7 @@
 
   .lp-lead {
     max-width: 36em;
-    color: var(--sd-label-secondary);
+    color: var(--mb-label-secondary);
     font-size: clamp(16px, 1.4vw, 18px);
     line-height: 1.55;
     letter-spacing: -0.011em;
@@ -69,8 +69,8 @@
   .lp-features code {
     padding: 0.12em 0.38em;
     border-radius: 6px;
-    background: var(--sd-fill-tertiary);
-    color: var(--sd-label);
+    background: var(--mb-fill-tertiary);
+    color: var(--mb-label);
     font-family: var(--font-mono);
     font-size: 0.88em;
     letter-spacing: 0;
@@ -120,11 +120,11 @@
     height: var(--lp-scene-height);
     overflow: clip;
     border-radius: calc(var(--lp-radius) + 4px);
-    color: var(--sd-label);
+    color: var(--mb-label);
     box-shadow:
       0 0 0 1px light-dark(rgb(0 0 0 / 0.08), rgb(255 255 255 / 0.08)),
       0 40px 120px -48px light-dark(rgb(10 28 19 / 0.45), rgb(0 0 0 / 0.9));
-    font: var(--sd-text-body);
+    font: var(--mb-text-body);
   }
 
   .lp-scene-mac {
@@ -148,7 +148,7 @@
   }
 
   .lp-phone {
-    --sd-device-scale: 0.72;
+    --mb-device-scale: 0.72;
   }
 
   .lp-scene-dock {
@@ -182,7 +182,7 @@
     padding-inline: 14px 16px;
     border: 0;
     box-shadow: none;
-    color: var(--sd-label);
+    color: var(--mb-label);
   }
 
   .lp-menubar-mark {
@@ -229,11 +229,11 @@
     padding: 6px;
     padding-inline-start: 18px;
     white-space: nowrap;
-    font: var(--sd-text-body);
+    font: var(--mb-text-body);
   }
 
   .lp-switcher-label {
-    color: var(--sd-label-secondary);
+    color: var(--mb-label-secondary);
     font-size: 13px;
     font-weight: 600;
   }
@@ -244,14 +244,14 @@
     height: 10px;
     margin-inline-end: 6px;
     border-radius: 50%;
-    background: var(--sd-accent);
+    background: var(--mb-accent);
     box-shadow: inset 0 0 0 0.5px rgb(0 0 0 / 0.25), 0 0 0 0.5px rgb(255 255 255 / 0.2);
   }
 
   .lp-switcher-divider {
     width: 1px;
     height: 18px;
-    background: var(--sd-separator);
+    background: var(--mb-separator);
   }
 
   .lp-switcher-scheme svg {
@@ -283,19 +283,19 @@
     padding-inline: 8px;
   }
 
-  .lp-mac-table .sd-table {
+  .lp-mac-table .mb-table {
     width: 100%;
   }
 
   .lp-mac-task {
-    color: var(--sd-label);
+    color: var(--mb-label);
     font-weight: 500;
   }
 
   .lp-mac-window [data-done] .lp-mac-task {
-    color: var(--sd-label-tertiary);
+    color: var(--mb-label-tertiary);
     text-decoration: line-through;
-    text-decoration-color: var(--sd-label-quaternary);
+    text-decoration-color: var(--mb-label-quaternary);
   }
 
   .lp-mac-owner {
@@ -307,7 +307,7 @@
 
   .lp-mac-empty {
     padding: 32px;
-    color: var(--sd-label-secondary);
+    color: var(--mb-label-secondary);
     text-align: center;
   }
 
@@ -319,9 +319,9 @@
     gap: 20px;
     height: 36px;
     padding-inline: 16px;
-    box-shadow: inset 0 var(--sd-hairline) 0 var(--sd-separator);
-    color: var(--sd-label-secondary);
-    font: var(--sd-text-callout);
+    box-shadow: inset 0 var(--mb-hairline) 0 var(--mb-separator);
+    color: var(--mb-label-secondary);
+    font: var(--mb-text-callout);
   }
 
   .lp-mac-footer-toggle {
@@ -332,7 +332,7 @@
   }
 
   @container (width < 860px) {
-    .lp-mac-window .sd-toolbar-search {
+    .lp-mac-window .mb-toolbar-search {
       display: none;
     }
   }
@@ -358,7 +358,7 @@
     place-items: center;
     width: 24px;
     margin-inline-end: 12px;
-    color: var(--sd-label-tertiary);
+    color: var(--mb-label-tertiary);
   }
 
   .lp-phone-check svg {
@@ -367,11 +367,11 @@
   }
 
   .lp-phone-task[data-done] .lp-phone-check {
-    color: var(--sd-accent);
+    color: var(--mb-accent);
   }
 
-  .lp-phone-task[data-done] .sd-list-row-title {
-    color: var(--sd-label-secondary);
+  .lp-phone-task[data-done] .mb-list-row-title {
+    color: var(--mb-label-secondary);
     text-decoration: line-through;
   }
 
@@ -383,29 +383,29 @@
 
   .lp-wallpaper {
     --lp-wall-base: light-dark(
-      color-mix(in oklch, var(--sd-accent-secondary) 12%, #f6f1e9),
-      color-mix(in oklch, var(--sd-bg) 78%, black)
+      color-mix(in oklch, var(--mb-accent-secondary) 12%, #f6f1e9),
+      color-mix(in oklch, var(--mb-bg) 78%, black)
     );
     --lp-glow-a: light-dark(
-      color-mix(in oklch, var(--sd-accent) 50%, transparent),
-      color-mix(in oklch, var(--sd-accent) 62%, transparent)
+      color-mix(in oklch, var(--mb-accent) 50%, transparent),
+      color-mix(in oklch, var(--mb-accent) 62%, transparent)
     );
     --lp-glow-b: light-dark(
-      color-mix(in oklch, var(--sd-accent-secondary) 46%, transparent),
-      color-mix(in oklch, var(--sd-accent-secondary) 50%, transparent)
+      color-mix(in oklch, var(--mb-accent-secondary) 46%, transparent),
+      color-mix(in oklch, var(--mb-accent-secondary) 50%, transparent)
     );
     --lp-glow-c: light-dark(
-      color-mix(in oklch, color-mix(in oklch, var(--sd-accent) 55%, var(--sd-yellow)) 50%, transparent),
-      color-mix(in oklch, color-mix(in oklch, var(--sd-accent) 55%, var(--sd-yellow)) 40%, transparent)
+      color-mix(in oklch, color-mix(in oklch, var(--mb-accent) 55%, var(--mb-yellow)) 50%, transparent),
+      color-mix(in oklch, color-mix(in oklch, var(--mb-accent) 55%, var(--mb-yellow)) 40%, transparent)
     );
-    --lp-ribbon-1: color-mix(in oklch, var(--sd-accent-secondary) 85%, var(--lp-wall-base));
-    --lp-ribbon-2: var(--sd-accent);
-    --lp-ribbon-2b: color-mix(in oklch, var(--sd-accent) 55%, var(--sd-yellow));
+    --lp-ribbon-1: color-mix(in oklch, var(--mb-accent-secondary) 85%, var(--lp-wall-base));
+    --lp-ribbon-2: var(--mb-accent);
+    --lp-ribbon-2b: color-mix(in oklch, var(--mb-accent) 55%, var(--mb-yellow));
     --lp-ribbon-3: light-dark(
-      color-mix(in oklch, var(--sd-accent-secondary) 30%, var(--lp-wall-base)),
-      color-mix(in oklch, var(--sd-accent-secondary) 26%, var(--lp-wall-base))
+      color-mix(in oklch, var(--mb-accent-secondary) 30%, var(--lp-wall-base)),
+      color-mix(in oklch, var(--mb-accent-secondary) 26%, var(--lp-wall-base))
     );
-    --lp-edge: light-dark(#ffffff, color-mix(in oklch, var(--sd-accent) 30%, #ffffff));
+    --lp-edge: light-dark(#ffffff, color-mix(in oklch, var(--mb-accent) 30%, #ffffff));
 
     position: absolute;
     inset: 0;
@@ -414,8 +414,8 @@
     pointer-events: none;
   }
 
-  /* Dreambase's own palette: Rajah in the warm light, Emerald on the top ribbon. */
-  :where([data-theme="dreambase"]) .lp-wallpaper {
+  /* Ember's own palette: Rajah in the warm light, Emerald on the top ribbon. */
+  :where([data-theme="ember"]) .lp-wallpaper {
     --lp-ribbon-2b: light-dark(#f9943c, #f8b16d);
     --lp-ribbon-1: light-dark(#44bd8b, #25604e);
   }
@@ -529,7 +529,7 @@
     margin-inline: -40px;
     border-radius: var(--lp-radius);
     background:
-      radial-gradient(80% 90% at 50% 110%, color-mix(in oklch, var(--sd-accent) 14%, transparent), transparent 70%),
+      radial-gradient(80% 90% at 50% 110%, color-mix(in oklch, var(--mb-accent) 14%, transparent), transparent 70%),
       var(--lp-tile);
     box-shadow: var(--lp-hairline);
   }
@@ -563,7 +563,7 @@
 
   .lp-platform figcaption {
     max-width: 30ch;
-    color: var(--sd-label-secondary);
+    color: var(--mb-label-secondary);
     font-size: 15px;
     line-height: 1.5;
     letter-spacing: -0.01em;
@@ -572,7 +572,7 @@
   .lp-platform figcaption strong {
     display: block;
     margin-bottom: 2px;
-    color: var(--sd-label);
+    color: var(--mb-label);
     font-weight: 600;
   }
 
@@ -581,30 +581,30 @@
   }
 
   .lp-platform-window-body {
-    background: var(--sd-bg-grouped);
+    background: var(--mb-bg-grouped);
     padding-block: 8px;
   }
 
   .lp-platform-ipad {
-    --sd-device-screen-width: var(--lp-ipad-width);
-    --sd-device-screen-height: var(--lp-ipad-height);
+    --mb-device-screen-width: var(--lp-ipad-width);
+    --mb-device-screen-height: var(--lp-ipad-height);
   }
 
   .lp-platform-iphone {
-    --sd-device-scale: var(--lp-iphone-scale);
+    --mb-device-scale: var(--lp-iphone-scale);
   }
 
   .lp-platform-screen {
-    padding-top: var(--sd-safe-area-top);
+    padding-top: var(--mb-safe-area-top);
     overflow: hidden;
-    background: var(--sd-bg-grouped);
+    background: var(--mb-bg-grouped);
   }
 
   .lp-platform-screen-title {
-    padding: 10px var(--sd-content-padding) 4px;
+    padding: 10px var(--mb-content-padding) 4px;
   }
 
-  .lp-form-block .sd-segmented-control {
+  .lp-form-block .mb-segmented-control {
     width: 100%;
   }
 
@@ -618,13 +618,13 @@
     align-items: center;
     gap: 10px;
     width: 100%;
-    color: var(--sd-label-secondary);
+    color: var(--mb-label-secondary);
   }
 
   .lp-form-slider svg {
     flex: none;
-    width: var(--sd-icon-size);
-    height: var(--sd-icon-size);
+    width: var(--mb-icon-size);
+    height: var(--mb-icon-size);
   }
 
   /* ── Themes ───────────────────────────────────────────────── */
@@ -642,12 +642,12 @@
     gap: 24px;
     margin: 0;
     padding: 22px;
-    border-radius: calc(var(--sd-radius-2xl) + 2px);
-    background: var(--sd-bg);
-    color: var(--sd-label);
+    border-radius: calc(var(--mb-radius-2xl) + 2px);
+    background: var(--mb-bg);
+    color: var(--mb-label);
     box-shadow:
-      0 0 0 1px var(--sd-separator),
-      var(--sd-shadow-3);
+      0 0 0 1px var(--mb-separator),
+      var(--mb-shadow-3);
   }
 
   .lp-theme-card-head {
@@ -664,7 +664,7 @@
     width: 22px;
     height: 22px;
     border-radius: 50%;
-    box-shadow: 0 0 0 2px var(--sd-bg);
+    box-shadow: 0 0 0 2px var(--mb-bg);
   }
 
   .lp-theme-card-swatches span + span {
@@ -678,7 +678,7 @@
   }
 
   .lp-theme-card-note {
-    color: var(--sd-label-secondary);
+    color: var(--mb-label-secondary);
     font-size: 13px;
     line-height: 1.4;
   }
@@ -745,21 +745,21 @@
     justify-self: start;
     gap: 6px;
     border-radius: 6px;
-    color: var(--sd-label-secondary);
+    color: var(--mb-label-secondary);
     font-size: 13px;
     font-weight: 600;
     letter-spacing: -0.005em;
     text-decoration: none;
-    transition: color var(--sd-duration-fast) var(--sd-ease-out);
+    transition: color var(--mb-duration-fast) var(--mb-ease-out);
   }
 
   .lp-tile-arrow {
-    transition: translate var(--sd-spring-snappy-duration) var(--sd-spring-snappy);
+    transition: translate var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
   }
 
   @media (hover: hover) and (pointer: fine) {
     .lp-tile-name:hover {
-      color: var(--sd-label);
+      color: var(--mb-label);
     }
 
     .lp-tile-name:hover .lp-tile-arrow {
@@ -768,7 +768,7 @@
   }
 
   .lp-tile-name:focus-visible {
-    outline: var(--sd-focus-ring-width) solid var(--sd-focus-ring);
+    outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
     outline-offset: 2px;
   }
 
@@ -800,7 +800,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    color: var(--sd-label-secondary);
+    color: var(--mb-label-secondary);
   }
 
   .lp-tile-slider-row svg {
@@ -826,7 +826,7 @@
   .lp-tile-switches svg {
     width: 16px;
     height: 16px;
-    color: var(--sd-label-secondary);
+    color: var(--mb-label-secondary);
   }
 
   .lp-tile-stack {
@@ -846,7 +846,7 @@
     display: grid;
     justify-items: center;
     gap: 14px;
-    color: var(--sd-label-secondary);
+    color: var(--mb-label-secondary);
     font-size: 13px;
   }
 
@@ -857,12 +857,12 @@
     width: min(100%, 520px);
   }
 
-  .lp-tile-search .sd-command-palette-trigger {
+  .lp-tile-search .mb-command-palette-trigger {
     width: 100%;
   }
 
   .lp-tile-hint {
-    color: var(--sd-label-tertiary);
+    color: var(--mb-label-tertiary);
     font-size: 13px;
   }
 
@@ -888,7 +888,7 @@
     place-items: center;
     width: 48px;
     padding: 0;
-    color: var(--sd-accent-text);
+    color: var(--mb-accent-text);
   }
 
   .lp-tile-glass-locate svg {
@@ -899,11 +899,11 @@
   .lp-tile-glass .lp-tile-name {
     padding: 4px 10px;
     margin-inline-start: -6px;
-    border-radius: var(--sd-radius-full);
-    background: var(--sd-material-thin);
-    -webkit-backdrop-filter: var(--sd-material-filter);
-    backdrop-filter: var(--sd-material-filter);
-    color: var(--sd-label);
+    border-radius: var(--mb-radius-full);
+    background: var(--mb-material-thin);
+    -webkit-backdrop-filter: var(--mb-material-filter);
+    backdrop-filter: var(--mb-material-filter);
+    color: var(--mb-label);
   }
 
   /* ── Materials and motion ─────────────────────────────────── */
@@ -935,13 +935,13 @@
 
   .lp-motion-caption {
     padding: 0 28px 24px;
-    color: var(--sd-label-secondary);
+    color: var(--mb-label-secondary);
     font-size: 15px;
     line-height: 1.5;
   }
 
   .lp-motion-caption strong {
-    color: var(--sd-label);
+    color: var(--mb-label);
     font-weight: 600;
   }
 
@@ -950,11 +950,11 @@
     padding: 12px 16px;
     justify-self: start;
     border-radius: 16px;
-    background: var(--sd-material-thick);
-    -webkit-backdrop-filter: var(--sd-material-filter);
-    backdrop-filter: var(--sd-material-filter);
-    box-shadow: var(--sd-glass-rim), 0 0 0 var(--sd-hairline) var(--sd-glass-border);
-    color: var(--sd-label-secondary);
+    background: var(--mb-material-thick);
+    -webkit-backdrop-filter: var(--mb-material-filter);
+    backdrop-filter: var(--mb-material-filter);
+    box-shadow: var(--mb-glass-rim), 0 0 0 var(--mb-hairline) var(--mb-glass-border);
+    color: var(--mb-label-secondary);
   }
 
   .lp-materials-panes {
@@ -973,7 +973,7 @@
     aspect-ratio: 4 / 3;
     padding: 14px 16px;
     border-radius: 20px;
-    box-shadow: var(--sd-glass-rim), var(--sd-shadow-3);
+    box-shadow: var(--mb-glass-rim), var(--mb-shadow-3);
     font-size: 13px;
     font-weight: 600;
   }
@@ -988,8 +988,8 @@
   }
 
   .lp-spring {
-    --lp-spring-curve: var(--sd-spring-bouncy);
-    --lp-spring-duration: var(--sd-spring-bouncy-duration);
+    --lp-spring-curve: var(--mb-spring-bouncy);
+    --lp-spring-duration: var(--mb-spring-bouncy-duration);
 
     display: grid;
     align-content: center;
@@ -999,13 +999,13 @@
   }
 
   .lp-spring[data-spring="snappy"] {
-    --lp-spring-curve: var(--sd-spring-snappy);
-    --lp-spring-duration: var(--sd-spring-snappy-duration);
+    --lp-spring-curve: var(--mb-spring-snappy);
+    --lp-spring-duration: var(--mb-spring-snappy-duration);
   }
 
   .lp-spring[data-spring="smooth"] {
-    --lp-spring-curve: var(--sd-spring-smooth);
-    --lp-spring-duration: var(--sd-spring-smooth-duration);
+    --lp-spring-curve: var(--mb-spring-smooth);
+    --lp-spring-duration: var(--mb-spring-smooth-duration);
   }
 
   .lp-spring-track {
@@ -1015,16 +1015,16 @@
     height: 72px;
     padding: 0;
     border: 0;
-    border-radius: var(--sd-radius-full);
+    border-radius: var(--mb-radius-full);
     background:
-      repeating-linear-gradient(90deg, var(--sd-separator-strong) 0 1px, transparent 1px 20px) center / calc(100% - 56px) 36% no-repeat,
-      var(--sd-fill-tertiary);
-    box-shadow: inset 0 0 0 1px var(--sd-separator), inset 0 2px 6px light-dark(rgb(0 0 0 / 0.06), rgb(0 0 0 / 0.3));
+      repeating-linear-gradient(90deg, var(--mb-separator-strong) 0 1px, transparent 1px 20px) center / calc(100% - 56px) 36% no-repeat,
+      var(--mb-fill-tertiary);
+    box-shadow: inset 0 0 0 1px var(--mb-separator), inset 0 2px 6px light-dark(rgb(0 0 0 / 0.06), rgb(0 0 0 / 0.3));
     cursor: pointer;
   }
 
   .lp-spring-track:focus-visible {
-    outline: var(--sd-focus-ring-width) solid var(--sd-focus-ring);
+    outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
     outline-offset: 3px;
   }
 
@@ -1060,13 +1060,13 @@
   }
 
   .lp-spring-curve line {
-    stroke: var(--sd-separator-strong);
+    stroke: var(--mb-separator-strong);
     stroke-dasharray: 3 4;
   }
 
   .lp-spring-curve path {
     fill: none;
-    stroke: var(--sd-accent);
+    stroke: var(--mb-accent);
     stroke-width: 3;
     stroke-linecap: round;
     stroke-linejoin: round;
@@ -1076,13 +1076,13 @@
   .lp-spring-meta p {
     display: grid;
     gap: 4px;
-    color: var(--sd-label-secondary);
+    color: var(--mb-label-secondary);
     font-size: 14px;
     line-height: 1.45;
   }
 
   .lp-spring-meta code {
-    color: var(--sd-label);
+    color: var(--mb-label);
     font-family: var(--font-mono);
     font-size: 12.5px;
   }
@@ -1111,13 +1111,13 @@
     align-content: start;
     gap: 12px;
     padding-top: 18px;
-    border-top: 1px solid var(--sd-separator);
+    border-top: 1px solid var(--mb-separator);
   }
 
   .lp-features svg {
     width: 20px;
     height: 20px;
-    color: var(--sd-accent-text);
+    color: var(--mb-accent-text);
   }
 
   .lp-features h3 {
@@ -1128,7 +1128,7 @@
   }
 
   .lp-features p {
-    color: var(--sd-label-secondary);
+    color: var(--mb-label-secondary);
     font-size: 14.5px;
     line-height: 1.5;
   }
@@ -1149,7 +1149,7 @@
     gap: 10px;
     min-width: 0;
     padding: 6px 6px 6px 18px;
-    border: 1px solid var(--sd-separator);
+    border: 1px solid var(--mb-separator);
     border-radius: 14px;
     background: light-dark(#f7f9f7, #081710);
     font-family: var(--font-mono);
@@ -1165,7 +1165,7 @@
   }
 
   .lp-install-prompt {
-    color: var(--sd-accent-text);
+    color: var(--mb-accent-text);
   }
 
   /* ── Closing ──────────────────────────────────────────────── */
@@ -1191,7 +1191,7 @@
     width: min(900px, 120%);
     aspect-ratio: 2;
     translate: -50% 0;
-    background: radial-gradient(closest-side, color-mix(in oklch, var(--sd-accent) 18%, transparent), transparent);
+    background: radial-gradient(closest-side, color-mix(in oklch, var(--mb-accent) 18%, transparent), transparent);
     pointer-events: none;
   }
 
@@ -1204,7 +1204,7 @@
   }
 
   .lp-footer {
-    border-top: 1px solid var(--sd-separator);
+    border-top: 1px solid var(--mb-separator);
   }
 
   .lp-footer-inner {
@@ -1215,7 +1215,7 @@
     gap: 16px 32px;
     max-width: calc(var(--lp-max) + var(--lp-gutter) * 2);
     margin-inline: auto;
-    padding: 28px var(--lp-gutter) calc(28px + var(--sd-safe-bottom));
+    padding: 28px var(--lp-gutter) calc(28px + var(--mb-safe-bottom));
     font-size: 14px;
   }
 
@@ -1224,12 +1224,17 @@
     align-items: center;
     gap: 10px;
     border-radius: 8px;
-    color: var(--sd-label-secondary);
+    color: var(--mb-label-secondary);
     text-decoration: none;
   }
 
+  .lp-footer-mark {
+    flex: none;
+    color: var(--mb-label);
+  }
+
   .lp-footer-brand strong {
-    color: var(--sd-label);
+    color: var(--mb-label);
     font-weight: 600;
   }
 
@@ -1241,25 +1246,25 @@
 
   .lp-footer-links a {
     border-radius: 6px;
-    color: var(--sd-label-secondary);
+    color: var(--mb-label-secondary);
     text-decoration: none;
-    transition: color var(--sd-duration-fast) var(--sd-ease-out);
+    transition: color var(--mb-duration-fast) var(--mb-ease-out);
   }
 
   .lp-footer-links a:hover,
   .lp-footer-brand:hover strong {
-    color: var(--sd-accent-text);
+    color: var(--mb-accent-text);
   }
 
   .lp :is(.lp-footer-links a, .lp-footer-brand):focus-visible {
-    outline: var(--sd-focus-ring-width) solid var(--sd-focus-ring);
+    outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
     outline-offset: 3px;
   }
 
   /* ── Entrance and reveal ──────────────────────────────────── */
 
   .lp-enter {
-    animation: lp-enter 900ms var(--sd-ease-out) backwards;
+    animation: lp-enter 900ms var(--mb-ease-out) backwards;
     animation-delay: calc(var(--i, 0) * 90ms + 60ms);
   }
 
@@ -1287,8 +1292,8 @@
 
   .lp-reveal[data-reveal] {
     transition:
-      opacity 700ms var(--sd-ease-out),
-      translate 900ms var(--sd-ease-out);
+      opacity 700ms var(--mb-ease-out),
+      translate 900ms var(--mb-ease-out);
   }
 
   .lp-reveal[data-reveal]:not([data-revealed]) {
@@ -1339,11 +1344,11 @@
     }
 
     .lp-phone {
-      --sd-device-scale: 0.6;
+      --mb-device-scale: 0.6;
     }
 
-    .lp-scene-dock .sd-dock {
-      --sd-dock-icon-size: 40px;
+    .lp-scene-dock .mb-dock {
+      --mb-dock-icon-size: 40px;
     }
 
     .lp-menubar-menus,
@@ -1458,7 +1463,7 @@
     }
 
     .lp-phone {
-      --sd-device-scale: 0.8;
+      --mb-device-scale: 0.8;
     }
 
     .lp-switcher {

@@ -1,12 +1,12 @@
-import { ActivityIndicator } from "@dreambase/stardust/activity-indicator"
+import { ActivityIndicator } from "macbetter/activity-indicator"
 
 export default function Example() {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
-      <span style={{ color: "var(--sd-label)" }}>
+      <span style={{ color: "var(--mb-label)" }}>
         <ActivityIndicator size="lg" aria-label="Preparing export" />
       </span>
-      <span style={{ color: "var(--sd-accent-text)" }}>
+      <span style={{ color: "var(--mb-accent-text)" }}>
         <ActivityIndicator size="lg" aria-label="Syncing" />
       </span>
       <span

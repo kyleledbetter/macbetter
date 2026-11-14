@@ -94,7 +94,7 @@ function searchPanes(query: string) {
 }
 
 const networks = {
-  current: "Dreambase HQ",
+  current: "Macbetter HQ",
   known: ["Harbor Cafe Guest", "Pine Street Loft", "Avery’s iPhone"],
   other: ["Hollis Studio", "Northwind 5G", "Library Public", "Saltmarsh Guest"],
 }
@@ -108,7 +108,7 @@ const devices = [
 
 const apps = [
   { id: "calendar", name: "Calendar", color: "red" as const },
-  { id: "dreambase", name: "Dreambase", color: "orange" as const },
+  { id: "macbetter", name: "Macbetter", color: "orange" as const },
   { id: "mail", name: "Mail", color: "blue" as const },
   { id: "messages", name: "Messages", color: "green" as const },
   { id: "music", name: "Music", color: "pink" as const },
@@ -125,13 +125,13 @@ const outputs = [
 
 const accents = [
   { id: "multicolor", label: "Multicolor", color: "" },
-  { id: "blue", label: "Blue", color: "var(--sd-blue)" },
-  { id: "purple", label: "Purple", color: "var(--sd-purple)" },
-  { id: "pink", label: "Pink", color: "var(--sd-pink)" },
-  { id: "red", label: "Red", color: "var(--sd-red)" },
-  { id: "orange", label: "Orange", color: "var(--sd-orange)" },
-  { id: "yellow", label: "Yellow", color: "var(--sd-yellow)" },
-  { id: "green", label: "Green", color: "var(--sd-green)" },
+  { id: "blue", label: "Blue", color: "var(--mb-blue)" },
+  { id: "purple", label: "Purple", color: "var(--mb-purple)" },
+  { id: "pink", label: "Pink", color: "var(--mb-pink)" },
+  { id: "red", label: "Red", color: "var(--mb-red)" },
+  { id: "orange", label: "Orange", color: "var(--mb-orange)" },
+  { id: "yellow", label: "Yellow", color: "var(--mb-yellow)" },
+  { id: "green", label: "Green", color: "var(--mb-green)" },
   { id: "graphite", label: "Graphite", color: "light-dark(#8c8c91, #98989d)" },
 ]
 
@@ -187,7 +187,7 @@ const initialSettings: SettingsState = {
   notifySleeping: false,
   notifyLocked: true,
   notifyMirroring: false,
-  appNotifications: { calendar: true, dreambase: true, mail: true, messages: true, music: false, reminders: true },
+  appNotifications: { calendar: true, macbetter: true, mail: true, messages: true, music: false, reminders: true },
   alertSound: "Pebble",
   alertVolume: 62,
   outputVolume: 48,

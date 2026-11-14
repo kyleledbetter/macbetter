@@ -1,7 +1,7 @@
 "use client"
 
-import { Button } from "@dreambase/stardust/button"
-import { toast } from "@dreambase/stardust/toast"
+import { Button } from "macbetter/button"
+import { toast } from "macbetter/toast"
 
 export default function Example() {
   return (

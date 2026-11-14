@@ -8,11 +8,11 @@ const materials = [
 ] as const
 
 const blobs = [
-  { color: "var(--sd-red)", x: "4%", y: "8%", size: 120 },
-  { color: "var(--sd-yellow)", x: "30%", y: "52%", size: 140 },
-  { color: "var(--sd-blue)", x: "58%", y: "4%", size: 130 },
-  { color: "var(--sd-green)", x: "80%", y: "50%", size: 120 },
-  { color: "var(--sd-purple)", x: "44%", y: "18%", size: 90 },
+  { color: "var(--mb-red)", x: "4%", y: "8%", size: 120 },
+  { color: "var(--mb-yellow)", x: "30%", y: "52%", size: 140 },
+  { color: "var(--mb-blue)", x: "58%", y: "4%", size: 130 },
+  { color: "var(--mb-green)", x: "80%", y: "50%", size: 120 },
+  { color: "var(--mb-purple)", x: "44%", y: "18%", size: 90 },
 ]
 
 export default function Materials() {
@@ -27,29 +27,29 @@ export default function Materials() {
           />
         ))}
         <span className="absolute inset-x-0 top-1/2 -translate-y-1/2 text-center text-[88px] leading-none font-bold tracking-[-0.04em] text-label opacity-80 select-none">
-          Stardust
+          Macbetter
         </span>
       </div>
       <div className="relative grid gap-3 [grid-template-columns:repeat(auto-fill,minmax(min(100%,180px),1fr))]">
         {materials.map((material) => (
           <div
             key={material.id}
-            className="sd-material flex min-h-[104px] flex-col justify-end gap-0.5 p-4"
+            className="mb-material flex min-h-[104px] flex-col justify-end gap-0.5 p-4"
             data-material={material.id}
-            style={{ borderRadius: "var(--sd-radius-xl)" }}
+            style={{ borderRadius: "var(--mb-radius-xl)" }}
           >
-            <span className="sd-text-headline">{material.name}</span>
-            <span className="sd-text-footnote sd-label-secondary">{material.note}</span>
+            <span className="mb-text-headline">{material.name}</span>
+            <span className="mb-text-footnote mb-label-secondary">{material.note}</span>
           </div>
         ))}
       </div>
       <div className="relative mt-6 flex justify-center">
-        <div className="sd-glass flex items-center gap-1 rounded-full p-1.5">
+        <div className="mb-glass flex items-center gap-1 rounded-full p-1.5">
           {["Library", "For You", "Browse", "Search"].map((tab, index) => (
             <span
               key={tab}
               className="rounded-full px-4 py-1.5 text-[13px] font-medium"
-              style={index === 0 ? { background: "var(--sd-fill-secondary)", color: "var(--sd-label)" } : { color: "var(--sd-label-secondary)" }}
+              style={index === 0 ? { background: "var(--mb-fill-secondary)", color: "var(--mb-label)" } : { color: "var(--mb-label-secondary)" }}
             >
               {tab}
             </span>

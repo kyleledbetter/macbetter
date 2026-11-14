@@ -26,16 +26,16 @@ function ChartFrame({ title, summary, table, className, children, ...props }: Ch
   return (
     <figure
       {...props}
-      className={className ? `sd-chart ${className}` : "sd-chart"}
+      className={className ? `mb-chart ${className}` : "mb-chart"}
       aria-labelledby={`${id}-title`}
       aria-describedby={`${id}-summary`}
     >
       {children}
-      <figcaption className="sd-visually-hidden">
+      <figcaption className="mb-visually-hidden">
         <span id={`${id}-title`}>{title}</span> <span id={`${id}-summary`}>{summary}</span>
       </figcaption>
       {table ? (
-        <table className="sd-visually-hidden">
+        <table className="mb-visually-hidden">
           <caption>{title}</caption>
           <thead>
             <tr>
@@ -79,13 +79,13 @@ type ChartHeaderProps = Omit<React.ComponentProps<"div">, "children"> & {
 /** The header Health puts over a chart: what, how much, and when. It follows the scrub. */
 function ChartHeader({ eyebrow, value, unit, detail, className, ...props }: ChartHeaderProps) {
   return (
-    <div {...props} className={className ? `sd-chart-header ${className}` : "sd-chart-header"}>
-      {eyebrow ? <div className="sd-chart-eyebrow">{eyebrow}</div> : null}
-      <div className="sd-chart-reading">
-        <span className="sd-chart-value">{value}</span>
-        {unit ? <span className="sd-chart-unit">{unit}</span> : null}
+    <div {...props} className={className ? `mb-chart-header ${className}` : "mb-chart-header"}>
+      {eyebrow ? <div className="mb-chart-eyebrow">{eyebrow}</div> : null}
+      <div className="mb-chart-reading">
+        <span className="mb-chart-value">{value}</span>
+        {unit ? <span className="mb-chart-unit">{unit}</span> : null}
       </div>
-      {detail ? <div className="sd-chart-detail">{detail}</div> : null}
+      {detail ? <div className="mb-chart-detail">{detail}</div> : null}
     </div>
   )
 }
@@ -93,7 +93,7 @@ function ChartHeader({ eyebrow, value, unit, detail, className, ...props }: Char
 type ChartLegendProps = React.ComponentProps<"ul"> & {
   items: {
     label: string
-    /** Any CSS color, usually a token: "var(--sd-chart-rem)". */
+    /** Any CSS color, usually a token: "var(--mb-chart-rem)". */
     color: string
     /** A short value beside the label, like "1 hr 42 min". */
     value?: React.ReactNode
@@ -104,17 +104,17 @@ type ChartLegendProps = React.ComponentProps<"ul"> & {
 /** A legend. Each entry says its name in words, so color is never the only key. */
 function ChartLegend({ items, className, ...props }: ChartLegendProps) {
   return (
-    <ul {...props} className={className ? `sd-chart-legend ${className}` : "sd-chart-legend"}>
+    <ul {...props} className={className ? `mb-chart-legend ${className}` : "mb-chart-legend"}>
       {items.map((item) => (
         <li key={item.label}>
           <span
             aria-hidden="true"
-            className="sd-chart-swatch"
+            className="mb-chart-swatch"
             data-shape={item.shape ?? "dot"}
-            style={{ "--sd-chart-swatch": item.color } as React.CSSProperties}
+            style={{ "--mb-chart-swatch": item.color } as React.CSSProperties}
           />
-          <span className="sd-chart-legend-label">{item.label}</span>
-          {item.value ? <span className="sd-chart-legend-value">{item.value}</span> : null}
+          <span className="mb-chart-legend-label">{item.label}</span>
+          {item.value ? <span className="mb-chart-legend-value">{item.value}</span> : null}
         </li>
       ))}
     </ul>

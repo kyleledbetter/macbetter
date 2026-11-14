@@ -1,7 +1,7 @@
 "use client"
 
-import { Button } from "@dreambase/stardust/button"
-import { DeviceFrame } from "@dreambase/stardust/device-frame"
+import { Button } from "macbetter/button"
+import { DeviceFrame } from "macbetter/device-frame"
 import {
   List,
   ListRow,
@@ -11,15 +11,15 @@ import {
   ListRowTitle,
   ListRowValue,
   ListSection,
-} from "@dreambase/stardust/list"
+} from "macbetter/list"
 import {
   NavigationBar,
   NavigationBarBackButton,
   NavigationBarTrailing,
   NavigationStack,
-} from "@dreambase/stardust/navigation-bar"
-import { Switch } from "@dreambase/stardust/switch"
-import { TabBar, TabBarItem, TabBarList, TabBarPanel } from "@dreambase/stardust/tab-bar"
+} from "macbetter/navigation-bar"
+import { Switch } from "macbetter/switch"
+import { TabBar, TabBarItem, TabBarList, TabBarPanel } from "macbetter/tab-bar"
 import {
   BellIcon,
   CalendarCheckIcon,

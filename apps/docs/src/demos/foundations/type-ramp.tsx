@@ -3,16 +3,16 @@
 import { useEffect, useRef, useState } from "react"
 
 const styles = [
-  { name: "Large Title", className: "sd-text-large-title", sample: "Library" },
-  { name: "Title 1", className: "sd-text-title-1", sample: "Recently Added" },
-  { name: "Title 2", className: "sd-text-title-2", sample: "Shared with You" },
-  { name: "Title 3", className: "sd-text-title-3", sample: "Albums" },
-  { name: "Headline", className: "sd-text-headline", sample: "Morning Run" },
-  { name: "Body", className: "sd-text-body", sample: "Your playlist syncs to every device." },
-  { name: "Callout", className: "sd-text-callout", sample: "Downloads finish in the background." },
-  { name: "Subheadline", className: "sd-text-subheadline", sample: "Updated 2 minutes ago" },
-  { name: "Footnote", className: "sd-text-footnote", sample: "Requires macOS 15 or later." },
-  { name: "Caption", className: "sd-text-caption", sample: "42 songs, 2 hr 18 min" },
+  { name: "Large Title", className: "mb-text-large-title", sample: "Library" },
+  { name: "Title 1", className: "mb-text-title-1", sample: "Recently Added" },
+  { name: "Title 2", className: "mb-text-title-2", sample: "Shared with You" },
+  { name: "Title 3", className: "mb-text-title-3", sample: "Albums" },
+  { name: "Headline", className: "mb-text-headline", sample: "Morning Run" },
+  { name: "Body", className: "mb-text-body", sample: "Your playlist syncs to every device." },
+  { name: "Callout", className: "mb-text-callout", sample: "Downloads finish in the background." },
+  { name: "Subheadline", className: "mb-text-subheadline", sample: "Updated 2 minutes ago" },
+  { name: "Footnote", className: "mb-text-footnote", sample: "Requires macOS 15 or later." },
+  { name: "Caption", className: "mb-text-caption", sample: "42 songs, 2 hr 18 min" },
 ]
 
 type Metrics = { size: string; leading: string; weight: string; tracking: string }

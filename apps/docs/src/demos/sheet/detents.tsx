@@ -1,5 +1,5 @@
-import { Button } from "@dreambase/stardust/button"
-import { List, ListRow, ListRowTitle, ListRowValue, ListSection } from "@dreambase/stardust/list"
+import { Button } from "macbetter/button"
+import { List, ListRow, ListRowTitle, ListRowValue, ListSection } from "macbetter/list"
 import {
   Sheet,
   SheetBody,
@@ -9,7 +9,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@dreambase/stardust/sheet"
+} from "macbetter/sheet"
 
 const places = [
   { name: "Blue Bottle Coffee", detail: "Coffee · 0.2 mi" },

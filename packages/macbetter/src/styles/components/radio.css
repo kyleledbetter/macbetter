@@ -1,0 +1,269 @@
+/* Radio — one choice from a few. macOS: a small circle that fills with the accent around a white dot.
+   Touch: a larger circle, or a list of rows with a trailing checkmark, as in iOS Settings. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-radio-size: 14px;
+  --mb-radio-dot: 6px;
+  --mb-radio-label-gap: var(--mb-space-3);
+  --mb-radio-group-gap: var(--mb-space-3);
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-radio-size: 22px;
+  --mb-radio-dot: 9px;
+  --mb-radio-label-gap: var(--mb-space-5);
+  --mb-radio-group-gap: var(--mb-space-6);
+}
+
+.mb-radio-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--mb-radio-group-gap);
+}
+
+.mb-radio {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--mb-radio-size);
+  height: var(--mb-radio-size);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--mb-radius-full);
+  background: var(--mb-bg-control);
+  box-shadow:
+    inset 0 0 0 var(--mb-hairline) var(--mb-control-border),
+    0 0.5px 1px var(--mb-shadow-color);
+  font: inherit;
+  cursor: default;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--mb-duration-fast) var(--mb-ease-out),
+    box-shadow var(--mb-duration-fast) var(--mb-ease-out),
+    scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+.mb-radio::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: max(100%, var(--mb-hit-target));
+  height: max(100%, var(--mb-hit-target));
+  translate: -50% -50%;
+}
+
+.mb-radio[data-checked] {
+  background: var(--mb-accent);
+  box-shadow:
+    inset 0 0 0 var(--mb-hairline) color-mix(in oklch, var(--mb-accent-pressed), transparent 30%),
+    inset 0 0.5px 0 rgb(255 255 255 / 0.28),
+    0 0.5px 1px var(--mb-shadow-color);
+}
+
+.mb-radio:active:not([data-disabled], [data-readonly]) {
+  background: color-mix(in oklch, var(--mb-bg-control), var(--mb-ink) 12%);
+  transition-duration: 0ms;
+}
+
+.mb-radio[data-checked]:active:not([data-disabled], [data-readonly]) {
+  background: var(--mb-accent-pressed);
+}
+
+.mb-radio[data-disabled] {
+  opacity: 0.4;
+}
+
+/* ui-sdk marks the group, not each radio, when a Field shows it invalid. */
+.mb-radio-group[data-invalid]:not([data-variant="list"]) .mb-radio:not([data-checked]) {
+  box-shadow: inset 0 0 0 1.5px var(--mb-destructive);
+}
+
+.mb-radio-indicator {
+  display: block;
+  width: var(--mb-radio-dot);
+  height: var(--mb-radio-dot);
+  border-radius: var(--mb-radius-full);
+  /* White on the system blue, as AppKit draws it; a brand whose accent needs dark ink gets a dark dot. */
+  background: var(--mb-on-accent);
+  box-shadow: 0 0.5px 1px rgb(0 0 0 / 0.18);
+  scale: 0;
+  transition: scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+.mb-radio-indicator[data-checked] {
+  scale: 1;
+}
+
+.mb-radio-check {
+  display: none;
+}
+
+/* A radio with a title. */
+.mb-radio-label {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--mb-radio-label-gap);
+  color: var(--mb-label);
+  font: var(--mb-text-body);
+  letter-spacing: var(--mb-tracking-body);
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.mb-radio-label > .mb-radio {
+  margin-block-start: calc((1lh - var(--mb-radio-size)) / 2);
+}
+
+.mb-radio-label:has(> .mb-radio[data-disabled]) {
+  color: var(--mb-label-tertiary);
+}
+
+.mb-radio-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mb-space-1);
+  min-width: 0;
+}
+
+.mb-radio-description {
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-callout);
+}
+
+/* List: rows in an inset group, the chosen one marked with a checkmark at the end. */
+.mb-radio-group[data-variant="list"] {
+  align-items: stretch;
+  gap: 0;
+  min-width: min(100%, 280px);
+  padding: 0;
+  border-radius: var(--mb-group-radius);
+  background: var(--mb-bg-grouped-secondary);
+  box-shadow: 0 0 0 var(--mb-hairline) var(--mb-separator);
+  overflow: clip;
+}
+
+.mb-radio-group[data-variant="list"] .mb-radio-label {
+  position: relative;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-between;
+  min-height: var(--mb-row-height);
+  padding: var(--mb-space-3) var(--mb-row-padding);
+  transition: background-color var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-radio-group[data-variant="list"] .mb-radio-label + .mb-radio-label::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto var(--mb-row-padding);
+  border-top: var(--mb-hairline) solid var(--mb-separator);
+}
+
+.mb-radio-group[data-variant="list"] .mb-radio-label:active {
+  background: var(--mb-fill-tertiary);
+  transition-duration: 0ms;
+}
+
+.mb-radio-group[data-variant="list"] .mb-radio-label:has(.mb-radio:focus-visible) {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: calc(var(--mb-focus-ring-width) * -1);
+  border-radius: inherit;
+}
+
+.mb-radio-group[data-variant="list"] .mb-radio,
+.mb-radio-group[data-variant="list"] .mb-radio[data-checked]:active {
+  width: var(--mb-icon-size);
+  height: var(--mb-icon-size);
+  margin: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--mb-accent-text);
+}
+
+.mb-radio-group[data-variant="list"] .mb-radio:focus-visible {
+  outline: none;
+}
+
+.mb-radio-group[data-variant="list"] .mb-radio-indicator {
+  width: 100%;
+  height: 100%;
+  background: none;
+  box-shadow: none;
+  scale: 1;
+  opacity: 0;
+  transition: opacity var(--mb-duration-instant) var(--mb-ease-out);
+}
+
+.mb-radio-group[data-variant="list"] .mb-radio-indicator[data-checked] {
+  opacity: 1;
+}
+
+.mb-radio-group[data-variant="list"] .mb-radio-check {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-radio-group[data-variant="list"] .mb-radio-label:hover {
+    background: var(--mb-fill-quaternary);
+  }
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .mb-radio {
+    background: transparent;
+    box-shadow: inset 0 0 0 1.5px var(--mb-control-border);
+  }
+
+  .mb-radio[data-checked] {
+    background: var(--mb-accent);
+    box-shadow: none;
+  }
+
+  .mb-radio:active:not([data-disabled], [data-readonly]) {
+    background: var(--mb-fill-tertiary);
+    scale: 0.92;
+  }
+
+  .mb-radio[data-checked]:active:not([data-disabled], [data-readonly]) {
+    background: var(--mb-accent-pressed);
+  }
+
+  .mb-radio-group[data-variant="list"] .mb-radio,
+  .mb-radio-group[data-variant="list"] .mb-radio[data-checked]:active {
+    background: transparent;
+    box-shadow: none;
+    scale: 1;
+  }
+
+  .mb-radio-group[data-variant="list"] .mb-radio-check {
+    stroke-width: 2.2;
+  }
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  @media (prefers-reduced-motion: reduce) {
+  :where(:root:not([data-motion="full"])) {
+      .mb-radio:active:not([data-disabled], [data-readonly]) {
+        scale: none;
+      }
+  }
+}
+}
+
+/* Choices with descriptions need more room between them to stay distinct. */
+.mb-radio-group:not([data-variant="list"]):has(.mb-radio-description) {
+  gap: calc(var(--mb-radio-group-gap) + var(--mb-space-3));
+}

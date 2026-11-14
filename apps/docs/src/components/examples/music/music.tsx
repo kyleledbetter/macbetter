@@ -1,16 +1,16 @@
 "use client"
 
-import { Artwork } from "@dreambase/stardust/artwork"
-import { Button } from "@dreambase/stardust/button"
-import { List, ListRow, ListRowAccessory, ListRowTitle, ListSection } from "@dreambase/stardust/list"
-import { Menu, MenuContent, MenuItem, MenuItemIcon, MenuTrigger } from "@dreambase/stardust/menu"
-import { NavigationBar, NavigationBarTrailing, NavigationStack } from "@dreambase/stardust/navigation-bar"
-import { Sidebar, SidebarItem, SidebarSection } from "@dreambase/stardust/sidebar"
-import { Slider } from "@dreambase/stardust/slider"
-import { TabBar, TabBarItem, TabBarList, TabBarPanel } from "@dreambase/stardust/tab-bar"
-import { toast } from "@dreambase/stardust/toast"
-import { Toolbar, ToolbarSearchField, ToolbarSpacer, ToolbarTitle, ToolbarToggle } from "@dreambase/stardust/toolbar"
-import { Window, WindowBody, WindowSidebar, WindowTitlebar, WindowTrafficLights } from "@dreambase/stardust/window"
+import { Artwork } from "macbetter/artwork"
+import { Button } from "macbetter/button"
+import { List, ListRow, ListRowAccessory, ListRowTitle, ListSection } from "macbetter/list"
+import { Menu, MenuContent, MenuItem, MenuItemIcon, MenuTrigger } from "macbetter/menu"
+import { NavigationBar, NavigationBarTrailing, NavigationStack } from "macbetter/navigation-bar"
+import { Sidebar, SidebarItem, SidebarSection } from "macbetter/sidebar"
+import { Slider } from "macbetter/slider"
+import { TabBar, TabBarItem, TabBarList, TabBarPanel } from "macbetter/tab-bar"
+import { toast } from "macbetter/toast"
+import { Toolbar, ToolbarSearchField, ToolbarSpacer, ToolbarTitle, ToolbarToggle } from "macbetter/toolbar"
+import { Window, WindowBody, WindowSidebar, WindowTitlebar, WindowTrafficLights } from "macbetter/window"
 import {
   AirplayIcon,
   ClockIcon,
@@ -294,7 +294,7 @@ function PhoneLibrary({ player }: { player: Player }) {
 
 function MiniPlayer({ player, onOpen }: { player: Player; onOpen: () => void }) {
   return (
-    <div className="ex-mini sd-glass" data-shape="capsule">
+    <div className="ex-mini mb-glass" data-shape="capsule">
       <button type="button" className="ex-mini-open" onClick={onOpen} aria-label={`Now Playing: ${player.track.title} by ${player.album.artist}`}>
         <Cover album={player.album} size={36} radius={8} />
         <span className="ex-mini-text">
@@ -457,7 +457,7 @@ function MacMusic({ player }: { player: Player }) {
               </div>
             )}
           </div>
-          <div className="ex-transport sd-glass" role="region" aria-label="Playback">
+          <div className="ex-transport mb-glass" role="region" aria-label="Playback">
             <div className="ex-transport-controls">
               <button type="button" className="ex-t-button" aria-label="Shuffle" aria-pressed={player.shuffle} onClick={() => player.setShuffle(!player.shuffle)}>
                 <ShuffleIcon aria-hidden="true" />

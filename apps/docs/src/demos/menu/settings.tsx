@@ -9,7 +9,7 @@ import {
   MenuRadioItem,
   MenuSeparator,
   MenuTrigger,
-} from "@dreambase/stardust/menu"
+} from "macbetter/menu"
 
 export default function Example() {
   return (

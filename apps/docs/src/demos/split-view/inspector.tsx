@@ -1,5 +1,5 @@
-import { SplitView, SplitViewDivider, SplitViewPane } from "@dreambase/stardust/split-view"
-import { Window, WindowBody, WindowTitle, WindowTitlebar, WindowTrafficLights } from "@dreambase/stardust/window"
+import { SplitView, SplitViewDivider, SplitViewPane } from "macbetter/split-view"
+import { Window, WindowBody, WindowTitle, WindowTitlebar, WindowTrafficLights } from "macbetter/window"
 
 const fields = [
   ["Width", "1280 px"],
@@ -24,18 +24,18 @@ export default function Example() {
                 maxWidth: 360,
                 aspectRatio: "16 / 9",
                 borderRadius: 10,
-                background: "linear-gradient(140deg, var(--sd-accent), var(--sd-accent-secondary))",
-                boxShadow: "var(--sd-shadow-3)",
+                background: "linear-gradient(140deg, var(--mb-accent), var(--mb-accent-secondary))",
+                boxShadow: "var(--mb-shadow-3)",
               }}
             />
           </SplitViewPane>
           <SplitViewDivider aria-label="Resize inspector" />
           <SplitViewPane variant="inspector" defaultSize="230px" minSize="200px" maxSize="320px" collapsible>
             <dl style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: "10px 12px", margin: 0, padding: 16 }}>
-              <dt className="sd-text-headline" style={{ gridColumn: "1 / -1" }}>Arrange</dt>
+              <dt className="mb-text-headline" style={{ gridColumn: "1 / -1" }}>Arrange</dt>
               {fields.map(([label, value]) => (
                 <div key={label} style={{ display: "contents" }}>
-                  <dt className="sd-label-secondary">{label}</dt>
+                  <dt className="mb-label-secondary">{label}</dt>
                   <dd style={{ margin: 0, fontVariantNumeric: "tabular-nums" }}>{value}</dd>
                 </div>
               ))}
