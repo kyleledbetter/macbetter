@@ -323,34 +323,34 @@
 
 .ex-index {
   min-height: calc(100dvh - var(--docs-header-height));
-  padding: 56px 24px 96px;
 }
 
 .ex-index-inner {
-  max-width: 1240px;
+  width: var(--site-content);
   margin: 0 auto;
+  padding-block: 80px var(--space-section);
 }
 
-.ex-index-title {
-  margin: 0;
-  font: 700 clamp(2rem, 4vw, 3rem) / 1.05 var(--mb-font-display);
-  letter-spacing: -0.035em;
-  color: var(--mb-label);
+@media (max-width: 734px) {
+  .ex-index-inner {
+    padding-top: 56px;
+  }
 }
 
-.ex-index-lead {
-  max-width: 640px;
-  margin: 14px 0 40px;
-  font-size: 18px;
-  line-height: 1.5;
-  letter-spacing: -0.015em;
-  color: var(--mb-label-secondary);
+.ex-index-header {
+  margin-bottom: var(--space-section-header);
 }
 
 .ex-index-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 520px), 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--gap-bento);
+}
+
+@media (max-width: 1068px) {
+  .ex-index-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .ex-card {
@@ -358,26 +358,17 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  border-radius: 24px;
-  background: var(--mb-bg-secondary);
-  box-shadow: 0 0 0 var(--mb-hairline) var(--mb-separator), var(--mb-shadow-2);
-  color: var(--mb-label);
+  border-radius: var(--radius-tile);
+  background: var(--site-tile);
+  color: var(--site-label);
   text-decoration: none;
-  transition:
-    translate var(--mb-spring-snappy-duration) var(--mb-spring-snappy),
-    box-shadow var(--mb-duration-base) var(--mb-ease-out);
+  transition: scale 0.3s cubic-bezier(0, 0, 0.5, 1);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .ex-card:hover {
-    translate: 0 -3px;
-    box-shadow: 0 0 0 var(--mb-hairline) var(--mb-separator-strong), var(--mb-shadow-4);
+    scale: 1.008;
   }
-}
-
-.ex-card:focus-visible {
-  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
-  outline-offset: 3px;
 }
 
 .ex-card-preview {
@@ -386,9 +377,6 @@
   overflow: hidden;
   pointer-events: none;
   user-select: none;
-}
-
-.ex-card-preview {
   background-attachment: scroll;
 }
 
@@ -415,45 +403,43 @@
   position: absolute;
   inset: auto 0 0;
   height: 40px;
-  background: linear-gradient(to bottom, transparent, color-mix(in oklch, var(--mb-bg-secondary) 50%, transparent));
+  background: linear-gradient(to bottom, transparent, color-mix(in oklch, var(--site-tile) 50%, transparent));
 }
 
 .ex-card-body {
   display: grid;
-  gap: 4px;
-  padding: 18px 22px 22px;
-  border-top: var(--mb-hairline) solid var(--mb-separator);
-}
-
-.ex-card-title {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 0;
-  font: 600 19px/1.25 var(--mb-font-display);
-  letter-spacing: -0.02em;
+  justify-items: start;
+  padding: var(--space-tile-pad);
 }
 
 .ex-card-platforms {
-  display: flex;
-  gap: 6px;
-  margin-inline-start: auto;
+  margin: 0 0 8px;
+  color: var(--site-label-secondary);
+  font-size: var(--type-caption);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--type-caption-track);
 }
 
-.ex-card-platforms span {
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: var(--mb-fill-tertiary);
-  color: var(--mb-label-secondary);
-  font: 500 12px/16px var(--mb-font);
-  letter-spacing: 0;
+.ex-gallery-title {
+  margin: 0;
+  color: var(--site-label);
 }
 
 .ex-card-description {
-  margin: 0;
-  font-size: 15px;
-  line-height: 1.5;
-  color: var(--mb-label-secondary);
+  max-width: 34em;
+  margin: 12px 0 0;
+  color: var(--site-label-secondary);
+  font-size: var(--type-body);
+  line-height: var(--leading-read);
+  letter-spacing: var(--type-body-track);
+}
+
+@media (max-width: 734px) {
+  .ex-card-description {
+    font-size: var(--type-body-reduced);
+    line-height: var(--leading-read-reduced);
+    letter-spacing: var(--type-body-reduced-track);
+  }
 }
 
 /* ── App roots inside a screen ─────────────────────────────────── */
@@ -893,16 +879,11 @@
   position: relative;
   z-index: 2;
   display: flex;
-  gap: 8px;
-  margin-top: 12px;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 24px;
 }
 
 .ex-card-actions .mb-button {
   text-decoration: none;
-  gap: 6px;
-}
-
-.ex-card-actions svg {
-  width: 14px;
-  height: 14px;
 }

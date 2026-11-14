@@ -33,19 +33,20 @@
   -webkit-user-select: none;
 }
 
-/* App icon: Apple's 22.37% corner, with a true continuous curve where the browser can draw one. */
+/* App icon: Apple's 22.37% corner, continuous where the browser can draw it. Circles stay round. */
 .mb-avatar[data-shape="app"] {
-  --mb-avatar-radius: 22.5%;
+  --mb-avatar-radius: var(--mb-squircle-radius-icon);
 }
 
 @supports (corner-shape: squircle) {
   .mb-avatar[data-shape="app"] {
-    --mb-avatar-radius: 34%;
-    corner-shape: superellipse(1.6);
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-avatar-radius) * var(--mb-corner-factor));
   }
 
-  .mb-avatar[data-shape="app"] > :is(.mb-avatar-image, .mb-avatar-fallback) {
-    corner-shape: superellipse(1.6);
+  .mb-avatar[data-shape="app"] > :is(.mb-avatar-image, .mb-avatar-fallback),
+  .mb-avatar[data-shape="app"]::before {
+    corner-shape: inherit;
   }
 }
 
@@ -119,12 +120,6 @@
   border-radius: inherit;
   box-shadow: inset 0 0 0 var(--mb-hairline) light-dark(rgb(0 0 0 / 0.1), rgb(255 255 255 / 0.12));
   pointer-events: none;
-}
-
-@supports (corner-shape: squircle) {
-  .mb-avatar[data-shape="app"]::before {
-    corner-shape: superellipse(1.6);
-  }
 }
 
 .mb-avatar-placeholder {

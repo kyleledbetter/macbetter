@@ -342,3 +342,15 @@ span.mb-date-field-segment {
     --mb-date-field-edge: inset 0 0 0 1px var(--mb-control-border);
   }
 }
+
+/* Continuous corners on the popover and the sheet it becomes on touch. */
+@supports (corner-shape: squircle) {
+  .mb-date-picker-content {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-popup-radius) * var(--mb-corner-factor));
+  }
+
+  .mb-date-picker-content[data-presentation="sheet"] {
+    border-radius: calc(var(--mb-sheet-radius) * var(--mb-corner-factor)) calc(var(--mb-sheet-radius) * var(--mb-corner-factor)) 0 0;
+  }
+}

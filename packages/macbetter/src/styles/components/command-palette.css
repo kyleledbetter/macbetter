@@ -359,3 +359,21 @@
   outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
   outline-offset: var(--mb-focus-ring-offset);
 }
+
+/* Continuous corners on the panel and the iOS search field. Rows keep their small round radius. */
+@supports (corner-shape: squircle) {
+  .mb-command-palette,
+  .mb-command {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-command-radius) * var(--mb-corner-factor));
+  }
+
+  .mb-command-palette .mb-command {
+    border-radius: 0;
+  }
+
+  .mb-command-search {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-command-search-field-radius) * var(--mb-corner-factor));
+  }
+}

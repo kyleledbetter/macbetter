@@ -50,14 +50,31 @@
 }
 
 .mb-artwork[data-shape="app"] {
-  --mb-artwork-corner: 22.5%;
+  --mb-artwork-corner: var(--mb-squircle-radius-icon);
 }
 
+/* Continuous corners for covers and icons; never the circle, which would turn into a squircle. */
 @supports (corner-shape: squircle) {
-  .mb-artwork[data-shape="app"],
-  .mb-artwork[data-shape="app"]::after {
-    --mb-artwork-corner: 34%;
-    corner-shape: superellipse(1.6);
+  .mb-artwork:is([data-shape="rounded"], [data-shape="app"]) {
+    /* A caller's radius scales too; unset, it leaves this unset and the fallback applies. */
+    --mb-artwork-radius-continuous: calc(var(--mb-artwork-radius) * var(--mb-corner-factor));
+
+    corner-shape: var(--mb-corner-shape);
+    border-radius: var(
+      --mb-artwork-radius-continuous,
+      max(
+          calc(var(--mb-artwork-min-radius) * var(--mb-corner-factor)),
+          calc(var(--mb-artwork-corner) * var(--mb-corner-factor) / max(var(--mb-artwork-aspect, 1), 1))
+        ) /
+        max(
+          calc(var(--mb-artwork-min-radius) * var(--mb-corner-factor)),
+          calc(var(--mb-artwork-corner) * var(--mb-corner-factor) * min(var(--mb-artwork-aspect, 1), 1))
+        )
+    );
+  }
+
+  .mb-artwork:is([data-shape="rounded"], [data-shape="app"])::after {
+    corner-shape: inherit;
   }
 }
 

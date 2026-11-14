@@ -174,3 +174,21 @@
   width: 200px;
   bottom: 6px;
 }
+
+/*
+ * Continuous corners on the hardware and the screen, concentric through the
+ * bezel. The screen's clip follows the corner-shape through overflow, so the
+ * circular clip-path steps aside.
+ */
+@supports (corner-shape: squircle) {
+  .mb-device-frame {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc((var(--mb-device-screen-radius) + var(--mb-device-bezel)) * var(--mb-corner-factor));
+  }
+
+  .mb-device-frame-screen {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-device-screen-radius) * var(--mb-corner-factor));
+    clip-path: none;
+  }
+}

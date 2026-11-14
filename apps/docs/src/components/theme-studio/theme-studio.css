@@ -33,17 +33,24 @@
   padding: var(--mb-space-7) var(--mb-space-6) var(--mb-space-10);
 }
 
+/* The page's header follows the site's web scale: a card headline and a two-tone intro. */
 .ts-intro h1 {
   margin: 0;
-  font: var(--mb-text-title-1);
-  letter-spacing: var(--mb-tracking-title);
+  color: var(--site-label);
+  font: 600 var(--type-card) / var(--leading-tight) var(--font-display);
+  letter-spacing: var(--type-card-track);
 }
 
 .ts-intro p {
-  margin: var(--mb-space-3) 0 0;
-  font: var(--mb-text-callout);
-  color: var(--mb-label-secondary);
-  text-wrap: pretty;
+  margin: 10px 0 0;
+  color: var(--site-label-secondary);
+  font: 400 var(--type-body-reduced) / var(--leading-read-reduced) var(--font-text);
+  letter-spacing: var(--type-body-reduced-track);
+}
+
+.ts-intro strong {
+  color: var(--site-label);
+  font-weight: 600;
 }
 
 .ts-section {

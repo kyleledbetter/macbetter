@@ -49,15 +49,16 @@ function TableOfContents() {
   if (headings.length < 2) return null
 
   return (
-    <nav aria-label="On this page" className="text-[13px]">
-      <h2 className="mb-2.5 text-[12px] font-semibold text-label">On this page</h2>
-      <ul className="flex flex-col border-s border-separator">
+    <nav aria-label="On this page" className="docs-toc">
+      <h2 className="docs-toc-title">On this page</h2>
+      <ul className="docs-toc-list">
         {headings.map((heading) => (
           <li key={heading.id}>
             <a
               href={`#${heading.id}`}
               aria-current={active === heading.id ? "location" : undefined}
-              className={`-ms-px block border-s-2 border-transparent py-[5px] leading-[1.35] text-label-secondary transition-colors hover:text-label aria-[current=location]:border-accent aria-[current=location]:font-medium aria-[current=location]:text-label ${heading.level === 3 ? "ps-6 text-[12.5px]" : "ps-3"}`}
+              data-level={heading.level}
+              className="docs-toc-link"
             >
               {heading.text}
             </a>

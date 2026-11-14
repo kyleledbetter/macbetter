@@ -356,3 +356,11 @@
     }
   }
 }
+
+/* Continuous corners. The iOS page sheet's square bottom edge still wins: it's scoped closer. */
+@supports (corner-shape: squircle) {
+  .mb-dialog {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-dialog-radius) * var(--mb-corner-factor));
+  }
+}

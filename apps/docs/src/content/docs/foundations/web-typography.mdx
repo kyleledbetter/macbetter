@@ -1,0 +1,105 @@
+export const metadata = {
+  title: "Web typography",
+  description: "The type scale, leading, tracking and layout rhythm this site borrows from apple.com, and how it differs from the text styles inside components.",
+}
+
+# Web typography
+
+<Lead>This site sets its pages the way apple.com sets a product page: one scale of fixed steps, two weights, tight leading for headlines and open leading for reading. The components inside keep Apple's in-app text styles.</Lead>
+
+<Demo name="foundations/web-type-specimen" bare fill hideCode />
+
+The numbers under each name are read from the page as it renders, so they show the step for your window's width.
+
+## The scale
+
+Each style has three steps, one per breakpoint: large (1069px and up), medium (735 to 1068px) and small (734px and below). Nothing changes above 1440px. Sizes are in px.
+
+| Style | Large | Medium | Small | Weight | Use |
+| --- | --- | --- | --- | --- | --- |
+| Headline super | 80 | 64 | 48 | Semibold | The hero line on the home page |
+| Headline elevated | 64 | 48 | 40 | Semibold | A section's headline |
+| Headline | 48 | 40 | 32 | Semibold | Page titles, index pages |
+| Headline reduced | 40 | 32 | 28 | Semibold | Sub-section headlines |
+| Callout | 32 | 28 | 24 | Semibold | Callout headlines |
+| Card | 28 | 24 | 21 | Semibold | Tile and card titles, docs `h2` |
+| Eyebrow elevated | 28 | 24 | 21 | Semibold | The product name above the hero |
+| Eyebrow | 24 | 21 | 21 | Semibold | Topic names, lineup tiles |
+| Eyebrow reduced | 21 | 21 | 19 | Semibold | Section eyebrows, docs `h3` |
+| Intro elevated | 24 | 21 | 21 | Regular | The paragraph under the hero |
+| Intro | 21 | 21 | 19 | Regular | The paragraph under a headline, docs leads |
+| Tout | 19 | 19 | 19 | Semibold | Short statements |
+| Body | 17 | 17 | 17 | Regular | Reading text |
+| Body reduced | 14 | 14 | 14 | Regular | Card copy, tables, the sidebar |
+| Caption | 12 | 12 | 12 | Regular | Navigation, captions, legal text |
+
+Each style is a token and a class: `--type-headline` is the size, `--type-headline-track` the tracking, and `.type-headline` sets size, weight, leading, tracking and family together.
+
+## Leading
+
+Two rules cover every size:
+
+- **Tight leading is the size plus 4px**, for anything set in semibold: 48px over 52px, 21px over 25px, 12px over 16px. The token is `--leading-tight: calc(1em + 4px)`.
+- **Reading leading is the size plus 8px**, for paragraphs: 17px over 25px, 21px over 29px. At 14px it is plus 6px (20px).
+
+Because the rule is written in `em` plus a fixed number, it stays right at every step of the scale.
+
+## Tracking
+
+apple.com sets SF Pro Display and SF Pro Text as webfonts and adds a fixed letter-spacing for each size: −0.022em at 17px, a little positive from 19 to 32px, and negative again from 48px up. This site can't load those files, so it uses the system font, which is SF on Apple devices. The system font is not the same as the webfont: it already applies SF's tracking for each size. Measured in Chromium on macOS with the same sentence at each size:
+
+| Size | System font vs SF Pro webfont | Apple's tracking | Tracking used here |
+| --- | --- | --- | --- |
+| 12px | Same width | −0.01em | −0.01em |
+| 14px | 2% narrower | −0.016em | −0.005em |
+| 17px | 5% narrower (about −0.025em) | −0.022em | 0 |
+| 21px | 5% wider | +0.011em | −0.009em |
+| 28px | 3% wider | +0.007em | −0.008em |
+| 48px | 2% wider | −0.003em | −0.012em |
+| 80px | Same width as SF Pro Display | −0.015em | −0.016em |
+
+Adding Apple's values on top of the system font would double them, so body text would set noticeably tight. Each value in the last column makes the system font set the same line length as apple.com's webfont with Apple's tracking. They're the `--track-12` to `--track-80` tokens.
+
+## Display and Text
+
+SF comes in two optical designs: Text, with looser spacing and sturdier shapes for small sizes, and Display, drawn tighter for large ones. apple.com switches between them by hand: Display at 19px and up, Text at 17px and down. This site has two stacks that do the same:
+
+```css
+--font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Inter", system-ui, sans-serif;
+--font-text: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Inter", system-ui, sans-serif;
+```
+
+On a Mac, iPhone or iPad both resolve to the system font, which picks Text or Display by size on its own. On other systems they fall through to the named faces if installed, then Helvetica Neue, Inter or the system's own font. No font files are downloaded.
+
+## Weights and color
+
+- **Two weights.** Headlines, eyebrows and card titles are semibold (600). Intro, body and buttons are regular (400). Nothing is set light, and nothing in uppercase.
+- **Two tones.** A paragraph is set in the secondary label color, and one or two key phrases inside it are `<strong>` in the primary color. The intro under each heading on the home page works this way.
+- **The bold two-tone paragraph.** For short feature notes, the whole paragraph is semibold: the lead sentence in primary, the rest in secondary. The `.type-lead-in` class sets it.
+
+## Links and buttons
+
+Links that lead somewhere else are text with a chevron, in the theme's accent text color: "Learn more about materials ›". On hover only the words underline. Buttons on marketing pages are capsules at three sizes: 12px for the local nav, 14px for the default, and 17px with 44px height for heroes. They are Macbetter's own `Button` with `shape="capsule"`; the filled one uses the theme's accent.
+
+## Layout rhythm
+
+| Token | Large | Medium | Small |
+| --- | --- | --- | --- |
+| `--site-content` | 87.5%, up to 1260px | 87.5% | 87.5%, up to 420px |
+| `--space-section` | 144px | 120px | 112px |
+| `--space-section-header` | 48px | 40px | 32px |
+| `--space-tile-pad` | 32px | 28px | 24px |
+| `--gap-bento` | 20px | 20px | 20px |
+| `--radius-tile` | 28px | 28px | 28px |
+
+Sections alternate between the page surface and a slightly lighter (dark) or grayer (light) one, `--site-page` and `--site-page-alt`. Tiles use `--site-tile`, which is the theme's own background, so the System theme lands on Apple's grays and Ember keeps its green.
+
+## How this differs from the text styles
+
+The [text styles](/docs/foundations/typography) (`mb-text-body`, `mb-text-headline` and the rest) are what components use. They follow the Human Interface Guidelines for apps: 13px body on macOS, 17px on iPhone, and they change with `data-platform`. The web scale on this page is for the pages around the components: marketing sections, docs titles and leads. It changes with the window's width, not the platform, and never reaches inside a demo.
+
+Use the text styles inside an app. Use a scale like this one for a website about it.
+
+## Sources
+
+The scale, leading rules, colors and layout numbers come from Apple's published stylesheets, read in November 2026. The full notes, with every value and where it came from, are in [Apple web typography and landing-page patterns](https://github.com/kyleledbetter/macbetter/blob/main/docs/apple-web-typography.md).

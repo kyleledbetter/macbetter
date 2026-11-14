@@ -1,30 +1,34 @@
+/**
+ * apple.com's headline stack: a topic eyebrow (the real heading), a large
+ * hand-broken headline, an intro paragraph in two tones, then text links.
+ */
 function SectionHeading({
   id,
-  title,
-  muted,
+  eyebrow,
+  headline,
   children,
-  actions,
-  align = "start",
+  links,
+  align = "center",
+  size = "elevated",
 }: {
   id: string
-  title: string
-  muted?: string
+  eyebrow: string
+  headline: React.ReactNode
   children?: React.ReactNode
-  actions?: React.ReactNode
+  links?: React.ReactNode
   align?: "start" | "center"
+  size?: "super" | "elevated" | "headline"
 }) {
   return (
-    <header className="lp-heading lp-reveal" data-align={align}>
-      <h2 id={id} className="lp-h2">
-        {title}
-        {muted ? <> <span className="lp-muted">{muted}</span></> : null}
+    <header className="lp-heading stack lp-reveal" data-align={align}>
+      <h2 id={id} className="stack-eyebrow type-eyebrow-reduced">
+        {eyebrow}
       </h2>
-      {children ? <p className="lp-lead">{children}</p> : null}
-      {actions ? (
-        <div className="lp-heading-actions" data-platform="macos">
-          {actions}
-        </div>
-      ) : null}
+      <p className={`stack-headline lp-headline ${size === "headline" ? "type-headline" : `type-headline-${size}`}`}>
+        {headline}
+      </p>
+      {children ? <p className="stack-copy type-intro type-two-tone">{children}</p> : null}
+      {links ? <div className="stack-links type-body">{links}</div> : null}
     </header>
   )
 }

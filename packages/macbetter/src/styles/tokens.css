@@ -186,6 +186,18 @@
   --mb-radius-3xl: calc(30px * var(--mb-radius-scale));
   --mb-radius-full: 9999px;
 
+  /*
+   * Continuous corners. Apple's corners ease into the edge instead of meeting
+   * it with a circular arc. superellipse(1.7) at 1.5× the nominal radius is the
+   * closest CSS fit to iOS's continuous corner (mean deviation ≈0.13px at a
+   * 40px radius, against ≈0.31px for a plain round corner). Components apply it
+   * only where `corner-shape` is supported; set --mb-corner-shape: round to
+   * turn it off (the 1.5× falls away with it, see base.css).
+   */
+  --mb-corner-shape: superellipse(1.7);
+  --mb-corner-smoothing: 1.5;
+  --mb-squircle-radius-icon: 22.37%;
+
   /* ── Space (4pt grid) ─────────────────────────────────────────── */
   --mb-space-1: 2px;
   --mb-space-2: 4px;
@@ -227,6 +239,15 @@
   /* ── Layers ───────────────────────────────────────────────────── */
   --mb-z-chrome: 10;
   --mb-z-floating: 20;
+}
+
+/* Safari 27.3 ships the corner-shape keywords before superellipse(): squircle at 1.8× is its closest fit. */
+@supports (corner-shape: squircle) and (not (corner-shape: superellipse(2))) {
+  :root,
+  [data-theme] {
+    --mb-corner-shape: squircle;
+    --mb-corner-smoothing: 1.8;
+  }
 }
 
 /* data-color-scheme is what ui-sdk's createColorScheme writes. */

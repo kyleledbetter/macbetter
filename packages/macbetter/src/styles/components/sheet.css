@@ -322,3 +322,24 @@ button.mb-sheet-grabber::after {
 .mb-sheet:is([data-side="bottom"], [data-side="top"]):has(> .mb-sheet-body > .mb-list:not([data-variant="plain"])) {
   background: var(--mb-list-bg);
 }
+
+/* Continuous corners on whichever corners the side leaves rounded. */
+@supports (corner-shape: squircle) {
+  .mb-sheet {
+    corner-shape: var(--mb-corner-shape);
+  }
+
+  .mb-sheet[data-side="bottom"] {
+    border-start-start-radius: calc(var(--mb-sheet-radius) * var(--mb-corner-factor));
+    border-start-end-radius: calc(var(--mb-sheet-radius) * var(--mb-corner-factor));
+  }
+
+  .mb-sheet[data-side="top"] {
+    border-end-start-radius: calc(var(--mb-sheet-radius) * var(--mb-corner-factor));
+    border-end-end-radius: calc(var(--mb-sheet-radius) * var(--mb-corner-factor));
+  }
+
+  .mb-sheet:is([data-side="left"], [data-side="right"]) {
+    border-radius: calc(var(--mb-sheet-inspector-radius) * var(--mb-corner-factor));
+  }
+}

@@ -1,0 +1,162 @@
+export const metadata = {
+  title: "Squircle",
+  description: "Apple's continuous corner: a curve that eases into the straight edge, for app icons, tiles and cards.",
+}
+
+# Squircle
+
+<Lead>Give a box Apple's continuous corners, the curve that eases into the edge instead of meeting it with a circular arc.</Lead>
+
+<Demo name="squircle/compare" />
+
+## When to use it
+
+Apple draws almost every rounded rectangle with a continuous corner: app icons, the Dock's tiles, Settings icons, widgets, cards, windows, sheets, alerts and menus. A circular arc meets the straight edge abruptly; a continuous corner starts curving earlier and more gently, so the shape reads as one smooth object. Next to the real thing, a plain `border-radius` looks slightly stamped out.
+
+Macbetter's components already use it wherever Apple does, so you only need `Squircle` for your own surfaces: an app icon, a tile, a widget, a thumbnail.
+
+Don't use it on anything fully rounded. A capsule, a circle, a switch thumb or a badge is round in Apple's designs too, and a continuous corner on a full radius turns a capsule into a lozenge and a circle into a rounded square.
+
+## Usage
+
+```tsx
+import { Squircle } from "macbetter/squircle"
+```
+
+`Squircle` is a `div` with continuous corners and `overflow: hidden`. With no `radius` it has an app icon's proportion, 22.37% of its side.
+
+<Demo name="squircle/app-icons" />
+
+### Radius
+
+Pass `radius` as a number of pixels, any CSS length or percentage, or `"icon"`. It's the radius you'd give `border-radius` for the same box: the continuous corner keeps the same apparent size and only changes how it meets the edge.
+
+<Demo name="squircle/card" />
+
+Use `render` to make it another element, such as an `<article>`, a `<button>` or a link. A demo or component that passes `render` must be a client module.
+
+### Smoothing
+
+`smoothing` sets how far the corner eases into the edge, from `0` (a circular arc) to `1`. The default, `0.77`, matches iOS. Lower it for a shape closer to a plain rounded rectangle.
+
+<Demo name="squircle/playground" />
+
+### Exact outline
+
+`corner-shape`, the CSS property behind continuous corners, isn't in every browser yet. Where it's missing, a squircle has plain rounded corners. When the shape has to be exact everywhere, such as for an app icon, pass `exact` with a `size` (or `width` and `height`). The outline is computed as an SVG path while rendering, on the server too, and applied as a `clip-path`, so it needs no JavaScript in the browser. Without a size, `exact` falls back to `corner-shape`.
+
+```tsx
+<Squircle size={64} exact>
+  <img src="/icons/maps.png" alt="Maps" />
+</Squircle>
+```
+
+The same path is exported as `squirclePath(width, height, radius, smoothing)` for your own SVG or canvas drawing.
+
+### Shadows
+
+A `clip-path` cuts off anything outside the shape, including a `box-shadow` and a focus ring. With `exact`, `shadow` wraps the squircle in a `SquircleShadow`, which draws the shadow with `filter: drop-shadow()` around the clipped shape. Without `exact`, `shadow` is a `box-shadow`, which follows `corner-shape` on its own. To shadow any clipped element, wrap it yourself:
+
+```tsx
+import { SquircleShadow, Squircle } from "macbetter/squircle"
+
+<SquircleShadow style={{ "--mb-squircle-shadow": "0 8px 20px rgb(0 0 0 / 0.3)" }}>
+  <Squircle size={120} exact />
+</SquircleShadow>
+```
+
+### In the Dock
+
+`DockItem` tiles and the Dock's shelf use the same corner, so an icon you pass in takes the app-icon shape without a `Squircle` of its own.
+
+<Demo name="squircle/dock" platforms={["macos"]} wallpaper height={240} />
+
+## In your own CSS
+
+Every Macbetter component uses one convention, and you can use it in yours. Write the plain radius first, then, where the browser supports `corner-shape`, the continuous shape with the radius scaled by `--mb-corner-factor`:
+
+```css
+.my-tile {
+  border-radius: 12px;
+}
+
+@supports (corner-shape: squircle) {
+  .my-tile {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(12px * var(--mb-corner-factor));
+  }
+}
+```
+
+The scaling matters. A superellipse at the same `border-radius` spans the same corner box but cuts in far less, so it looks smaller and boxier. Measured against Apple's outline, `superellipse(1.7)` at 1.5 times the radius is the closest CSS match: on a 360px app icon it's about 0.2px from Apple's curve on average, against 0.6px for a plain round corner. The bare `squircle` keyword at the unscaled radius is several pixels off (2.7px on average on a 200px icon). `--mb-corner-factor` is set on every element with an `mb-` class; on your own elements use `--mb-corner-smoothing` directly.
+
+For an element without a stylesheet, add the `mb-squircle` class and set `--mb-squircle-radius`.
+
+Never apply it to a full radius (`9999px`, `50%` on a square, `--mb-radius-full`). Components whose controls become capsules on iOS keep round corners there.
+
+### Turning it off
+
+Set `--mb-corner-shape: round` in a theme, or on any element, to switch continuous corners off below it. The radius scaling falls away with it, so every corner goes back to its plain size.
+
+```css
+[data-theme="classic"] {
+  --mb-corner-shape: round;
+}
+```
+
+### Browser support
+
+- `corner-shape` with `superellipse()`: Chrome and Edge 139 and later. Firefox has it only in Nightly.
+- Safari 27.3 supports the `corner-shape` keywords but not yet `superellipse()`. Macbetter detects this and uses `squircle` at 1.8 times the radius there, its closest keyword match. If you set `--mb-corner-shape` to a `superellipse()` yourself, Safari 27.3 falls back to round corners at the scaled radius, so prefer a keyword in a theme.
+- Everywhere else, corners are plain `border-radius`.
+- `exact` uses `clip-path: path()`, which every current browser supports.
+
+## Platform behavior
+
+The shape is the same on macOS, iPadOS and iOS, as it is on Apple's platforms. What changes is where it's used: macOS rounds buttons, fields and segmented controls as small rounded rectangles, whose corners are too small for the difference to show, so they keep plain corners. iOS draws those controls as capsules, which stay round.
+
+## Accessibility
+
+- `Squircle` adds no role or name. Give it the semantics of what it is through `render` (an `<img>`, a `<button>`, a link) or its children, and name it.
+- `corner-shape` reshapes the background, border, outline and shadow together, so a focus ring follows the corner. A `clip-path` would cut the ring off, so on an `exact` squircle that's focusable, put the focus ring on a wrapper or use the CSS mode.
+- Content keeps its rectangular box: text near a corner can sit outside the visible shape. Pad the content as you would for a rounded rectangle.
+
+## API
+
+### Squircle
+
+<PropsTable
+  rows={[
+    { name: "radius", type: "number | string | \"icon\"", default: "\"icon\"", description: "The corner radius: pixels, a CSS length or percentage, or an app icon's 22.37%." },
+    { name: "smoothing", type: "number", default: "0.77", description: "How far the corner eases into the edge, 0 to 1." },
+    { name: "size", type: "number", description: "Width and height in pixels, for a square." },
+    { name: "width", type: "number", description: "Width in pixels. With height, enables exact." },
+    { name: "height", type: "number", description: "Height in pixels." },
+    { name: "exact", type: "boolean", description: "Draws the true outline as a clip-path, in every browser. Needs a size." },
+    { name: "shadow", type: "boolean", description: "A shadow that follows the shape; a drop-shadow wrapper in exact mode." },
+    { name: "render", type: "ReactElement | function", description: "Renders another element with the squircle's props." },
+  ]}
+/>
+
+### SquircleShadow
+
+A `div` that draws `filter: drop-shadow(var(--mb-squircle-shadow))` around whatever its child is clipped to. Takes `render` and the props of a `div`.
+
+### squirclePath
+
+`squirclePath(width, height, radius, smoothing = 0.77): string` returns the outline as an SVG path, clockwise from the top edge. A radius of 0 gives a rectangle; the largest radius, half the shorter side, gives a capsule, or a circle in a square.
+
+### Data attributes, classes and CSS variables
+
+| Attribute, class or variable | On | Meaning |
+| --- | --- | --- |
+| `.mb-squircle` | any element | Continuous corners at `--mb-squircle-radius` |
+| `data-exact` | `.mb-squircle` | The outline is a clip-path |
+| `data-shadow` | `.mb-squircle` | Has a box-shadow that follows the shape |
+| `data-smoothing` | `.mb-squircle` | Has its own smoothing |
+| `--mb-squircle-radius` | `.mb-squircle` | The nominal radius, an app icon's by default |
+| `--mb-squircle-shadow` | `.mb-squircle`, `.mb-squircle-shadow` | The shadow, a single shadow |
+| `--mb-corner-shape` | any element | The corner shape, `superellipse(1.7)`; `round` turns continuous corners off |
+| `--mb-corner-smoothing` | any element | How much the radius is scaled for that shape, 1.5 |
+| `--mb-corner-factor` | `mb-` elements | The scaling in effect: `--mb-corner-smoothing`, or 1 when the shape is round |
+| `--mb-squircle-radius-icon` | any element | An app icon's radius, 22.37% |

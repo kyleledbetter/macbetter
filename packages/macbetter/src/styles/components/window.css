@@ -229,3 +229,16 @@ button.mb-window-traffic-light:focus-visible {
   overflow: auto;
   background: var(--mb-bg);
 }
+
+/* Continuous corners on the window and, concentric with them, the inset sidebar. Traffic lights stay round. */
+@supports (corner-shape: squircle) {
+  .mb-window {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-window-radius) * var(--mb-corner-factor));
+  }
+
+  .mb-window-sidebar {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc((var(--mb-window-radius) - var(--mb-window-sidebar-inset)) * var(--mb-corner-factor));
+  }
+}

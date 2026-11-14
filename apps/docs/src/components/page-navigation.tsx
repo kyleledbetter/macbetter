@@ -1,4 +1,3 @@
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
 import Link from "next/link"
 import { docExists } from "@/lib/docs"
 import { flatNav } from "@/lib/nav"
@@ -12,12 +11,10 @@ function PageNavigation({ href }: { href: string }) {
   const next = pages[index + 1]
 
   return (
-    <nav aria-label="Pagination" className="not-prose mt-6 grid gap-3 border-t border-separator pt-6 sm:grid-cols-2">
+    <nav aria-label="Pagination" className="not-prose mt-8 grid gap-6 border-t border-(--site-hairline) pt-6 sm:grid-cols-2">
       {previous ? (
-        <Link href={previous.href} className="docs-pager">
-          <span className="docs-pager-hint">
-            <ChevronLeftIcon aria-hidden="true" className="size-3.5" /> Previous
-          </span>
+        <Link href={previous.href} className="docs-pager" data-direction="back">
+          <span className="docs-pager-hint">Previous</span>
           <span className="docs-pager-title">{previous.title}</span>
         </Link>
       ) : (
@@ -25,9 +22,7 @@ function PageNavigation({ href }: { href: string }) {
       )}
       {next ? (
         <Link href={next.href} className="docs-pager items-end text-end">
-          <span className="docs-pager-hint">
-            Next <ChevronRightIcon aria-hidden="true" className="size-3.5" />
-          </span>
+          <span className="docs-pager-hint">Next</span>
           <span className="docs-pager-title">{next.title}</span>
         </Link>
       ) : null}

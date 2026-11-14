@@ -246,3 +246,17 @@
     scale: 0.96;
   }
 }
+
+/* Continuous corners on the bordered panel. */
+@supports (corner-shape: squircle) {
+  .mb-tabs[data-variant="bordered"] > .mb-tabs-panel {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-radius-md) * var(--mb-corner-factor));
+  }
+
+  @scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+    .mb-tabs[data-variant="bordered"] > .mb-tabs-panel {
+      border-radius: calc(var(--mb-group-radius) * var(--mb-corner-factor));
+    }
+  }
+}

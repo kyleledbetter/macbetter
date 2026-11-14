@@ -130,3 +130,16 @@
     }
   }
 }
+
+/* Continuous corners; the rim and a leading image follow them. */
+@supports (corner-shape: squircle) {
+  .mb-hover-card {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-popup-radius) * var(--mb-corner-factor));
+  }
+
+  .mb-hover-card::before,
+  .mb-hover-card > :where(img, video, picture):first-child {
+    corner-shape: inherit;
+  }
+}

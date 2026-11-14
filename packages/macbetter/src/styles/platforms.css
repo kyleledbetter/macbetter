@@ -35,10 +35,11 @@
   --mb-text-subheadline-spec: 400 11px/14px;
   --mb-text-footnote-spec: 400 10px/13px;
   --mb-text-caption-spec: 400 10px/13px;
-  --mb-tracking-large-title: -0.022em;
-  --mb-tracking-title: -0.016em;
-  --mb-tracking-body: -0.003em;
-  --mb-tracking-caption: 0.006em;
+  /* The system font carries SF's own tracking for each size; adding more sets text too tight. */
+  --mb-tracking-large-title: 0em;
+  --mb-tracking-title: 0em;
+  --mb-tracking-body: 0em;
+  --mb-tracking-caption: 0em;
 
   /* Controls. */
   --mb-control-height-sm: 22px;
@@ -88,9 +89,9 @@
   --mb-text-subheadline-spec: 400 15px/20px;
   --mb-text-footnote-spec: 400 13px/18px;
   --mb-text-caption-spec: 400 12px/16px;
-  --mb-tracking-large-title: -0.021em;
-  --mb-tracking-title: -0.018em;
-  --mb-tracking-body: -0.025em;
+  --mb-tracking-large-title: 0em;
+  --mb-tracking-title: 0em;
+  --mb-tracking-body: 0em;
   --mb-tracking-caption: 0em;
 
   --mb-control-height-sm: 30px;
@@ -139,9 +140,9 @@
   --mb-text-subheadline-spec: 400 15px/20px;
   --mb-text-footnote-spec: 400 13px/18px;
   --mb-text-caption-spec: 400 12px/16px;
-  --mb-tracking-large-title: -0.021em;
-  --mb-tracking-title: -0.018em;
-  --mb-tracking-body: -0.025em;
+  --mb-tracking-large-title: 0em;
+  --mb-tracking-title: 0em;
+  --mb-tracking-body: 0em;
   --mb-tracking-caption: 0em;
 
   --mb-control-height-sm: 34px;

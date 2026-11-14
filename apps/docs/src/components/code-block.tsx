@@ -6,7 +6,7 @@ async function CodeBlock({ code, lang = "tsx", title }: { code: string; lang?: s
   return (
     <figure className="docs-code not-prose" data-platform="macos">
       {title ? (
-        <figcaption className="flex h-10 items-center border-b border-separator px-4 font-mono text-[12px] text-label-secondary">
+        <figcaption className="docs-code-title">
           {title}
         </figcaption>
       ) : null}

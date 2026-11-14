@@ -158,3 +158,11 @@
     background: var(--mb-fill-tertiary);
   }
 }
+
+/* Continuous corners on the box. Rows keep their small round radius. */
+@supports (corner-shape: squircle) {
+  .mb-listbox {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-listbox-radius) * var(--mb-corner-factor));
+  }
+}

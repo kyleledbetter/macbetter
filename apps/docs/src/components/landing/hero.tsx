@@ -3,26 +3,41 @@ import { HeroScene } from "./hero-scene"
 
 function Hero() {
   return (
-    <section className="lp-hero" aria-labelledby="lp-hero-title">
-      <div className="lp-hero-copy">
-        <h1 id="lp-hero-title" className="lp-hero-title lp-enter" style={{ "--i": 0 } as React.CSSProperties}>
-          macOS, iPadOS and iOS.
-          {" "}<span className="lp-muted">One web framework.</span>
+    <section id="overview" className="lp-hero" aria-labelledby="lp-hero-title">
+      <div className="lp-hero-copy stack" data-align="center">
+        <h1 id="lp-hero-title" className="stack-eyebrow type-eyebrow-elevated lp-enter" style={{ "--i": 0 } as React.CSSProperties}>
+          Macbetter
         </h1>
-        <p className="lp-hero-lead lp-enter" style={{ "--i": 1 } as React.CSSProperties}>
-          Macbetter is a set of Apple-grade components for React. Theme it to any brand, ship it to every screen, and
-          let ui-sdk handle the keyboard, focus and accessibility.
+        <p className="stack-headline lp-hero-headline type-headline-super lp-enter" style={{ "--i": 1 } as React.CSSProperties}>
+          macOS, iPadOS and&nbsp;iOS.
+          <br />
+          One web framework.
         </p>
-        <div className="lp-hero-actions lp-enter" style={{ "--i": 2 } as React.CSSProperties} data-platform="macos">
-          <ButtonLink variant="filled" size="lg" href="/docs/introduction">
+        <p
+          className="stack-copy lp-hero-intro type-intro-elevated type-two-tone lp-enter"
+          style={{ "--i": 2 } as React.CSSProperties}
+        >
+          A set of React components that look and behave like Apple’s own controls.{" "}
+          <strong>Theme it to any brand, ship it to every screen,</strong> and let ui-sdk handle the keyboard, focus
+          and&nbsp;accessibility.
+        </p>
+        <div className="lp-hero-actions lp-enter" style={{ "--i": 3 } as React.CSSProperties} data-platform="macos">
+          <ButtonLink href="/docs/introduction" variant="filled" shape="capsule" className="pill" data-pill="elevated">
             Get started
           </ButtonLink>
-          <ButtonLink variant="bezeled" tone="neutral" size="lg" href="/docs/components/button">
+          <ButtonLink
+            href="/docs/components"
+            variant="plain"
+            shape="capsule"
+            className="pill"
+            data-pill="elevated"
+            data-pill-style="outline"
+          >
             Browse components
           </ButtonLink>
         </div>
       </div>
-      <div className="lp-enter lp-enter-scene" style={{ "--i": 3 } as React.CSSProperties}>
+      <div className="lp-enter lp-enter-scene" style={{ "--i": 4 } as React.CSSProperties}>
         <HeroScene />
       </div>
     </section>

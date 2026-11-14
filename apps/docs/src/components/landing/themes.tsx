@@ -3,15 +3,15 @@ import { Checkbox } from "macbetter/checkbox"
 import { SegmentedControl, SegmentedControlItem } from "macbetter/segmented-control"
 import { Slider } from "macbetter/slider"
 import { Switch } from "macbetter/switch"
-import { ButtonLink } from "@/components/button-link"
+import { MoreLink } from "@/components/more-link"
 import { CodeBlock } from "@/components/code-block"
 import { SectionHeading } from "./section-heading"
 
 const cards = [
-  { theme: "ember", name: "Ember", note: "Orange on racing green." },
-  { theme: "system", name: "System", note: "Apple’s blue on true grays." },
-  { theme: "nebula", name: "Nebula", note: "Violet on cool ink, rounder corners." },
-  { theme: "graphite", name: "Graphite", note: "Monochrome and squared off." },
+  { theme: "ember", name: "Ember", note: "Orange on racing\u00a0green." },
+  { theme: "system", name: "System", note: "Apple’s blue on true\u00a0grays." },
+  { theme: "nebula", name: "Nebula", note: "Violet on cool ink, rounder\u00a0corners." },
+  { theme: "graphite", name: "Graphite", note: "Monochrome and squared\u00a0off." },
 ]
 
 const seeds = `[data-theme="acme"] {
@@ -32,8 +32,8 @@ function ThemeCard({ theme, name, note }: (typeof cards)[number]) {
           <span style={{ background: "var(--mb-accent-secondary)" }} />
           <span style={{ background: "var(--mb-ink)" }} />
         </span>
-        <span className="lp-theme-card-name">{name}</span>
-        <span className="lp-theme-card-note">{note}</span>
+        <span className="lp-theme-card-name type-eyebrow-reduced">{name}</span>
+        <span className="lp-theme-card-note type-body-reduced">{note}</span>
       </figcaption>
       <div className="lp-theme-card-controls">
         <SegmentedControl aria-label={`Range, ${name} theme`} defaultValue="week" block size="sm">
@@ -60,34 +60,41 @@ function ThemeCard({ theme, name, note }: (typeof cards)[number]) {
 
 function Themes() {
   return (
-    <section className="lp-section" aria-labelledby="lp-themes">
-      <div className="lp-split">
-        <SectionHeading
-          id="lp-themes"
-          title="Any brand."
-          muted="Still Apple."
-          actions={
-            <>
-              <ButtonLink variant="tinted" href="/themes">
-                Browse themes
-              </ButtonLink>
-              <ButtonLink variant="plain" href="/docs/theming">
-                Read the theming guide
-              </ButtonLink>
-            </>
-          }
-        >
-          A theme answers about a dozen questions: the accent, the ink, the surfaces, a tint for fills, a radius
-          scale and a font. Every other color, shadow and corner derives from those seeds, in light and dark.
-        </SectionHeading>
-        <div className="lp-reveal lp-seeds">
-          <CodeBlock code={seeds} lang="css" title="acme.css" />
+    <section id="themes" className="lp-section" aria-labelledby="lp-themes">
+      <div className="lp-section-inner">
+        <div className="lp-split">
+          <SectionHeading
+            id="lp-themes"
+            eyebrow="Themes"
+            align="start"
+            size="headline"
+            headline={
+              <>
+                Any brand.
+                <br />
+                Same native&nbsp;feel.
+              </>
+            }
+            links={
+              <>
+                <MoreLink href="/themes">Open Theme Studio</MoreLink>
+                <MoreLink href="/docs/theming">Read the theming guide</MoreLink>
+              </>
+            }
+          >
+            A theme answers about a dozen questions: the accent, the ink, the surfaces, a tint for fills, a radius
+            scale and a font. <strong>Every other color, shadow and corner derives from those seeds,</strong> in
+            light and&nbsp;dark.
+          </SectionHeading>
+          <div className="lp-reveal lp-seeds">
+            <CodeBlock code={seeds} lang="css" title="acme.css" />
+          </div>
         </div>
-      </div>
-      <div className="lp-theme-grid lp-reveal">
-        {cards.map((card) => (
-          <ThemeCard key={card.theme} {...card} />
-        ))}
+        <div className="lp-theme-grid lp-reveal">
+          {cards.map((card) => (
+            <ThemeCard key={card.theme} {...card} />
+          ))}
+        </div>
       </div>
     </section>
   )

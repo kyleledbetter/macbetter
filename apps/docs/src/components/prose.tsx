@@ -17,16 +17,10 @@ function Callout({
 }) {
   const Icon = calloutIcons[type]
   return (
-    <aside
-      data-type={type}
-      className="my-6 flex gap-3 rounded-[14px] border border-separator bg-fill-quaternary px-4 py-3.5 text-[15px] leading-[1.55] [&_p]:my-1"
-    >
-      <Icon
-        aria-hidden="true"
-        className={`mt-[3px] size-[18px] flex-none ${type === "warning" ? "text-(--mb-yellow)" : "text-accent-text"}`}
-      />
+    <aside data-type={type} className="docs-callout">
+      <Icon aria-hidden="true" />
       <div className="min-w-0">
-        {title ? <p className="font-semibold text-label">{title}</p> : null}
+        {title ? <p className="docs-callout-title">{title}</p> : null}
         {children}
       </div>
     </aside>
@@ -56,7 +50,7 @@ function PropsTable({ rows }: { rows: PropRow[] }) {
               <td>
                 <code>{row.type}</code>
               </td>
-              <td>{row.default ? <code>{row.default}</code> : <span className="text-label-tertiary">—</span>}</td>
+              <td>{row.default ? <code>{row.default}</code> : <span className="text-(--site-label-tertiary)">—</span>}</td>
               <td>{row.description}</td>
             </tr>
           ))}
@@ -68,7 +62,7 @@ function PropsTable({ rows }: { rows: PropRow[] }) {
 
 function Steps({ children }: { children: React.ReactNode }) {
   return (
-    <div className="docs-steps my-6 border-s border-separator ps-6 [counter-reset:step] [&>h3]:relative [&>h3]:[counter-increment:step] [&>h3]:before:absolute [&>h3]:before:-start-[37px] [&>h3]:before:top-0 [&>h3]:before:flex [&>h3]:before:size-[26px] [&>h3]:before:items-center [&>h3]:before:justify-center [&>h3]:before:rounded-full [&>h3]:before:bg-bg-secondary [&>h3]:before:text-[12px] [&>h3]:before:font-semibold [&>h3]:before:text-label-secondary [&>h3]:before:ring-1 [&>h3]:before:ring-separator [&>h3]:before:content-[counter(step)]">
+    <div className="docs-steps my-6 border-s border-(--site-hairline) ps-6 [counter-reset:step] [&>h3]:relative [&>h3]:[counter-increment:step] [&>h3]:before:absolute [&>h3]:before:-start-[37px] [&>h3]:before:top-0 [&>h3]:before:flex [&>h3]:before:size-[26px] [&>h3]:before:items-center [&>h3]:before:justify-center [&>h3]:before:rounded-full [&>h3]:before:bg-(--site-tile) [&>h3]:before:text-[12px] [&>h3]:before:font-semibold [&>h3]:before:text-(--site-label-secondary) [&>h3]:before:ring-1 [&>h3]:before:ring-(--site-hairline) [&>h3]:before:content-[counter(step)]">
       {children}
     </div>
   )

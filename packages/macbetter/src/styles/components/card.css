@@ -39,8 +39,8 @@
 /* Apple's corners are continuous: the curve eases into the straight edge. */
 @supports (corner-shape: squircle) {
   .mb-card {
-    border-radius: calc(var(--mb-card-radius) * 1.6);
-    corner-shape: squircle;
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-card-radius) * var(--mb-corner-factor));
   }
 }
 

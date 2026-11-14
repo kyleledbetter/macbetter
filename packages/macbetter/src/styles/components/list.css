@@ -270,10 +270,21 @@
   box-shadow: inset 0 0 0 var(--mb-hairline) rgb(0 0 0 / 0.06);
 }
 
+/* Continuous corners: the Settings icon tile, and the inset group with its first and last rows' press fill. */
 @supports (corner-shape: squircle) {
   .mb-list-row-icon {
-    border-radius: calc(var(--mb-list-icon-radius) * 1.45);
-    corner-shape: squircle;
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-list-icon-radius) * var(--mb-corner-factor));
+  }
+
+  .mb-list[data-variant="inset-grouped"] .mb-list-group {
+    --mb-list-row-radius: calc(var(--mb-list-group-radius) * var(--mb-corner-factor));
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-list-group-radius) * var(--mb-corner-factor));
+  }
+
+  .mb-list-item:is(:first-child, :last-child) > .mb-list-row {
+    corner-shape: var(--mb-corner-shape);
   }
 }
 

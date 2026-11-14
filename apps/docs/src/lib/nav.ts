@@ -23,6 +23,7 @@ const nav: NavSection[] = [
     items: [
       doc("foundations/color", "Color"),
       doc("foundations/typography", "Typography"),
+      doc("foundations/web-typography", "Web typography"),
       doc("foundations/materials", "Materials"),
       doc("foundations/motion", "Motion"),
       doc("foundations/layout", "Layout and shape"),
@@ -110,6 +111,7 @@ const nav: NavSection[] = [
       doc("components/card", "Card"),
       doc("components/avatar", "Avatar"),
       doc("components/artwork", "Artwork"),
+      doc("components/squircle", "Squircle"),
       doc("components/badge", "Badge"),
       doc("components/separator", "Separator"),
       doc("components/scroll-view", "Scroll View"),

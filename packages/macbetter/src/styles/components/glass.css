@@ -99,3 +99,15 @@
   --mb-button-bg: light-dark(rgb(255 255 255 / 0.72), rgb(255 255 255 / 0.24));
   opacity: 1;
 }
+
+/* Liquid Glass's rounded shape has continuous corners; capsules and circles stay round. */
+@supports (corner-shape: squircle) {
+  .mb-glass[data-shape="rounded"] {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-glass-radius) * var(--mb-corner-factor));
+  }
+
+  .mb-glass[data-shape="rounded"]::before {
+    corner-shape: inherit;
+  }
+}

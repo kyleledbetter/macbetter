@@ -412,3 +412,22 @@
     }
   }
 }
+
+/* Continuous corners: the panel, and the action sheet's cards. */
+@supports (corner-shape: squircle) {
+  .mb-alert {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-alert-radius) * var(--mb-corner-factor));
+  }
+
+  @scope ([data-platform="ios"]) to (:scope [data-platform]) {
+    .mb-alert[data-variant="sheet"] {
+      --mb-alert-radius: calc(14px * var(--mb-radius-scale) * var(--mb-corner-factor));
+    }
+
+    .mb-alert[data-variant="sheet"] > .mb-alert-title,
+    .mb-alert[data-variant="sheet"] .mb-alert-action {
+      corner-shape: var(--mb-corner-shape);
+    }
+  }
+}

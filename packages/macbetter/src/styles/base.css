@@ -38,6 +38,32 @@
   outline-offset: var(--mb-focus-ring-offset);
 }
 
+/*
+ * Continuous corners. A component opts in inside @supports, multiplying its
+ * nominal radius by --mb-corner-factor so the corner keeps its apparent size:
+ *
+ *   .mb-card { border-radius: var(--mb-card-radius) }
+ *   @supports (corner-shape: squircle) {
+ *     .mb-card {
+ *       corner-shape: var(--mb-corner-shape);
+ *       border-radius: calc(var(--mb-card-radius) * var(--mb-corner-factor));
+ *     }
+ *   }
+ *
+ * Never on a full radius: a superellipse turns a capsule into a lozenge and a
+ * circle into a squircle. The factor drops to 1 when a theme sets the shape to
+ * round; it's worked out on every element, so a nested theme can switch it.
+ */
+:where([class^="mb-"], [class*=" mb-"]) {
+  --mb-corner-factor: var(--mb-corner-smoothing);
+}
+
+@supports (top: if(else: 0px)) {
+  :where([class^="mb-"], [class*=" mb-"]) {
+    --mb-corner-factor: if(style(--mb-corner-shape: round): 1; else: var(--mb-corner-smoothing));
+  }
+}
+
 /* Text styles. */
 .mb-text-large-title { font: var(--mb-text-large-title); letter-spacing: var(--mb-tracking-large-title); }
 .mb-text-title-1 { font: var(--mb-text-title-1); letter-spacing: var(--mb-tracking-title); }

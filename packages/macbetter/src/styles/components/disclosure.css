@@ -186,3 +186,12 @@
   padding-inline: var(--mb-disclosure-content-indent) 0;
 }
 
+
+/* Continuous corners on a grouped box. */
+@supports (corner-shape: squircle) {
+  .mb-disclosure-group[data-variant="grouped"],
+  .mb-disclosure[data-variant="grouped"] {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-disclosure-radius) * var(--mb-corner-factor));
+  }
+}

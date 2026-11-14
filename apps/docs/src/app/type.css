@@ -1,0 +1,573 @@
+/*
+ * The site's type, surface and layout system: apple.com's marketing scale
+ * (docs/apple-web-typography.md, section 9) mapped onto Macbetter's tokens.
+ * Components keep the HIG's in-app text styles (--mb-text-*); this file is for
+ * the pages around them.
+ *
+ * Tracking. apple.com sets the named webfonts "SF Pro Display" and "SF Pro Text"
+ * and adds a fixed letter-spacing per size. The system font is not the same
+ * thing: measured in Chromium on macOS (BlinkMacSystemFont / system-ui), it
+ * already carries SF's size-specific tracking and optical sizes. At 17px it is
+ * 5% narrower than "SF Pro Text" (about -0.025em, more than Apple's -0.022em),
+ * at 12px it is identical, at 80px it is identical to "SF Pro Display". Adding
+ * Apple's values on top would double them. So the stacks lead with the system
+ * font (every Mac and iPhone has it, installed SF Pro or not), and each --track-N
+ * below is the letter-spacing that makes the system font set the same width as
+ * apple.com's webfont plus Apple's tracking. Apple's own values are in the
+ * comment beside each, for a stack that loads the named webfonts instead.
+ */
+
+:root,
+[data-theme] {
+  /* ── Families ────────────────────────────────────────────── */
+  /* Display at 19px and up, Text at 17px and down. On Apple devices both resolve
+     to the system SF, which picks its own optical size; elsewhere they fall
+     through to the named faces, Helvetica Neue, Inter or the OS font. */
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Inter",
+    system-ui, sans-serif;
+  --font-text: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Inter", system-ui,
+    sans-serif;
+
+  /* ── Leading: size + 4px for anything set tight, + 8px for reading ── */
+  --leading-tight: calc(1em + 4px);
+  --leading-read: calc(1em + 8px);
+  --leading-read-reduced: calc(1em + 6px);
+
+  /* ── Tracking per size, for the system font (Apple's webfont value in the comment) ── */
+  --track-12: -0.01em; /* -0.01 */
+  --track-14: -0.005em; /* -0.016 */
+  --track-17: 0em; /* -0.022 */
+  --track-19: -0.012em; /* +0.012 */
+  --track-21: -0.009em; /* +0.011 */
+  --track-24: -0.006em; /* +0.009 */
+  --track-28: -0.008em; /* +0.007 */
+  --track-32: -0.01em; /* +0.004 */
+  --track-40: -0.01em; /* 0 */
+  --track-48: -0.012em; /* -0.003 */
+  --track-56: -0.013em; /* -0.005 */
+  --track-64: -0.014em; /* -0.009 */
+  --track-80: -0.016em; /* -0.015 */
+
+  /* ── Scale, large (≥1069px). Each style drops a step at 1068 and 734. ── */
+  --type-headline-super: 80px;
+  --type-headline-super-track: var(--track-80);
+  --type-headline-elevated: 64px;
+  --type-headline-elevated-track: var(--track-64);
+  --type-headline: 48px;
+  --type-headline-track: var(--track-48);
+  --type-headline-reduced: 40px;
+  --type-headline-reduced-track: var(--track-40);
+  --type-callout: 32px;
+  --type-callout-track: var(--track-32);
+  --type-card: 28px;
+  --type-card-track: var(--track-28);
+  --type-eyebrow-elevated: 28px;
+  --type-eyebrow-elevated-track: var(--track-28);
+  --type-eyebrow: 24px;
+  --type-eyebrow-track: var(--track-24);
+  --type-eyebrow-reduced: 21px;
+  --type-eyebrow-reduced-track: var(--track-21);
+  --type-intro-elevated: 24px;
+  --type-intro-elevated-track: var(--track-24);
+  --type-intro: 21px;
+  --type-intro-track: var(--track-21);
+  --type-tout: 19px;
+  --type-tout-track: var(--track-19);
+  --type-body: 17px;
+  --type-body-track: var(--track-17);
+  --type-body-reduced: 14px;
+  --type-body-reduced-track: var(--track-14);
+  --type-caption: 12px;
+  --type-caption-track: var(--track-12);
+  --type-stat: 48px;
+  --type-stat-track: var(--track-48);
+
+  /* ── Surfaces: page, alternate section, tile ───────────────── */
+  /* apple.com dark is #000 / #161617 / #1d1d1f, light #fff / #f5f5f7. Here the
+     tile is the theme's own background, so Ember keeps its green and System lands
+     on Apple's grays (#1c1c1e tiles on a near-black page). */
+  --site-page: light-dark(var(--mb-bg), color-mix(in oklab, var(--mb-bg) 42%, black));
+  --site-page-alt: light-dark(
+    color-mix(in oklab, var(--mb-bg-secondary) 70%, var(--mb-bg)),
+    color-mix(in oklab, var(--mb-bg) 74%, black)
+  );
+  --site-tile: light-dark(color-mix(in oklab, var(--mb-bg-secondary) 70%, var(--mb-bg)), var(--mb-bg));
+  /* A tile sitting on the alternate surface flips to the page color, as on apple.com. */
+  --site-tile-on-alt: var(--mb-bg);
+  --site-hairline: light-dark(
+    color-mix(in oklab, var(--mb-ink) 9%, transparent),
+    color-mix(in oklab, var(--mb-ink) 14%, transparent)
+  );
+  --site-chrome: light-dark(
+    color-mix(in oklab, var(--mb-bg) 80%, transparent),
+    color-mix(in oklab, var(--site-page-alt) 80%, transparent)
+  );
+
+  /* ── Text: primary and secondary, opaque so contrast is predictable ── */
+  --site-label: light-dark(
+    color-mix(in oklab, var(--mb-ink) 92%, var(--mb-bg)),
+    color-mix(in oklab, var(--mb-ink) 96%, var(--mb-bg))
+  );
+  --site-label-secondary: light-dark(
+    color-mix(in oklab, var(--mb-ink) 50%, var(--mb-bg)),
+    color-mix(in oklab, var(--mb-ink) 58%, var(--site-page))
+  );
+  --site-label-tertiary: light-dark(
+    color-mix(in oklab, var(--mb-ink) 40%, var(--mb-bg)),
+    color-mix(in oklab, var(--mb-ink) 46%, var(--site-page))
+  );
+  --site-legal: light-dark(
+    color-mix(in oklab, var(--mb-ink) 56%, transparent),
+    color-mix(in oklab, var(--mb-ink) 56%, transparent)
+  );
+  --site-link: var(--mb-accent-text);
+
+  /* ── Layout ───────────────────────────────────────────────── */
+  --site-content: min(87.5%, 1260px);
+  --site-content-hero: min(87.5%, 1680px);
+  --space-section: 144px;
+  --space-section-reduced: 120px;
+  --space-section-header: 48px;
+  --space-eyebrow-headline: 20px;
+  --space-headline-copy: 26px;
+  --space-copy-cta: 32px;
+  --space-tile-pad: 32px;
+  --gap-bento: 20px;
+  --radius-tile: 28px;
+}
+
+@media (max-width: 1068px) {
+  :root,
+  [data-theme] {
+    --type-headline-super: 64px;
+    --type-headline-super-track: var(--track-64);
+    --type-headline-elevated: 48px;
+    --type-headline-elevated-track: var(--track-48);
+    --type-headline: 40px;
+    --type-headline-track: var(--track-40);
+    --type-headline-reduced: 32px;
+    --type-headline-reduced-track: var(--track-32);
+    --type-callout: 28px;
+    --type-callout-track: var(--track-28);
+    --type-card: 24px;
+    --type-card-track: var(--track-24);
+    --type-eyebrow-elevated: 24px;
+    --type-eyebrow-elevated-track: var(--track-24);
+    --type-eyebrow: 21px;
+    --type-eyebrow-track: var(--track-21);
+    --type-intro-elevated: 21px;
+    --type-intro-elevated-track: var(--track-21);
+    --type-stat: 40px;
+    --type-stat-track: var(--track-40);
+
+    --space-section: 120px;
+    --space-section-reduced: 80px;
+    --space-section-header: 40px;
+    --space-eyebrow-headline: 18px;
+    --space-headline-copy: 24px;
+    --space-tile-pad: 28px;
+  }
+}
+
+@media (max-width: 734px) {
+  :root,
+  [data-theme] {
+    --type-headline-super: 48px;
+    --type-headline-super-track: var(--track-48);
+    --type-headline-elevated: 40px;
+    --type-headline-elevated-track: var(--track-40);
+    --type-headline: 32px;
+    --type-headline-track: var(--track-32);
+    --type-headline-reduced: 28px;
+    --type-headline-reduced-track: var(--track-28);
+    --type-callout: 24px;
+    --type-callout-track: var(--track-24);
+    --type-card: 21px;
+    --type-card-track: var(--track-21);
+    --type-eyebrow-elevated: 21px;
+    --type-eyebrow-elevated-track: var(--track-21);
+    --type-eyebrow-reduced: 19px;
+    --type-eyebrow-reduced-track: var(--track-19);
+    --type-intro: 19px;
+    --type-intro-track: var(--track-19);
+    --type-stat: 32px;
+    --type-stat-track: var(--track-32);
+
+    --site-content: min(87.5%, 420px);
+    --space-section: 112px;
+    --space-section-reduced: 56px;
+    --space-section-header: 32px;
+    --space-eyebrow-headline: 12px;
+    --space-headline-copy: 18px;
+    --space-copy-cta: 24px;
+    --space-tile-pad: 24px;
+  }
+}
+
+/* Small phones: the 420px column would be wider than 87.5% anyway, so this only
+   guards very narrow screens. */
+@media (max-width: 480px) {
+  :root,
+  [data-theme] {
+    --site-content: calc(100% - 40px);
+  }
+}
+
+@layer components {
+  /* ── Type classes ─────────────────────────────────────────── */
+
+  .type-headline-super,
+  .type-headline-elevated,
+  .type-headline,
+  .type-headline-reduced,
+  .type-callout,
+  .type-card,
+  .type-eyebrow-elevated,
+  .type-eyebrow,
+  .type-eyebrow-reduced,
+  .type-tout,
+  .type-stat {
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: var(--leading-tight);
+    font-synthesis: none;
+  }
+
+  .type-headline-super {
+    font-size: var(--type-headline-super);
+    letter-spacing: var(--type-headline-super-track);
+  }
+
+  .type-headline-elevated {
+    font-size: var(--type-headline-elevated);
+    letter-spacing: var(--type-headline-elevated-track);
+  }
+
+  .type-headline {
+    font-size: var(--type-headline);
+    letter-spacing: var(--type-headline-track);
+  }
+
+  .type-headline-reduced {
+    font-size: var(--type-headline-reduced);
+    letter-spacing: var(--type-headline-reduced-track);
+  }
+
+  .type-callout {
+    font-size: var(--type-callout);
+    letter-spacing: var(--type-callout-track);
+  }
+
+  .type-card {
+    font-size: var(--type-card);
+    letter-spacing: var(--type-card-track);
+  }
+
+  .type-eyebrow-elevated {
+    font-size: var(--type-eyebrow-elevated);
+    letter-spacing: var(--type-eyebrow-elevated-track);
+  }
+
+  .type-eyebrow {
+    font-size: var(--type-eyebrow);
+    letter-spacing: var(--type-eyebrow-track);
+  }
+
+  .type-eyebrow-reduced {
+    font-size: var(--type-eyebrow-reduced);
+    letter-spacing: var(--type-eyebrow-reduced-track);
+  }
+
+  .type-tout {
+    font-size: var(--type-tout);
+    letter-spacing: var(--type-tout-track);
+  }
+
+  .type-stat {
+    font-size: var(--type-stat);
+    line-height: 1;
+    letter-spacing: var(--type-stat-track);
+    font-variant-numeric: lining-nums;
+  }
+
+  .type-intro-elevated,
+  .type-intro {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: var(--leading-read);
+    font-synthesis: none;
+  }
+
+  .type-intro-elevated {
+    font-size: var(--type-intro-elevated);
+    letter-spacing: var(--type-intro-elevated-track);
+  }
+
+  .type-intro {
+    font-size: var(--type-intro);
+    letter-spacing: var(--type-intro-track);
+  }
+
+  .type-body,
+  .type-body-tight,
+  .type-body-reduced,
+  .type-caption {
+    font-family: var(--font-text);
+    font-weight: 400;
+    font-synthesis: none;
+  }
+
+  .type-body {
+    font-size: var(--type-body);
+    line-height: var(--leading-read);
+    letter-spacing: var(--type-body-track);
+  }
+
+  .type-body-tight {
+    font-size: var(--type-body);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--type-body-track);
+  }
+
+  .type-body-reduced {
+    font-size: var(--type-body-reduced);
+    line-height: var(--leading-read-reduced);
+    letter-spacing: var(--type-body-reduced-track);
+  }
+
+  .type-caption {
+    font-size: var(--type-caption);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--type-caption-track);
+  }
+
+  /* Two-tone copy: the paragraph in secondary gray, key phrases in primary. */
+  .type-two-tone {
+    color: var(--site-label-secondary);
+  }
+
+  .type-two-tone :where(strong, b) {
+    color: var(--site-label);
+    font-weight: 600;
+  }
+
+  /* The bold two-tone paragraph: all 600, lead sentence in primary. */
+  .type-lead-in {
+    color: var(--site-label-secondary);
+    font-weight: 600;
+  }
+
+  .type-lead-in :where(strong, b) {
+    color: var(--site-label);
+    font-weight: 600;
+  }
+
+  /* Hand-set line breaks: a <br> that only breaks at one size. */
+  br.br-large {
+    display: inline;
+  }
+
+  br.br-medium,
+  br.br-small {
+    display: none;
+  }
+
+  @media (max-width: 1068px) {
+    br.br-large {
+      display: none;
+    }
+
+    br.br-medium {
+      display: inline;
+    }
+  }
+
+  @media (max-width: 734px) {
+    br.br-medium {
+      display: none;
+    }
+
+    br.br-small {
+      display: inline;
+    }
+  }
+
+  /* ── Links: "Learn more ›" ─────────────────────────────────── */
+
+  .more-link {
+    color: var(--site-link);
+    text-decoration: none;
+    border-radius: 4px;
+  }
+
+  /* The chevron is an inline-block, so the hover underline stops at the text. */
+  .more-link::after {
+    content: "";
+    display: inline-block;
+    width: 0.5em;
+    height: 0.7em;
+    margin-inline-start: 0.28em;
+    background: currentColor;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 14'%3E%3Cpath d='M1.2 1.2 6.6 7l-5.4 5.8' fill='none' stroke='black' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+      center / contain no-repeat;
+    vertical-align: -0.02em;
+  }
+
+  .more-link[data-direction="back"]::after {
+    content: none;
+  }
+
+  .more-link[data-direction="back"]::before {
+    content: "";
+    display: inline-block;
+    width: 0.5em;
+    height: 0.7em;
+    margin-inline-end: 0.28em;
+    background: currentColor;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 14'%3E%3Cpath d='M6.8 1.2 1.4 7l5.4 5.8' fill='none' stroke='black' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+      center / contain no-repeat;
+    vertical-align: -0.02em;
+  }
+
+  :where([dir="rtl"]) .more-link::after,
+  :where([dir="rtl"]) .more-link[data-direction="back"]::before {
+    scale: -1 1;
+  }
+
+  .more-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.14em;
+  }
+
+  .more-link:focus-visible {
+    outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+    outline-offset: 2px;
+  }
+
+  /* ── Pill buttons: Macbetter's Button, capsule, at apple.com's three sizes ── */
+
+  .pill.mb-button {
+    --mb-button-height: 36px;
+    --mb-button-padding: 16px;
+    min-width: 60px;
+    font: 400 14px / 18px var(--font-text);
+    letter-spacing: var(--track-14);
+  }
+
+  .pill.mb-button[data-pill="reduced"] {
+    --mb-button-height: 24px;
+    --mb-button-padding: 11px;
+    min-width: 45px;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: var(--track-12);
+  }
+
+  .pill.mb-button[data-pill="elevated"] {
+    --mb-button-height: 44px;
+    --mb-button-padding: 22px;
+    min-width: 70px;
+    font-size: 17px;
+    line-height: 20px;
+    letter-spacing: var(--track-17);
+  }
+
+  /* apple.com's outlined secondary: accent border and text, fills on hover. */
+  .pill.mb-button[data-pill-style="outline"] {
+    --mb-button-bg: transparent;
+    --mb-button-fg: var(--site-link);
+    box-shadow: inset 0 0 0 1px currentColor;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .pill.mb-button[data-pill-style="outline"]:hover {
+      --mb-button-bg: var(--mb-accent);
+      --mb-button-fg: var(--mb-on-accent);
+      box-shadow: none;
+    }
+  }
+
+  .pill.mb-button:focus-visible {
+    outline-offset: 3px;
+  }
+
+  /* ── Headline stack: eyebrow → headline → intro → links ────── */
+
+  .stack {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: start;
+  }
+
+  .stack[data-align="center"] {
+    justify-items: center;
+    text-align: center;
+  }
+
+  @media (max-width: 734px) {
+    .stack[data-align="center"] {
+      justify-items: start;
+      text-align: start;
+    }
+  }
+
+  .stack > .stack-eyebrow {
+    margin: 0;
+    color: var(--site-label);
+  }
+
+  .stack > .stack-headline {
+    margin: var(--space-eyebrow-headline) 0 0;
+    color: var(--site-label);
+  }
+
+  .stack > .stack-headline:first-child {
+    margin-top: 0;
+  }
+
+  .stack > .stack-copy {
+    max-width: 40em;
+    margin: var(--space-headline-copy) 0 0;
+  }
+
+  .stack[data-align="center"] .stack-copy {
+    max-width: 34em;
+  }
+
+  .stack-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px 34px;
+    margin-top: var(--space-copy-cta);
+  }
+
+  .stack[data-align="center"] .stack-links {
+    justify-content: center;
+  }
+
+  @media (max-width: 734px) {
+    .stack-links {
+      gap: 14px 28px;
+    }
+
+    .stack[data-align="center"] .stack-links {
+      justify-content: flex-start;
+    }
+  }
+
+  /* ── Footnotes ────────────────────────────────────────────── */
+
+  .footnote-mark {
+    position: relative;
+    top: -0.5em;
+    font-size: 0.6em;
+    vertical-align: initial;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  a.footnote-mark:hover {
+    text-decoration: underline;
+  }
+}

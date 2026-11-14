@@ -1,62 +1,42 @@
-import Link from "next/link"
 import { ButtonLink } from "@/components/button-link"
 import { MacbetterMark } from "@/components/logo"
 
-const links = [
-  { href: "/docs/introduction", label: "Docs" },
-  { href: "/docs/components/button", label: "Components" },
-  { href: "/themes", label: "Themes" },
-  { href: "https://github.com/kyleledbetter/macbetter", label: "GitHub", external: true },
-]
-
 function Closing() {
   return (
-    <>
-      <section className="lp-section lp-cta" aria-labelledby="lp-cta">
-        <div className="lp-cta-inner lp-reveal">
-          <MacbetterMark size={56} tone="ember" className="lp-cta-mark" />
-          <h2 id="lp-cta" className="lp-h2">
-            Start with one component.
-            {" "}<span className="lp-muted">Keep going.</span>
+    <section className="lp-section lp-cta" aria-labelledby="lp-cta">
+      <div className="lp-section-inner">
+        <div className="lp-cta-inner stack lp-reveal" data-align="center">
+          <MacbetterMark size={64} tone="ember" className="lp-cta-mark" />
+          <h2 id="lp-cta" className="stack-eyebrow type-eyebrow-reduced">
+            Get started
           </h2>
-          <p className="lp-lead">
-            Install the package, import a button, and add the rest as you need them. Every component has a page with
-            live examples for all three platforms.
+          <p className="stack-headline type-headline-elevated">
+            Start with one component.
+            <br />
+            Keep&nbsp;going.
           </p>
-          <div className="lp-heading-actions" data-platform="macos">
-            <ButtonLink variant="filled" size="lg" href="/docs/installation">
+          <p className="stack-copy type-intro type-two-tone">
+            Install the package, import a button, and add the rest as you need them.{" "}
+            <strong>Every component has a page with live examples for all three&nbsp;platforms.</strong>
+          </p>
+          <div className="lp-hero-actions" data-platform="macos">
+            <ButtonLink href="/docs/installation" variant="filled" shape="capsule" className="pill" data-pill="elevated">
               Install Macbetter
             </ButtonLink>
-            <ButtonLink variant="bezeled" tone="neutral" size="lg" href="/docs/introduction">
+            <ButtonLink
+              href="/docs/introduction"
+              variant="plain"
+              shape="capsule"
+              className="pill"
+              data-pill="elevated"
+              data-pill-style="outline"
+            >
               Read the docs
             </ButtonLink>
           </div>
         </div>
-      </section>
-      <footer className="lp-footer">
-        <div className="lp-footer-inner">
-          <a href="https://github.com/kyleledbetter" className="lp-footer-brand">
-            <MacbetterMark size={22} className="lp-footer-mark" />
-            <span>
-              Macbetter is made by <strong>Kyle Ledbetter</strong>.
-            </span>
-          </a>
-          <nav aria-label="Footer" className="lp-footer-links">
-            {links.map((link) =>
-              link.external ? (
-                <a key={link.href} href={link.href} target="_blank" rel="noreferrer">
-                  {link.label}
-                </a>
-              ) : (
-                <Link key={link.href} href={link.href}>
-                  {link.label}
-                </Link>
-              )
-            )}
-          </nav>
-        </div>
-      </footer>
-    </>
+      </div>
+    </section>
   )
 }
 

@@ -436,3 +436,19 @@
   -webkit-user-select: none;
   user-select: none;
 }
+
+/* Continuous corners on the menu, and on the sheet it becomes on touch. Rows keep their small round radius. */
+@supports (corner-shape: squircle) {
+  .mb-menu-content {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-menu-radius) * var(--mb-corner-factor));
+  }
+
+  .mb-menu-content[data-presentation="sheet"] {
+    border-radius: calc(var(--mb-sheet-radius) * var(--mb-corner-factor)) calc(var(--mb-sheet-radius) * var(--mb-corner-factor)) 0 0;
+  }
+
+  .mb-menu-content[data-presentation="sheet"][data-nested] {
+    border-radius: 0;
+  }
+}

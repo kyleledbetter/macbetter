@@ -436,3 +436,17 @@
     }
   }
 }
+
+/* Continuous corners on the panel and the sheet it becomes on touch. */
+@supports (corner-shape: squircle) {
+  .mb-color-well-panel {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-popup-radius) * var(--mb-corner-factor));
+  }
+
+  @scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+    .mb-color-well-panel[data-presentation="sheet"] {
+      border-radius: calc(var(--mb-sheet-radius) * var(--mb-corner-factor)) calc(var(--mb-sheet-radius) * var(--mb-corner-factor)) 0 0;
+    }
+  }
+}

@@ -168,3 +168,19 @@
     }
   }
 }
+
+/* Continuous corners, on the popover and on the bottom sheet it becomes on touch. */
+@supports (corner-shape: squircle) {
+  .mb-popover {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-popover-radius) * var(--mb-corner-factor));
+  }
+
+  .mb-popover[data-presentation="sheet"] {
+    border-radius: calc(var(--mb-sheet-radius) * var(--mb-corner-factor)) calc(var(--mb-sheet-radius) * var(--mb-corner-factor)) 0 0;
+  }
+
+  .mb-popover::before {
+    corner-shape: inherit;
+  }
+}

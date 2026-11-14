@@ -153,3 +153,11 @@
     --mb-code-field-cell-edge: inset 0 0 0 1px var(--mb-control-border);
   }
 }
+
+/* Continuous corners on each cell. */
+@supports (corner-shape: squircle) {
+  .mb-code-field-slot {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-code-field-cell-radius) * var(--mb-corner-factor));
+  }
+}

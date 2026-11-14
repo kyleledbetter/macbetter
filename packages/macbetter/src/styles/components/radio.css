@@ -267,3 +267,15 @@
 .mb-radio-group:not([data-variant="list"]):has(.mb-radio-description) {
   gap: calc(var(--mb-radio-group-gap) + var(--mb-space-3));
 }
+
+/* Continuous corners on the inset-grouped list, and the focus ring inside it. */
+@supports (corner-shape: squircle) {
+  .mb-radio-group[data-variant="list"] {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-group-radius) * var(--mb-corner-factor));
+  }
+
+  .mb-radio-group[data-variant="list"] .mb-radio-label:has(.mb-radio:focus-visible) {
+    corner-shape: inherit;
+  }
+}

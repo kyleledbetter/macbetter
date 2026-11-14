@@ -36,7 +36,7 @@ import {
   Volume2Icon,
   WifiIcon,
 } from "lucide-react"
-import Link from "next/link"
+import { MoreLink } from "@/components/more-link"
 import { SearchTile } from "./search-tile"
 import { SectionHeading } from "./section-heading"
 import { Wallpaper } from "./wallpaper"
@@ -57,12 +57,9 @@ function Tile({
   return (
     <div className={`lp-tile ${className ?? ""}`} style={{ gridArea: area }}>
       <div className="lp-tile-stage">{children}</div>
-      <Link href={`/docs/components/${slug}`} className="lp-tile-name">
+      <MoreLink href={`/docs/components/${slug}`} className="lp-tile-name" aria-label={`${name}, learn more`}>
         {name}
-        <span aria-hidden="true" className="lp-tile-arrow">
-          →
-        </span>
-      </Link>
+      </MoreLink>
     </div>
   )
 }
@@ -129,21 +126,24 @@ function StaticMenu() {
   )
 }
 
-function Bento() {
+function Bento({ count }: { count: number }) {
   return (
-    <section className="lp-section" aria-labelledby="lp-bento">
+    <section id="components" className="lp-section" data-surface="alt" aria-labelledby="lp-bento">
+      <div className="lp-section-inner">
       <SectionHeading
         id="lp-bento"
-        title="Over fifty components."
-        muted="Each one the real thing."
-        actions={
-          <Button variant="tinted" render={<Link href="/docs/components/button" />}>
-            See all components
-          </Button>
+        eyebrow="Components"
+        headline={
+          <>
+            {count} components.
+            <br />
+            Each one the real&nbsp;thing.
+          </>
         }
+        links={<MoreLink href="/docs/components">Explore all components</MoreLink>}
       >
         Menus, sliders, calendars, alerts and command palettes that look and behave like the native control, at a
-        glance and under the hand. Everything below works.
+        glance and under the hand. <strong>Every tile below&nbsp;works.</strong>
       </SectionHeading>
       <div className="lp-bento lp-reveal" data-platform="macos">
         <Tile area="menu" name="Menu" slug="menu" className="lp-tile-menu">
@@ -267,6 +267,7 @@ function Bento() {
             </AlertContent>
           </Alert>
         </Tile>
+      </div>
       </div>
     </section>
   )

@@ -1,5 +1,5 @@
 import { BotIcon, KeyboardIcon, LanguagesIcon, ScanEyeIcon, ServerIcon, TextCursorInputIcon } from "lucide-react"
-import { ButtonLink } from "@/components/button-link"
+import { MoreLink } from "@/components/more-link"
 import { CodeBlock } from "@/components/code-block"
 import { CopyButton } from "@/components/copy-button"
 import { SectionHeading } from "./section-heading"
@@ -58,29 +58,36 @@ const features = [
 
 function Foundation() {
   return (
-    <section className="lp-section" aria-labelledby="lp-foundation">
+    <section id="foundation" className="lp-section" data-surface="alt" aria-labelledby="lp-foundation">
+      <div className="lp-section-inner">
       <SectionHeading
         id="lp-foundation"
-        title="Built on ui-sdk."
-        muted="Ready for people and agents."
-        actions={
-          <ButtonLink variant="tinted" href="/docs/agents">
-            How agents use Macbetter
-          </ButtonLink>
+        eyebrow="Accessibility and agents"
+        headline={
+          <>
+            Built on ui-sdk.
+            <br />
+            Ready for people and&nbsp;agents.
+          </>
+        }
+        links={
+          <>
+            <MoreLink href="/docs/foundations/accessibility">Learn more about accessibility</MoreLink>
+            <MoreLink href="/docs/agents">See how agents use Macbetter</MoreLink>
+          </>
         }
       >
-        Macbetter adds the Apple look and feel. Behavior comes from ui-sdk, shadcn’s headless component library, so
-        the hard parts of every control are already built and tested.
+        Macbetter adds the Apple look and feel. Behavior comes from ui-sdk, shadcn’s headless component library,
+        so <strong>the hard parts of every control are already built and&nbsp;tested.</strong>
       </SectionHeading>
       <div className="lp-foundation lp-reveal">
         <ul className="lp-features">
           {features.map((feature) => (
             <li key={feature.title}>
               <feature.icon aria-hidden="true" />
-              <div>
-                <h3>{feature.title}</h3>
-                <p>{feature.text}</p>
-              </div>
+              <p className="type-body-tight type-lead-in">
+                <strong>{feature.title}.</strong> {feature.text}
+              </p>
             </li>
           ))}
         </ul>
@@ -94,6 +101,7 @@ function Foundation() {
           </div>
           <CodeBlock code={usage} title="join-network.tsx" />
         </div>
+      </div>
       </div>
     </section>
   )

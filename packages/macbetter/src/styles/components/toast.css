@@ -213,8 +213,7 @@
   width: var(--mb-toast-icon-size);
   height: var(--mb-toast-icon-size);
   overflow: hidden;
-  /* An app icon's continuous corner, approximated. */
-  border-radius: 22.5%;
+  border-radius: var(--mb-squircle-radius-icon);
 }
 
 .mb-toast-icon > :where(img, svg) {
@@ -402,5 +401,18 @@
     .mb-toast[data-ending-style][data-front] {
       opacity: 0;
     }
+  }
+}
+
+/* Continuous corners on the banner and the app icon in it. */
+@supports (corner-shape: squircle) {
+  .mb-toast {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-toast-radius) * var(--mb-corner-factor));
+  }
+
+  .mb-toast-icon {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-squircle-radius-icon) * var(--mb-corner-factor));
   }
 }

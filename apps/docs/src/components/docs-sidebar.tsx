@@ -27,12 +27,12 @@ function DocsSidebar({ sections, onNavigate }: DocsSidebarProps) {
   }, [pathname])
 
   return (
-    <nav ref={ref} aria-label="Documentation" className="docs-sidebar flex flex-col gap-5 px-3 pt-5 pb-10">
+    <nav ref={ref} aria-label="Documentation" className="docs-sidebar flex flex-col gap-6 px-3 pt-6 pb-10">
       {sections.map((section) => (
         <section key={section.title} aria-labelledby={`nav-${slug(section.title)}`}>
           <h2
             id={`nav-${slug(section.title)}`}
-            className="mb-1 px-2.5 text-[11.5px] font-semibold tracking-[0.01em] text-label-tertiary"
+            className="docs-sidebar-heading"
           >
             {section.title}
           </h2>

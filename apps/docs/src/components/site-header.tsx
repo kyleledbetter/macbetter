@@ -17,11 +17,12 @@ function GitHubIcon() {
 /**
  * The toolbar every page shares: identity and main navigation on the leading
  * side, search and appearance on the trailing side. Pages can put extra
- * controls before the logo with `children`.
+ * controls before the logo with `children`. `scrolls` lets it scroll away with the
+ * page, for a page that has its own sticky local nav.
  */
-function SiteHeader({ children }: { children?: React.ReactNode }) {
+function SiteHeader({ children, scrolls }: { children?: React.ReactNode; scrolls?: boolean }) {
   return (
-    <header data-platform="macos" className="docs-header">
+    <header data-platform="macos" className="docs-header" data-scrolls={scrolls ? "" : undefined}>
       <MobileNav sections={publishedNav()} />
       {children}
       <Link href="/" aria-label="Macbetter home" className="docs-header-home">

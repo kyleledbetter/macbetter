@@ -10,6 +10,7 @@ import { Rating } from "macbetter/rating"
 import { SearchField } from "macbetter/search-field"
 import { SegmentedControl, SegmentedControlItem } from "macbetter/segmented-control"
 import { Slider } from "macbetter/slider"
+import { Squircle } from "macbetter/squircle"
 import { Switch } from "macbetter/switch"
 import { TextField } from "macbetter/text-field"
 import {
@@ -112,6 +113,9 @@ const previews: Record<string, () => React.ReactNode> = {
       <Artwork seed="Low Tide" variant="orbit" palette="ocean" size={56} />
       <Artwork seed="Fieldwork" variant="glyph" palette="citrus" size={56} />
     </div>
+  ),
+  squircle: () => (
+    <Squircle size={56} style={{ background: "linear-gradient(160deg, var(--mb-accent), var(--mb-pink))" }} />
   ),
   badge: () => (
     <div className="flex gap-2">

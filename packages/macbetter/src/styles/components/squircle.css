@@ -1,0 +1,44 @@
+/* Squircle — a box with Apple's continuous corners. The mechanism is in base.css. */
+
+.mb-squircle {
+  --mb-squircle-radius: var(--mb-squircle-radius-icon);
+
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--mb-squircle-radius);
+}
+
+@supports (corner-shape: squircle) {
+  .mb-squircle {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-squircle-radius) * var(--mb-corner-factor));
+  }
+}
+
+/* A smoothing of its own: only where superellipse() exists, or the factor would apply to a round corner. */
+@supports (corner-shape: superellipse(2)) {
+  .mb-squircle[data-smoothing] {
+    --mb-corner-shape: superellipse(var(--mb-squircle-k));
+    --mb-corner-smoothing: var(--mb-squircle-m);
+  }
+}
+
+/* Exact: the clip-path is the shape, so the radius only has to stay out of its way. */
+.mb-squircle[data-exact] {
+  border-radius: 0;
+}
+
+.mb-squircle[data-shadow] {
+  box-shadow: var(--mb-squircle-shadow);
+}
+
+.mb-squircle-shadow {
+  display: inline-flex;
+  flex: none;
+  vertical-align: top;
+  filter: drop-shadow(var(--mb-squircle-shadow));
+}
+
+:where(.mb-squircle, .mb-squircle-shadow) {
+  --mb-squircle-shadow: 0 2px 6px rgb(0 0 0 / 0.22);
+}

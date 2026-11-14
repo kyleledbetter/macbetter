@@ -32,21 +32,29 @@ export default function ComponentsIndex() {
   const count = sections.reduce((sum, section) => sum + section.items.length, 0)
 
   return (
-    <article className="docs-prose mx-auto w-full max-w-[1040px] px-5 pt-8 pb-24 md:px-10 md:pt-12">
-      <p className="mb-3 text-[13px] font-semibold tracking-[-0.01em] text-accent-text">Components</p>
-      <h1>Components</h1>
-      <p className="docs-lead">
-        {count} components for macOS, iPadOS and iOS. Each one is a ui-sdk part with Apple’s metrics, materials and
-        motion, and changes its idiom with the platform it runs on.
-      </p>
+    <article className="docs-index mx-auto w-full max-w-[1100px] px-5 pt-10 pb-24 md:px-10 md:pt-16">
+      <header className="stack">
+        <p className="stack-eyebrow docs-eyebrow">Components</p>
+        <h1 className="stack-headline type-headline">
+          Every control.
+          <br />
+          On every&nbsp;platform.
+        </h1>
+        <p className="stack-copy type-intro type-two-tone">
+          {count} components for macOS, iPadOS and iOS. Each one is a ui-sdk part with Apple’s metrics, materials and
+          motion, and <strong>changes its idiom with the platform it runs&nbsp;on.</strong>
+        </p>
+      </header>
       {sections.map((section) => (
-        <section key={section.title} aria-labelledby={anchor(section.title)}>
-          <h2 id={anchor(section.title)}>
-            <a href={`#${anchor(section.title)}`} className="docs-anchor">
-              {section.title}
-            </a>
-          </h2>
-          <ul className="not-prose mt-4 grid list-none grid-cols-1 gap-3 p-0 sm:grid-cols-2 lg:grid-cols-3">
+        <section key={section.title} aria-labelledby={anchor(section.title)} className="site-index-section">
+          <div className="site-index-section-header">
+            <h2 id={anchor(section.title)} className="site-index-section-title type-card">
+              <a href={`#${anchor(section.title)}`} className="docs-anchor">
+                {section.title}
+              </a>
+            </h2>
+          </div>
+          <ul className="site-index-grid">
             {section.items.map((item) => (
               <li key={item.href} className="m-0">
                 <Link href={item.href} className="docs-component-card h-full">
@@ -54,11 +62,12 @@ export default function ComponentsIndex() {
                     <div className="docs-grid absolute inset-0" />
                     <ComponentPreview slug={item.slug} />
                   </div>
-                  <div className="flex flex-col gap-1 px-4 pt-3 pb-4">
-                    <span className="text-[15px] font-semibold tracking-[-0.01em] text-label">{item.title}</span>
-                    {item.description ? (
-                      <span className="text-[13px] leading-[1.45] text-label-secondary">{item.description}</span>
-                    ) : null}
+                  <div className="docs-component-body">
+                    <span className="docs-component-name">{item.title}</span>
+                    {item.description ? <span className="docs-component-text">{item.description}</span> : null}
+                    <span className="docs-component-more more-link" aria-hidden="true">
+                      Learn more
+                    </span>
                   </div>
                 </Link>
               </li>
@@ -66,7 +75,9 @@ export default function ComponentsIndex() {
           </ul>
         </section>
       ))}
-      <PageNavigation href="/docs/components" />
+      <div className="docs-prose">
+        <PageNavigation href="/docs/components" />
+      </div>
     </article>
   )
 }

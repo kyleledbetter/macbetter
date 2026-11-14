@@ -38,9 +38,9 @@ function MacbetterMark({ size = 24, className, tone = "label" }: MarkProps) {
 
 function MacbetterLogo({ className }: { className?: string }) {
   return (
-    <span className={`inline-flex items-center gap-[7px] text-label ${className ?? ""}`}>
-      <MacbetterMark size={24} />
-      <span className="text-[16px] leading-none font-semibold tracking-[-0.035em]">macbetter</span>
+    <span className={`inline-flex items-center gap-[6px] text-(--site-label) ${className ?? ""}`}>
+      <MacbetterMark size={20} />
+      <span className="text-[15px] leading-none font-semibold tracking-[-0.03em]">macbetter</span>
     </span>
   )
 }

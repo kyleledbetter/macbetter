@@ -1,8 +1,8 @@
 "use client"
 
-import { ArrowUpRightIcon, CodeXmlIcon } from "lucide-react"
 import Link from "next/link"
 import * as React from "react"
+import { SiteFooter } from "@/components/site-footer"
 import { AnalyticsApp } from "./analytics/analytics"
 import { MailApp } from "./mail/mail"
 import { MusicApp } from "./music/music"
@@ -94,52 +94,54 @@ function ExamplesGallery() {
   return (
     <div className="ex-index">
       <div className="ex-index-inner">
-        <h1 className="ex-index-title">Examples</h1>
-        <p className="ex-index-lead">
-          Full app screens built only from Macbetter components. Each one runs live, keeps its own state, and switches
-          between the Mac, iPad and iPhone idioms.
-        </p>
+        <header className="stack ex-index-header">
+          <p className="stack-eyebrow docs-eyebrow">Examples</p>
+          <h1 className="stack-headline type-headline">
+            Four apps.
+            <br />
+            Nothing but&nbsp;Macbetter.
+          </h1>
+          <p className="stack-copy type-intro type-two-tone">
+            Settings, Mail, Analytics and Music, built only from Macbetter components.{" "}
+            <strong>Each one runs live, keeps its own state, and changes idiom with the&nbsp;platform.</strong>
+          </p>
+        </header>
         <div className="ex-index-grid">
           {examples.map((example) => (
             <article key={example.slug} className="ex-card">
               <Preview example={example} />
               <div className="ex-card-body">
-                <h2 className="ex-card-title">
+                <p className="ex-card-platforms">
+                  {example.platforms.join(" · ")}
+                </p>
+                <h2 className="ex-gallery-title type-card">
                   <Link href={`/examples/${example.slug}`} className="ex-card-link">
                     {example.title}
                   </Link>
-                  <span className="ex-card-platforms" aria-label={`Runs on ${example.platforms.join(", ")}`}>
-                    {example.platforms.map((platform) => (
-                      <span key={platform} aria-hidden="true">
-                        {platform}
-                      </span>
-                    ))}
-                  </span>
                 </h2>
                 <p className="ex-card-description">{example.description}</p>
                 <div className="ex-card-actions" data-platform="macos">
                   <Link
                     href={`/examples/${example.slug}`}
-                    className="mb-button"
+                    className="mb-button pill"
                     data-variant="filled"
                     data-tone="accent"
                     data-size="md"
-                    data-shape="auto"
+                    data-shape="capsule"
                     aria-label={`Open the ${example.title} example`}
                   >
                     Open
-                    <ArrowUpRightIcon aria-hidden="true" />
                   </Link>
                   <Link
                     href={`/examples/${example.slug}?view=code`}
-                    className="mb-button"
-                    data-variant="bezeled"
-                    data-tone="neutral"
+                    className="mb-button pill"
+                    data-variant="plain"
+                    data-tone="accent"
                     data-size="md"
-                    data-shape="auto"
+                    data-shape="capsule"
+                    data-pill-style="outline"
                     aria-label={`View the ${example.title} example’s code`}
                   >
-                    <CodeXmlIcon aria-hidden="true" />
                     View code
                   </Link>
                 </div>
@@ -148,6 +150,7 @@ function ExamplesGallery() {
           ))}
         </div>
       </div>
+      <SiteFooter path={["Examples"]} />
     </div>
   )
 }

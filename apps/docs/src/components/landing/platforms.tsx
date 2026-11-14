@@ -12,6 +12,7 @@ import { Slider } from "macbetter/slider"
 import { Switch } from "macbetter/switch"
 import { Window, WindowBody, WindowTitle, WindowTitlebar, WindowTrafficLights } from "macbetter/window"
 import { BadgeIcon, BellIcon, Volume1Icon, Volume2Icon } from "lucide-react"
+import { MoreLink } from "@/components/more-link"
 import { SectionHeading } from "./section-heading"
 
 function SettingsForm({ id }: { id: string }) {
@@ -60,17 +61,29 @@ function SettingsForm({ id }: { id: string }) {
 }
 
 const notes = {
-  macos: "13pt text, 28px controls, hover states and compact rows.",
-  ipados: "Touch-sized rows and capsule controls, with hover kept for the trackpad.",
-  ios: "17pt text, 44pt targets, inset grouped lists, no hover.",
+  macos: "13pt text, 28px controls, hover states and compact\u00a0rows.",
+  ipados: "Touch-sized rows and capsule controls, with hover kept for the\u00a0trackpad.",
+  ios: "17pt text, 44pt targets, inset grouped lists, no\u00a0hover.",
 }
 
 function Platforms() {
   return (
-    <section className="lp-section" aria-labelledby="lp-platforms">
-      <SectionHeading id="lp-platforms" title="Three platforms." muted="One codebase.">
+    <section id="platforms" className="lp-section" data-surface="alt" aria-labelledby="lp-platforms">
+      <div className="lp-section-inner">
+      <SectionHeading
+        id="lp-platforms"
+        eyebrow="Platforms"
+        headline={
+          <>
+            Three platforms.
+            <br />
+            One&nbsp;codebase.
+          </>
+        }
+        links={<MoreLink href="/docs/platforms">Learn how platforms work</MoreLink>}
+      >
         Put <code>data-platform</code> on any element and the components inside take that platform’s sizes and
-        habits. The same settings form, three times, with no changes to its code:
+        habits. <strong>Here is the same settings form three times, with no changes to its&nbsp;code.</strong>
       </SectionHeading>
       <div className="lp-platforms lp-reveal">
         <figure className="lp-platform" data-platform="macos">
@@ -85,8 +98,8 @@ function Platforms() {
               </WindowBody>
             </Window>
           </div>
-          <figcaption>
-            <strong>macOS</strong> {notes.macos}
+          <figcaption className="type-body-tight type-lead-in">
+            <strong>macOS.</strong> {notes.macos}
           </figcaption>
         </figure>
         <figure className="lp-platform">
@@ -100,8 +113,8 @@ function Platforms() {
               </div>
             </DeviceFrame>
           </div>
-          <figcaption>
-            <strong>iPadOS</strong> {notes.ipados}
+          <figcaption className="type-body-tight type-lead-in">
+            <strong>iPadOS.</strong> {notes.ipados}
           </figcaption>
         </figure>
         <figure className="lp-platform">
@@ -115,10 +128,11 @@ function Platforms() {
               </div>
             </DeviceFrame>
           </div>
-          <figcaption>
-            <strong>iOS</strong> {notes.ios}
+          <figcaption className="type-body-tight type-lead-in">
+            <strong>iOS.</strong> {notes.ios}
           </figcaption>
         </figure>
+      </div>
       </div>
     </section>
   )
