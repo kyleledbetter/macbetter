@@ -1,5 +1,5 @@
-import { Button } from "macbetter/button"
 import Link from "next/link"
+import { ButtonLink } from "@/components/button-link"
 import { MacbetterMark } from "@/components/logo"
 
 const links = [
@@ -24,12 +24,12 @@ function Closing() {
             live examples for all three platforms.
           </p>
           <div className="lp-heading-actions" data-platform="macos">
-            <Button variant="filled" size="lg" render={<Link href="/docs/installation" />}>
+            <ButtonLink variant="filled" size="lg" href="/docs/installation">
               Install Macbetter
-            </Button>
-            <Button variant="bezeled" tone="neutral" size="lg" render={<Link href="/docs/introduction" />}>
+            </ButtonLink>
+            <ButtonLink variant="bezeled" tone="neutral" size="lg" href="/docs/introduction">
               Read the docs
-            </Button>
+            </ButtonLink>
           </div>
         </div>
       </section>

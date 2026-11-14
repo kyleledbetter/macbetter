@@ -1,3 +1,5 @@
+"use client"
+
 import { Button } from "macbetter/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "macbetter/tooltip"
 import { InfoIcon } from "lucide-react"

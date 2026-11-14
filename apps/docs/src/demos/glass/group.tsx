@@ -1,3 +1,5 @@
+"use client"
+
 import { Button } from "macbetter/button"
 import { Glass, GlassGroup } from "macbetter/glass"
 import { Separator } from "macbetter/separator"

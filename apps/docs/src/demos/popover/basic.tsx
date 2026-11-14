@@ -1,3 +1,5 @@
+"use client"
+
 import { Button } from "macbetter/button"
 import { Field, FieldLabel } from "macbetter/field"
 import {

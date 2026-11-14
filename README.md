@@ -158,7 +158,8 @@ Macbetter is new and built on a beta of ui-sdk, so expect changes.
 - It has been checked in Chromium only. Safari, Firefox, real iOS devices and screen readers are not tested yet.
 - The package ships TypeScript source. There is no compiled build for bundlers that can't compile dependencies.
 - Alerts and sheets follow iOS 18 geometry rather than iOS 26's floating sheets.
-- The Outline page sometimes logs a React hydration warning in development: ui-sdk's Tree (0.1.0-beta.1) can compute a nested item's level one too low on the client. Nothing looks wrong on screen.
+- Pass a `render` element (`render={<Link href="/" />}`) from a client component. One created in a Server Component can reach ui-sdk before React has resolved it, which throws "Element type is invalid". The same goes for components that read their children, like Outline.
+- The Outline page occasionally logs a React hydration warning in development: ui-sdk's Tree (0.1.0-beta.1) can compute a nested item's level one too low on the client. Nothing looks wrong on screen.
 - ui-sdk writes shortcut modifiers as ⌘⇧P where macOS writes ⇧⌘P.
 - Changing `dir` after the page has loaded leaves sliding indicators where they were until the next resize.
 

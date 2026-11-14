@@ -17,8 +17,8 @@ type DemoProps = {
 }
 
 function sourceOf(name: string) {
-  const source = readFileSync(join(process.cwd(), "src", "demos", `${name}.tsx`), "utf8")
-  return source.replace(/^"use client"\n\n?/, "")
+  // "use client" stays in: a demo that passes a render element only works from a client component.
+  return readFileSync(join(process.cwd(), "src", "demos", `${name}.tsx`), "utf8")
 }
 
 async function Demo({ name, hideCode, ...stage }: DemoProps) {

@@ -1,3 +1,5 @@
+"use client"
+
 import { Button } from "macbetter/button"
 import { List, ListRow, ListRowAccessory, ListRowTitle, ListRowValue, ListSection } from "macbetter/list"
 import { Sheet, SheetBody, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "macbetter/sheet"

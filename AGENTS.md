@@ -39,6 +39,7 @@ Next.js here is version 16 and differs from older versions: check `apps/docs/nod
 - **Style from state attributes** (`data-checked`, `data-open`, `data-highlighted`, `data-disabled`, `data-side`…), never from generated ids, never with inline styles for state.
 - **Types.** `React.ComponentProps<typeof Primitive> & { … }`. No `any`. Add a one-line JSDoc only on a prop whose meaning isn't obvious from its name.
 - **Server components.** A file needs `"use client"` only if it uses hooks, handlers or context itself. Plain wrappers don't.
+- **Render elements are created on the client.** A component or demo that passes an element as a prop (`render={<Link />}`, `render={<button />}`) or reads its children's types (Outline) must be a client module. An element created in a Server Component can arrive at a client component still unresolved; ui-sdk reads it straight away and throws "Element type is invalid", or React logs a hydration mismatch. It depends on timing, so it passes in a fast headless run and fails in a real browser.
 - **Comments are rare**: a browser quirk, an APG rule or a trade-off, in one or two lines.
 
 ## CSS rules

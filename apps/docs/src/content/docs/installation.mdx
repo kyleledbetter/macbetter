@@ -101,6 +101,23 @@ export default nextConfig
 
 With another bundler, make sure it compiles TypeScript and JSX from dependencies too.
 
+### Render elements in client components
+
+Some parts take an element through `render`, such as a button that renders as a link. Create that element in a client component:
+
+```tsx
+"use client"
+
+import { Button } from "macbetter/button"
+import Link from "next/link"
+
+export function DocsLink() {
+  return <Button render={<Link href="/docs" />}>Read the docs</Button>
+}
+```
+
+An element created in a Server Component can reach the browser before React has resolved it. ui-sdk reads it straight away, so it throws "Element type is invalid". It depends on timing, which makes it easy to miss in development.
+
 ## Imports
 
 | Import | What it gives you |

@@ -1,5 +1,4 @@
-import { Button } from "macbetter/button"
-import Link from "next/link"
+import { ButtonLink } from "@/components/button-link"
 import { HeroScene } from "./hero-scene"
 
 function Hero() {
@@ -15,12 +14,12 @@ function Hero() {
           let ui-sdk handle the keyboard, focus and accessibility.
         </p>
         <div className="lp-hero-actions lp-enter" style={{ "--i": 2 } as React.CSSProperties} data-platform="macos">
-          <Button variant="filled" size="lg" render={<Link href="/docs/introduction" />}>
+          <ButtonLink variant="filled" size="lg" href="/docs/introduction">
             Get started
-          </Button>
-          <Button variant="bezeled" tone="neutral" size="lg" render={<Link href="/docs/components/button" />}>
+          </ButtonLink>
+          <ButtonLink variant="bezeled" tone="neutral" size="lg" href="/docs/components/button">
             Browse components
-          </Button>
+          </ButtonLink>
         </div>
       </div>
       <div className="lp-enter lp-enter-scene" style={{ "--i": 3 } as React.CSSProperties}>

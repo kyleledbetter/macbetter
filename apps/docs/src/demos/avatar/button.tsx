@@ -1,3 +1,5 @@
+"use client"
+
 import { Avatar } from "macbetter/avatar"
 
 export default function Example() {

@@ -1,6 +1,5 @@
-import { Button } from "macbetter/button"
 import { BotIcon, KeyboardIcon, LanguagesIcon, ScanEyeIcon, ServerIcon, TextCursorInputIcon } from "lucide-react"
-import Link from "next/link"
+import { ButtonLink } from "@/components/button-link"
 import { CodeBlock } from "@/components/code-block"
 import { CopyButton } from "@/components/copy-button"
 import { SectionHeading } from "./section-heading"
@@ -65,9 +64,9 @@ function Foundation() {
         title="Built on ui-sdk."
         muted="Ready for people and agents."
         actions={
-          <Button variant="tinted" render={<Link href="/docs/agents" />}>
+          <ButtonLink variant="tinted" href="/docs/agents">
             How agents use Macbetter
-          </Button>
+          </ButtonLink>
         }
       >
         Macbetter adds the Apple look and feel. Behavior comes from ui-sdk, shadcn’s headless component library, so

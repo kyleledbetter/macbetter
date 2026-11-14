@@ -1,3 +1,5 @@
+"use client"
+
 import { ActivityIndicator } from "macbetter/activity-indicator"
 import {
   Alert,

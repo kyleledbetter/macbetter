@@ -3,7 +3,7 @@ import { Checkbox } from "macbetter/checkbox"
 import { SegmentedControl, SegmentedControlItem } from "macbetter/segmented-control"
 import { Slider } from "macbetter/slider"
 import { Switch } from "macbetter/switch"
-import Link from "next/link"
+import { ButtonLink } from "@/components/button-link"
 import { CodeBlock } from "@/components/code-block"
 import { SectionHeading } from "./section-heading"
 
@@ -68,12 +68,12 @@ function Themes() {
           muted="Still Apple."
           actions={
             <>
-              <Button variant="tinted" render={<Link href="/themes" />}>
+              <ButtonLink variant="tinted" href="/themes">
                 Browse themes
-              </Button>
-              <Button variant="plain" render={<Link href="/docs/theming" />}>
+              </ButtonLink>
+              <ButtonLink variant="plain" href="/docs/theming">
                 Read the theming guide
-              </Button>
+              </ButtonLink>
             </>
           }
         >

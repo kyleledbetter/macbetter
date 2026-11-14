@@ -1,3 +1,5 @@
+"use client"
+
 import { Button } from "macbetter/button"
 import { List, ListRow, ListRowTitle, ListRowValue, ListSection } from "macbetter/list"
 import {

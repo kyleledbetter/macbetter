@@ -1,3 +1,5 @@
+"use client"
+
 import { Button } from "macbetter/button"
 import { Popover, PopoverContent, PopoverDescription, PopoverTitle, PopoverTrigger } from "macbetter/popover"
 import { InfoIcon } from "lucide-react"
