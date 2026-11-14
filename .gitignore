@@ -13,3 +13,7 @@ test-results
 playwright-report
 coverage
 .next-build
+
+# Agent skills are installed locally from skills-lock.json, not committed
+.claude/
+.agents/

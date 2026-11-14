@@ -22,6 +22,10 @@ scripts/shot.mjs              screenshot a page in a real browser
 
 Run `node packages/macbetter/scripts/gen-index.mjs` after adding a component or stylesheet. Never edit the generated index files by hand.
 
+## Skills
+
+The paths below under `.claude/skills` are agent skills from other projects. They aren't committed. `skills-lock.json` lists each one with its source repository; install them with the `skills` CLI, for example `npx skills add vercel-labs/ui --skill ui-sdk`.
+
 ## Before you write a component
 
 1. Follow the `ui-sdk` skill (`.claude/skills/ui-sdk/SKILL.md` and its `references/`).
