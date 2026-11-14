@@ -109,6 +109,7 @@ const nav: NavSection[] = [
       doc("components/disclosure", "Disclosure"),
       doc("components/card", "Card"),
       doc("components/avatar", "Avatar"),
+      doc("components/artwork", "Artwork"),
       doc("components/badge", "Badge"),
       doc("components/separator", "Separator"),
       doc("components/scroll-view", "Scroll View"),
@@ -122,6 +123,16 @@ const nav: NavSection[] = [
       doc("components/activity-indicator", "Activity Indicator"),
       doc("components/gauge", "Gauge"),
       doc("components/glass", "Glass"),
+    ],
+  },
+  {
+    title: "Charts",
+    items: [
+      doc("charts/overview", "Overview"),
+      doc("charts/stocks", "Stocks"),
+      doc("charts/health", "Health"),
+      doc("charts/fitness", "Fitness"),
+      doc("charts/general", "General"),
     ],
   },
 ]

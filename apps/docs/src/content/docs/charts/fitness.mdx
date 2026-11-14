@@ -1,0 +1,56 @@
+export const metadata = {
+  title: "Fitness charts",
+  description: "Activity rings, hourly Move, Exercise and Stand strips, workout heart rate zones, a week of rings and trends, in the style of the Fitness app.",
+}
+
+# Fitness
+
+<Lead>Three rings, the hours that filled them, and how a workout went.</Lead>
+
+<Demo name="charts/fitness-rings" />
+
+## Activity rings
+
+Move is the outer ring, Exercise the middle, Stand the inner. Each starts at twelve o'clock and runs clockwise with round caps over a dim track of its own color. Past its goal, a ring laps itself, and the end of the lap casts a shadow on the ring beneath it so you can see where it is.
+
+`ActivityRings` draws them with ECharts gauge series. It's decorative: put the numbers beside it in text, as the example does, and wrap both in a `ChartFrame` with a summary.
+
+```tsx
+import { ActivityRings } from "@/components/charts"
+
+<ActivityRings rings={{ move: { value: 486, goal: 600 }, exercise: { value: 38, goal: 30 }, stand: { value: 10, goal: 12 } }} size={168} />
+```
+
+For several sets in one canvas, like a week, use `ringSeries(theme, rings, { center, size })` in your own option.
+
+Ring colors come from `--sd-chart-move`, `--sd-chart-exercise` and `--sd-chart-stand`. In the Dreambase theme they follow its pink, green and cyan; in the System theme they're close to Apple Watch's.
+
+## Hours of the day
+
+Each ring's day as 24 small bars. Missed Stand hours during the day are gray, so a gap reads as a gap rather than nothing. Only the last strip shows the hours.
+
+<Demo name="charts/fitness-hourly" />
+
+## Heart rate zones
+
+A workout's heart rate as a line colored by zone, and the time spent in each zone as capsules. The line's color comes from a vertical gradient with hard stops at each zone's lower bound, so it changes exactly where the heart rate crosses one.
+
+<Demo name="charts/fitness-zones" />
+
+## This week
+
+Seven sets of rings in one canvas, with today's letter filled. The table gives each day's three numbers.
+
+<Demo name="charts/fitness-week" />
+
+## Trends
+
+Fitness compares your last 90 days with the last year. A filled arrow means a metric is going up; an outlined arrow means it's going down, and the words beside it say so too.
+
+<Demo name="charts/fitness-trends" />
+
+## Accessibility
+
+- Rings, strips and zones are named figures with summaries, like "Move 486 of 600 kcal, 81%", and tables of every value.
+- The ring colors are always paired with the ring's name and numbers in text.
+- Trend arrows are hidden from screen readers; each row says "Up from 468" or "Down from 12".

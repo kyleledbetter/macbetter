@@ -114,7 +114,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sd-rating-item:active {
-    scale: 1 !important;
+  :where(:root:not([data-motion="full"])) {
+    .sd-rating-item:active {
+      scale: 1 !important;
+    }
   }
 }

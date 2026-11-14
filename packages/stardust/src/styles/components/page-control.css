@@ -108,10 +108,20 @@
   height: calc(var(--sd-page-control-spacing) + 4px);
 }
 
-@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+@media (prefers-contrast: more) {
   .sd-page-control[data-variant="glass"] .sd-page-control-list {
     background: rgb(0 0 0 / 0.72);
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :where(:root:not([data-transparency="full"])) {
+    .sd-page-control[data-variant="glass"] .sd-page-control-list {
+      background: rgb(0 0 0 / 0.72);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
   }
 }

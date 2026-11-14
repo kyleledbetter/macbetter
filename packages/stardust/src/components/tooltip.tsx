@@ -9,8 +9,8 @@ import { cx } from "../lib/cx"
 
 type TooltipProps = React.ComponentProps<typeof TooltipPrimitive>
 
-/** A macOS help tag. It waits a little longer than a web tooltip before it appears, as the Mac does. */
-function Tooltip({ delay = 800, ...props }: TooltipProps) {
+/** A macOS help tag. It appears after a short rest; set `delay` to change how long. */
+function Tooltip({ delay = 400, ...props }: TooltipProps) {
   return <TooltipPrimitive delay={delay} {...props} />
 }
 

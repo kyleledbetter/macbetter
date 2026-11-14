@@ -199,10 +199,12 @@
 
 @scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
   @media (prefers-reduced-motion: reduce) {
-    .sd-checkbox:active:not([data-disabled], [data-readonly]) {
-      scale: none;
-    }
+  :where(:root:not([data-motion="full"])) {
+      .sd-checkbox:active:not([data-disabled], [data-readonly]) {
+        scale: none;
+      }
   }
+}
 }
 
 .sd-checkbox-group:has(.sd-checkbox-description) {

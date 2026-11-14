@@ -51,7 +51,11 @@ function Dock({ magnification = 1.75, className, onPointerMove, onPointerLeave, 
       onPointerMove={(event) => {
         onPointerMove?.(event)
         if (event.pointerType !== "mouse" || magnification <= 1) return
-        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
+        if (
+          matchMedia("(prefers-reduced-motion: reduce)").matches &&
+          document.documentElement.dataset.motion !== "full"
+        )
+          return
         pointer.current = event.clientX
         schedule()
       }}

@@ -1,5 +1,6 @@
 "use client"
 
+import { Artwork } from "@dreambase/stardust/artwork"
 import { Button } from "@dreambase/stardust/button"
 import { List, ListRow, ListRowAccessory, ListRowTitle, ListSection } from "@dreambase/stardust/list"
 import { Menu, MenuContent, MenuItem, MenuItemIcon, MenuTrigger } from "@dreambase/stardust/menu"
@@ -110,24 +111,30 @@ function usePlayer() {
 
 type Player = ReturnType<typeof usePlayer>
 
-function Artwork({ album, size, radius, className }: { album: Album; size?: number | string; radius?: number; className?: string }) {
+function Cover({
+  album,
+  size,
+  radius,
+  className,
+  animated,
+}: {
+  album: Album
+  size?: number
+  radius?: number
+  className?: string
+  animated?: boolean
+}) {
   return (
-    <span
-      aria-hidden="true"
+    <Artwork
+      seed={album.id}
+      variant={album.art.variant}
+      palette={album.art.palette}
+      finish={album.art.finish}
+      size={size}
+      radius={radius}
+      animated={animated}
       className={["ex-art", className].filter(Boolean).join(" ")}
-      style={
-        {
-          width: size,
-          height: size,
-          borderRadius: radius,
-          "--ex-art-from": album.from,
-          "--ex-art-to": album.to,
-          "--ex-art-light": album.light,
-        } as React.CSSProperties
-      }
-    >
-      <span className="ex-art-title">{album.title}</span>
-    </span>
+    />
   )
 }
 
@@ -148,7 +155,7 @@ function NowPlaying({ player, onClose }: { player: Player; onClose: () => void }
       <Button variant="plain" tone="neutral" size="sm" className="ex-np-close" onClick={onClose} aria-label="Close Now Playing">
         <span aria-hidden="true" className="ex-np-chevron" />
       </Button>
-      <Artwork album={album} className="ex-np-art" radius={14} />
+      <Cover album={album} className="ex-np-art" radius={14} animated />
       <div className="ex-np-meta">
         <div>
           <div className="ex-np-title">{track.title}</div>
@@ -261,11 +268,21 @@ function PhoneLibrary({ player }: { player: Player }) {
           ))}
         </ListSection>
       </List>
+      <h2 className="ex-music-heading">Playlists</h2>
+      <div className="ex-album-grid ex-album-grid-phone ex-album-grid-shelf">
+        {playlists.map((playlist) => (
+          <button key={playlist.name} type="button" className="ex-album" onClick={() => toast(`Playing ${playlist.name}`)}>
+            <Artwork seed={playlist.name} variant={playlist.art.variant} palette={playlist.art.palette} radius={10} className="ex-art" />
+            <span className="ex-album-title">{playlist.name}</span>
+            <span className="ex-album-artist">{playlist.curator}</span>
+          </button>
+        ))}
+      </div>
       <h2 className="ex-music-heading">Recently Added</h2>
       <div className="ex-album-grid ex-album-grid-phone">
         {albums.map((album) => (
           <button key={album.id} type="button" className="ex-album" onClick={() => player.play(album)}>
-            <Artwork album={album} radius={10} />
+            <Cover album={album} radius={10} />
             <span className="ex-album-title">{album.title}</span>
             <span className="ex-album-artist">{album.artist}</span>
           </button>
@@ -279,7 +296,7 @@ function MiniPlayer({ player, onOpen }: { player: Player; onOpen: () => void }) 
   return (
     <div className="ex-mini sd-glass" data-shape="capsule">
       <button type="button" className="ex-mini-open" onClick={onOpen} aria-label={`Now Playing: ${player.track.title} by ${player.album.artist}`}>
-        <Artwork album={player.album} size={36} radius={8} />
+        <Cover album={player.album} size={36} radius={8} />
         <span className="ex-mini-text">
           <span className="ex-mini-title">{player.track.title}</span>
           <span className="ex-mini-artist">{player.album.artist}</span>
@@ -319,7 +336,7 @@ function PhoneMusic({ player }: { player: Player }) {
                   <div className="ex-album-grid ex-album-grid-phone">
                     {albums.slice(tab.value.length % 3, 8).map((album) => (
                       <button key={album.id} type="button" className="ex-album" onClick={() => player.play(album)}>
-                        <Artwork album={album} radius={10} />
+                        <Cover album={album} radius={10} />
                         <span className="ex-album-title">{album.title}</span>
                         <span className="ex-album-artist">{album.genre}</span>
                       </button>
@@ -385,9 +402,14 @@ function MacMusic({ player }: { player: Player }) {
               ))}
             </SidebarSection>
             <SidebarSection title="Playlists" collapsible>
-              {playlists.map((name) => (
-                <SidebarItem key={name} icon={<ListMusicIcon />} current={place === name} onClick={() => setPlace(name)}>
-                  {name}
+              {playlists.map((playlist) => (
+                <SidebarItem
+                  key={playlist.name}
+                  icon={<Artwork seed={playlist.name} variant={playlist.art.variant} palette={playlist.art.palette} finish="flat" size={18} radius={4} />}
+                  current={place === playlist.name}
+                  onClick={() => setPlace(playlist.name)}
+                >
+                  {playlist.name}
                 </SidebarItem>
               ))}
             </SidebarSection>
@@ -412,7 +434,7 @@ function MacMusic({ player }: { player: Player }) {
                   return (
                     <div key={item.id} className="ex-album" data-current={current ? "" : undefined}>
                       <span className="ex-album-art-wrap">
-                        <Artwork album={item} radius={8} />
+                        <Cover album={item} radius={8} />
                         <button
                           type="button"
                           className="ex-album-play"
@@ -454,7 +476,7 @@ function MacMusic({ player }: { player: Player }) {
               </button>
             </div>
             <div className="ex-transport-now">
-              <Artwork album={album} size={40} radius={6} />
+              <Cover album={album} size={40} radius={6} />
               <div className="ex-transport-info">
                 <div className="ex-transport-line">
                   <span className="ex-transport-title">{track.title}</span>

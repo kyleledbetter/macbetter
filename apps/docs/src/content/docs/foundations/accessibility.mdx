@@ -29,6 +29,16 @@ Because Stardust doesn't hand-write roles or key handling, these behaviors are t
 - **No stuck hover.** Hover styles only apply to devices with a fine pointer.
 - **Logical properties.** Component CSS uses `padding-inline`, `inset-inline-start` and friends, so layouts mirror in right-to-left languages.
 
+## Showing effects on a demo page
+
+Stardust follows Reduce Motion and Reduce Transparency: motion is cut short and every material turns solid. A page that exists to show those effects, like this site, can let a visitor see them anyway by setting two attributes on `<html>`:
+
+```html
+<html data-motion="full" data-transparency="full">
+```
+
+Offer it as a choice the visitor makes, as the notice at the bottom of this site does. Don't set it for people by default: they chose those settings for a reason.
+
 ## Contrast in the built-in themes
 
 These ratios are computed with `contrastRatio()` from each theme's seed colors. A ✕ marks a pair below its target.

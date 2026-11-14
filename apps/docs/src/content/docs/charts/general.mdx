@@ -1,0 +1,68 @@
+export const metadata = {
+  title: "General charts",
+  description: "A donut with its total, stacked and ranked bars, lines, a calendar heatmap, radial progress, scatter, sparklines and candlesticks, in Stardust's style.",
+}
+
+# General
+
+<Lead>The everyday charts, drawn quietly enough to sit in an Apple app.</Lead>
+
+Most of these are [EvilCharts](https://evilcharts.com/docs) components themed with `useEvilChart`. Scatter, sparklines and candlesticks use the adapter's `EChart` directly. See [Charts](/docs/charts/overview) for how to install both.
+
+## Donut
+
+A ring of parts with the total in the middle, like Screen Time's categories. The total is HTML over the canvas, so it uses the system font's tabular figures. The legend gives each part's time in words.
+
+<Demo name="charts/general-donut" />
+
+## Stacked bars
+
+Parts of a whole over time. Put the series people compare most at the bottom, where they share a baseline.
+
+<Demo name="charts/general-stacked" />
+
+## Ranked bars
+
+Horizontal bars, longest first, for categories with names. Labels stay readable and the eye runs down the list.
+
+<Demo name="charts/general-ranked" />
+
+## Lines
+
+Several series over the same months. Give each line its own categorical color, at most three or four, and a legend that names them.
+
+<Demo name="charts/general-lines" />
+
+## Calendar heatmap
+
+A year at a glance, one cell per day. Four steps of one color, set with thresholds that mean something: here, 30 minutes closes the Exercise ring.
+
+<Demo name="charts/general-heatmap" />
+
+## Radial progress
+
+Concentric bars toward a goal, with round caps and a dim track. For a single reading in a range, use Stardust's [gauge](/docs/components/gauge) instead.
+
+<Demo name="charts/general-radial" />
+
+## Scatter
+
+Two measurements of the same thing, here distance and pace for each run. Turn the pace axis over so faster is higher, and say so.
+
+<Demo name="charts/general-scatter" />
+
+## Sparklines
+
+A trend with no axes, beside the number it belongs to. A sparkline is decorative; the tile's text says the value and the trend.
+
+<Demo name="charts/general-sparklines" />
+
+## Candlestick
+
+Each day's open, close, high and low. Green when a day closed above its open, red when below. Scrub to read a day in the row above the chart.
+
+<Demo name="charts/general-candlestick" />
+
+## Accessibility
+
+Every chart here is a `ChartFrame`: a named figure with a one-sentence summary and a hidden table of its data. EvilCharts tooltips are for pointers; the table is what a screen reader gets.

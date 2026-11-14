@@ -388,17 +388,19 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  /* A swipe still follows the finger; only the slides become fades. */
-  .sd-toast[data-starting-style],
-  .sd-toast[data-ending-style][data-front]:not([data-swipe-direction]) {
-    translate: 0 var(--sd-toast-y);
-  }
+  :where(:root:not([data-motion="full"])) {
+    /* A swipe still follows the finger; only the slides become fades. */
+    .sd-toast[data-starting-style],
+    .sd-toast[data-ending-style][data-front]:not([data-swipe-direction]) {
+      translate: 0 var(--sd-toast-y);
+    }
 
-  .sd-toast[data-starting-style] {
-    opacity: 0;
-  }
+    .sd-toast[data-starting-style] {
+      opacity: 0;
+    }
 
-  .sd-toast[data-ending-style][data-front] {
-    opacity: 0;
+    .sd-toast[data-ending-style][data-front] {
+      opacity: 0;
+    }
   }
 }

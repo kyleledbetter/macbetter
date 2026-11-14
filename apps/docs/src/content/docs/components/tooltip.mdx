@@ -21,7 +21,7 @@ Touch screens have no hover, so on iPhone and iPad tooltips don’t appear at al
 import { Tooltip, TooltipContent, TooltipShortcut, TooltipTrigger } from "@dreambase/stardust/tooltip"
 ```
 
-The help tag waits 800ms before it appears, as the Mac does, and appears at once on keyboard focus. Once one is showing, moving to the next control shows its tag straight away, without the delay or the fade, so moving along a toolbar reads as one tag following the pointer.
+The help tag waits 400ms before it appears and appears at once on keyboard focus. Set `delay` for a longer pause, such as the Mac's own 800ms, or a shorter one. Once one is showing, moving to the next control shows its tag straight away, without the delay or the fade, so moving along a toolbar reads as one tag following the pointer.
 
 ### Keyboard shortcuts
 
@@ -52,7 +52,7 @@ Takes every [ui-sdk Tooltip](https://ui-sdk.dev/docs/components/tooltip) root pr
 
 <PropsTable
   rows={[
-    { name: "delay", type: "number", default: "800", description: "Milliseconds the pointer rests before it opens." },
+    { name: "delay", type: "number", default: "400", description: "Milliseconds the pointer rests before it opens." },
     { name: "closeDelay", type: "number", default: "0", description: "Milliseconds it stays after the pointer leaves." },
     { name: "shortcut", type: "string", description: "The trigger's keyboard shortcut, like mod+b, shown by TooltipShortcut." },
     { name: "toggleable", type: "boolean", default: "false", description: "Pressing the trigger opens and closes it, for touch." },

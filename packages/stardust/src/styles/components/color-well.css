@@ -423,14 +423,16 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sd-color-well-panel[data-starting-style],
-  .sd-color-well-panel[data-ending-style] {
-    scale: 1 !important;
-  }
+  :where(:root:not([data-motion="full"])) {
+    .sd-color-well-panel[data-starting-style],
+    .sd-color-well-panel[data-ending-style] {
+      scale: 1 !important;
+    }
 
-  .sd-color-well-trigger:active,
-  .sd-color-well-thumb:active,
-  .sd-color-well-preset:active {
-    scale: 1 !important;
+    .sd-color-well-trigger:active,
+    .sd-color-well-thumb:active,
+    .sd-color-well-preset:active {
+      scale: 1 !important;
+    }
   }
 }

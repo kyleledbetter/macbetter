@@ -64,7 +64,7 @@ import {
 } from "lucide-react"
 import * as React from "react"
 import { ExampleShell, MacFrame, Phone, useStage } from "../shell"
-import { AreaChart, BarList, ChartFrame, ColumnChart, Donut, Sparkline } from "./charts"
+import { BarList, ChartFrame, ColumnChart, Donut, Sparkline, TrendChart, type Series } from "./charts"
 import {
   activeUsers,
   agents as initialAgents,
@@ -85,6 +85,8 @@ import {
 import "./analytics.css"
 
 type Page = "overview" | "datasets" | "metrics" | "agents" | "alerts"
+
+const agentRuns = [148, 162, 171, 214, 188, 96, 84]
 
 function useAnalytics() {
   const [range, setRange] = React.useState<Range>("30d")
@@ -120,7 +122,7 @@ function KpiCard({ kpi }: { kpi: Kpi }) {
           <span className="sd-visually-hidden">{kpi.good ? "Improved" : "Worsened"} by </span>
           {kpi.delta}
         </span>
-        <Sparkline values={kpi.trend} color={kpi.good ? "var(--sd-accent-secondary)" : "var(--sd-red)"} />
+        <Sparkline values={kpi.trend} good={kpi.good} />
       </div>
     </Card>
   )
@@ -135,10 +137,17 @@ function StatusBadge({ status }: { status: Dataset["status"] }) {
 }
 
 function UsersChart({ range, compact }: { range: Range; compact?: boolean }) {
-  const labels = labelsFor(range)
-  const { current, previous } = activeUsers(range)
+  const labels = React.useMemo(() => labelsFor(range), [range])
+  const { current, previous } = React.useMemo(() => activeUsers(range), [range])
   const long = ranges.find((r) => r.value === range)?.long
   const total = current.reduce((a, b) => a + b, 0)
+  const series = React.useMemo<Series[]>(
+    () => [
+      { name: "This period", values: current, color: "accent" },
+      { name: "Previous period", values: previous, color: "accentSecondary", dashed: true },
+    ],
+    [current, previous]
+  )
   return (
     <ChartFrame
       title="Active users"
@@ -152,14 +161,11 @@ function UsersChart({ range, compact }: { range: Range; compact?: boolean }) {
         rows: labels.map((label, i) => [label, current[i], previous[i]]),
       }}
     >
-      <AreaChart
+      <TrendChart
         labels={labels}
-        height={compact ? 170 : 230}
+        height={compact ? 190 : 250}
         xTicks={compact ? 3 : 6}
-        series={[
-          { name: "This period", values: current, color: "var(--sd-accent)" },
-          { name: "Previous period", values: previous, color: "var(--sd-accent-secondary)", dashed: true },
-        ]}
+        series={series}
       />
     </ChartFrame>
   )
@@ -356,34 +362,29 @@ function Overview({ store }: { store: Store }) {
       </div>
       <div className="ex-dash-row ex-dash-thirds">
         <Card>
-          <ChartFrame
+          <BarList
             title="Busiest tables"
             description="Queries per table, last 30 days. events leads with 1.8M."
-            table={{ columns: ["Table", "Queries"], rows: tables.map((t) => [t.label, t.value]) }}
-          >
-            <BarList items={tables} />
-          </ChartFrame>
+            items={tables}
+          />
         </Card>
         <Card>
-          <ChartFrame
+          <Donut
             title="Storage by schema"
             description="How 61 GB of database storage splits across schemas. public holds the most."
-            table={{ columns: ["Schema", "Share"], rows: storage.map((s) => [s.label, `${s.value}%`]) }}
-          >
-            <Donut parts={storage} total="61" unit="GB" />
-          </ChartFrame>
+            parts={storage}
+            total="61"
+            unit="GB"
+          />
         </Card>
         <Card>
-          <ChartFrame
+          <ColumnChart
             title="Agent runs"
             description="Runs per day this week. Thursday peaked at 214 during the schema check."
-            table={{
-              columns: ["Day", "Runs"],
-              rows: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d, i) => [d, [148, 162, 171, 214, 188, 96, 84][i]]),
-            }}
-          >
-            <ColumnChart values={[148, 162, 171, 214, 188, 96, 84]} labels={["M", "T", "W", "T", "F", "S", "S"]} />
-          </ChartFrame>
+            values={agentRuns}
+            labels={["M", "T", "W", "T", "F", "S", "S"]}
+            days={["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]}
+          />
         </Card>
       </div>
       <Card className="ex-table-card">

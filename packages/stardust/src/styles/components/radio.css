@@ -255,10 +255,12 @@
 
 @scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
   @media (prefers-reduced-motion: reduce) {
-    .sd-radio:active:not([data-disabled], [data-readonly]) {
-      scale: none;
-    }
+  :where(:root:not([data-motion="full"])) {
+      .sd-radio:active:not([data-disabled], [data-readonly]) {
+        scale: none;
+      }
   }
+}
 }
 
 /* Choices with descriptions need more room between them to stay distinct. */

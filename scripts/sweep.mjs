@@ -39,7 +39,30 @@ await withBrowserSlot(async () => {
       await context.close()
     }
 
-    console.log(`${paths.length} routes checked on desktop and phone`)
+    // Moving between pages without a reload takes a different path through React
+    // (elements arrive in the server payload, not in HTML), so walk it too.
+    {
+      const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, colorScheme: "dark" })
+      const page = await context.newPage()
+      let current = ""
+      page.on("console", (message) => {
+        if (message.type() === "error") problems.push(`navigation ${current}: console: ${message.text().slice(0, 200)}`)
+      })
+      page.on("pageerror", (error) => problems.push(`navigation ${current}: pageerror: ${error.message.slice(0, 200)}`))
+      await page.goto(base + "/", { waitUntil: "networkidle" })
+      for (const path of paths) {
+        current = path
+        await page.evaluate((to) => window.next.router.push(to), path)
+        await page.waitForFunction((to) => location.pathname === to, path, { timeout: 15000 }).catch(() => {
+          problems.push(`navigation ${path}: never arrived`)
+        })
+        await page.waitForLoadState("networkidle")
+        await page.waitForTimeout(150)
+      }
+      await context.close()
+    }
+
+    console.log(`${paths.length} routes checked on desktop, on a phone and by in-app navigation`)
     console.log(problems.length ? problems.join("\n") : "No problems found")
     process.exitCode = problems.length ? 1 : 0
   } finally {

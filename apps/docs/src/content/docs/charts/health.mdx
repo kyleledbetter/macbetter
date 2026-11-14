@@ -1,0 +1,57 @@
+export const metadata = {
+  title: "Health charts",
+  description: "Steps, heart rate ranges, sleep stages, trends and highlights, drawn the way the Health app draws them, with ECharts and the Stardust adapter.",
+}
+
+# Health
+
+<Lead>Bars with rounded tops, ranges as capsules, a night of sleep in four lanes, and a header that follows your finger.</Lead>
+
+<Demo name="charts/health-steps" />
+
+## How Health draws a chart
+
+Every Health chart has the same three parts, top to bottom:
+
+- **A period picker.** `D`, `W`, `M`, `6M` and `Y` in a segmented control. Short periods show totals; long ones show averages, so a year of steps is twelve monthly daily averages, not twelve sums.
+- **A header that reads the chart.** A small caps label (`Total`, `Average`, `Range`), the value in SF Rounded with its unit, and the date. When you scrub, the header switches to the bar under your finger. That's where the number goes, not in a tooltip, so nothing covers the bars.
+- **A quiet plot.** Values on the trailing edge, solid hairline gridlines, dashed dividers at days or months, no axis lines, and one color per kind of data: orange for activity, pink for heart, blue and indigo for sleep.
+
+`ChartHeader` draws the header, and `EChart`'s `scrub` prop does the rest: a vertical rule follows the pointer or a finger, and focus with the arrow keys works the same way.
+
+## Steps
+
+Bars with rounded tops in the activity color. The chart above switches periods and changes what the header calls the number: a day's **total**, or the **daily average** for longer periods.
+
+## Heart rate
+
+Heart rate is a range, not a value, so each hour is a capsule from its lowest to its highest reading. An invisible bar lifts each capsule to its minimum; `borderRadius: 99` rounds both ends.
+
+<Demo name="charts/health-heart-rate" />
+
+## Sleep stages
+
+A night of sleep is a timeline in four lanes: Awake, REM, Core and Deep. Each stretch is a rounded bar in its lane, and hairlines shaded from one stage's color to the next join them, the way the Sleep chart does. The legend gives each stage's time in words.
+
+The stages are drawn with an ECharts `custom` series. `--sd-chart-awake`, `--sd-chart-rem`, `--sd-chart-core` and `--sd-chart-deep` set the colors.
+
+<Demo name="charts/health-sleep" />
+
+## Trends
+
+For a value that drifts slowly, like resting heart rate, show each day as a faint dot and the 7-day average as a line. A shaded band marks the typical range and a dashed line the average, so a reading outside the band stands out.
+
+<Demo name="charts/health-trend" />
+
+## Highlights
+
+A highlight leads with a sentence, then shows the two numbers it compares as capsules, each labeled with its value and period. These are plain HTML and CSS; a canvas adds nothing for two bars.
+
+<Demo name="charts/health-highlights" />
+
+## Accessibility
+
+- Each chart is a `figure` named by its title and described by a one-sentence summary, with every value in a visually hidden table.
+- A scrubbable chart is a `slider`. Tab to it, then use the arrow keys, `Page Up`, `Page Down`, `Home` and `End`. It reads each point as a value and a date, like "9,832 steps, Mon, Nov 9".
+- Color is never the only key. Sleep stages are named in the legend with their durations, and heart rate says "Range" in the header.
+- With Reduce Motion on, charts appear without the grow-in.

@@ -186,9 +186,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sd-slider-thumb:active,
-  .sd-slider-thumb[data-dragging] {
-    scale: 1 !important;
+  :where(:root:not([data-motion="full"])) {
+    .sd-slider-thumb:active,
+    .sd-slider-thumb[data-dragging] {
+      scale: 1 !important;
+    }
   }
 }
 

@@ -190,10 +190,6 @@
   .sd-glass:is([data-interactive], button, a[href]):active {
     scale: 1.04;
   }
-
-  .sd-glass-group :is(button, a[href]):active {
-    scale: 1.06;
-  }
 }
 
 .sd-glass:is([data-interactive], button, a[href]):focus-visible {
@@ -205,24 +201,26 @@
 
 /* Reduce Transparency: solid, frosted surfaces. The edges stay so the shape still reads. */
 @media (prefers-reduced-transparency: reduce) {
-  .sd-material {
-    background-image: none;
-  }
+  :where(:root:not([data-transparency="full"])) {
+    .sd-material {
+      background-image: none;
+    }
 
-  /* The color itself, not --sd-glass-fill, so clear glass and hover fills can't bring the see-through back. */
-  .sd-glass {
-    background-color: var(--sd-bg-elevated);
-    background-image: none;
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
+    /* The color itself, not --sd-glass-fill, so clear glass and hover fills can't bring the see-through back. */
+    .sd-glass {
+      background-color: var(--sd-bg-elevated);
+      background-image: none;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
 
-  .sd-glass[data-variant="tinted"] {
-    background-color: var(--sd-accent);
-  }
+    .sd-glass[data-variant="tinted"] {
+      background-color: var(--sd-accent);
+    }
 
-  .sd-glass::before {
-    opacity: 0.5;
+    .sd-glass::before {
+      opacity: 0.5;
+    }
   }
 }
 

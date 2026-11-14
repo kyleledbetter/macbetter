@@ -1,4 +1,4 @@
-/* Activity indicator — eight tapered spokes that step around, as on every Apple platform. */
+/* Activity indicator — eight spokes that light in turn around the circle, as on every Apple platform. */
 
 :where(:root, [data-platform="macos"]) {
   --sd-activity-indicator-size-sm: 12px;
@@ -37,35 +37,27 @@
   fill: currentColor;
 }
 
-/* Stepped, not smooth: the lit spoke jumps to the next one, ten times a second like the real one. */
-.sd-activity-indicator-fan {
-  transform-box: view-box;
-  transform-origin: 50% 50%;
-  animation: sd-activity-indicator-step 0.8s steps(8, end) infinite;
-}
-
-@keyframes sd-activity-indicator-step {
-  to {
-    rotate: 360deg;
-  }
-}
-
 /*
- * Reduced motion: no turning. The spokes hold still and the whole indicator
- * breathes, slowly. It lives on the unclassed <g> so base.css's reduced-motion
- * reset (which wins over component layers, even with !important) leaves it alone.
+ * The chase: each spoke lights fully, then fades until its turn comes round
+ * again. A negative delay per spoke (set inline) starts them an eighth of a
+ * turn apart, so the bright one travels clockwise with a fading tail.
+ * The spokes carry no sd- class, so the reduced-motion reset leaves them
+ * turning, as the system spinner does.
  */
-@media (prefers-reduced-motion: reduce) {
-  .sd-activity-indicator-fan {
-    animation: sd-activity-indicator-breathe 1.6s var(--sd-ease-in-out) infinite alternate;
-  }
+.sd-activity-indicator {
+  --sd-activity-indicator-duration: 0.8s;
 }
 
-@keyframes sd-activity-indicator-breathe {
-  from {
+.sd-activity-indicator-spokes rect {
+  opacity: 0.25;
+  animation: sd-activity-indicator-chase var(--sd-activity-indicator-duration) linear infinite;
+}
+
+@keyframes sd-activity-indicator-chase {
+  0% {
     opacity: 1;
   }
-  to {
-    opacity: 0.35;
+  100% {
+    opacity: 0.25;
   }
 }

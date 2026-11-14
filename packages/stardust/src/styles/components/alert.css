@@ -404,9 +404,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sd-alert,
-  .sd-alert:is([data-starting-style], [data-ending-style]) {
-    scale: none;
-    translate: none;
+  :where(:root:not([data-motion="full"])) {
+    .sd-alert,
+    .sd-alert:is([data-starting-style], [data-ending-style]) {
+      scale: none;
+      translate: none;
+    }
   }
 }

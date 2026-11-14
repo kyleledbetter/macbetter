@@ -3,6 +3,7 @@ import { Toaster } from "@dreambase/stardust/toast"
 import type { Metadata, Viewport } from "next"
 import { Geist_Mono } from "next/font/google"
 import { AppPreferences } from "@/components/app-preferences"
+import { EffectsNotice } from "@/components/effects-notice"
 import "./globals.css"
 
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] })
@@ -40,6 +41,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <AppPreferences>
           {children}
           <Toaster />
+          <EffectsNotice />
         </AppPreferences>
       </body>
     </html>

@@ -70,17 +70,20 @@
 }
 
 /*
- * Reduce Motion shortens everything. Motion that carries meaning (a spinner)
+ * Reduce Motion shortens everything, unless <html> carries data-motion="full"
+ * (for a page that exists to show the motion). Motion that carries meaning (a spinner)
  * opts out with data-motion="essential" and supplies its own calmer version:
  * an !important here can't be beaten from the components layer.
  */
 @media (prefers-reduced-motion: reduce) {
-  :where([class^="sd-"], [class*=" sd-"]):not([data-motion="essential"]),
-  :where([class^="sd-"], [class*=" sd-"]):not([data-motion="essential"])::before,
-  :where([class^="sd-"], [class*=" sd-"]):not([data-motion="essential"])::after {
-    transition-duration: 0.01ms !important;
-    transition-delay: 0ms !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
+  :where(:root:not([data-motion="full"])) {
+    :where([class^="sd-"], [class*=" sd-"]):not([data-motion="essential"]),
+    :where([class^="sd-"], [class*=" sd-"]):not([data-motion="essential"])::before,
+    :where([class^="sd-"], [class*=" sd-"]):not([data-motion="essential"])::after {
+      transition-duration: 0.01ms !important;
+      transition-delay: 0ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
   }
 }

@@ -24,10 +24,12 @@
 }
 
 .ex-kpi-value {
+  font-family: var(--sd-font-rounded);
   font-size: 26px;
   line-height: 32px;
   font-weight: 600;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
 }
 
 .ex-kpi-foot {
@@ -97,9 +99,8 @@
 }
 
 .ex-chart-head {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
+  display: grid;
+  gap: 2px;
 }
 
 .ex-chart-legend {
@@ -141,135 +142,33 @@
   min-width: 0;
 }
 
-.ex-area {
+/* The trend's readout rides the top of the scrub rule, as in Stocks. */
+.ex-trend {
   position: relative;
 }
 
-.ex-area svg {
-  display: block;
-  overflow: visible;
+.ex-trend-callout div {
+  display: flex;
+  gap: 10px;
 }
 
-.ex-grid-line {
-  stroke: var(--sd-separator);
-  stroke-width: 1;
-  stroke-dasharray: 2 3;
-}
-
-.ex-grid-line[data-base] {
-  stroke: var(--sd-separator-strong);
-  stroke-dasharray: none;
-}
-
-.ex-axis-label {
-  fill: var(--sd-label-tertiary);
-  color: var(--sd-label-tertiary);
-  font: 400 10px/1 var(--sd-font);
+.ex-trend-callout b {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font: var(--sd-text-headline);
   font-variant-numeric: tabular-nums;
 }
 
-.ex-crosshair {
-  stroke: var(--sd-label-tertiary);
-  stroke-width: 1;
-}
-
-.ex-dot {
-  stroke: var(--sd-bg);
-  stroke-width: 2;
-}
-
-.ex-tooltip {
-  position: absolute;
-  translate: -50% -100%;
-  display: grid;
-  gap: 2px;
-  min-width: 140px;
-  padding: 7px 10px;
-  border-radius: var(--sd-radius-md);
-  background: var(--sd-material-thick);
-  -webkit-backdrop-filter: var(--sd-material-filter);
-  backdrop-filter: var(--sd-material-filter);
-  box-shadow: var(--sd-glass-rim), var(--sd-shadow-menu);
-  font: var(--sd-text-callout);
-  pointer-events: none;
-  white-space: nowrap;
-}
-
-.ex-tooltip span {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--sd-label-secondary);
-}
-
-.ex-tooltip i {
+.ex-trend-callout i {
   width: 8px;
   height: 8px;
-  border-radius: 2px;
+  border-radius: 50%;
 }
 
-.ex-tooltip b {
-  margin-inline-start: auto;
-  color: var(--sd-label);
-  font-weight: 600;
-}
-
-.ex-bars {
-  display: grid;
-  gap: 9px;
-}
-
-.ex-bar-row {
-  display: grid;
-  grid-template-columns: 70px minmax(0, 1fr) 44px;
-  align-items: center;
-  gap: 10px;
-  font: var(--sd-text-callout);
-}
-
-.ex-bar-label {
-  font-family: var(--sd-font-mono);
+.ex-trend-callout b[data-dashed] {
   color: var(--sd-label-secondary);
-}
-
-.ex-bar-track {
-  height: 10px;
-  border-radius: 3px;
-  background: var(--sd-fill-quaternary);
-  overflow: hidden;
-}
-
-.ex-bar-fill {
-  display: block;
-  height: 100%;
-  border-radius: 3px;
-}
-
-.ex-bar-value {
-  text-align: end;
-}
-
-.ex-columns {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 1fr;
-  align-items: end;
-  gap: 8px;
-}
-
-.ex-column {
-  display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
-  justify-items: center;
-  gap: 6px;
-  height: 100%;
-}
-
-.ex-column-bar {
-  align-self: end;
-  width: 100%;
-  max-width: 28px;
-  border-radius: 4px 4px 2px 2px;
+  font-weight: 500;
 }
 
 .ex-donut {
@@ -283,25 +182,20 @@
   flex: none;
 }
 
-.ex-donut-ring svg {
-  display: block;
-}
-
-.ex-donut-track {
-  stroke: var(--sd-fill-quaternary);
-}
-
 .ex-donut-center {
   position: absolute;
   inset: 0;
   display: grid;
   place-content: center;
   text-align: center;
+  pointer-events: none;
 }
 
 .ex-donut-center strong {
-  font-size: 24px;
+  font: var(--sd-text-title-1);
+  font-family: var(--sd-font-rounded);
   line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 
 .ex-donut-center span {

@@ -1,0 +1,267 @@
+/*
+ * Artwork — an abstract picture drawn from a seed. The SVG paints with five
+ * variables, so a palette is only a set of system colors and follows the theme.
+ *   --sd-artwork-1 … -4   hues
+ *   --sd-artwork-ground   the deep base
+ *   --sd-artwork-light    highlights
+ *   --sd-artwork-paper    a warm off-white ground; --sd-artwork-ink is drawn on it
+ */
+
+.sd-artwork {
+  --sd-artwork-1: var(--sd-accent);
+  --sd-artwork-2: var(--sd-pink);
+  --sd-artwork-3: var(--sd-yellow);
+  --sd-artwork-4: var(--sd-indigo);
+  --sd-artwork-ground: oklch(from var(--sd-artwork-1) 0.21 calc(c * 0.4) h);
+  --sd-artwork-light: color-mix(in oklch, var(--sd-artwork-1) 16%, white);
+  --sd-artwork-paper: color-mix(in oklch, var(--sd-artwork-4) 5%, color-mix(in oklch, var(--sd-yellow) 9%, white));
+  --sd-artwork-ink: var(--sd-artwork-ground);
+  --sd-artwork-corner: 0%;
+  --sd-artwork-min-radius: 0px;
+
+  position: relative;
+  display: block;
+  flex: none;
+  box-sizing: border-box;
+  inline-size: var(--sd-artwork-size, 100%);
+  aspect-ratio: var(--sd-artwork-aspect, 1);
+  overflow: hidden;
+  isolation: isolate;
+  /* A percentage radius is elliptical on a wide box; divide it by the aspect so corners stay round. */
+  border-radius: var(
+    --sd-artwork-radius,
+    max(var(--sd-artwork-min-radius), calc(var(--sd-artwork-corner) / max(var(--sd-artwork-aspect, 1), 1))) /
+      max(var(--sd-artwork-min-radius), calc(var(--sd-artwork-corner) * min(var(--sd-artwork-aspect, 1), 1)))
+  );
+  background-color: var(--sd-artwork-ground);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Shapes */
+
+.sd-artwork[data-shape="rounded"] {
+  --sd-artwork-corner: 4.5%;
+  --sd-artwork-min-radius: 3px;
+}
+
+.sd-artwork[data-shape="circle"] {
+  --sd-artwork-corner: 50%;
+}
+
+.sd-artwork[data-shape="app"] {
+  --sd-artwork-corner: 22.5%;
+}
+
+@supports (corner-shape: squircle) {
+  .sd-artwork[data-shape="app"],
+  .sd-artwork[data-shape="app"]::after {
+    --sd-artwork-corner: 34%;
+    corner-shape: superellipse(1.6);
+  }
+}
+
+/* A faint inner edge, so a pale cover doesn't melt into a pale page. */
+.sd-artwork::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 var(--sd-hairline) light-dark(rgb(0 0 0 / 0.1), rgb(255 255 255 / 0.1));
+  pointer-events: none;
+}
+
+.sd-artwork-svg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.sd-artwork-blend :is(path, rect) {
+  mix-blend-mode: screen;
+}
+
+.sd-artwork-grain {
+  mix-blend-mode: overlay;
+}
+
+/* Text laid over the art sits on a soft scrim at the bottom. */
+.sd-artwork-content {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 2px;
+  padding: 16px;
+  background-image: linear-gradient(to top, rgb(0 0 0 / 0.45), rgb(0 0 0 / 0.12) 45%, transparent 70%);
+  color: #ffffff;
+}
+
+/* Palettes */
+
+.sd-artwork[data-palette="accent"] {
+  --sd-artwork-1: var(--sd-accent);
+  --sd-artwork-2: oklch(from var(--sd-accent) calc(l + 0.08) c calc(h + 22));
+  --sd-artwork-3: oklch(from var(--sd-accent) calc(l + 0.04) c calc(h - 30));
+  --sd-artwork-4: oklch(from var(--sd-accent) calc(l - 0.06) c calc(h - 62));
+  --sd-artwork-ground: oklch(from var(--sd-accent) 0.2 calc(c * 0.4) calc(h + 20));
+}
+
+.sd-artwork[data-palette="sunset"] {
+  --sd-artwork-1: var(--sd-orange);
+  --sd-artwork-2: var(--sd-pink);
+  --sd-artwork-3: var(--sd-yellow);
+  --sd-artwork-4: var(--sd-purple);
+  --sd-artwork-ground: oklch(from var(--sd-purple) 0.2 0.08 h);
+  --sd-artwork-light: color-mix(in oklch, var(--sd-yellow) 18%, white);
+}
+
+.sd-artwork[data-palette="ocean"] {
+  --sd-artwork-1: var(--sd-blue);
+  --sd-artwork-2: var(--sd-cyan);
+  --sd-artwork-3: var(--sd-teal);
+  --sd-artwork-4: var(--sd-indigo);
+  --sd-artwork-ground: oklch(from var(--sd-blue) 0.18 0.07 h);
+  --sd-artwork-light: color-mix(in oklch, var(--sd-cyan) 14%, white);
+}
+
+.sd-artwork[data-palette="forest"] {
+  --sd-artwork-1: var(--sd-green);
+  --sd-artwork-2: var(--sd-mint);
+  --sd-artwork-3: var(--sd-yellow);
+  --sd-artwork-4: var(--sd-teal);
+  --sd-artwork-ground: oklch(from var(--sd-green) 0.19 0.045 h);
+  --sd-artwork-light: color-mix(in oklch, var(--sd-yellow) 14%, white);
+}
+
+.sd-artwork[data-palette="berry"] {
+  --sd-artwork-1: var(--sd-pink);
+  --sd-artwork-2: var(--sd-purple);
+  --sd-artwork-3: var(--sd-red);
+  --sd-artwork-4: var(--sd-indigo);
+  --sd-artwork-ground: oklch(from var(--sd-purple) 0.17 0.07 h);
+  --sd-artwork-light: color-mix(in oklch, var(--sd-pink) 14%, white);
+}
+
+.sd-artwork[data-palette="citrus"] {
+  --sd-artwork-1: var(--sd-yellow);
+  --sd-artwork-2: var(--sd-orange);
+  --sd-artwork-3: var(--sd-mint);
+  --sd-artwork-4: var(--sd-green);
+  --sd-artwork-ground: oklch(from var(--sd-green) 0.22 0.06 h);
+  --sd-artwork-light: color-mix(in oklch, var(--sd-yellow) 20%, white);
+}
+
+.sd-artwork[data-palette="dusk"] {
+  --sd-artwork-1: var(--sd-indigo);
+  --sd-artwork-2: var(--sd-pink);
+  --sd-artwork-3: var(--sd-orange);
+  --sd-artwork-4: var(--sd-purple);
+  --sd-artwork-ground: oklch(from var(--sd-indigo) 0.16 0.07 h);
+  --sd-artwork-light: color-mix(in oklch, var(--sd-orange) 14%, white);
+}
+
+.sd-artwork[data-palette="ember"] {
+  --sd-artwork-1: var(--sd-red);
+  --sd-artwork-2: var(--sd-orange);
+  --sd-artwork-3: var(--sd-yellow);
+  --sd-artwork-4: var(--sd-brown);
+  --sd-artwork-ground: oklch(from var(--sd-red) 0.16 0.06 h);
+  --sd-artwork-light: color-mix(in oklch, var(--sd-yellow) 20%, white);
+}
+
+.sd-artwork[data-palette="glacier"] {
+  --sd-artwork-1: var(--sd-cyan);
+  --sd-artwork-2: var(--sd-mint);
+  --sd-artwork-3: var(--sd-blue);
+  --sd-artwork-4: color-mix(in oklch, var(--sd-cyan) 35%, white);
+  --sd-artwork-ground: oklch(from var(--sd-blue) 0.2 0.06 h);
+  --sd-artwork-light: color-mix(in oklch, var(--sd-cyan) 10%, white);
+}
+
+.sd-artwork[data-palette="candy"] {
+  --sd-artwork-1: color-mix(in oklch, var(--sd-pink) 72%, white);
+  --sd-artwork-2: color-mix(in oklch, var(--sd-cyan) 68%, white);
+  --sd-artwork-3: color-mix(in oklch, var(--sd-yellow) 72%, white);
+  --sd-artwork-4: color-mix(in oklch, var(--sd-purple) 70%, white);
+  --sd-artwork-ground: oklch(from var(--sd-purple) 0.32 0.1 h);
+  --sd-artwork-light: color-mix(in oklch, var(--sd-pink) 8%, white);
+}
+
+/* Graphite, tinted toward the theme's gray. */
+.sd-artwork[data-palette="mono"] {
+  --sd-artwork-1: oklch(from var(--sd-tint) 0.9 0.012 h);
+  --sd-artwork-2: oklch(from var(--sd-tint) 0.68 0.02 h);
+  --sd-artwork-3: oklch(from var(--sd-tint) 0.5 0.024 h);
+  --sd-artwork-4: oklch(from var(--sd-tint) 0.36 0.02 h);
+  --sd-artwork-ground: oklch(from var(--sd-tint) 0.15 0.01 h);
+  --sd-artwork-light: oklch(from var(--sd-tint) 0.98 0.005 h);
+  --sd-artwork-paper: oklch(from var(--sd-tint) 0.95 0.008 h);
+  --sd-artwork-ink: oklch(from var(--sd-tint) 0.2 0.012 h);
+}
+
+/* Motion: a slow drift of a few layers, only when asked for. */
+
+.sd-artwork[data-animated] .sd-artwork-drift {
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+  animation: sd-artwork-drift-1 28s var(--sd-ease-in-out) infinite alternate;
+}
+
+.sd-artwork[data-animated] .sd-artwork-drift[data-drift="2"] {
+  animation-name: sd-artwork-drift-2;
+  animation-duration: 34s;
+}
+
+.sd-artwork[data-animated] .sd-artwork-drift[data-drift="3"] {
+  animation-name: sd-artwork-drift-3;
+  animation-duration: 22s;
+}
+
+.sd-artwork[data-animated] .sd-artwork-drift[data-drift="4"] {
+  animation-name: sd-artwork-drift-4;
+  animation-duration: 40s;
+}
+
+.sd-artwork[data-animated] .sd-artwork-drift[data-drift="5"] {
+  animation-name: sd-artwork-drift-5;
+  animation-duration: 36s;
+}
+
+@keyframes sd-artwork-drift-1 {
+  from { translate: -4% -3%; rotate: -3deg; }
+  to { translate: 4% 3%; rotate: 3deg; scale: 1.04; }
+}
+
+@keyframes sd-artwork-drift-2 {
+  from { translate: 5% -2%; scale: 1.06; }
+  to { translate: -4% 4%; scale: 0.98; }
+}
+
+@keyframes sd-artwork-drift-3 {
+  from { translate: 0 0; }
+  to { translate: -6% 3%; }
+}
+
+@keyframes sd-artwork-drift-4 {
+  from { rotate: -3deg; scale: 1.06; }
+  to { rotate: 3deg; scale: 1.06; }
+}
+
+@keyframes sd-artwork-drift-5 {
+  from { rotate: -3deg; }
+  to { rotate: 3deg; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sd-artwork[data-animated] .sd-artwork-drift {
+    animation: none;
+  }
+}

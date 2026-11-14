@@ -111,23 +111,42 @@
 .sd-toolbar-group {
   display: inline-flex;
   flex: none;
-  align-items: center;
-  gap: 2px;
-  padding: 2px;
+  align-items: stretch;
+  gap: 0;
+  padding: 0;
   border-radius: var(--sd-radius-full);
   background: var(--sd-fill-quaternary);
   box-shadow: inset 0 0 0 var(--sd-hairline) var(--sd-separator);
 }
 
+/*
+ * Each button owns its slot, so its hover, press and pressed fills run edge to
+ * edge: the first and last take the capsule's curve, the ones between stay square.
+ */
 .sd-toolbar-group > .sd-toolbar-button {
-  --sd-toolbar-item-height: calc(var(--sd-toolbar-item-height) - 4px);
-  border-radius: var(--sd-radius-full);
+  border-radius: 0;
+}
+
+.sd-toolbar-group > .sd-toolbar-button:first-child {
+  border-start-start-radius: var(--sd-radius-full);
+  border-end-start-radius: var(--sd-radius-full);
+  padding-inline-start: 3px;
+}
+
+.sd-toolbar-group > .sd-toolbar-button:last-child {
+  border-start-end-radius: var(--sd-radius-full);
+  border-end-end-radius: var(--sd-radius-full);
+  padding-inline-end: 3px;
+}
+
+.sd-toolbar-group > .sd-toolbar-button:focus-visible {
+  outline-offset: calc(var(--sd-focus-ring-width) * -1);
 }
 
 .sd-toolbar-group > .sd-toolbar-button[data-pressed] {
   background: light-dark(#ffffff, color-mix(in oklch, var(--sd-tint) 46%, var(--sd-bg)));
   color: var(--sd-label);
-  box-shadow: 0 0 0 var(--sd-hairline) var(--sd-separator), 0 1px 2px var(--sd-shadow-color);
+  box-shadow: inset 0 0 0 var(--sd-hairline) var(--sd-separator);
 }
 
 .sd-toolbar-separator {
@@ -286,7 +305,7 @@
 
 :where(.sd-toolbar[data-variant="floating"]) > .sd-toolbar-group {
   gap: 0;
-  padding: 0 var(--sd-space-2);
+  padding: 0;
 }
 
 :where(.sd-toolbar[data-variant="floating"]) > .sd-toolbar-group > .sd-toolbar-button {
@@ -330,11 +349,22 @@
   }
 }
 
-@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+@media (prefers-contrast: more) {
   :where(.sd-toolbar[data-variant="floating"]) > :is(.sd-toolbar-button, .sd-toolbar-group, .sd-toolbar-search) {
     background-color: var(--sd-bg-elevated);
     background-image: none;
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :where(:root:not([data-transparency="full"])) {
+    :where(.sd-toolbar[data-variant="floating"]) > :is(.sd-toolbar-button, .sd-toolbar-group, .sd-toolbar-search) {
+      background-color: var(--sd-bg-elevated);
+      background-image: none;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
   }
 }

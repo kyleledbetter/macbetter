@@ -1,5 +1,6 @@
 "use client"
 
+import { ArrowUpRightIcon, CodeXmlIcon } from "lucide-react"
 import Link from "next/link"
 import * as React from "react"
 import { AnalyticsApp } from "./analytics/analytics"
@@ -31,7 +32,7 @@ const examples = [
     slug: "analytics",
     title: "Analytics",
     description:
-      "A Dreambase dashboard for Supabase data: KPI cards, hand-drawn charts with accessible tables, a sortable dataset table, plan usage gauges and a confirm-before-delete alert.",
+      "A Dreambase dashboard for Supabase data: KPI cards, charts with accessible tables, a sortable dataset table, plan usage gauges and a confirm-before-delete alert.",
     platforms: ["macOS", "iOS"],
     App: AnalyticsApp,
     mac: { width: 1240, height: 780 },
@@ -100,11 +101,13 @@ function ExamplesGallery() {
         </p>
         <div className="ex-index-grid">
           {examples.map((example) => (
-            <Link key={example.slug} href={`/examples/${example.slug}`} className="ex-card">
+            <article key={example.slug} className="ex-card">
               <Preview example={example} />
               <div className="ex-card-body">
                 <h2 className="ex-card-title">
-                  {example.title}
+                  <Link href={`/examples/${example.slug}`} className="ex-card-link">
+                    {example.title}
+                  </Link>
                   <span className="ex-card-platforms" aria-label={`Runs on ${example.platforms.join(", ")}`}>
                     {example.platforms.map((platform) => (
                       <span key={platform} aria-hidden="true">
@@ -114,8 +117,34 @@ function ExamplesGallery() {
                   </span>
                 </h2>
                 <p className="ex-card-description">{example.description}</p>
+                <div className="ex-card-actions" data-platform="macos">
+                  <Link
+                    href={`/examples/${example.slug}`}
+                    className="sd-button"
+                    data-variant="filled"
+                    data-tone="accent"
+                    data-size="md"
+                    data-shape="auto"
+                    aria-label={`Open the ${example.title} example`}
+                  >
+                    Open
+                    <ArrowUpRightIcon aria-hidden="true" />
+                  </Link>
+                  <Link
+                    href={`/examples/${example.slug}?view=code`}
+                    className="sd-button"
+                    data-variant="bezeled"
+                    data-tone="neutral"
+                    data-size="md"
+                    data-shape="auto"
+                    aria-label={`View the ${example.title} example’s code`}
+                  >
+                    <CodeXmlIcon aria-hidden="true" />
+                    View code
+                  </Link>
+                </div>
               </div>
-            </Link>
+            </article>
           ))}
         </div>
       </div>

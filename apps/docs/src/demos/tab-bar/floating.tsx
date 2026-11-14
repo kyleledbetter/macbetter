@@ -1,3 +1,4 @@
+import { Artwork } from "@dreambase/stardust/artwork"
 import { DeviceFrame } from "@dreambase/stardust/device-frame"
 import { List, ListRow, ListRowAccessory, ListRowSubtitle, ListRowTitle, ListSection } from "@dreambase/stardust/list"
 import { NavigationBar, NavigationStack } from "@dreambase/stardust/navigation-bar"
@@ -5,17 +6,17 @@ import { TabBar, TabBarItem, TabBarList, TabBarPanel } from "@dreambase/stardust
 import { HouseIcon, LayoutGridIcon, LibraryIcon, RadioIcon, SearchIcon } from "lucide-react"
 
 const albums = [
-  { title: "Golden Hour Tapes", artist: "The Saltmarsh", from: "var(--sd-orange)", to: "var(--sd-yellow)" },
-  { title: "Evergreen", artist: "Mara Quill", from: "var(--sd-green)", to: "var(--sd-teal)" },
-  { title: "Low Tide", artist: "Harbor Lights", from: "var(--sd-blue)", to: "var(--sd-indigo)" },
-  { title: "Kiln", artist: "Oda Brenner", from: "var(--sd-red)", to: "var(--sd-orange)" },
-  { title: "Night Garden", artist: "Juniper & Ash", from: "var(--sd-purple)", to: "var(--sd-pink)" },
-  { title: "Fieldwork", artist: "Calloway", from: "var(--sd-brown)", to: "var(--sd-yellow)" },
-  { title: "Paper Moons", artist: "Lio Hart", from: "var(--sd-mint)", to: "var(--sd-blue)" },
-  { title: "Overland", artist: "Tamsin Vale", from: "var(--sd-cyan)", to: "var(--sd-indigo)" },
-  { title: "Bright Static", artist: "Neon Orchard", from: "var(--sd-pink)", to: "var(--sd-orange)" },
-  { title: "Quiet Hours", artist: "Elm Street Trio", from: "var(--sd-teal)", to: "var(--sd-green)" },
-]
+  { title: "Golden Hour Tapes", artist: "The Saltmarsh", variant: "bloom", palette: "sunset" },
+  { title: "Evergreen", artist: "Mara Quill", variant: "strata", palette: "forest" },
+  { title: "Low Tide", artist: "Harbor Lights", variant: "ribbon", palette: "ocean" },
+  { title: "Kiln", artist: "Oda Brenner", variant: "rays", palette: "ember" },
+  { title: "Night Garden", artist: "Juniper & Ash", variant: "aurora", palette: "berry" },
+  { title: "Fieldwork", artist: "Calloway", variant: "halftone", palette: "citrus" },
+  { title: "Paper Moons", artist: "Lio Hart", variant: "orbit", palette: "glacier" },
+  { title: "Overland", artist: "Tamsin Vale", variant: "topo", palette: "dusk" },
+  { title: "Bright Static", artist: "Neon Orchard", variant: "prism", palette: "sunset" },
+  { title: "Quiet Hours", artist: "Elm Street Trio", variant: "glyph", palette: "ocean" },
+] as const
 
 const tabs = [
   { value: "home", label: "Home", icon: <HouseIcon /> },
@@ -37,17 +38,13 @@ export default function Example() {
                 <ListSection>
                   {albums.map((album) => (
                     <ListRow key={album.title} href={`#${album.title}`}>
-                      <span
-                        aria-hidden="true"
-                        style={{
-                          gridColumn: 1,
-                          gridRow: "1 / -1",
-                          width: 52,
-                          height: 52,
-                          marginInlineEnd: 14,
-                          borderRadius: 8,
-                          background: `linear-gradient(140deg, ${album.from}, ${album.to})`,
-                        }}
+                      <Artwork
+                        seed={album.title}
+                        variant={album.variant}
+                        palette={album.palette}
+                        size={52}
+                        radius={8}
+                        style={{ gridColumn: 1, gridRow: "1 / -1", marginInlineEnd: 14 }}
                       />
                       <ListRowTitle>{album.title}</ListRowTitle>
                       <ListRowSubtitle>{album.artist}</ListRowSubtitle>

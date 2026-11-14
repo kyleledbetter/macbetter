@@ -1,0 +1,266 @@
+/*
+ * Stardust charts.
+ *
+ * Chart colors are named variables, so a theme can retune them without
+ * touching chart code. They default to the system palette, which the theme
+ * already sets in light and dark. The adapter (theme.ts) resolves them on the
+ * chart's own element, so nested themes, schemes and platforms all work.
+ */
+
+/* Restated at every theme boundary, like the tokens they derive from. */
+:where(:root, [data-theme], .sd-chart, .sd-echart) {
+  --sd-chart-surface: var(--sd-card-bg, var(--sd-bg));
+  --sd-chart-grid: light-dark(
+    color-mix(in oklch, var(--sd-ink) 9%, transparent),
+    color-mix(in oklch, var(--sd-ink) 12%, transparent)
+  );
+  --sd-chart-grid-strong: var(--sd-separator-strong);
+  --sd-chart-axis: var(--sd-label-secondary);
+  --sd-chart-rule: var(--sd-label-tertiary);
+
+  /* Stocks */
+  --sd-chart-up: var(--sd-green);
+  --sd-chart-down: var(--sd-red);
+
+  /* Fitness: the three rings */
+  --sd-chart-move: var(--sd-pink);
+  --sd-chart-exercise: light-dark(
+    oklch(from var(--sd-green) l c 135),
+    oklch(from var(--sd-green) max(l, 0.82) max(c, 0.2) 128)
+  );
+  --sd-chart-stand: var(--sd-cyan);
+
+  /* Health: sleep stages */
+  --sd-chart-awake: light-dark(#f2703f, #ff8a65);
+  --sd-chart-rem: var(--sd-cyan);
+  --sd-chart-core: var(--sd-blue);
+  --sd-chart-deep: var(--sd-indigo);
+
+  /* The categorical palette, in order. */
+  --sd-chart-1: var(--sd-accent);
+  --sd-chart-2: var(--sd-accent-secondary);
+  --sd-chart-3: var(--sd-blue);
+  --sd-chart-4: var(--sd-purple);
+  --sd-chart-5: var(--sd-yellow);
+  --sd-chart-6: var(--sd-pink);
+}
+
+.sd-chart {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  margin: 0;
+  color: var(--sd-label);
+}
+
+/* ── Drawing ───────────────────────────────────────────────────── */
+
+.sd-echart {
+  position: relative;
+  min-width: 0;
+  border-radius: var(--sd-radius-md);
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* A horizontal drag scrubs; a vertical one still scrolls the page. */
+.sd-echart[data-scrub] {
+  touch-action: pan-y;
+  cursor: crosshair;
+}
+
+.sd-echart:focus-visible {
+  outline: var(--sd-focus-ring-width) solid var(--sd-focus-ring);
+  outline-offset: 2px;
+}
+
+.sd-echart-canvas {
+  position: absolute;
+  inset: 0;
+}
+
+/* ── Header (Health) ───────────────────────────────────────────── */
+
+.sd-chart-header {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+}
+
+.sd-chart-eyebrow {
+  color: var(--sd-label-secondary);
+  font: var(--sd-text-footnote);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.sd-chart-reading {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0 4px;
+}
+
+.sd-chart-value {
+  font: var(--sd-text-large-title);
+  font-family: var(--sd-font-rounded);
+  font-weight: 600;
+  letter-spacing: var(--sd-tracking-large-title);
+  font-variant-numeric: tabular-nums;
+}
+
+.sd-chart-unit {
+  color: var(--sd-label-secondary);
+  font: var(--sd-text-headline);
+  font-family: var(--sd-font-rounded);
+}
+
+.sd-chart-detail {
+  color: var(--sd-label-secondary);
+  font: var(--sd-text-subheadline);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Legend ────────────────────────────────────────────────────── */
+
+.sd-chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--sd-label-secondary);
+  font: var(--sd-text-footnote);
+}
+
+.sd-chart-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sd-chart-legend-value {
+  color: var(--sd-label);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.sd-chart-swatch {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--sd-chart-swatch);
+}
+
+.sd-chart-swatch[data-shape="bar"] {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+
+.sd-chart-swatch[data-shape="line"] {
+  width: 14px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+.sd-chart-swatch[data-shape="dashed"] {
+  width: 14px;
+  height: 2px;
+  border-radius: 0;
+  background: repeating-linear-gradient(90deg, var(--sd-chart-swatch) 0 3px, transparent 3px 5px);
+}
+
+/* ── Callout (Stocks scrub readout) ────────────────────────────── */
+
+.sd-chart-callout {
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  translate: -50% 0;
+  white-space: nowrap;
+  pointer-events: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.sd-chart-callout strong {
+  font: var(--sd-text-headline);
+  font-variant-numeric: tabular-nums;
+}
+
+.sd-chart-callout span {
+  color: var(--sd-label-secondary);
+  font: var(--sd-text-caption);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── EvilCharts ────────────────────────────────────────────────── */
+/*
+ * EvilCharts reads shadcn's color utilities (text-muted-foreground,
+ * text-border, bg-background…) off probe elements and draws its tooltip and
+ * legend with them. Inside a Stardust chart they map onto Stardust tokens.
+ */
+
+.sd-chart [data-chart] {
+  font-family: var(--sd-font);
+}
+
+.sd-chart [data-chart] .text-muted-foreground {
+  color: var(--sd-chart-axis);
+}
+
+.sd-chart [data-chart] .text-foreground,
+.sd-chart [data-chart] .text-primary {
+  color: var(--sd-label);
+}
+
+.sd-chart [data-chart] .text-background {
+  color: var(--sd-chart-surface);
+}
+
+.sd-chart [data-chart] .text-border {
+  color: var(--sd-chart-grid);
+}
+
+.sd-chart [data-chart] .text-border\/60,
+.sd-chart [data-chart] .dark\:text-border\/50 {
+  color: color-mix(in oklch, var(--sd-chart-grid) 60%, transparent);
+}
+
+.sd-chart [data-chart] .bg-background,
+.sd-chart [data-chart] .bg-background\/50 {
+  background: var(--sd-material-popup);
+  -webkit-backdrop-filter: var(--sd-material-filter);
+  backdrop-filter: var(--sd-material-filter);
+}
+
+.sd-chart [data-chart] .border-border\/50 {
+  border-color: var(--sd-glass-border);
+  border-width: 0;
+  box-shadow: var(--sd-glass-rim), var(--sd-shadow-menu);
+}
+
+.sd-chart [data-chart] .shadow-xl {
+  box-shadow: var(--sd-glass-rim), var(--sd-shadow-menu);
+}
+
+.sd-chart [data-chart] .rounded-lg,
+.sd-chart [data-chart] .rounded-md {
+  border-radius: var(--sd-radius-lg);
+}
+
+.sd-chart [data-chart] .text-xs {
+  font: var(--sd-text-callout);
+}
+
+.sd-chart [data-chart] .font-mono {
+  font-family: var(--sd-font);
+  font-variant-numeric: tabular-nums;
+}

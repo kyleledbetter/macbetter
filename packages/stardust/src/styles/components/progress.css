@@ -208,19 +208,21 @@
 
 /* Reduced motion: the segment stops sliding and fills the track, dimmed, as a still "busy" state. */
 @media (prefers-reduced-motion: reduce) {
-  .sd-progress-circle[data-indeterminate] .sd-progress-circle-ring {
-    animation: none;
-  }
+  :where(:root:not([data-motion="full"])) {
+    .sd-progress-circle[data-indeterminate] .sd-progress-circle-ring {
+      animation: none;
+    }
 
-  .sd-progress-indicator[data-indeterminate] {
-    width: 100%;
-    translate: none;
-    opacity: 0.4;
-    animation: none;
-  }
+    .sd-progress-indicator[data-indeterminate] {
+      width: 100%;
+      translate: none;
+      opacity: 0.4;
+      animation: none;
+    }
 
-  .sd-progress-circle[data-indeterminate] .sd-progress-circle-fill {
-    stroke-dasharray: 100 100;
-    opacity: 0.4;
+    .sd-progress-circle[data-indeterminate] .sd-progress-circle-fill {
+      stroke-dasharray: 100 100;
+      opacity: 0.4;
+    }
   }
 }

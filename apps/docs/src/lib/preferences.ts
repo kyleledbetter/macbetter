@@ -24,5 +24,22 @@ const theme = createPreference({
   storage: createLocalStorage("stardust-theme"),
 })
 
-export { colorScheme, theme, themeLabels, themes }
+// Whether the site follows the system's Reduce Motion and Reduce Transparency settings.
+const motion = createPreference({
+  values: ["system", "full"],
+  defaultValue: "system",
+  attribute: "data-motion",
+  global: true,
+  storage: createLocalStorage("stardust-motion"),
+})
+
+const transparency = createPreference({
+  values: ["system", "full"],
+  defaultValue: "system",
+  attribute: "data-transparency",
+  global: true,
+  storage: createLocalStorage("stardust-transparency"),
+})
+
+export { colorScheme, motion, theme, themeLabels, themes, transparency }
 export type { ThemeName }

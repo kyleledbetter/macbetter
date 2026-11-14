@@ -1,3 +1,5 @@
+"use client"
+
 import { Button as ButtonPrimitive } from "@ui-sdk/react/button"
 import type * as React from "react"
 import { join } from "../lib/cx"

@@ -1,0 +1,142 @@
+export const metadata = {
+  title: "Artwork",
+  description: "Abstract pictures drawn from a seed, for covers, headers and placeholders.",
+}
+
+# Artwork
+
+<Lead>Draw an abstract picture from a seed, for album covers, card headers and placeholders.</Lead>
+
+<Demo name="artwork/basic" />
+
+## When to use it
+
+Use artwork where a picture helps people tell things apart but you don't have one: playlists, albums and podcasts without cover art, a featured story, a workspace or a project. The same seed always draws the same picture, so an item keeps its cover everywhere it appears.
+
+- Seed it with something stable, like an id or a title, so the picture doesn't change between visits.
+- Pick one or two variants for a collection and let the seed vary them. A shelf where every cover is a different style looks random.
+- Don't use it in place of content people need to recognize, like a real album cover or a person's photo. It's decoration that carries identity, not meaning.
+
+## Usage
+
+```tsx
+import { Artwork } from "@dreambase/stardust/artwork"
+```
+
+Pass a `seed`. The picture is an inline SVG that fills its container's width, at the `aspect` you give it (square by default). It's drawn on the server, with no client JavaScript.
+
+### Variants
+
+Twelve styles. Each uses the seed for its composition (where the shapes go, how many, how big) as well as for the order of its colors. Leave `variant` out, or pass `auto`, to let the seed pick one.
+
+<Demo name="artwork/gallery" />
+
+| Variant | What it draws |
+| --- | --- |
+| `aurora` | Soft blobs of color melting into each other, like a mesh gradient. |
+| `bloom` | Petals fanned out from an edge, shaded like folded silk. |
+| `orbit` | Concentric rings with bright arcs and moons around a glowing core. |
+| `strata` | Layered dunes or hills, hazier toward the horizon, with a sun. |
+| `prism` | Translucent planes of light crossing each other. |
+| `halftone` | A field of dots that swell and shrink, on a dark ground or paper. |
+| `rays` | A sunburst, or beams of light falling from one point. |
+| `glyph` | A Swiss grid of circles, half circles and quarter circles. |
+| `ribbon` | Wide ribbons twisting through space, two colors front and back. |
+| `topo` | Contour lines around a summit, filled like an elevation map. |
+| `grain` | A two-color gradient with a soft orb and a printed sun, under film grain. |
+| `mosaic` | Soft rounded tiles shaded across the grid, with one or two bright accents. |
+
+### Seeds
+
+Within one variant, each seed draws a different composition. Seed covers with their title or id.
+
+<Demo name="artwork/seeds" />
+
+### Palettes
+
+A palette is a set of system colors, so the art follows light and dark mode and your theme's palette. `accent` is built from your theme's accent color; `mono` from its gray. Leave `palette` out, or pass `auto`, to let the seed pick one of the colorful ones.
+
+<Demo name="artwork/palettes" />
+
+To use your own colors, pass `colors`: up to four CSS colors for the hues and an optional fifth for the ground. With fewer than four the hues repeat; without a ground one is mixed from the first hue.
+
+<Demo name="artwork/colors" />
+
+### Shapes
+
+`rounded`, the default, has the small corner of album art. `app` is an app icon's rounded square, drawn with Apple's continuous corner where the browser supports `corner-shape`. `circle` is round, or a capsule when the aspect isn't square. Pass `radius` for any other corner.
+
+<Demo name="artwork/shapes" />
+
+### Finishes
+
+`gloss`, the default, adds a soft light along the top edge and a gentle vignette, so the picture reads as a printed surface rather than a flat fill. `grain` adds film grain on top of that. `flat` adds nothing, for small sizes or when you're compositing the art yourself.
+
+<Demo name="artwork/finishes" />
+
+### Card headers and text on art
+
+Put children inside to lay text over the picture. They sit at the bottom on a soft scrim, in white.
+
+<Demo name="artwork/card-header" />
+
+### Icons in lists
+
+At small sizes, the `app` shape works as an icon for things that aren't people: podcasts, projects, workspaces.
+
+<Demo name="artwork/tiles" />
+
+### Motion
+
+`animated` makes a few layers drift slowly. Use it for one large picture at a time, like a Now Playing screen; it's off by default because every frame repaints the SVG. The drift stops under Reduce Motion.
+
+<Demo name="artwork/animated" />
+
+## Platform behavior
+
+Artwork looks the same on every platform: its size follows the layout, not the platform's text size. Corners are proportional, so a cover keeps the same shape from a 36-point mini player to a full-width Now Playing screen. Under Increase Contrast and Reduce Transparency nothing changes, because the picture isn't a material.
+
+## Accessibility
+
+- By default artwork is decorative: the SVG is hidden from assistive technology, because the title next to it already names the item.
+- Pass `title` (or `aria-label`) when the picture stands alone. The SVG becomes an image with that name, and `title` also shows as a tooltip.
+- Text you lay over the art is real text, read in order. The scrim behind it keeps white text above 4.5:1 on most compositions; check yours if you use a pale palette like `candy`.
+- `animated` respects Reduce Motion.
+- Gradient and filter ids are unique to each instance, so any number of pictures can share a page, including ones with the same seed.
+
+## API
+
+### Artwork
+
+<PropsTable
+  rows={[
+    { name: "seed", type: "string | number", description: "Same seed, same picture, on the server and in the browser." },
+    { name: "variant", type: '"aurora" | "bloom" | "orbit" | "strata" | "prism" | "halftone" | "rays" | "glyph" | "ribbon" | "topo" | "grain" | "mosaic" | "auto"', default: '"auto"', description: "The style. `auto` picks one from the seed." },
+    { name: "palette", type: '"accent" | "sunset" | "ocean" | "forest" | "berry" | "citrus" | "dusk" | "ember" | "glacier" | "candy" | "mono" | "auto"', default: '"auto"', description: "System colors to paint with. `auto` picks one from the seed." },
+    { name: "colors", type: "string[]", description: "Your own CSS colors: up to four hues, then an optional ground. Replaces `palette`." },
+    { name: "shape", type: '"square" | "rounded" | "circle" | "app"', default: '"rounded"', description: "The corners." },
+    { name: "radius", type: "number | string", description: "A corner radius in pixels or any CSS length. Replaces `shape`." },
+    { name: "aspect", type: "number", default: "1", description: "Width over height, like `16 / 9`. The composition is drawn for it." },
+    { name: "size", type: "number | string", description: "The width, in pixels or any CSS length. Without it, the art fills its container's width." },
+    { name: "finish", type: '"flat" | "gloss" | "grain"', default: '"gloss"', description: "A top light and vignette, plus film grain with `grain`." },
+    { name: "animated", type: "boolean", default: "false", description: "A slow drift of a few layers. Stops under Reduce Motion." },
+    { name: "title", type: "string", description: "Names the picture and makes it an image. Without it or `aria-label`, it's decorative." },
+    { name: "children", type: "ReactNode", description: "Text laid over the bottom of the picture." },
+  ]}
+/>
+
+Every other prop goes to the outer `span`. `artworkVariants` and `artworkPalettes` list the names, for building pickers.
+
+### Data attributes and CSS variables
+
+| Attribute or variable | On | Description |
+| --- | --- | --- |
+| `data-variant`, `data-palette`, `data-shape`, `data-finish` | `.sd-artwork` | The resolved props, after `auto`. `data-palette` is `custom` with `colors`. |
+| `data-animated` | `.sd-artwork` | Present when `animated` is on. |
+| `--sd-artwork-1` … `--sd-artwork-4` | `.sd-artwork` | The hues. Set them in CSS to make a palette of your own. |
+| `--sd-artwork-ground` | `.sd-artwork` | The deep base most variants are painted on. |
+| `--sd-artwork-light` | `.sd-artwork` | Highlights, glows and suns. |
+| `--sd-artwork-paper`, `--sd-artwork-ink` | `.sd-artwork` | The pale ground some `glyph` and `halftone` pictures use, and the dark color drawn on it. |
+| `--sd-artwork-size` | `.sd-artwork` | The width, from `size`. |
+| `--sd-artwork-radius` | `.sd-artwork` | The corner radius, from `radius`. |
+| `--sd-artwork-aspect` | `.sd-artwork` | The aspect ratio, from `aspect`. |

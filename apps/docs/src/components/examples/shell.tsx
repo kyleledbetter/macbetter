@@ -3,13 +3,17 @@
 import type { Platform } from "@dreambase/stardust"
 import { Button } from "@dreambase/stardust/button"
 import { DeviceFrame } from "@dreambase/stardust/device-frame"
+import { Menu, MenuContent, MenuItem, MenuItemIcon, MenuTrigger } from "@dreambase/stardust/menu"
 import { SegmentedControl, SegmentedControlItem } from "@dreambase/stardust/segmented-control"
 import { Select, SelectContent, SelectItem, SelectList, SelectTrigger } from "@dreambase/stardust/select"
 import { usePreference } from "@ui-sdk/react/preferences"
-import { ChevronLeftIcon, MoonIcon, SunIcon } from "lucide-react"
+import { CheckIcon, ChevronLeftIcon, CopyIcon, FilesIcon, MoonIcon, PackageIcon, SunIcon } from "lucide-react"
 import Link from "next/link"
 import * as React from "react"
+import type { ExampleSourceSet, SourceFile } from "@/lib/example-sources"
 import { colorScheme, theme, themeLabels, themes, type ThemeName } from "@/lib/preferences"
+import { CodeView, copyAllFiles, copyFile, copyInstall, useCopied } from "./code-view"
+import { useExampleSource } from "./source-context"
 
 const platformLabels: Record<Platform, string> = { macos: "macOS", ipados: "iPadOS", ios: "iOS" }
 
@@ -140,6 +144,85 @@ function ThemePicker() {
   )
 }
 
+/** Copies the open file; its menu copies the whole block or the install command. */
+function CopyCode({ source, file, compact }: { source: ExampleSourceSet; file: SourceFile; compact: boolean }) {
+  const [copied, run] = useCopied()
+  return (
+    <div className="ex-copy" role="group" aria-label="Copy">
+      <Button
+        variant="plain"
+        tone="neutral"
+        size="sm"
+        shape={compact ? "circle" : "auto"}
+        className="ex-copy-main"
+        aria-label={compact ? `Copy ${file.name}` : undefined}
+        title={`Copy ${file.name}`}
+        onClick={() => run(() => copyFile(file))}
+      >
+        {copied ? <CheckIcon aria-hidden="true" /> : <CopyIcon aria-hidden="true" />}
+        {compact ? null : <span>{copied ? "Copied" : "Copy code"}</span>}
+      </Button>
+      <Menu
+        onAction={(value) => {
+          if (value === "file") run(() => copyFile(file))
+          else if (value === "all") run(() => copyAllFiles(source))
+          else if (value === "install") run(() => copyInstall(source))
+        }}
+      >
+        <MenuTrigger
+          variant="plain"
+          tone="neutral"
+          size="sm"
+          shape="circle"
+          className="ex-copy-more"
+          aria-label="More ways to copy"
+        />
+        <MenuContent align="end">
+          <MenuItem value="file">
+            <MenuItemIcon>
+              <CopyIcon />
+            </MenuItemIcon>
+            Copy {file.name}
+          </MenuItem>
+          <MenuItem value="all">
+            <MenuItemIcon>
+              <FilesIcon />
+            </MenuItemIcon>
+            Copy All {source.files.length} Files
+          </MenuItem>
+          <MenuItem value="install">
+            <MenuItemIcon>
+              <PackageIcon />
+            </MenuItemIcon>
+            Copy Install Command
+          </MenuItem>
+        </MenuContent>
+      </Menu>
+    </div>
+  )
+}
+
+type View = "preview" | "code"
+
+/** Finds a file from the URL: its whole path, or any trailing part of it, like `settings/panes.tsx`. */
+function findFile(source: ExampleSourceSet, wanted: string | null) {
+  if (!wanted) return undefined
+  const clean = wanted.replace(/^\/+|^src\//g, "")
+  return (
+    source.files.find((file) => file.path === clean) ??
+    source.files.find((file) => file.path.endsWith(`/${clean}`))
+  )
+}
+
+function writeQuery(changes: Record<string, string | null>) {
+  const url = new URL(window.location.href)
+  for (const [key, value] of Object.entries(changes)) {
+    if (value === null) url.searchParams.delete(key)
+    else url.searchParams.set(key, value)
+  }
+  window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`)
+}
+
 const narrowQuery = "(max-width: 700px)"
 
 function subscribeNarrow(callback: () => void) {
@@ -161,11 +244,40 @@ function ExampleShell({ title, platforms, children }: ExampleShellProps) {
     () => window.matchMedia(narrowQuery).matches,
     () => null
   )
+  const source = useExampleSource()
   const [chosen, setChosen] = React.useState<Platform | null>(null)
+  const [view, setView] = React.useState<View>("preview")
+  const [filePath, setFilePath] = React.useState<string | null>(null)
   React.useEffect(() => {
-    const requested = new URLSearchParams(window.location.search).get("platform") as Platform | null
+    const query = new URLSearchParams(window.location.search)
+    const requested = query.get("platform") as Platform | null
     if (requested && platforms.includes(requested)) setChosen(requested)
-  }, [platforms])
+    if (source) {
+      if (query.get("view") === "code") setView("code")
+      const requestedFile = findFile(source, query.get("file"))
+      if (requestedFile) setFilePath(requestedFile.path)
+    }
+  }, [platforms, source])
+
+  const file = source
+    ? (source.files.find((candidate) => candidate.path === filePath) ??
+      source.files.find((candidate) => candidate.path === source.entry) ??
+      source.files[0])
+    : undefined
+
+  const changeView = (next: View) => {
+    setView(next)
+    writeQuery({ view: next === "code" ? "code" : null })
+  }
+  const changeFile = (path: string) => {
+    setFilePath(path)
+    writeQuery({ file: source && path !== source.entry ? path.replace(/^components\/examples\//, "") : null })
+  }
+  const changePlatform = (next: Platform) => {
+    setChosen(next)
+    writeQuery({ platform: next })
+  }
+  const showCode = Boolean(source && file && view === "code")
 
   const fallback: Platform = narrow && platforms.includes("ios") ? "ios" : platforms[0]
   const platform = chosen ?? fallback
@@ -182,12 +294,23 @@ function ExampleShell({ title, platforms, children }: ExampleShellProps) {
             <ChevronLeftIcon aria-hidden="true" />
           </Link>
           <h1 className="ex-strip-title">{title}</h1>
-          {platforms.length > 1 ? (
+          {source ? (
+            <SegmentedControl
+              size="sm"
+              aria-label="View"
+              value={view}
+              onValueChange={(value) => value && changeView(value as View)}
+            >
+              <SegmentedControlItem value="preview">Preview</SegmentedControlItem>
+              <SegmentedControlItem value="code">Code</SegmentedControlItem>
+            </SegmentedControl>
+          ) : null}
+          {platforms.length > 1 && !showCode ? (
             <SegmentedControl
               size="sm"
               aria-label="Platform"
               value={platform}
-              onValueChange={(value) => value && setChosen(value as Platform)}
+              onValueChange={(value) => value && changePlatform(value as Platform)}
             >
               {platforms.map((name) => (
                 <SegmentedControlItem key={name} value={name}>
@@ -196,12 +319,30 @@ function ExampleShell({ title, platforms, children }: ExampleShellProps) {
               ))}
             </SegmentedControl>
           ) : null}
-          <ThemePicker />
-          <SchemeButton />
+          {/* On a phone the site header already holds the theme and scheme. */}
+          {narrow ? null : (
+            <>
+              <ThemePicker />
+              <SchemeButton />
+            </>
+          )}
+          {source && file && (!narrow || showCode) ? (
+            <>
+              <span className="ex-strip-divider" aria-hidden="true" />
+              <CopyCode source={source} file={file} compact={Boolean(narrow)} />
+            </>
+          ) : null}
         </div>
       </div>
-      <div ref={stageRef} className="ex-stage" data-frameless={frameless ? "" : undefined}>
-        {narrow === null || !size ? null : (
+      <div
+        ref={stageRef}
+        className="ex-stage"
+        data-view={showCode ? "code" : undefined}
+        data-frameless={frameless && !showCode ? "" : undefined}
+      >
+        {showCode && source && file ? (
+          <CodeView source={source} file={file} onFileChange={changeFile} compact={Boolean(narrow)} />
+        ) : narrow === null || !size ? null : (
           <StageContext.Provider value={{ platform, frameless, width: size.width, height: size.height }}>
             {children}
           </StageContext.Provider>

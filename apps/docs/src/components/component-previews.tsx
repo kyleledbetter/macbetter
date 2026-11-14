@@ -1,4 +1,5 @@
 import { ActivityIndicator } from "@dreambase/stardust/activity-indicator"
+import { Artwork } from "@dreambase/stardust/artwork"
 import { Avatar, AvatarGroup } from "@dreambase/stardust/avatar"
 import { Badge } from "@dreambase/stardust/badge"
 import { Button } from "@dreambase/stardust/button"
@@ -104,6 +105,13 @@ const previews: Record<string, () => React.ReactNode> = {
       <Avatar name="Grace Hopper" color="indigo" />
       <Avatar name="Alan Kay" color="green" />
     </AvatarGroup>
+  ),
+  artwork: () => (
+    <div className="flex gap-2">
+      <Artwork seed="Golden Hour Tapes" variant="bloom" palette="sunset" size={56} />
+      <Artwork seed="Low Tide" variant="orbit" palette="ocean" size={56} />
+      <Artwork seed="Fieldwork" variant="glyph" palette="citrus" size={56} />
+    </div>
   ),
   badge: () => (
     <div className="flex gap-2">

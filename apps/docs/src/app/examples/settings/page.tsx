@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { ExampleSource } from "@/components/examples/example-source"
 import { SettingsExample } from "@/components/examples/settings/settings"
 
 export const metadata: Metadata = {
@@ -7,5 +8,9 @@ export const metadata: Metadata = {
 }
 
 export default function Page() {
-  return <SettingsExample />
+  return (
+    <ExampleSource slug="settings">
+      <SettingsExample />
+    </ExampleSource>
+  )
 }

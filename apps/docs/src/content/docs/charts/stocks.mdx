@@ -1,0 +1,51 @@
+export const metadata = {
+  title: "Stocks charts",
+  description: "A price chart and a watchlist drawn the way the Stocks app draws them: a range picker, a scrubbing callout, the previous close, volume and sparklines.",
+}
+
+# Stocks
+
+<Lead>A price over time, colored by whether it went up, with the number under your finger.</Lead>
+
+<Demo name="charts/stocks-price" />
+
+## How Stocks draws a price
+
+- **One color for the whole range.** The line and its fading area are green when the price ended above where the range began and red when below. For `1D`, "where it began" is the previous close, drawn as a dotted line.
+- **A range picker above the chart.** `1D` to `ALL` in a segmented control. Each range has its own sampling: five minutes for a day, half an hour for a week, days up to a year, then weeks and months.
+- **Scrubbing, not tooltips.** Drag across the chart and a rule follows your finger with a dot on the line. The price and time sit at the top of the rule, above the plot, so they never cover the line. Lift your finger and the chart returns to the current price.
+- **Volume underneath.** Gray bars in their own short band, sharing the time axis. The rule runs through both.
+- **Prices on the trailing edge,** with dotted gridlines. The top and bottom lines are left off so the line has room.
+
+## Usage
+
+The chart is an `EChart` with two grids, one for the price and one for volume, and `axisPointer.link` so one rule runs through both. Turning on `scrub` adds the rule and reports the point under the pointer; the callout is plain HTML placed at `scrub.x`.
+
+```tsx
+<EChart
+  option={option}
+  onScrub={setScrub}
+  scrub={{ label: "Price", count: prices.length, valueText: (i) => `${prices[i]}, ${times[i]}` }}
+/>
+```
+
+The series has an `id`, so switching ranges morphs the line from one shape to the next instead of drawing it again.
+
+## Watchlist
+
+Each row has a sparkline of today's price against a dotted previous close, and the change as a filled capsule. The capsule's color is darkened just enough for white text to stay readable, and it says "Up" or "Down" to screen readers.
+
+<Demo name="charts/stocks-watchlist" />
+
+`Sparkline` picks green or red from where the line ends against its `baseline`, or takes a `color`.
+
+## Candlesticks
+
+For traders who want the open, high, low and close of each day, see the [candlestick chart](/docs/charts/general#candlestick).
+
+## Accessibility
+
+- The price chart is a `figure` with a summary of the range ("DRMB rose 1.37% today, from 228.28 to 231.40") and a table of sampled prices and volumes.
+- The plot is a `slider` named "Price": arrow keys step through the points and read each one as a price and time.
+- The range picker is a segmented control, with each range's name read as written.
+- Up and down are never color alone: the change has a sign, and the watchlist capsules say "Up" or "Down".

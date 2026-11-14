@@ -214,8 +214,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sd-tab-bar-item:active,
-  .sd-tab-bar-list:has(.sd-tab-bar-item[data-selected]:active) .sd-tab-bar-indicator {
-    scale: 1;
+  :where(:root:not([data-motion="full"])) {
+    .sd-tab-bar-item:active,
+    .sd-tab-bar-list:has(.sd-tab-bar-item[data-selected]:active) .sd-tab-bar-indicator {
+      scale: 1;
+    }
   }
 }

@@ -348,9 +348,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sd-dialog:is([data-starting-style], [data-ending-style]) {
-    scale: none;
-    translate: none;
-    opacity: 0;
+  :where(:root:not([data-motion="full"])) {
+    .sd-dialog:is([data-starting-style], [data-ending-style]) {
+      scale: none;
+      translate: none;
+      opacity: 0;
+    }
   }
 }

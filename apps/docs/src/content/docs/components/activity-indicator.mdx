@@ -1,6 +1,6 @@
 export const metadata = {
   title: "Activity Indicator",
-  description: "The Apple spinner: eight spokes that step around while something loads.",
+  description: "The Apple spinner: eight spokes that light in turn around the circle while something loads.",
 }
 
 # Activity Indicator
@@ -39,7 +39,7 @@ On a dark overlay, or in the accent, set the color on a parent.
 
 The sizes follow each platform's native ones. On macOS, `sm`, `md` and `lg` are 12, 16 and 32 points, the mini, small and regular spinning indicators. On iOS and iPadOS they're 16, 20 and 37 points, `UIActivityIndicatorView`'s medium and large.
 
-The spokes are capsules, as on iOS 13 and later and macOS 11 and later. Like the real one, it doesn't spin smoothly: the brightest spoke jumps to the next, ten times a second. With Reduce Motion on, the spokes hold still and the whole indicator fades in and out slowly, so it still says "working" without turning.
+The spokes are capsules, as on iOS 13 and later and macOS 11 and later. Each one lights fully and then fades until its turn comes round again, so the bright spoke travels clockwise with a fading tail. It keeps turning with Reduce Motion on, as the system spinner does: the motion is the message.
 
 ## Accessibility
 
@@ -62,5 +62,5 @@ It takes ui-sdk `Progress` props other than `value`.
 | --- | --- | --- |
 | `data-indeterminate` | `.sd-activity-indicator` | Always present, from ui-sdk. |
 | `data-size` | `.sd-activity-indicator` | The size. |
-| `data-motion="essential"` | `.sd-activity-indicator-fan` | Keeps the slow Reduce Motion animation running past the global motion reset. |
+| `--sd-activity-indicator-duration` | `.sd-activity-indicator` | How long one turn takes. `0.8s` by default. |
 | `--sd-activity-indicator-size-sm`, `--sd-activity-indicator-size`, `--sd-activity-indicator-size-lg` | any ancestor | The three sizes. |

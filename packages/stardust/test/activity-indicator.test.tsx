@@ -10,11 +10,11 @@ test("is an indeterminate progress named Loading, with eight spokes", () => {
   expect(spinner.dataset.size).toBe("lg")
   expect(spinner.hasAttribute("aria-valuenow")).toBe(false)
   expect(spinner.hasAttribute("data-indeterminate")).toBe(true)
-  const fan = container.querySelector(".sd-activity-indicator-fan")
-  expect(fan?.getAttribute("data-motion")).toBe("essential")
-  const spokes = container.querySelectorAll(".sd-activity-indicator-fan rect")
+  const spokes = container.querySelectorAll(".sd-activity-indicator-spokes rect")
   expect(spokes).toHaveLength(8)
-  expect(spokes[0]?.getAttribute("opacity")).toBe("1")
+  // Each spoke starts an eighth of a turn after the one before, so the lit one travels round.
+  const delays = [...spokes].map((spoke) => (spoke as SVGElement).style.animationDelay)
+  expect(new Set(delays).size).toBe(8)
 })
 
 test("takes a label of its own", () => {

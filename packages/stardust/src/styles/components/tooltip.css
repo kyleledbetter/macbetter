@@ -61,7 +61,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sd-tooltip:is([data-starting-style], [data-ending-style]) {
-    scale: none;
+  :where(:root:not([data-motion="full"])) {
+    .sd-tooltip:is([data-starting-style], [data-ending-style]) {
+      scale: none;
+    }
   }
 }

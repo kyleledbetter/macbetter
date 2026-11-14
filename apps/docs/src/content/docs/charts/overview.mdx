@@ -1,0 +1,127 @@
+export const metadata = {
+  title: "Charts",
+  description: "Charts in the style of Apple's Stocks, Health and Fitness apps, drawn by ECharts through EvilCharts and themed by a small Stardust adapter.",
+}
+
+# Charts
+
+<Lead>Charts that look like they came from Stocks, Health and Fitness, in every theme, scheme and platform.</Lead>
+
+<Demo name="charts/basic-echart" />
+
+<Callout type="note" title="An external library">
+  Stardust doesn't draw charts, and `@dreambase/stardust` doesn't depend on a chart library. These pages use
+  [Apache ECharts](https://echarts.apache.org) and the ECharts edition of [EvilCharts](https://evilcharts.com/docs),
+  installed in your app, plus a few small files that theme them with Stardust tokens. Copy the files you need.
+</Callout>
+
+## What's in the box
+
+- **ECharts** draws everything, on a canvas. It's the only required dependency.
+- **EvilCharts** is a set of chart components for ECharts (area, line, bar, pie, radial, heatmap and more), with a compound API: `<EChartsBarChart>` with `<EChartsBarChart.Bar>`, `.XAxis`, `.Tooltip` inside. It isn't an npm package: like shadcn/ui, you add each chart's source to your project with the shadcn CLI and own it from then on. EvilCharts is MIT licensed.
+- **The Stardust adapter** turns Stardust tokens into colors a canvas can use, and keeps them current. It's six small files: `theme.ts`, `echart.tsx`, `chart-frame.tsx`, `charts.css`, `rings.tsx` and `sparkline.tsx`.
+
+Use EvilCharts for the standard charts: it handles legends, tooltips, selection and loading states. Use the adapter's `EChart` with a plain ECharts option for the charts that are particular to Apple's apps, like a price with volume, heart rate ranges, sleep stages and Activity rings. Both read the same theme.
+
+## Install
+
+<Steps>
+
+### Add ECharts
+
+EvilCharts animates its overlays with Motion, so add it too.
+
+```bash
+pnpm add echarts motion
+```
+
+### Add the EvilCharts charts you use
+
+EvilCharts is a shadcn registry, so your project needs a `components.json` (`pnpm dlx shadcn@latest init`). Then add each chart by name. The CLI adds the chart and the shared modules it imports, like the tooltip and legend.
+
+```bash
+pnpm dlx shadcn@latest add @evilcharts/echarts-bar-chart
+pnpm dlx shadcn@latest add @evilcharts/echarts-area-chart @evilcharts/echarts-line-chart
+pnpm dlx shadcn@latest add @evilcharts/echarts-pie-chart @evilcharts/echarts-radial-chart @evilcharts/echarts-heatmap-chart
+```
+
+### Copy the adapter
+
+Copy `apps/docs/src/components/charts/` from the [Stardust repository](https://github.com/DreambaseAI/stardust/tree/main/apps/docs/src/components/charts) into your app. The examples import it as `@/components/charts`.
+
+</Steps>
+
+## Draw a chart
+
+An `EChart` takes an ECharts option as a function of the theme. The adapter resolves the theme on the chart's own element and calls the function again when anything changes, so wrap it in `useCallback`.
+
+```tsx
+"use client"
+
+import * as React from "react"
+import { baseOption, categoryAxis, ChartFrame, EChart, valueAxis, type ChartTheme } from "@/components/charts"
+
+export function ExerciseWeek({ minutes }: { minutes: number[] }) {
+  const option = React.useCallback(
+    (theme: ChartTheme) => ({
+      ...baseOption(theme), // system font, Reduce Motion, first-draw animation
+      xAxis: categoryAxis(theme, ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]),
+      yAxis: valueAxis(theme), // labels on the trailing edge, hairline grid
+      series: [{ type: "bar", data: minutes, itemStyle: { color: theme.colors.exercise, borderRadius: [4, 4, 0, 0] } }],
+    }),
+    [minutes]
+  )
+  return (
+    <ChartFrame title="Exercise minutes this week" summary="Wednesday was the longest, at 64 minutes.">
+      <EChart option={option} height={180} />
+    </ChartFrame>
+  )
+}
+```
+
+An EvilCharts chart takes a `config` of series colors and a `chartOptions` escape hatch. `useEvilChart` builds both from Stardust chart colors. Put its `ref` on the `ChartFrame`, and render the chart once `config` is ready; canvas charts draw on the client only.
+
+<Demo name="charts/basic-evil" />
+
+## How the theme works
+
+Stardust colors are CSS: `light-dark()`, `color-mix()` and `oklch()`, chosen by `data-theme`, `data-scheme` and `data-platform` on any ancestor. A canvas can't read CSS, so the adapter:
+
+1. Paints each token on a hidden probe inside the chart's container and reads back a plain `rgba()`. A chart inside a nested light preview, or a different theme, gets that preview's colors.
+2. Reads the platform's caption style for axis labels: 10 points on the Mac, 12 on iPhone and iPad, in the system font.
+3. Watches for changes to those attributes anywhere on the page, the root's `class` and `style`, and the system's appearance, contrast and motion settings, then redraws only the charts whose colors changed.
+
+`theme.colors` has the system palette (`red`, `orange`, … `pink`), labels (`label`, `label2`, `label3`), fills, and the chart colors below. Every one is a CSS variable you can set in a theme or on any element.
+
+| Variable | Default | Used for |
+| --- | --- | --- |
+| `--sd-chart-1` … `--sd-chart-6` | accent, secondary accent, blue, purple, yellow, pink | Categorical series, in order. |
+| `--sd-chart-up`, `--sd-chart-down` | green, red | A price that rose or fell. |
+| `--sd-chart-move`, `--sd-chart-exercise`, `--sd-chart-stand` | pink, a green shifted toward lime, cyan | Activity rings and their charts. |
+| `--sd-chart-awake`, `--sd-chart-rem`, `--sd-chart-core`, `--sd-chart-deep` | coral, cyan, blue, indigo | Sleep stages. |
+| `--sd-chart-grid` | 9% ink in light, 12% in dark | Gridlines: present, but only just. |
+| `--sd-chart-axis`, `--sd-chart-rule` | secondary label, tertiary label | Axis labels, and the scrubbing rule. |
+| `--sd-chart-surface` | the card or page background | What a chart sits on, for cutouts and dark-mode detection. |
+
+EvilCharts reads shadcn's color utilities (`text-muted-foreground`, `text-border`, `bg-background`) for its gridlines, labels and tooltip. Inside a `ChartFrame`, `charts.css` maps them to these variables, so its tooltip becomes a Stardust popup material.
+
+## The Apple look
+
+What makes a chart read as Apple's, and what the adapter's helpers set for you:
+
+- **Quiet axes.** No axis lines, no ticks. Values on the trailing edge, in secondary label color. Solid hairline gridlines, with dashed ones for time dividers.
+- **One idea per color.** Activity is orange, heart is pink, sleep is blue and indigo; up is green and down is red. A series that matters gets color; context gets gray.
+- **Numbers in a header, not a tooltip.** Health puts the reading above the chart and changes it as you scrub; Stocks pins the price and time at the top of the rule. Use `ChartHeader` and the `scrub` prop.
+- **Rounded marks.** Bars have rounded tops, ranges are capsules, rings have round caps.
+- **SF Rounded for metrics.** Big numbers use `--sd-font-rounded` and tabular figures, so digits don't jump as you scrub.
+
+## Accessibility
+
+- `ChartFrame` makes a chart a `figure` named by its `title` and described by its `summary`. Pass `table` to give screen readers every value in a visually hidden table. The canvas itself is hidden from assistive technology.
+- `EChart` with `scrub` is a `slider`: focus it, then step through points with the arrow keys, `Page Up` and `Page Down` (ten at a time), `Home` and `End`. `valueText` says each point aloud. On a touch screen, a horizontal drag scrubs and a vertical one still scrolls the page.
+- Never use color alone. `ChartLegend` names every series in text, and the examples say "up" or "down" in words beside a green or red number.
+- Charts draw without animation under Reduce Motion, and follow Increase Contrast through the tokens.
+
+## Bundle size
+
+ECharts is large if you import all of it. The adapter and every EvilCharts chart import from `echarts/core` and register only the series and components they draw, so you pay for bars, lines and gauges, not maps and 3D. `motion` is only needed by EvilCharts.

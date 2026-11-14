@@ -279,16 +279,20 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  /* The spinner is data-motion="essential": it keeps turning, just slower. */
-  .sd-button-spinner {
-    animation-duration: 1.6s;
+  :where(:root:not([data-motion="full"])) {
+    /* The spinner is data-motion="essential": it keeps turning, just slower. */
+    .sd-button-spinner {
+      animation-duration: 1.6s;
+    }
   }
 }
 
 @scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
   @media (prefers-reduced-motion: reduce) {
-    .sd-button:active {
-      scale: none;
-    }
+  :where(:root:not([data-motion="full"])) {
+      .sd-button:active {
+        scale: none;
+      }
   }
+}
 }

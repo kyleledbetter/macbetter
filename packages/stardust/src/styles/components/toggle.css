@@ -303,8 +303,10 @@
 
 @scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
   @media (prefers-reduced-motion: reduce) {
-    .sd-toggle:active {
-      scale: none;
-    }
+  :where(:root:not([data-motion="full"])) {
+      .sd-toggle:active {
+        scale: none;
+      }
   }
+}
 }

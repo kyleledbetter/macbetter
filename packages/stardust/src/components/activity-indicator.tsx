@@ -6,11 +6,12 @@ type ActivityIndicatorProps = Omit<React.ComponentProps<typeof ProgressPrimitive
   size?: "sm" | "md" | "lg"
 }
 
-// Capsule spokes, as on iOS 13+ and macOS 11+: the one just behind the lead is dimmest, and the fan steps clockwise.
-const spokes = [1, 0.3, 0.36, 0.43, 0.51, 0.6, 0.71, 0.84]
+const spokes = [0, 1, 2, 3, 4, 5, 6, 7]
 
 /**
- * The Apple spinner: eight spokes that turn one step at a time. It's an
+ * The Apple spinner: eight spokes that light in turn around the circle, each
+ * fading as the next one lights. It keeps turning under Reduce Motion, as the
+ * system one does, because the motion is the message. It's an
  * indeterminate progress bar to assistive technology, named "Loading" unless
  * you give it a label.
  */
@@ -24,21 +25,18 @@ function ActivityIndicator({ size = "md", className, "aria-label": label, ...pro
       {...props}
     >
       <svg aria-hidden="true" viewBox="0 0 100 100" className="sd-activity-indicator-spokes">
-        {/* The turning carries meaning, so it opts out of the reduced-motion reset and breathes instead. */}
-        <g className="sd-activity-indicator-fan" data-motion="essential">
-          {spokes.map((opacity, index) => (
-            <rect
-              key={index * 45}
-              x="45"
-              y="5"
-              width="10"
-              height="25"
-              rx="5"
-              opacity={opacity}
-              transform={`rotate(${index * 45} 50 50)`}
-            />
-          ))}
-        </g>
+        {spokes.map((index) => (
+          <rect
+            key={index}
+            x="45"
+            y="5"
+            width="10"
+            height="25"
+            rx="5"
+            transform={`rotate(${index * 45} 50 50)`}
+            style={{ animationDelay: `calc(var(--sd-activity-indicator-duration) * ${(index - 8) / 8})` }}
+          />
+        ))}
       </svg>
     </ProgressPrimitive>
   )

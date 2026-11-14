@@ -259,9 +259,13 @@
   }
 }
 
+/*
+ * Reduce Transparency makes every material solid. data-transparency="full" on
+ * <html> opts a page out, for a demo that exists to show the materials.
+ */
 @media (prefers-reduced-transparency: reduce) {
-  :root,
-  [data-theme] {
+  :root:not([data-transparency="full"]),
+  :root:not([data-transparency="full"]) [data-theme] {
     --sd-material-ultrathin: var(--sd-bg-elevated);
     --sd-material-thin: var(--sd-bg-elevated);
     --sd-material-regular: var(--sd-bg-elevated);

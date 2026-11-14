@@ -322,9 +322,11 @@ span.sd-date-field-segment {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sd-date-picker-content[data-starting-style],
-  .sd-date-picker-content[data-ending-style] {
-    scale: 1;
+  :where(:root:not([data-motion="full"])) {
+    .sd-date-picker-content[data-starting-style],
+    .sd-date-picker-content[data-ending-style] {
+      scale: 1;
+    }
   }
 }
 
