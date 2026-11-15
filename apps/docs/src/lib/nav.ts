@@ -137,6 +137,26 @@ const nav: NavSection[] = [
       doc("charts/general", "General"),
     ],
   },
+  {
+    title: "Home",
+    items: [
+      doc("home/overview", "Overview"),
+      doc("home/accessory-tile", "Accessory Tile"),
+      doc("home/scene-tile", "Scene Tile"),
+      doc("home/home-status", "Home Status"),
+      doc("home/home-section", "Home Section"),
+      doc("home/level-control", "Level Control"),
+      doc("home/light-color-picker", "Light Color Picker"),
+      doc("home/thermostat-control", "Thermostat Control"),
+      doc("home/lock-control", "Lock Control"),
+      doc("home/door-control", "Door Control"),
+      doc("home/camera-view", "Camera View"),
+      doc("home/sensor-readout", "Sensor Readout"),
+      doc("home/setup-code", "Setup Code"),
+      doc("home/automation-row", "Automation Row"),
+      doc("home/energy-readout", "Energy Readout"),
+    ],
+  },
 ]
 
 /** The sections that hold component pages, in sidebar order. */

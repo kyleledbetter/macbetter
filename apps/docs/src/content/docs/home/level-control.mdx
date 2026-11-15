@@ -1,0 +1,109 @@
+export const metadata = {
+  title: "Level Control",
+  description: "Set a light's brightness, a shade's position, a fan's speed or a speaker's volume with one tall slider.",
+}
+
+# Level Control
+
+<Lead>Set a light's brightness, a shade's position, a fan's speed or a speaker's volume with one tall slider.</Lead>
+
+<Demo name="home/level-control-brightness" platforms={["ios", "ipados", "macos"]} wallpaper />
+
+## When to use it
+
+Use a level control in an accessory's control sheet for any characteristic that's a percentage: brightness, target position, rotation speed or volume. HomeKit stores all four as a percentage of the maximum, from 0 to 100.
+
+- Put the minimum at the bottom and the maximum at the top, as the HIG asks of vertical sliders. A shade at 0 is closed and lets in the least light; at 100 it's open.
+- Name it for the accessory and what it sets, like "Pendant lights brightness". In the interface, say "brightness" or "speed", never "characteristic".
+- Show the value as words people understand: "80%", "40% open", "Medium".
+- For a speaker that's a HomeKit accessory, a level control sets its volume characteristic. For audio your own app plays on iOS, use the system's volume view instead, as the HIG asks.
+
+## Usage
+
+```tsx
+import { LevelControl, LevelControlValue } from "macbetter/level-control"
+```
+
+### Brightness
+
+`tone="light"` fills with a warm white, and the icon at the bottom turns dark where the fill covers it. Put `LevelControlValue` inside to show the value above the track.
+
+<Demo name="home/level-control-brightness" platforms={["ios", "ipados", "macos"]} wallpaper />
+
+### Shades and blinds
+
+`tone="neutral"` fills with white, the look for anything that isn't a light. A `format` function turns the percentage into words.
+
+<Demo name="home/level-control-shades" platforms={["ios", "ipados", "macos"]} wallpaper />
+
+### A fan
+
+A fan is a level control with `steps`, for its discrete speeds, and a segmented control or switch for its direction. There's no separate fan component: HomeKit's fan service is a rotation speed, a rotation direction and an on state, and each has a control already.
+
+<Demo name="home/level-control-fan" platforms={["ios", "ipados", "macos"]} wallpaper />
+
+### Horizontal
+
+`orientation="horizontal"` lays it across a row, like a speaker's volume in a Mac popover. It fills from the leading edge, so it mirrors in right-to-left languages.
+
+<Demo name="home/level-control-horizontal" platforms={["macos", "ipados", "ios"]} wallpaper />
+
+## Platform behavior
+
+- **iOS and iPadOS.** The large control is 124 × 300 points with a 34-point continuous corner, the size of the Home app's brightness control. It swells slightly under your finger while you drag.
+- **macOS.** 88 × 224 points, or 56 × 160 at `size="md"`, sized for a popover. There's no hover state: the whole track is the target.
+- **Every platform.** There's no knob. Press anywhere on the track to jump to that level, or drag the fill's edge; the fill follows the pointer one to one. The empty track is dark in both color schemes so a white fill holds 3:1 against it.
+
+## Accessibility
+
+- It's ui-sdk's Slider. The thumb is a native range input, invisible and stretched across the fill's edge, so screen readers on phones adjust it with their own gestures.
+- Arrow keys step it, Page Up and Page Down move ten steps, Home and End go to the ends. Focus shows the accent ring around the whole track.
+- `label` names it. `format` sets what screen readers hear, as well as what `LevelControlValue` shows.
+- The icon is decorative and hidden from assistive tech.
+
+## API
+
+<PropsTable
+  rows={[
+    { name: "label", type: "string", description: "Names the control, like \"Pendant lights brightness\". Required." },
+    { name: "tone", type: '"light" | "accent" | "neutral"', default: '"accent"', description: "The fill: warm white for lights, the accent, or white." },
+    { name: "size", type: '"md" | "lg"', default: '"lg"', description: "lg is the tall sheet control; md fits a popover." },
+    { name: "orientation", type: '"vertical" | "horizontal"', default: '"vertical"', description: "Vertical grows upward; horizontal from the leading edge." },
+    { name: "icon", type: "ReactNode", description: "A glyph inside the track at the minimum end." },
+    { name: "steps", type: "number", description: "Draws this many equal segments, for discrete levels." },
+    { name: "value", type: "number", description: "The level. Pass it to control the slider." },
+    { name: "defaultValue", type: "number", description: "The level at first, when uncontrolled." },
+    { name: "onValueChange", type: "(value, details) => void", description: "Runs on every step of a drag or a key." },
+    { name: "onValueCommit", type: "(value, details) => void", description: "Runs once when a drag or key press ends. Write to the accessory here." },
+    { name: "min / max / step", type: "number", default: "0 / 100 / 1", description: "The range, from the characteristic's metadata." },
+    { name: "format", type: "Intl.NumberFormatOptions | (value) => string", description: "How the value reads." },
+    { name: "disabled", type: "boolean", default: "false", description: "Can't be focused or moved, as when the accessory doesn't respond." },
+    { name: "children", type: "ReactNode", description: "Shown above the track, like LevelControlValue." },
+  ]}
+/>
+
+### LevelControlValue
+
+ui-sdk's `SliderValue` with macbetter's text style. Place it inside `LevelControl`.
+
+### Data attributes
+
+| Attribute | On | Values |
+| --- | --- | --- |
+| `data-tone` | Root | `light`, `accent`, `neutral` |
+| `data-size` | Root | `md`, `lg` |
+| `data-orientation` | Every part | `vertical`, `horizontal` |
+| `data-dragging` | Every part | Present while dragging |
+| `data-disabled` | Every part | Present when disabled |
+
+### CSS variables
+
+| Variable | macOS | iOS | What it sets |
+| --- | --- | --- | --- |
+| `--mb-level-control-thickness-lg` | `88px` | `124px` | Width of the large control |
+| `--mb-level-control-length-lg` | `224px` | `300px` | Height of the large control |
+| `--mb-level-control-radius-lg` | `22px` | `34px` | Corner radius of the large control |
+| `--mb-level-control-thickness-md` | `56px` | `72px` | Width of the medium control |
+| `--mb-level-control-length-md` | `160px` | `200px` | Height of the medium control |
+| `--mb-level-control-fill` | | | The fill color; set it to a light's color to preview it |
+| `--mb-level-control-track` | | | The empty track |

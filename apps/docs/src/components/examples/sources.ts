@@ -27,11 +27,12 @@ const exampleSources = {
   },
   analytics: { title: "Analytics", entry: "analytics/analytics.tsx", folder: "analytics" },
   music: { title: "Music", entry: "music/music.tsx", folder: "music" },
+  home: { title: "Home", entry: "home/home.tsx", folder: "home" },
 } satisfies Record<string, ExampleSourceManifest>
 
 type ExampleSlug = keyof typeof exampleSources
 
-/** Files that belong to the gallery, not to any block. */
+/** Files that belong to the gallery, not to any example. */
 const excludedSources = ["shell.tsx", "gallery.tsx"]
 
 export { excludedSources, exampleSources }

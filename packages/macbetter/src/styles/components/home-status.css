@@ -1,0 +1,215 @@
+/* Home status — the category buttons under the home's name. Each is a capsule with the category's icon, its name and a
+   summary in words. Pressed is the bright on look, the same as a tile that's on. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-home-status-height: 40px;
+  --mb-home-status-icon-size: 16px;
+  --mb-home-status-label-font: 600 12px/14px var(--mb-font);
+  --mb-home-status-summary-font: 400 12px/14px var(--mb-font);
+  --mb-home-status-gap: 8px;
+  --mb-home-status-padding: 12px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-home-status-height: 48px;
+  --mb-home-status-icon-size: 20px;
+  --mb-home-status-label-font: 600 14px/17px var(--mb-font);
+  --mb-home-status-summary-font: 400 13px/16px var(--mb-font);
+  --mb-home-status-gap: 8px;
+  --mb-home-status-padding: 14px;
+}
+
+.mb-home-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--mb-home-status-gap);
+  min-width: 0;
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .mb-home-status {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    /* Room for the focus halo inside the scroller. */
+    padding: 4px;
+    margin: -4px;
+  }
+
+  .mb-home-status::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.mb-home-status-item {
+  --mb-home-status-tint: var(--mb-accent);
+  --mb-home-status-bg: light-dark(
+    color-mix(in oklch, var(--mb-ink) 7%, rgb(255 255 255 / 0.3)),
+    color-mix(in oklch, var(--mb-bg-elevated) 58%, transparent)
+  );
+  --mb-home-status-fg: var(--mb-label);
+  --mb-home-status-fg-secondary: var(--mb-label-secondary);
+  --mb-home-status-icon-fg: var(--mb-home-status-tint);
+  --mb-home-status-edge: light-dark(rgb(0 0 0 / 0.06), rgb(255 255 255 / 0.08));
+
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  box-sizing: border-box;
+  height: var(--mb-home-status-height);
+  margin: 0;
+  padding-block: 0;
+  padding-inline: var(--mb-home-status-padding) calc(var(--mb-home-status-padding) + 4px);
+  border: 0;
+  border-radius: var(--mb-radius-full);
+  background: var(--mb-home-status-bg);
+  box-shadow: inset 0 0 0 var(--mb-hairline) var(--mb-home-status-edge);
+  color: var(--mb-home-status-fg);
+  text-align: start;
+  white-space: nowrap;
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--mb-duration-base) var(--mb-ease-out),
+    color var(--mb-duration-base) var(--mb-ease-out),
+    scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+/* The off-tile icon colors are brightened in dark mode for 3:1 on the dim capsule. */
+.mb-home-status-item[data-tint="yellow"] { --mb-home-status-tint: light-dark(oklch(from var(--mb-yellow) 0.66 0.16 h), var(--mb-yellow)); }
+.mb-home-status-item[data-tint="orange"] { --mb-home-status-tint: light-dark(oklch(from var(--mb-orange) min(l, 0.64) c h), var(--mb-orange)); }
+.mb-home-status-item[data-tint="red"] { --mb-home-status-tint: light-dark(oklch(from var(--mb-red) min(l, 0.56) c h), var(--mb-red)); }
+.mb-home-status-item[data-tint="green"] { --mb-home-status-tint: light-dark(oklch(from var(--mb-green) min(l, 0.58) c h), var(--mb-green)); }
+.mb-home-status-item[data-tint="teal"] { --mb-home-status-tint: light-dark(oklch(from var(--mb-teal) min(l, 0.58) c h), var(--mb-teal)); }
+.mb-home-status-item[data-tint="blue"] { --mb-home-status-tint: light-dark(oklch(from var(--mb-blue) min(l, 0.56) c h), oklch(from var(--mb-blue) max(l, 0.7) c h)); }
+.mb-home-status-item[data-tint="indigo"] { --mb-home-status-tint: light-dark(oklch(from var(--mb-indigo) min(l, 0.54) c h), oklch(from var(--mb-indigo) max(l, 0.7) c h)); }
+.mb-home-status-item[data-tint="purple"] { --mb-home-status-tint: light-dark(oklch(from var(--mb-purple) min(l, 0.56) c h), oklch(from var(--mb-purple) max(l, 0.72) c h)); }
+.mb-home-status-item[data-tint="accent"] { --mb-home-status-tint: var(--mb-accent-text); }
+.mb-home-status-item[data-tint="neutral"] { --mb-home-status-tint: var(--mb-label-secondary); }
+
+.mb-home-status-item[data-pressed] {
+  --mb-home-status-bg: light-dark(rgb(255 255 255 / 0.97), color-mix(in oklch, var(--mb-tint) 8%, rgb(246 246 248)));
+  --mb-home-status-fg: rgb(0 0 0 / 0.88);
+  --mb-home-status-fg-secondary: rgb(0 0 0 / 0.62);
+  --mb-home-status-icon-fg: oklch(from var(--mb-home-status-tint) min(l, 0.6) c h);
+  --mb-home-status-edge: rgb(0 0 0 / 0.04);
+  box-shadow:
+    inset 0 0 0 var(--mb-hairline) var(--mb-home-status-edge),
+    0 1px 3px rgb(0 0 0 / 0.12);
+}
+
+/* An alert stays red in words and in the icon, pressed or not. */
+.mb-home-status-item[data-alert] {
+  --mb-home-status-icon-fg: light-dark(oklch(from var(--mb-red) 0.55 0.21 h), oklch(from var(--mb-red) 0.72 0.18 h));
+  --mb-home-status-fg-secondary: light-dark(oklch(from var(--mb-red) 0.5 0.2 h), oklch(from var(--mb-red) 0.78 0.14 h));
+}
+
+.mb-home-status-item[data-alert][data-pressed] {
+  --mb-home-status-fg-secondary: oklch(from var(--mb-red) 0.5 0.2 h);
+  --mb-home-status-icon-fg: oklch(from var(--mb-red) 0.55 0.21 h);
+}
+
+.mb-home-status-item[data-alert] .mb-home-status-summary {
+  font-weight: 600;
+}
+
+.mb-home-status-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--mb-home-status-icon-size);
+  height: var(--mb-home-status-icon-size);
+  color: var(--mb-home-status-icon-fg);
+}
+
+.mb-home-status-icon > :where(svg) {
+  width: 100%;
+  height: 100%;
+}
+
+.mb-home-status-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.mb-home-status-label {
+  color: var(--mb-home-status-fg);
+  font: var(--mb-home-status-label-font);
+  letter-spacing: var(--mb-tracking-caption);
+}
+
+.mb-home-status-summary {
+  color: var(--mb-home-status-fg-secondary);
+  font: var(--mb-home-status-summary-font);
+  letter-spacing: var(--mb-tracking-caption);
+  font-variant-numeric: tabular-nums;
+}
+
+.mb-home-status-item::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: max(100%, var(--mb-hit-target));
+  height: max(100%, var(--mb-hit-target));
+  translate: -50% -50%;
+}
+
+.mb-home-status-item:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-home-status-item:not([data-pressed]):hover {
+    --mb-home-status-bg: light-dark(
+      color-mix(in oklch, var(--mb-ink) 4%, rgb(255 255 255 / 0.5)),
+      color-mix(in oklch, var(--mb-bg-elevated) 68%, transparent)
+    );
+  }
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .mb-home-status-item:active {
+    scale: 0.96;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .mb-home-status-item {
+    --mb-home-status-edge: var(--mb-control-border);
+    --mb-home-status-bg: var(--mb-bg-elevated);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .mb-home-status-item[data-pressed] {
+    --mb-home-status-bg: rgb(255 255 255);
+    box-shadow: inset 0 0 0 2px var(--mb-home-status-icon-fg);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :where(:root:not([data-transparency="full"])) {
+    .mb-home-status-item:not([data-pressed]) {
+      background-color: var(--mb-bg-elevated);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .mb-home-status-item {
+    border: 1px solid ButtonText;
+  }
+
+  .mb-home-status-item[data-pressed] {
+    border: 3px solid Highlight;
+  }
+}

@@ -1,0 +1,461 @@
+/* Accessory tile — the Home app's tile. The icon side switches the accessory; the rest of the tile opens its controls.
+   Off is a dim translucent tile; on is a bright tile with dark text and a tinted icon, in both color schemes. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-accessory-tile-height: 60px;
+  --mb-accessory-tile-radius: 12px;
+  --mb-accessory-tile-padding: 10px;
+  --mb-accessory-tile-icon-size: 32px;
+  --mb-accessory-tile-glyph-size: 18px;
+  --mb-accessory-tile-name-font: 600 13px/16px var(--mb-font);
+  --mb-accessory-tile-status-font: 400 12px/15px var(--mb-font);
+  --mb-accessory-grid-gap: 10px;
+  --mb-accessory-grid-track: 80px;
+  --mb-accessory-tile-md-span: 2;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-accessory-tile-height: 72px;
+  --mb-accessory-tile-radius: 18px;
+  --mb-accessory-tile-padding: 12px;
+  --mb-accessory-tile-icon-size: 38px;
+  --mb-accessory-tile-glyph-size: 22px;
+  --mb-accessory-tile-name-font: 600 15px/18px var(--mb-font);
+  --mb-accessory-tile-status-font: 400 14px/17px var(--mb-font);
+  --mb-accessory-grid-gap: 10px;
+  --mb-accessory-grid-track: 76px;
+  --mb-accessory-tile-md-span: 2;
+}
+
+.mb-accessory-tile {
+  /* The tint is the icon's color when on. Each is darkened in light mode so the glyph holds 3:1 on the bright tile. */
+  --mb-accessory-tile-tint: var(--mb-accent);
+  /* Off: a translucent fill without a blur, since a Home screen holds dozens of tiles. */
+  --mb-accessory-tile-bg: light-dark(
+    color-mix(in oklch, var(--mb-ink) 7%, rgb(255 255 255 / 0.3)),
+    color-mix(in oklch, var(--mb-bg-elevated) 58%, transparent)
+  );
+  --mb-accessory-tile-fg: var(--mb-label);
+  --mb-accessory-tile-fg-secondary: var(--mb-label-secondary);
+  --mb-accessory-tile-icon-bg: var(--mb-fill-secondary);
+  --mb-accessory-tile-icon-fg: var(--mb-label-secondary);
+  /* On: nearly white, warmed a little by the theme's tint. Text is dark in both schemes. */
+  --mb-accessory-tile-on-bg: light-dark(
+    rgb(255 255 255 / 0.97),
+    color-mix(in oklch, var(--mb-tint) 8%, rgb(246 246 248))
+  );
+  --mb-accessory-tile-on-fg: rgb(0 0 0 / 0.88);
+  --mb-accessory-tile-on-fg-secondary: rgb(0 0 0 / 0.62);
+  --mb-accessory-tile-edge: light-dark(rgb(0 0 0 / 0.06), rgb(255 255 255 / 0.08));
+
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  min-width: 0;
+  height: var(--mb-accessory-tile-height);
+  container-type: inline-size;
+  border-radius: var(--mb-accessory-tile-radius);
+  background: var(--mb-accessory-tile-bg);
+  box-shadow: inset 0 0 0 var(--mb-hairline) var(--mb-accessory-tile-edge);
+  color: var(--mb-accessory-tile-fg);
+  isolation: isolate;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--mb-duration-base) var(--mb-ease-out),
+    color var(--mb-duration-base) var(--mb-ease-out),
+    scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+.mb-accessory-tile[data-size="md"] {
+  width: auto;
+  min-width: 150px;
+}
+
+.mb-accessory-tile[data-size="sm"] {
+  width: var(--mb-accessory-tile-height);
+}
+
+.mb-accessory-tile[data-size="lg"] {
+  width: calc(var(--mb-accessory-tile-height) * 2 + var(--mb-accessory-grid-gap));
+  height: calc(var(--mb-accessory-tile-height) * 2 + var(--mb-accessory-grid-gap));
+}
+
+.mb-accessory-tile[data-tint="yellow"] { --mb-accessory-tile-tint: light-dark(oklch(from var(--mb-yellow) 0.68 0.16 h), oklch(from var(--mb-yellow) 0.72 0.17 h)); }
+.mb-accessory-tile[data-tint="orange"] { --mb-accessory-tile-tint: oklch(from var(--mb-orange) min(l, 0.66) c h); }
+.mb-accessory-tile[data-tint="red"] { --mb-accessory-tile-tint: oklch(from var(--mb-red) min(l, 0.58) c h); }
+.mb-accessory-tile[data-tint="green"] { --mb-accessory-tile-tint: oklch(from var(--mb-green) min(l, 0.6) c h); }
+.mb-accessory-tile[data-tint="teal"] { --mb-accessory-tile-tint: oklch(from var(--mb-teal) min(l, 0.6) c h); }
+.mb-accessory-tile[data-tint="blue"] { --mb-accessory-tile-tint: oklch(from var(--mb-blue) min(l, 0.58) c h); }
+.mb-accessory-tile[data-tint="indigo"] { --mb-accessory-tile-tint: oklch(from var(--mb-indigo) min(l, 0.55) c h); }
+.mb-accessory-tile[data-tint="purple"] { --mb-accessory-tile-tint: oklch(from var(--mb-purple) min(l, 0.56) c h); }
+.mb-accessory-tile[data-tint="accent"] { --mb-accessory-tile-tint: oklch(from var(--mb-accent) min(l, 0.62) c h); }
+.mb-accessory-tile[data-tint="neutral"] { --mb-accessory-tile-tint: rgb(0 0 0 / 0.72); }
+
+/* On. */
+.mb-accessory-tile:is([data-active], [data-partial], :has(> .mb-accessory-tile-toggle[data-pressed])) {
+  --mb-accessory-tile-bg: var(--mb-accessory-tile-on-bg);
+  --mb-accessory-tile-fg: var(--mb-accessory-tile-on-fg);
+  --mb-accessory-tile-fg-secondary: var(--mb-accessory-tile-on-fg-secondary);
+  --mb-accessory-tile-icon-bg: color-mix(in oklch, var(--mb-accessory-tile-tint) 18%, transparent);
+  --mb-accessory-tile-icon-fg: var(--mb-accessory-tile-tint);
+  --mb-accessory-tile-edge: rgb(0 0 0 / 0.04);
+  box-shadow:
+    inset 0 0 0 var(--mb-hairline) var(--mb-accessory-tile-edge),
+    0 1px 3px rgb(0 0 0 / 0.12);
+}
+
+/* Some members of a group on: half of the icon's circle filled. */
+.mb-accessory-tile[data-partial]:not(:has(> .mb-accessory-tile-toggle[data-pressed])) {
+  --mb-accessory-tile-icon-bg: linear-gradient(
+    to top,
+    color-mix(in oklch, var(--mb-accessory-tile-tint) 22%, transparent) 50%,
+    rgb(0 0 0 / 0.06) 50%
+  );
+}
+
+/* A sensor alert reads as an alert in words and in red, on or off. */
+.mb-accessory-tile[data-state="alert"] {
+  --mb-accessory-tile-bg: light-dark(
+    color-mix(in oklch, var(--mb-red) 12%, rgb(255 255 255 / 0.97)),
+    color-mix(in oklch, var(--mb-red) 14%, rgb(250 246 246))
+  );
+  --mb-accessory-tile-fg: rgb(0 0 0 / 0.88);
+  --mb-accessory-tile-fg-secondary: oklch(from var(--mb-red) 0.5 0.19 h);
+  --mb-accessory-tile-icon-bg: oklch(from var(--mb-red) 0.6 0.21 h);
+  --mb-accessory-tile-icon-fg: white;
+}
+
+.mb-accessory-tile[data-state="alert"] .mb-accessory-tile-status {
+  font-weight: 600;
+}
+
+/* No Response: the tile stays where it is, dimmed, with the words in place of the state. */
+.mb-accessory-tile[data-state="unreachable"] {
+  --mb-accessory-tile-icon-fg: var(--mb-label-tertiary);
+  --mb-accessory-tile-icon-bg: var(--mb-fill-tertiary);
+}
+
+.mb-accessory-tile[data-state="unreachable"] .mb-accessory-tile-name {
+  color: var(--mb-accessory-tile-fg-secondary);
+}
+
+/* The name side: a button over the whole tile, padded clear of the icon. */
+.mb-accessory-tile-detail {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: 0;
+  margin: 0;
+  padding: 6px var(--mb-accessory-tile-padding);
+  padding-inline-start: calc(var(--mb-accessory-tile-padding) * 2 + var(--mb-accessory-tile-icon-size) - 4px);
+  border: 0;
+  border-radius: inherit;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  text-decoration: none;
+  overflow: hidden;
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mb-accessory-tile-name,
+.mb-accessory-tile-room,
+.mb-accessory-tile-status {
+  display: block;
+  overflow: hidden;
+  font: var(--mb-accessory-tile-status-font);
+  letter-spacing: var(--mb-tracking-caption);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.mb-accessory-tile-name {
+  /* Names wrap to a second line before they truncate, as in the Home app. */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  white-space: normal;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  color: var(--mb-accessory-tile-fg);
+  font: var(--mb-accessory-tile-name-font);
+  letter-spacing: var(--mb-tracking-body);
+}
+
+.mb-accessory-tile-room,
+.mb-accessory-tile-status {
+  color: var(--mb-accessory-tile-fg-secondary);
+}
+
+/* Three lines at most: the room or a second line of the name, never both. An alert's words get the second line instead. */
+.mb-accessory-tile-detail:has(> .mb-accessory-tile-room) > .mb-accessory-tile-name,
+.mb-accessory-tile[data-state="alert"] .mb-accessory-tile-name {
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+}
+
+.mb-accessory-tile[data-state="alert"] .mb-accessory-tile-status {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  white-space: normal;
+}
+
+/* The room comes first in the Home app ("Kitchen", then "Pendant lights"). */
+.mb-accessory-tile-room {
+  order: -1;
+}
+
+/* The icon side. */
+.mb-accessory-tile-toggle,
+.mb-accessory-tile-icon {
+  position: absolute;
+  z-index: 1;
+  inset-block-start: 50%;
+  inset-inline-start: var(--mb-accessory-tile-padding);
+  display: grid;
+  place-items: center;
+  width: var(--mb-accessory-tile-icon-size);
+  height: var(--mb-accessory-tile-icon-size);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--mb-radius-full);
+  background: var(--mb-accessory-tile-icon-bg);
+  color: var(--mb-accessory-tile-icon-fg);
+  translate: 0 -50%;
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--mb-duration-base) var(--mb-ease-out),
+    color var(--mb-duration-base) var(--mb-ease-out),
+    scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+/* The hit area reaches the platform minimum and the tile's edge on the leading side. */
+.mb-accessory-tile-toggle::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: max(100%, var(--mb-hit-target));
+  height: max(100%, var(--mb-hit-target));
+  translate: -50% -50%;
+}
+
+.mb-accessory-tile-glyph {
+  display: grid;
+  place-items: center;
+  width: var(--mb-accessory-tile-glyph-size);
+  height: var(--mb-accessory-tile-glyph-size);
+}
+
+.mb-accessory-tile-glyph > :where(svg) {
+  width: 100%;
+  height: 100%;
+}
+
+.mb-accessory-tile-toggle[data-disabled] {
+  cursor: not-allowed;
+}
+
+/* Square tiles show the icon alone: the name stays readable to assistive tech. */
+.mb-accessory-tile[data-size="sm"] .mb-accessory-tile-toggle,
+.mb-accessory-tile[data-size="sm"] .mb-accessory-tile-icon {
+  inset: 50% auto auto 50%;
+  translate: -50% -50%;
+}
+
+.mb-accessory-tile[data-size="sm"] .mb-accessory-tile-detail {
+  padding: 0;
+}
+
+.mb-accessory-tile[data-size="sm"] .mb-accessory-tile-detail > * {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+/* Large tiles stack: the icon at the top, the words at the bottom. */
+.mb-accessory-tile[data-size="lg"] .mb-accessory-tile-toggle,
+.mb-accessory-tile[data-size="lg"] .mb-accessory-tile-icon {
+  inset-block-start: var(--mb-accessory-tile-padding);
+  translate: none;
+}
+
+.mb-accessory-tile[data-size="lg"] .mb-accessory-tile-detail {
+  justify-content: flex-end;
+  padding-inline-start: var(--mb-accessory-tile-padding);
+}
+
+.mb-accessory-tile-spinner {
+  position: absolute;
+  z-index: 2;
+  inset-block-start: 6px;
+  inset-inline-end: 6px;
+  color: var(--mb-accessory-tile-fg-secondary);
+  pointer-events: none;
+}
+
+/* Focus: each part shows its own halo. */
+.mb-accessory-tile-toggle:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: 2px;
+}
+
+.mb-accessory-tile-detail:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: var(--mb-focus-ring-offset);
+}
+
+.mb-accessory-tile[data-size="sm"] .mb-accessory-tile-detail:focus-visible {
+  outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-accessory-tile:not([data-active], [data-partial], [data-state="alert"], :has(> .mb-accessory-tile-toggle[data-pressed])):has(
+      > .mb-accessory-tile-detail:hover
+    ) {
+    --mb-accessory-tile-bg: light-dark(
+      color-mix(in oklch, var(--mb-ink) 4%, rgb(255 255 255 / 0.5)),
+      color-mix(in oklch, var(--mb-bg-elevated) 68%, transparent)
+    );
+  }
+
+  .mb-accessory-tile-toggle:not([data-disabled]):hover {
+    scale: 1.06;
+  }
+}
+
+/* Touch: the whole tile gives under the finger, on pointer-down. */
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .mb-accessory-tile:has(> .mb-accessory-tile-detail:active, > .mb-accessory-tile-toggle:not([data-disabled]):active) {
+    scale: 0.96;
+  }
+}
+
+@scope ([data-platform="macos"]) to (:scope [data-platform]) {
+  .mb-accessory-tile-toggle:not([data-disabled]):active {
+    scale: 0.92;
+  }
+}
+
+/* A narrow wide tile, as on a small phone: a smaller icon leaves the name room. */
+@container (max-width: 150px) {
+  .mb-accessory-tile-toggle,
+  .mb-accessory-tile-icon {
+    --mb-accessory-tile-icon-size: 30px;
+    --mb-accessory-tile-glyph-size: 18px;
+    inset-inline-start: 10px;
+  }
+
+  .mb-accessory-tile-detail {
+    padding-inline: 46px 8px;
+  }
+
+  .mb-accessory-tile-name {
+    font-size: 14px;
+  }
+}
+
+/* The grid. */
+.mb-accessory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--mb-accessory-grid-track), 1fr));
+  grid-auto-flow: row dense;
+  grid-auto-rows: var(--mb-accessory-tile-height);
+  gap: var(--mb-accessory-grid-gap);
+  min-width: 0;
+}
+
+.mb-accessory-grid > .mb-accessory-tile {
+  width: auto;
+  min-width: 0;
+  height: auto;
+}
+
+.mb-accessory-grid > .mb-accessory-tile[data-size="md"] {
+  grid-column: span var(--mb-accessory-tile-md-span);
+}
+
+.mb-accessory-grid > .mb-accessory-tile[data-size="lg"] {
+  grid-column: span var(--mb-accessory-tile-md-span);
+  grid-row: span 2;
+}
+
+/* iPhone: four columns, so two wide tiles or four square tiles to a row. Rows are as tall as a column is wide. */
+@scope ([data-platform="ios"]) to (:scope [data-platform]) {
+  .mb-accessory-grid {
+    container-type: inline-size;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-rows: auto;
+  }
+
+  .mb-accessory-grid > .mb-accessory-tile {
+    height: clamp(60px, calc((100cqi - 3 * var(--mb-accessory-grid-gap)) / 4), 96px);
+  }
+
+  .mb-accessory-grid > .mb-accessory-tile[data-size="lg"] {
+    height: auto;
+    aspect-ratio: 1;
+  }
+}
+
+/* Continuous corners on the tile; the icon stays a circle. */
+@supports (corner-shape: squircle) {
+  .mb-accessory-tile {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-accessory-tile-radius) * var(--mb-corner-factor));
+  }
+
+  /* corner-shape isn't inherited, so the detail button's focus ring restates it to follow the tile's curve. */
+  .mb-accessory-tile-detail {
+    corner-shape: inherit;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .mb-accessory-tile {
+    --mb-accessory-tile-edge: var(--mb-control-border);
+    --mb-accessory-tile-bg: var(--mb-bg-elevated);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .mb-accessory-tile:is([data-active], [data-partial], :has(> .mb-accessory-tile-toggle[data-pressed])) {
+    --mb-accessory-tile-bg: var(--mb-accessory-tile-on-bg);
+    box-shadow: inset 0 0 0 2px var(--mb-accessory-tile-tint);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :where(:root:not([data-transparency="full"])) {
+    .mb-accessory-tile:not([data-active], [data-partial], [data-state="alert"], :has(> .mb-accessory-tile-toggle[data-pressed])) {
+      background-color: var(--mb-bg-elevated);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .mb-accessory-tile {
+    border: 1px solid CanvasText;
+    background: Canvas;
+  }
+
+  .mb-accessory-tile:is([data-active], :has(> .mb-accessory-tile-toggle[data-pressed])) {
+    border: 3px solid Highlight;
+  }
+}

@@ -1,0 +1,93 @@
+export const metadata = {
+  title: "Light Color Picker",
+  description: "Choose a light's white or color from a row of presets.",
+}
+
+# Light Color Picker
+
+<Lead>Choose a light's white or color from a row of presets.</Lead>
+
+<Demo name="home/light-color-picker-basic" platforms={["ios", "ipados", "macos"]} wallpaper />
+
+## When to use it
+
+Put it under a light's brightness control, for lights whose service has color temperature or hue and saturation. Show only what the light supports: a tunable white bulb gets white presets, a color bulb gets both.
+
+- Name each swatch in plain words, with the color temperature for whites: "Warm white, 2700 K".
+- Whites come first, from warm to cool, then colors.
+- Offer a custom color through a Color Well at the end of the row, when the light supports any hue.
+
+## Usage
+
+```tsx
+import { LightColorPicker, defaultLightSwatches, kelvinToMired } from "macbetter/light-color-picker"
+```
+
+### Presets
+
+With no `swatches`, it shows `defaultLightSwatches`: five whites from 2200 K to 6500 K and five colors. `onValueChange` gets the swatch's `id`; look the swatch up to write its mireds, or its hue and saturation, to the light.
+
+<Demo name="home/light-color-picker-basic" platforms={["ios", "ipados", "macos"]} wallpaper />
+
+### Your own swatches and a custom color
+
+A swatch is a white, by its color temperature in mireds, or a color, by hue (0–360) and saturation (0–100), the units HomeKit uses. `kelvinToMired(2700)` gives 370; `miredToKelvin` goes back. Children render after the swatches, so a `ColorWell` fits there.
+
+<Demo name="home/light-color-picker-custom" platforms={["ios", "ipados", "macos"]} wallpaper />
+
+## Platform behavior
+
+- **iOS and iPadOS.** 44-point swatches, five to a row, with 14 points between them.
+- **macOS.** 28-point swatches. Hovering an unselected swatch shows a faint ring.
+- **Every platform.** The selected swatch has a ring in the label color with a gap, like the Home app. Pale whites get a hairline so they show on a light sheet.
+
+## Accessibility
+
+- It's ui-sdk's RadioGroup: Tab moves into the group to the selected swatch, and the arrow keys move the choice.
+- Each swatch is a radio named by its `label`. The group is named by `label`, "Color" by default; pass the light's name, like "Pendant lights color".
+- The selected state is a ring, not only a change of color.
+
+## API
+
+<PropsTable
+  rows={[
+    { name: "value", type: "string", description: "The selected swatch's id. Pass it to control the picker." },
+    { name: "defaultValue", type: "string", description: "The selected swatch's id at first." },
+    { name: "onValueChange", type: "(id: string) => void", description: "Runs when someone picks a swatch." },
+    { name: "swatches", type: "LightSwatch[]", default: "defaultLightSwatches", description: "The presets to show." },
+    { name: "label", type: "string", default: '"Color"', description: "Names the group." },
+    { name: "disabled", type: "boolean", default: "false", description: "Disables every swatch." },
+    { name: "children", type: "ReactNode", description: "Shown after the swatches, like a ColorWell." },
+  ]}
+/>
+
+### LightSwatch
+
+```ts
+type LightSwatch = { id: string; label: string } & (
+  | { kind: "temperature"; mireds: number }
+  | { kind: "color"; hue: number; saturation: number }
+)
+```
+
+### Helpers
+
+| Function | Returns |
+| --- | --- |
+| `kelvinToMired(kelvin)` | A million divided by the kelvin, rounded: HomeKit's color temperature |
+| `miredToKelvin(mireds)` | The kelvin, rounded to the nearest 100 |
+| `lightSwatchColor(swatch)` | The CSS color the swatch shows |
+
+### Data attributes
+
+| Attribute | On | Values |
+| --- | --- | --- |
+| `data-kind` | Swatch | `temperature`, `color` |
+| `data-checked` / `data-unchecked` | Swatch | Present for the current state |
+
+### CSS variables
+
+| Variable | macOS | iOS | What it sets |
+| --- | --- | --- | --- |
+| `--mb-light-color-picker-size` | `28px` | `44px` | Swatch diameter |
+| `--mb-light-color-picker-gap` | `10px` | `14px` | Space between swatches |

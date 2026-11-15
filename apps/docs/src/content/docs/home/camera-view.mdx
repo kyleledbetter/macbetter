@@ -1,0 +1,90 @@
+export const metadata = { title: "Camera View", description: "Show a camera's live stream or most recent snapshot, with its name and state at the edges." }
+
+# Camera View
+
+<Lead>Show a camera's live stream or most recent snapshot, with its name and state at the edges.</Lead>
+
+<Demo name="home/camera-view-basic" platforms={["ios", "ipados", "macos"]} />
+
+## When to use it
+
+Use a camera view wherever a home camera's picture appears: the Cameras row on the Home tab, a camera's full screen, a doorbell notification. The HIG's camera guidance is short:
+
+- **Don't block camera images.** An alert about activity is fine; covering part of the picture isn't. The name, the Live badge and the time sit in the corners, and controls sit on a soft scrim along the bottom edge.
+- **Show a microphone button only if the camera supports two-way audio.** HomeKit's camera profile makes every control optional, so check before you show Talk.
+
+The Home app plays live video as soon as a camera opens, offers Live to return from a recorded clip, and can notify people when a camera goes offline.
+
+## Usage
+
+```tsx
+import { CameraScene, CameraTile, CameraView } from "macbetter/camera-view"
+```
+
+Put the picture inside as `children`: a `<video>` element fed by your app, an `<img>` of the snapshot, or a `CameraScene`. `CameraScene` draws a porch, a driveway, a kitchen or a backyard locally, so a page can show a camera without any video or photos. A web page can't open a HomeKit camera stream; a native app or your own camera service provides the picture.
+
+### States
+
+- `streaming` with `live`: the Live badge, with a red dot and the word.
+- `snapshot`: the time of the still, from `timestamp`.
+- `connecting`: the picture dims and a spinner sits in the corner.
+- `offline`: the picture blurs and the view says "Camera not available".
+
+`CameraScene time="night"` draws the gray infrared picture a camera switches to in the dark.
+
+<Demo name="home/camera-view-states" platforms={["ios", "ipados", "macos"]} />
+
+### In the Cameras row
+
+`CameraTile` is a button around a compact view, for the Home tab's row of cameras. The Home app shows up to four cameras there.
+
+<Demo name="home/camera-view-tiles" platforms={["ios", "ipados", "macos"]} />
+
+## Platform behavior
+
+- **iOS and iPadOS.** 18-point continuous corners and larger captions. Camera tiles give on press.
+- **macOS.** 12-point corners and 12-point captions. A camera tile brightens under the pointer. The Home app on Mac also offers Picture in Picture.
+- **Every platform.** Text over the picture is white on a dark gradient in both color schemes, as over video everywhere in Apple's apps.
+
+## Accessibility
+
+- The view is a `figure`. Give it an `aria-label` if the picture needs describing; `CameraScene` is decorative and hidden from assistive tech.
+- The Live badge shows the word as well as the red dot.
+- A camera tile is a button named by its camera's name.
+- Every control you put in `controls` needs a name, like "Mute" or "Talk".
+
+## API
+
+<PropsTable
+  rows={[
+    { name: "name", type: "ReactNode", description: "The camera's name." },
+    { name: "room", type: "ReactNode", description: "The room, beside the name." },
+    { name: "live", type: "boolean", default: "false", description: "Shows the Live badge while streaming." },
+    { name: "timestamp", type: "string", description: "When the snapshot was taken, formatted." },
+    { name: "state", type: '"streaming" | "snapshot" | "connecting" | "offline"', default: '"streaming"', description: "Where the picture comes from." },
+    { name: "controls", type: "ReactNode", description: "CameraView only: buttons along the bottom edge." },
+    { name: "offlineLabel", type: "string", default: '"Camera not available"', description: "The offline message." },
+    { name: "liveLabel", type: "string", default: '"Live"', description: "The badge's word." },
+    { name: "children", type: "ReactNode", description: "The picture. Defaults to a drawn porch." },
+  ]}
+/>
+
+### CameraScene
+
+<PropsTable
+  rows={[
+    { name: "variant", type: '"porch" | "driveway" | "kitchen" | "backyard"', default: '"porch"', description: "What the drawing shows." },
+    { name: "time", type: '"day" | "night"', default: '"day"', description: "night is the gray infrared look." },
+  ]}
+/>
+
+| Attribute | On | Values |
+| --- | --- | --- |
+| `data-state` | `.mb-camera-view` | The state |
+| `data-variant`, `data-time` | `.mb-camera-scene` | As the props |
+
+| Variable | What it sets |
+| --- | --- |
+| `--mb-camera-view-radius` | The corner radius |
+| `--mb-camera-view-inset` | The badges' distance from the edges |
+| `--mb-camera-tile-width` | A camera tile's width |

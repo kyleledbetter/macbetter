@@ -1,0 +1,51 @@
+export const metadata = { title: "Home Section", description: "Title a group on the Home tab, like Favorites or a room, with a link to the room and a summary of its conditions." }
+
+# Home Section
+
+<Lead>Title a group on the Home tab, like Favorites or a room, with a link to the room and a summary of its conditions.</Lead>
+
+<Demo name="home/home-section-basic" platforms={["ios", "ipados", "macos"]} wallpaper />
+
+## When to use it
+
+The Home tab is a column of sections: Cameras, Scenes, Favorites, then one per room. A room's title links to the room, as the Home app's "Kitchen ›" does, and a line under it can sum up the room.
+
+- Use the room's name as people set it in the Home app. Don't rename it in your app; the HIG asks you to defer to the Home app's settings.
+- Keep the summary to the room's conditions: temperature, humidity, how many lights are on.
+
+## Usage
+
+```tsx
+import { HomeSection, HomeSectionHeader, HomeSectionSummary, HomeSectionTitle } from "macbetter/home-section"
+```
+
+Give `HomeSectionTitle` an `href`, `onClick` or a router link as `render` and it shows a chevron. Name the section with `aria-labelledby` pointing at the title.
+
+## Platform behavior
+
+- **iOS and iPadOS.** 20-point bold titles and 15-point summaries.
+- **macOS.** 15-point titles and 12-point summaries.
+- **Every platform.** The chevron flips in right-to-left layouts.
+
+## Accessibility
+
+- The title is a real heading, level 2 by default, so people can jump between rooms.
+- With `href` it's a link; with `onClick` it's a button inside the heading. Its hit area reaches the platform minimum.
+
+## API
+
+<PropsTable
+  rows={[
+    { name: "level", type: "2 | 3", default: "2", description: "The heading level." },
+    { name: "href", type: "string", description: "Makes the title a link with a chevron." },
+    { name: "onClick", type: "MouseEventHandler", description: "Makes the title a button with a chevron." },
+    { name: "render", type: "ReactElement", description: "A router's link, in place of href." },
+  ]}
+/>
+
+`HomeSection` is a `section`, `HomeSectionHeader` a `div` and `HomeSectionSummary` a `p`.
+
+| Variable | What it sets |
+| --- | --- |
+| `--mb-home-section-gap` | The space between the header and the content |
+| `--mb-home-section-title-font`, `--mb-home-section-summary-font` | The two text styles |

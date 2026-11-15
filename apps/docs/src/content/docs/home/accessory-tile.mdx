@@ -1,0 +1,111 @@
+export const metadata = { title: "Accessory Tile", description: "Show an accessory in the Home grid, switch it from its icon and open its controls from its name." }
+
+# Accessory Tile
+
+<Lead>Show an accessory in the Home grid, switch it from its icon and open its controls from its name.</Lead>
+
+<Demo name="home/accessory-tile-basic" platforms={["ios", "ipados", "macos"]} wallpaper />
+
+## When to use it
+
+Use a tile for each accessory, or each group of accessories, on a Home screen, in a room or in a category. Apple's Home app documents the anatomy: tap the icon on the left side of the tile to turn the accessory on or off, and tap the name on the right side to show its controls.
+
+- Name the tile with the service's name, not the accessory's model or the room: "Pendant lights" in Kitchen, not "Kitchen lights". The HIG's rules for names: letters, numbers, spaces and apostrophes only, starting and ending with a letter or number, and no emoji.
+- Say the state in words in the status: "80%", "Off", "Locked", "Heating to 70°". The bright tile shows that it's on, and the words say how.
+- Show the room on the tile when it appears outside its room, as in Favorites or a category.
+- Don't say "service" or "characteristic" anywhere people can see. They're HomeKit's words for the parts of an accessory, not the Home app's.
+
+## Usage
+
+```tsx
+import { AccessoryGrid, AccessoryTile } from "macbetter/accessory-tile"
+```
+
+Pass `icon`, `name` and `status`, control `pressed` with `onPressedChange`, and give `onOpen` to open the controls. The tile renders its two buttons for you.
+
+### Sizes
+
+`md` is the wide tile with the name and status. `sm` is the square tile with the icon alone; its name is still read by assistive tech. `lg` is the large square tile, for an accessory you use most. In an `AccessoryGrid`, iPhone has four columns, so a row holds two wide tiles or four square ones.
+
+<Demo name="home/accessory-tile-sizes" platforms={["ios", "ipados", "macos"]} wallpaper />
+
+### States
+
+- `partial`: a group with some members on. Half of the icon's circle fills.
+- `state="alert"`: a sensor that detected a leak, smoke or carbon monoxide. The tile turns red and the status is bold; say what happened in words.
+- `state="unreachable"`: the accessory isn't responding. The status reads "No Response" unless you say otherwise, and the icon can't be pressed.
+- `state="updating"`: a spinner while a change is on its way, like a garage door that's opening.
+- `active`: the on look for a tile with nothing to switch, like an open door.
+
+<Demo name="home/accessory-tile-states" platforms={["ios", "ipados", "macos"]} wallpaper />
+
+### Controls in a popover or sheet
+
+Build the tile from its parts when the name should open a popover, a sheet or a link. `AccessoryTileDetail` accepts `render`, so it can be any trigger.
+
+<Demo name="home/accessory-tile-popover" platforms={["macos", "ipados", "ios"]} wallpaper height={360} />
+
+## Platform behavior
+
+- **iOS.** Tiles are 18-point continuous rectangles in a four-column grid, as tall as a column is wide. The whole tile gives a little under your finger on press.
+- **iPadOS.** The same tiles, in as many columns as fit.
+- **macOS.** Smaller tiles with 13-point names. The icon grows slightly under the pointer and dims on press. In Apple's Home app on Mac you also drag tiles to a room in the sidebar and Control-click them to change their size; add a ContextMenu for that.
+- **Every platform.** Off is a dim, translucent tile; on is a bright tile with dark text and a tinted icon, in light and dark mode. The tint is darkened where needed so the icon holds 3:1 on the bright tile.
+
+## Accessibility
+
+- The icon is a toggle button named after the accessory, with `aria-pressed`. Space and Enter switch it.
+- The name side is a separate button, named by the name and status, so screen readers hear "Pendant lights, 80%". It covers the rest of the tile, so a press anywhere but the icon opens the controls.
+- An unreachable tile's toggle stays focusable with `aria-disabled`, so people can still find it and hear "No Response".
+- An updating tile sets `aria-busy` and shows a spinner named "Updating".
+- State is never color alone: the tile changes brightness and the status says the state in words.
+
+## API
+
+<PropsTable
+  rows={[
+    { name: "tint", type: '"yellow" | "orange" | "red" | "green" | "teal" | "blue" | "indigo" | "purple" | "accent" | "neutral"', default: '"accent"', description: "The icon's color while on. Lights are yellow in the Home app." },
+    { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Square icon-only, wide, or large square." },
+    { name: "state", type: '"unreachable" | "updating" | "alert"', description: "No Response, a change in progress, or a sensor alert." },
+    { name: "active", type: "boolean", default: "false", description: "The on look without a toggle." },
+    { name: "partial", type: "boolean", default: "false", description: "A group with some members on." },
+    { name: "icon", type: "ReactNode", description: "The accessory's glyph. Filled glyphs suit tiles." },
+    { name: "name", type: "ReactNode", description: "The service's name." },
+    { name: "room", type: "ReactNode", description: "The room, shown above the name." },
+    { name: "status", type: "ReactNode", description: "The state in words." },
+    { name: "pressed / defaultPressed", type: "boolean", description: "Whether it's on." },
+    { name: "onPressedChange", type: "(pressed, details) => void", description: "Runs when the icon is pressed." },
+    { name: "onOpen", type: "() => void", description: "Runs when the name side is pressed. Without it, the name side isn't a button." },
+    { name: "toggleable", type: "boolean", default: "true", description: "false for an accessory with nothing to switch." },
+    { name: "toggleLabel", type: "string", description: "Names the icon button. Defaults to the name." },
+    { name: "children", type: "ReactNode", description: "The parts below, in place of the props above." },
+  ]}
+/>
+
+### Parts
+
+| Part | Element | What it is |
+| --- | --- | --- |
+| `AccessoryTileToggle` | ui-sdk `Toggle` | The icon button. Name it with `aria-label`. |
+| `AccessoryTileIcon` | `span` | The icon of a tile with nothing to switch. |
+| `AccessoryTileDetail` | ui-sdk `Button` | The name side. Takes `render` for a trigger or a link. |
+| `AccessoryTileName`, `AccessoryTileRoom`, `AccessoryTileStatus` | `span` | The text inside the detail. |
+| `AccessoryGrid` | `div` | The grid of tiles. |
+
+### Data attributes
+
+| Attribute | On | Values |
+| --- | --- | --- |
+| `data-tint`, `data-size`, `data-state` | `.mb-accessory-tile` | As the props |
+| `data-active`, `data-partial` | `.mb-accessory-tile` | Present when set |
+| `data-pressed` | `.mb-accessory-tile-toggle` | Present while on |
+
+### CSS variables
+
+| Variable | What it sets |
+| --- | --- |
+| `--mb-accessory-tile-height` | A tile's height outside an iPhone grid |
+| `--mb-accessory-tile-radius` | The corner radius |
+| `--mb-accessory-tile-icon-size`, `--mb-accessory-tile-glyph-size` | The icon's circle and glyph |
+| `--mb-accessory-tile-on-bg`, `--mb-accessory-tile-on-fg` | The on look |
+| `--mb-accessory-grid-gap`, `--mb-accessory-grid-track` | The grid's gap and narrowest column |

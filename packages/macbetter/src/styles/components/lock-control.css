@@ -1,0 +1,164 @@
+/* Lock control — the tall button of a lock's control sheet, with the state in words under it.
+   Unlocked is the bright, "on" look, as a lit accessory tile is: it's the state that wants attention. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-lock-control-width: 88px;
+  --mb-lock-control-height: 168px;
+  --mb-lock-control-radius: 24px;
+  --mb-lock-control-glyph: 44px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-lock-control-width: 124px;
+  --mb-lock-control-height: 240px;
+  --mb-lock-control-radius: 34px;
+  --mb-lock-control-glyph: 64px;
+}
+
+.mb-lock-control {
+  --mb-lock-control-bg: light-dark(
+    color-mix(in oklch, var(--mb-ink) 58%, transparent),
+    color-mix(in oklch, var(--mb-ink) 20%, transparent)
+  );
+  --mb-lock-control-fg: light-dark(rgb(255 255 255 / 0.95), rgb(255 255 255 / 0.85));
+
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--mb-space-3);
+  color: var(--mb-label);
+}
+
+.mb-lock-control[data-position="unlocked"] {
+  --mb-lock-control-bg: #ffffff;
+  --mb-lock-control-fg: oklch(from var(--mb-teal) 0.5 c h);
+}
+
+.mb-lock-control[data-state="jammed"] {
+  --mb-lock-control-bg: var(--mb-yellow);
+  --mb-lock-control-fg: rgb(0 0 0 / 0.75);
+}
+
+.mb-lock-control-button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--mb-lock-control-width);
+  height: var(--mb-lock-control-height);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--mb-lock-control-radius);
+  background: var(--mb-lock-control-bg);
+  -webkit-backdrop-filter: var(--mb-material-filter);
+  backdrop-filter: var(--mb-material-filter);
+  box-shadow: var(--mb-glass-rim);
+  color: var(--mb-lock-control-fg);
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--mb-duration-base) var(--mb-ease-out),
+    color var(--mb-duration-base) var(--mb-ease-out),
+    scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+.mb-lock-control-button:active {
+  scale: 0.96;
+}
+
+.mb-lock-control-button:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: var(--mb-focus-ring-offset);
+}
+
+.mb-lock-control-button[data-disabled] {
+  opacity: 0.45;
+}
+
+.mb-lock-control-glyph {
+  width: var(--mb-lock-control-glyph);
+  height: var(--mb-lock-control-glyph);
+  overflow: visible;
+}
+
+.mb-lock-control-body {
+  fill: currentColor;
+}
+
+.mb-lock-control-shackle {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 4.5;
+  stroke-linecap: round;
+  transform-box: fill-box;
+  transform-origin: 100% 100%;
+  transition: translate var(--mb-spring-bouncy-duration) var(--mb-spring-bouncy);
+}
+
+/* Unlocked: the shackle lifts out of the body. */
+.mb-lock-control[data-position="unlocked"] .mb-lock-control-shackle {
+  translate: 0 -5px;
+}
+
+/* While it works, the glyph breathes. The words say what's happening, so this is decoration. */
+.mb-lock-control[data-pending] .mb-lock-control-glyph {
+  animation: mb-lock-control-pending 1.2s var(--mb-ease-in-out) infinite alternate;
+}
+
+@keyframes mb-lock-control-pending {
+  to {
+    opacity: 0.45;
+  }
+}
+
+.mb-lock-control-status {
+  font: var(--mb-text-headline);
+  text-align: center;
+}
+
+.mb-lock-control[data-state="jammed"] .mb-lock-control-status {
+  color: light-dark(oklch(from var(--mb-orange) 0.5 c h), oklch(from var(--mb-yellow) max(l, 0.82) c h));
+}
+
+.mb-lock-control[data-pending] .mb-lock-control-status {
+  color: var(--mb-label-secondary);
+}
+
+@supports (corner-shape: squircle) {
+  .mb-lock-control-button {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-lock-control-radius) * var(--mb-corner-factor));
+  }
+}
+
+@media (prefers-contrast: more) {
+  .mb-lock-control-button {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: 0 0 0 var(--mb-hairline) var(--mb-control-border);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :where(:root:not([data-transparency="full"])) {
+    .mb-lock-control:not([data-position="unlocked"], [data-state="jammed"]) {
+      --mb-lock-control-bg: light-dark(
+        color-mix(in oklch, var(--mb-ink) 58%, var(--mb-bg)),
+        color-mix(in oklch, var(--mb-ink) 20%, var(--mb-bg))
+      );
+    }
+
+    .mb-lock-control-button {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .mb-lock-control-button {
+    border: 1px solid ButtonText;
+    background: ButtonFace;
+    color: ButtonText;
+  }
+}

@@ -1,0 +1,83 @@
+export const metadata = {
+  title: "Door Control",
+  description: "Open or close a garage door, a door or a gate, and show it moving.",
+}
+
+# Door Control
+
+<Lead>Open or close a garage door, a door or a gate, and show it moving.</Lead>
+
+<Demo name="home/door-control-garage" platforms={["ios", "ipados", "macos"]} wallpaper />
+
+## When to use it
+
+Use it in the control sheet of a garage door opener, or a door or gate that opens on its own. It shows HomeKit's five door states (open, closed, opening, closing and stopped) and an obstruction.
+
+- Pass `confirmOpen` for a garage door or a gate, so opening asks first. The HIG asks for confirmation on actions that affect security.
+- Report the door's state as it travels: "Opening…" while it moves, "Open" once it's there.
+- When something is in the way, say "Obstruction detected". The control turns yellow.
+- Window coverings, shades and blinds have a position from 0 to 100: use a [Level Control](/docs/home/level-control) for them.
+
+## Usage
+
+```tsx
+import { DoorControl } from "macbetter/door-control"
+```
+
+### A garage door
+
+The panels roll up as the door opens. This demo takes two and a half seconds to travel.
+
+<Demo name="home/door-control-garage" platforms={["ios", "ipados", "macos"]} wallpaper />
+
+### Kinds and states
+
+`kind` picks the glyph: `garage`, `door` or `gate`. A stopped garage door rests halfway.
+
+<Demo name="home/door-control-kinds" platforms={["ios", "ipados", "macos"]} wallpaper />
+
+## Platform behavior
+
+- **iOS and iPadOS.** A 124 × 240-point button with a continuous corner.
+- **macOS.** 88 × 168 points, sized for a popover.
+- **Every platform.** Open is the bright look. Pressing a moving door reverses it; pressing a stopped door closes it.
+
+## Accessibility
+
+- The button is named for what it does, "Open Garage door" or "Close Garage door". The state under it is a live region.
+- Enter or Space presses it. The confirmation alert takes focus, and Escape cancels.
+- State is in words and in the glyph, not only in color.
+
+## API
+
+<PropsTable
+  rows={[
+    { name: "name", type: "string", description: "The door's name, like \"Garage door\". Required." },
+    { name: "state", type: '"open" | "closed" | "opening" | "closing" | "stopped"', description: "The current door state. Required." },
+    { name: "obstructed", type: "boolean", default: "false", description: "Something is in the way." },
+    { name: "onTargetChange", type: '(target: "open" | "closed") => void', description: "Runs when someone closes it, or confirms opening." },
+    { name: "confirmOpen", type: "boolean", default: "false", description: "Asks before opening." },
+    { name: "confirmDescription", type: "string", description: "The explanation in the open alert." },
+    { name: "kind", type: '"garage" | "door" | "gate"', default: '"garage"', description: "Which glyph to draw." },
+    { name: "disabled", type: "boolean", default: "false", description: "Can't be pressed." },
+  ]}
+/>
+
+### Data attributes
+
+| Attribute | On | Values |
+| --- | --- | --- |
+| `data-state` | Root | `open`, `closed`, `opening`, `closing`, `stopped` |
+| `data-kind` | Root | `garage`, `door`, `gate` |
+| `data-position` | Root | `open`, `closed`: where it is, or is going |
+| `data-pending` | Root | Present while it moves |
+| `data-obstructed` | Root | Present when something is in the way |
+
+### CSS variables
+
+| Variable | macOS | iOS | What it sets |
+| --- | --- | --- | --- |
+| `--mb-door-control-width` | `88px` | `124px` | Button width |
+| `--mb-door-control-height` | `168px` | `240px` | Button height |
+| `--mb-door-control-radius` | `24px` | `34px` | Corner radius |
+| `--mb-door-control-glyph` | `48px` | `68px` | Glyph size |

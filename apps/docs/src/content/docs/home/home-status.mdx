@@ -1,0 +1,66 @@
+export const metadata = { title: "Home Status", description: "Sum up each category of accessories under the home's name, and filter the Home view to one." }
+
+# Home Status
+
+<Lead>Sum up each category of accessories under the home's name, and filter the Home view to one.</Lead>
+
+<Demo name="home/home-status-basic" platforms={["ios", "ipados", "macos"]} wallpaper />
+
+## When to use it
+
+Apple's Home app puts category buttons below the home's name: Climate, Lights, Security, Speakers & TVs, Water and Energy. Each one shows the status of its accessories, like a Lights button that shows "3 on", and choosing one shows every accessory in that category, organized by room.
+
+- Show only the categories the home has accessories in.
+- Keep the summary short and in words: "3 on", "68–72°", "Locked", "Leak Detected".
+- Use `alert` for something that needs attention now, like a leak, and say what in the summary.
+
+## Usage
+
+```tsx
+import { HomeStatus, HomeStatusItem } from "macbetter/home-status"
+```
+
+`HomeStatus` is a ui-sdk `ToggleGroup` that allows one item at a time; control it with `value` and `onValueChange`, and show the chosen category's accessories. An empty value shows everything.
+
+## Platform behavior
+
+- **iOS and iPadOS.** The buttons sit in one row that scrolls sideways, with room for the focus ring.
+- **macOS.** The buttons wrap, and brighten under the pointer.
+- **Every platform.** The chosen button takes the bright on look. The icon keeps its category's color in both looks.
+
+## Accessibility
+
+- Each item is a toggle button named by its label and summary: "Lights, 3 on". `aria-pressed` says which category is shown.
+- Arrow keys move between the buttons, and Space or Enter chooses one, as in any ui-sdk toggle group.
+- An alert is red and bold, and its summary says what's wrong.
+
+## API
+
+### HomeStatus
+
+Takes ui-sdk `ToggleGroup`'s props: `value`, `defaultValue`, `onValueChange`, `multiple`, `deselectable`, `orientation`, `loop`. Name it with `aria-label`.
+
+### HomeStatusItem
+
+<PropsTable
+  rows={[
+    { name: "value", type: "string", description: "The category's id in the group's value, like \"lights\"." },
+    { name: "icon", type: "ReactNode", description: "The category's glyph." },
+    { name: "label", type: "ReactNode", description: "The category: Lights." },
+    { name: "summary", type: "ReactNode", description: "What's going on in it: 3 on." },
+    { name: "tint", type: "AccessoryTint", default: '"accent"', description: "The icon's color." },
+    { name: "alert", type: "boolean", default: "false", description: "Something needs attention. Say what in summary." },
+  ]}
+/>
+
+| Attribute | Values |
+| --- | --- |
+| `data-tint` | The tint |
+| `data-alert` | Present for an alert |
+| `data-pressed` | Present while chosen |
+
+| Variable | What it sets |
+| --- | --- |
+| `--mb-home-status-height` | The button's height |
+| `--mb-home-status-icon-size` | The glyph's size |
+| `--mb-home-status-gap` | The space between buttons |

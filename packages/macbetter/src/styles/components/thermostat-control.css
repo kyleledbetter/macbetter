@@ -1,0 +1,214 @@
+/* Thermostat control — a 270° dial for the target temperature, with the mode picker under it.
+   Heat fills orange from the low end, cool fills blue from the high end, auto fills between two knobs. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-thermostat-control-size: 208px;
+  --mb-thermostat-control-target-font: 600 44px/1 var(--mb-font-rounded);
+  --mb-thermostat-control-range-font: 600 32px/1 var(--mb-font-rounded);
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-thermostat-control-size: 280px;
+  --mb-thermostat-control-target-font: 600 64px/1 var(--mb-font-rounded);
+  --mb-thermostat-control-range-font: 600 44px/1 var(--mb-font-rounded);
+}
+
+.mb-thermostat-control {
+  /* Deepened in light, so the arcs hold 3:1 on the pale track. */
+  --mb-thermostat-control-heat: light-dark(oklch(from var(--mb-orange) min(l, 0.57) c h), var(--mb-orange));
+  --mb-thermostat-control-cool: light-dark(oklch(from var(--mb-cyan) min(l, 0.56) c h), var(--mb-cyan));
+  /* Readable text versions of the two state colors, 4.5:1 on a light or dark sheet. */
+  --mb-thermostat-control-heat-text: light-dark(oklch(from var(--mb-orange) 0.52 c h), oklch(from var(--mb-orange) max(l, 0.74) c h));
+  --mb-thermostat-control-cool-text: light-dark(oklch(from var(--mb-cyan) 0.5 c h), oklch(from var(--mb-cyan) max(l, 0.78) c h));
+  --mb-thermostat-control-track: light-dark(
+    color-mix(in oklch, var(--mb-ink) 14%, transparent),
+    color-mix(in oklch, var(--mb-ink) 16%, transparent)
+  );
+
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--mb-space-4);
+  color: var(--mb-label);
+  font: var(--mb-text-body);
+  letter-spacing: var(--mb-tracking-body);
+}
+
+.mb-thermostat-control-dial {
+  position: relative;
+  width: var(--mb-thermostat-control-size);
+  aspect-ratio: 1;
+  /* The dial's open bottom is empty: let the status line sit up in it. */
+  margin-block-end: calc(var(--mb-thermostat-control-size) * -0.16);
+}
+
+.mb-thermostat-control-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mb-thermostat-control-track,
+.mb-thermostat-control-arc {
+  fill: none;
+  stroke-width: 22;
+  stroke-linecap: round;
+}
+
+.mb-thermostat-control-track {
+  stroke: var(--mb-thermostat-control-track);
+}
+
+.mb-thermostat-control-arc[data-tone="heat"] {
+  stroke: var(--mb-thermostat-control-heat);
+}
+
+.mb-thermostat-control-arc[data-tone="cool"] {
+  stroke: var(--mb-thermostat-control-cool);
+}
+
+/* The measured temperature: a short bar across the track. */
+.mb-thermostat-control-current {
+  stroke: var(--mb-label);
+  stroke-width: 3;
+  stroke-linecap: round;
+  opacity: 0.85;
+}
+
+.mb-thermostat-control-knob {
+  fill: #ffffff;
+  stroke: rgb(0 0 0 / 0.08);
+  stroke-width: 0.5;
+  filter: drop-shadow(0 1px 3px rgb(0 0 0 / 0.3));
+  transition: r var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+.mb-thermostat-control:has(.mb-thermostat-control-thumb[data-thumb="0"] :focus-visible) .mb-thermostat-control-knob[data-thumb="0"],
+.mb-thermostat-control:has(.mb-thermostat-control-thumb[data-thumb="1"] :focus-visible) .mb-thermostat-control-knob[data-thumb="1"] {
+  stroke: var(--mb-focus-ring);
+  stroke-width: 4;
+}
+
+.mb-thermostat-control-svg:active .mb-thermostat-control-knob {
+  r: 16;
+}
+
+.mb-thermostat-control-readout {
+  position: absolute;
+  inset: 22%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--mb-space-1);
+  text-align: center;
+  pointer-events: none;
+}
+
+.mb-thermostat-control-caption {
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-subheadline);
+  font-weight: 600;
+}
+
+.mb-thermostat-control[data-state="heating"] .mb-thermostat-control-caption {
+  color: var(--mb-thermostat-control-heat-text);
+}
+
+.mb-thermostat-control[data-state="cooling"] .mb-thermostat-control-caption {
+  color: var(--mb-thermostat-control-cool-text);
+}
+
+.mb-thermostat-control-target {
+  font: var(--mb-thermostat-control-target-font);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.mb-thermostat-control-target[data-range] {
+  font: var(--mb-thermostat-control-range-font);
+}
+
+.mb-thermostat-control-now {
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-footnote);
+  font-variant-numeric: tabular-nums;
+}
+
+.mb-thermostat-control[data-mode="off"] .mb-thermostat-control-target {
+  color: var(--mb-label-secondary);
+}
+
+/* The slider is the real control for keyboards and screen readers; it has no visible box. */
+.mb-thermostat-control-slider {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  pointer-events: none;
+}
+
+.mb-thermostat-control-slider-control,
+.mb-thermostat-control-slider-track {
+  width: 100%;
+  height: 4px;
+}
+
+.mb-thermostat-control-thumb {
+  width: 4px;
+  height: 4px;
+}
+
+.mb-thermostat-control-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mb-space-2);
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-footnote);
+  font-weight: 600;
+}
+
+.mb-thermostat-control-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--mb-radius-full);
+  background: var(--mb-label-tertiary);
+}
+
+.mb-thermostat-control-status[data-state="heating"] .mb-thermostat-control-status-dot {
+  background: var(--mb-thermostat-control-heat);
+}
+
+.mb-thermostat-control-status[data-state="cooling"] .mb-thermostat-control-status-dot {
+  background: var(--mb-thermostat-control-cool);
+}
+
+.mb-thermostat-control-modes {
+  width: min(100%, var(--mb-thermostat-control-size));
+}
+
+@media (prefers-contrast: more) {
+  .mb-thermostat-control {
+    --mb-thermostat-control-track: color-mix(in oklch, var(--mb-ink) 32%, transparent);
+  }
+}
+
+@media (forced-colors: active) {
+  .mb-thermostat-control-track {
+    stroke: GrayText;
+  }
+
+  .mb-thermostat-control-arc,
+  .mb-thermostat-control-current {
+    stroke: Highlight;
+  }
+
+  .mb-thermostat-control-knob {
+    fill: Canvas;
+    stroke: CanvasText;
+  }
+}

@@ -1,0 +1,68 @@
+export const metadata = { title: "Sensor Readout", description: "Show a sensor's reading, like temperature, humidity, air quality, battery, contact, motion, leak or smoke." }
+
+# Sensor Readout
+
+<Lead>Show a sensor's reading, like temperature, humidity, air quality, battery, contact, motion, leak or smoke.</Lead>
+
+<Demo name="home/sensor-readout-basic" platforms={["ios", "ipados", "macos"]} />
+
+## When to use it
+
+Use a readout for a value an accessory reports but people don't set: a room's temperature, a contact sensor's open or closed, a battery's charge. HomeKit gives each reading a meaning you can show in words:
+
+- Air quality is one of excellent, good, fair, inferior or poor.
+- Contact, motion, occupancy, leak and smoke sensors report detected or not.
+- Battery level is a percentage, and a separate low-battery status.
+
+Show the value in words and units ("41%", "Closed", "Leak Detected"), and use `level` to color the ones that need attention. Don't show identifiers or firmware versions in the main view; Apple's sample code suggests nesting such details.
+
+## Usage
+
+```tsx
+import { SensorGroup, SensorReadout } from "macbetter/sensor-readout"
+```
+
+Rows go in a `SensorGroup`. Pass `meter` for a level with a range, like a battery's charge or air quality on a scale of one to five; it's drawn with ui-sdk's Meter.
+
+### Tiles
+
+`layout="tile"` stacks the icon, a large value and the label, for a room's conditions at a glance.
+
+<Demo name="home/sensor-readout-tiles" platforms={["ios", "ipados", "macos"]} />
+
+## Platform behavior
+
+- **iOS and iPadOS.** Rows at the inset-list height with 17-point text; values in the secondary color, as in Settings.
+- **macOS.** 40-point rows with 13-point text.
+- **Every platform.** `warning` is orange and `alert` red, and both make the value bold. An alert also fills the icon's circle with red.
+
+## Accessibility
+
+- A readout is text; screen readers read the label, detail and value in order.
+- The meter has the `meter` role and reads its value. Name it with `meter.label` when the label alone doesn't say what the number means, like "Air quality, 4 of 5".
+- State is never color alone: the value says it in words.
+
+## API
+
+<PropsTable
+  rows={[
+    { name: "icon", type: "ReactNode", description: "The sensor's glyph." },
+    { name: "label", type: "ReactNode", description: "What's measured." },
+    { name: "value", type: "ReactNode", description: "The reading, in words and units." },
+    { name: "detail", type: "ReactNode", description: "Where or when." },
+    { name: "level", type: '"normal" | "warning" | "alert"', default: '"normal"', description: "Colors the icon and value." },
+    { name: "layout", type: '"row" | "tile"', default: '"row"', description: "A list row or a small tile." },
+    { name: "meter", type: "{ value, min?, max?, label? }", description: "A bar for a level. min and max default to 0 and 100." },
+  ]}
+/>
+
+| Attribute | Values |
+| --- | --- |
+| `data-level` | `normal`, `warning`, `alert` |
+| `data-layout` | `row`, `tile` |
+
+| Variable | What it sets |
+| --- | --- |
+| `--mb-sensor-readout-min-height` | A row's height |
+| `--mb-sensor-readout-icon-size` | The icon's circle |
+| `--mb-sensor-group-radius` | The group's and a tile's corners |

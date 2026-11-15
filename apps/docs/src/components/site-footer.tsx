@@ -44,6 +44,7 @@ const columns = [
       { href: "/examples/mail", label: "Mail" },
       { href: "/examples/analytics", label: "Analytics" },
       { href: "/examples/music", label: "Music" },
+      { href: "/examples/home", label: "Home" },
       { href: "/themes", label: "Theme Studio" },
     ],
   },

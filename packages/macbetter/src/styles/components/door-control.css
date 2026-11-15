@@ -1,0 +1,187 @@
+/* Door control — the tall button of a garage door's, door's or gate's control sheet.
+   Open is the bright, "on" look; the glyph's panels slide up as the door opens. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-door-control-width: 88px;
+  --mb-door-control-height: 168px;
+  --mb-door-control-radius: 24px;
+  --mb-door-control-glyph: 48px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-door-control-width: 124px;
+  --mb-door-control-height: 240px;
+  --mb-door-control-radius: 34px;
+  --mb-door-control-glyph: 68px;
+}
+
+.mb-door-control {
+  --mb-door-control-bg: light-dark(
+    color-mix(in oklch, var(--mb-ink) 58%, transparent),
+    color-mix(in oklch, var(--mb-ink) 20%, transparent)
+  );
+  --mb-door-control-fg: light-dark(rgb(255 255 255 / 0.95), rgb(255 255 255 / 0.85));
+
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--mb-space-3);
+  color: var(--mb-label);
+}
+
+.mb-door-control[data-position="open"] {
+  --mb-door-control-bg: #ffffff;
+  --mb-door-control-fg: oklch(from var(--mb-teal) 0.5 c h);
+}
+
+.mb-door-control[data-obstructed] {
+  --mb-door-control-bg: var(--mb-yellow);
+  --mb-door-control-fg: rgb(0 0 0 / 0.75);
+}
+
+.mb-door-control-button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--mb-door-control-width);
+  height: var(--mb-door-control-height);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--mb-door-control-radius);
+  background: var(--mb-door-control-bg);
+  -webkit-backdrop-filter: var(--mb-material-filter);
+  backdrop-filter: var(--mb-material-filter);
+  box-shadow: var(--mb-glass-rim);
+  color: var(--mb-door-control-fg);
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--mb-duration-base) var(--mb-ease-out),
+    color var(--mb-duration-base) var(--mb-ease-out),
+    scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+.mb-door-control-button:active {
+  scale: 0.96;
+}
+
+.mb-door-control-button:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: var(--mb-focus-ring-offset);
+}
+
+.mb-door-control-button[data-disabled] {
+  opacity: 0.45;
+}
+
+.mb-door-control-glyph {
+  width: var(--mb-door-control-glyph);
+  height: var(--mb-door-control-glyph);
+  overflow: visible;
+}
+
+.mb-door-control-frame,
+.mb-door-control-bars {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.mb-door-control-leaf,
+.mb-door-control-knob {
+  fill: currentColor;
+}
+
+.mb-door-control-leaf {
+  transition:
+    translate var(--mb-spring-smooth-duration) var(--mb-spring-smooth),
+    scale var(--mb-spring-smooth-duration) var(--mb-spring-smooth);
+}
+
+/* Garage: the panels roll up under the roof. A stopped door rests halfway. */
+.mb-door-control[data-kind="garage"][data-state="open"] .mb-door-control-leaf,
+.mb-door-control[data-kind="garage"][data-state="opening"] .mb-door-control-leaf {
+  translate: 0 -16px;
+}
+
+.mb-door-control[data-kind="garage"][data-state="stopped"] .mb-door-control-leaf {
+  translate: 0 -9px;
+}
+
+/* Door: the leaf swings toward you. Gate: it slides aside. */
+.mb-door-control[data-kind="door"] .mb-door-control-leaf {
+  transform-box: fill-box;
+  transform-origin: 0 50%;
+}
+
+.mb-door-control[data-kind="door"][data-position="open"] .mb-door-control-leaf {
+  scale: 0.35 1;
+}
+
+.mb-door-control[data-kind="door"][data-position="open"] .mb-door-control-knob {
+  opacity: 0;
+}
+
+.mb-door-control[data-kind="gate"][data-position="open"] .mb-door-control-leaf {
+  translate: 22px 0;
+  opacity: 0.4;
+}
+
+.mb-door-control-status {
+  font: var(--mb-text-headline);
+  text-align: center;
+}
+
+.mb-door-control[data-pending] .mb-door-control-status {
+  color: var(--mb-label-secondary);
+}
+
+.mb-door-control[data-obstructed] .mb-door-control-status {
+  color: light-dark(oklch(from var(--mb-orange) 0.5 c h), oklch(from var(--mb-yellow) max(l, 0.82) c h));
+}
+
+:where([dir="rtl"]) .mb-door-control[data-kind="gate"][data-position="open"] .mb-door-control-leaf {
+  translate: -22px 0;
+}
+
+@supports (corner-shape: squircle) {
+  .mb-door-control-button {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-door-control-radius) * var(--mb-corner-factor));
+  }
+}
+
+@media (prefers-contrast: more) {
+  .mb-door-control-button {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: 0 0 0 var(--mb-hairline) var(--mb-control-border);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :where(:root:not([data-transparency="full"])) {
+    .mb-door-control:not([data-position="open"], [data-obstructed]) {
+      --mb-door-control-bg: light-dark(
+        color-mix(in oklch, var(--mb-ink) 58%, var(--mb-bg)),
+        color-mix(in oklch, var(--mb-ink) 20%, var(--mb-bg))
+      );
+    }
+
+    .mb-door-control-button {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .mb-door-control-button {
+    border: 1px solid ButtonText;
+    background: ButtonFace;
+    color: ButtonText;
+  }
+}

@@ -1,0 +1,56 @@
+export const metadata = { title: "Automation Row", description: "List an automation with when it runs, what it does and a switch to turn it off." }
+
+# Automation Row
+
+<Lead>List an automation with when it runs, what it does and a switch to turn it off.</Lead>
+
+<Demo name="home/automation-row-basic" platforms={["ios", "ipados", "macos"]} />
+
+## When to use it
+
+Automations make accessories react to a situation: people arriving or leaving, a time of day such as sunset, an accessory being controlled, or a sensor detecting something. The Home app lists them in the Automation tab; pressing one lets people turn it on or off, change when it happens, add or remove accessories, test it or delete it.
+
+- Title the row with the trigger, in the Home app's words: "When I arrive home", "At sunset", "When Back door opens".
+- Put what it does in the detail: "Unlock Front door and turn on 3 lights".
+- Keep a turned-off automation in the list. Its title and icon step back, and the switch says it's off.
+
+## Usage
+
+```tsx
+import { AutomationRow } from "macbetter/automation-row"
+import { List, ListSection } from "macbetter/list"
+```
+
+Put rows in a `ListSection`. Control the switch with `enabled` and `onEnabledChange`, and open an editor from `onOpen`.
+
+## Platform behavior
+
+The row is a [List](/docs/components/list) row, so it takes the list's metrics: 44-point rows with 17-point text on iOS and iPadOS, and compact rows on macOS. The switch is the platform's switch.
+
+## Accessibility
+
+- The switch is named by the title, so screen readers hear "When I arrive home, switch, on".
+- With `onOpen`, the row's body is a button named by the title, sitting under the text; the switch sits above it, so neither is inside the other.
+- Space toggles the switch; Enter or Space on the row opens the editor.
+
+## API
+
+<PropsTable
+  rows={[
+    { name: "icon", type: "ReactNode", description: "The trigger's glyph, in a colored tile." },
+    { name: "iconColor", type: 'SystemColor | "gray" | "accent"', default: '"accent"', description: "The tile's color." },
+    { name: "title", type: "string", description: "When it runs." },
+    { name: "detail", type: "ReactNode", description: "What it does." },
+    { name: "enabled / defaultEnabled", type: "boolean", description: "Whether it's on." },
+    { name: "onEnabledChange", type: "(enabled) => void", description: "Runs when the switch changes." },
+    { name: "onOpen", type: "() => void", description: "Runs when the row is pressed." },
+    { name: "switchLabel", type: "string", description: "Names the switch. Defaults to the title." },
+    { name: "disabled", type: "boolean", default: "false", description: "Stops both the row and the switch." },
+  ]}
+/>
+
+| Class | What it is |
+| --- | --- |
+| `.mb-automation-row` | The list row |
+| `.mb-automation-row-open` | The button under the row's text |
+| `.mb-automation-row-switch` | The switch's accessory; `data-off` while off |

@@ -1,0 +1,161 @@
+/* Energy readout — the Grid Forecast as the Home app draws it: a bar per hour, the cleaner hours taller and green.
+   Height carries the state as well as color, and the hour now is marked with a ring. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-energy-readout-padding: 12px;
+  --mb-energy-readout-radius: 12px;
+  --mb-energy-readout-bars-height: 44px;
+  --mb-energy-readout-title-font: 600 13px/16px var(--mb-font);
+  --mb-energy-readout-summary-font: 400 12px/16px var(--mb-font);
+  --mb-energy-readout-value-font: 600 17px/20px var(--mb-font-rounded);
+  --mb-energy-readout-axis-font: 400 10px/12px var(--mb-font);
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-energy-readout-padding: 16px;
+  --mb-energy-readout-radius: 18px;
+  --mb-energy-readout-bars-height: 56px;
+  --mb-energy-readout-title-font: 600 15px/20px var(--mb-font);
+  --mb-energy-readout-summary-font: 400 15px/20px var(--mb-font);
+  --mb-energy-readout-value-font: 600 22px/26px var(--mb-font-rounded);
+  --mb-energy-readout-axis-font: 400 11px/13px var(--mb-font);
+}
+
+.mb-energy-readout {
+  --mb-energy-readout-cleaner: light-dark(oklch(from var(--mb-green) min(l, 0.6) c h), var(--mb-green));
+  --mb-energy-readout-other: var(--mb-fill);
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-sizing: border-box;
+  padding: var(--mb-energy-readout-padding);
+  border-radius: var(--mb-energy-readout-radius);
+  background: light-dark(
+    color-mix(in oklch, var(--mb-bg-elevated) 70%, transparent),
+    color-mix(in oklch, var(--mb-bg-elevated) 50%, transparent)
+  );
+  -webkit-backdrop-filter: var(--mb-material-filter);
+  backdrop-filter: var(--mb-material-filter);
+  box-shadow: inset 0 0 0 var(--mb-hairline) light-dark(rgb(0 0 0 / 0.06), rgb(255 255 255 / 0.08));
+  color: var(--mb-label);
+}
+
+.mb-energy-readout-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.mb-energy-readout-heading {
+  min-width: 0;
+}
+
+.mb-energy-readout-title {
+  margin: 0;
+  font: var(--mb-energy-readout-title-font);
+  letter-spacing: var(--mb-tracking-body);
+}
+
+.mb-energy-readout-summary {
+  margin: 0;
+  color: var(--mb-label-secondary);
+  font: var(--mb-energy-readout-summary-font);
+  letter-spacing: var(--mb-tracking-body);
+}
+
+.mb-energy-readout-usage {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: flex-end;
+  margin: 0;
+}
+
+.mb-energy-readout-usage-value {
+  font: var(--mb-energy-readout-value-font);
+  font-variant-numeric: tabular-nums;
+}
+
+.mb-energy-readout-usage-label {
+  color: var(--mb-label-secondary);
+  font: var(--mb-energy-readout-axis-font);
+}
+
+.mb-energy-readout-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: var(--mb-energy-readout-bars-height);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mb-energy-readout-bar {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  height: 30%;
+  border-radius: 3px;
+  background: var(--mb-energy-readout-other);
+}
+
+.mb-energy-readout-bar[data-cleaner] {
+  height: 100%;
+  background: var(--mb-energy-readout-cleaner);
+}
+
+/* Now: a ring around the bar. */
+.mb-energy-readout-bar[data-now] {
+  box-shadow: 0 0 0 1.5px var(--mb-label);
+}
+
+.mb-energy-readout-axis {
+  display: flex;
+  justify-content: space-between;
+  color: var(--mb-label-secondary);
+  font: var(--mb-energy-readout-axis-font);
+  font-variant-numeric: tabular-nums;
+}
+
+@supports (corner-shape: squircle) {
+  .mb-energy-readout {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-energy-readout-radius) * var(--mb-corner-factor));
+  }
+}
+
+@media (prefers-contrast: more) {
+  .mb-energy-readout {
+    background: var(--mb-bg-elevated);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: inset 0 0 0 1px var(--mb-control-border);
+  }
+
+  .mb-energy-readout-bar {
+    background: var(--mb-control-border);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :where(:root:not([data-transparency="full"])) {
+    .mb-energy-readout {
+      background-color: var(--mb-bg-elevated);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .mb-energy-readout-bar {
+    background: GrayText;
+  }
+
+  .mb-energy-readout-bar[data-cleaner] {
+    background: Highlight;
+  }
+}

@@ -1,0 +1,87 @@
+export const metadata = {
+  title: "Thermostat Control",
+  description: "Set a thermostat's mode and target temperature on a dial.",
+}
+
+# Thermostat Control
+
+<Lead>Set a thermostat's mode and target temperature on a dial.</Lead>
+
+<Demo name="home/thermostat-control-heat" platforms={["ios", "ipados", "macos"]} wallpaper />
+
+## When to use it
+
+Use it in a thermostat's control sheet. It shows the four things HomeKit's thermostat service holds: the mode (off, heat, cool or auto), the target temperature, the current temperature, and whether the system is heating, cooling or idle.
+
+- In heat and cool, there's one target. In auto, there are two: the heating threshold, below which it heats, and the cooling threshold, above which it cools.
+- Say what's happening in words, "Heating to 21°", not only with color.
+- Read temperatures in the unit the thermostat or the person uses. HomeKit stores Celsius; `unit="fahrenheit"` converts for display and converts back.
+
+## Usage
+
+```tsx
+import { ThermostatControl } from "macbetter/thermostat-control"
+```
+
+### Heat and cool
+
+Drag the knob around the dial, or focus it and use the arrow keys. In heat, the dial fills orange from the low end to the target; in cool, blue from the target to the high end. The bar across the track marks the current temperature.
+
+<Demo name="home/thermostat-control-heat" platforms={["ios", "ipados", "macos"]} wallpaper />
+
+### Auto, in Fahrenheit
+
+In auto there are two knobs, and the dial fills between them. They stay at least 3 °F (or 1 °C) apart.
+
+<Demo name="home/thermostat-control-auto" platforms={["ios", "ipados", "macos"]} wallpaper />
+
+## Platform behavior
+
+- **iOS and iPadOS.** A 280-point dial with a 64-point rounded target number.
+- **macOS.** A 208-point dial, sized for a popover or a sheet.
+- **Every platform.** Off greys out the dial and shows the room's temperature. The mode picker is a segmented control.
+
+## Accessibility
+
+- The dial is drawn, but the control is ui-sdk's Slider: one native range input in heat and cool, named "Heat to" or "Cool to", and two in auto. Pointer drags on the dial set the same slider through its controller, so the value, the keys and what a screen reader announces never disagree.
+- The arrow keys step half a degree Celsius or one degree Fahrenheit; Page Up and Page Down step ten. Values read with their unit, like "21.5°C".
+- `name` names the whole control, like "Hallway thermostat". The mode picker is named "Mode".
+- Heating and cooling show as a colored caption, a colored dot and the words "Heating", "Cooling" or "Idle".
+
+## API
+
+<PropsTable
+  rows={[
+    { name: "mode", type: '"off" | "heat" | "cool" | "auto"', description: "The target heating cooling mode. Required." },
+    { name: "onModeChange", type: "(mode) => void", description: "Runs when someone picks a mode." },
+    { name: "target", type: "number", default: "21", description: "The target temperature in °C, for heat and cool." },
+    { name: "onTargetChange", type: "(celsius: number) => void", description: "Runs on every step of a drag or a key." },
+    { name: "range", type: "[number, number]", default: "[19, 24]", description: "Heating and cooling thresholds in °C, for auto." },
+    { name: "onRangeChange", type: "(celsius: [number, number]) => void", description: "Runs when either threshold moves." },
+    { name: "current", type: "number", description: "The current temperature in °C. Required." },
+    { name: "state", type: '"idle" | "heating" | "cooling"', default: '"idle"', description: "What the system is doing now." },
+    { name: "unit", type: '"celsius" | "fahrenheit"', default: '"celsius"', description: "How temperatures read. Values in and out stay in °C." },
+    { name: "min / max", type: "number", default: "10 / 32", description: "The dial's range, in °C." },
+    { name: "step", type: "number", default: "0.5 °C or 1 °F", description: "One step, in the display unit." },
+    { name: "name", type: "string", default: '"Thermostat"', description: "Names the control." },
+    { name: "modes", type: "ThermostatMode[]", default: "all four", description: "The modes the thermostat supports." },
+    { name: "hideModes", type: "boolean", default: "false", description: "Leaves out the mode picker." },
+  ]}
+/>
+
+### Data attributes
+
+| Attribute | On | Values |
+| --- | --- | --- |
+| `data-mode` | Root | `off`, `heat`, `cool`, `auto` |
+| `data-state` | Root | `idle`, `heating`, `cooling`; absent when off |
+| `data-tone` | Filled arc | `heat`, `cool` |
+| `data-thumb` | Knob and thumb | `0`, or `1` for the cooling threshold |
+
+### CSS variables
+
+| Variable | macOS | iOS | What it sets |
+| --- | --- | --- | --- |
+| `--mb-thermostat-control-size` | `208px` | `280px` | Dial diameter |
+| `--mb-thermostat-control-heat` | | | Heat color, `--mb-orange` |
+| `--mb-thermostat-control-cool` | | | Cool color, `--mb-cyan` |

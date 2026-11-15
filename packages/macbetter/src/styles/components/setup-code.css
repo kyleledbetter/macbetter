@@ -1,0 +1,138 @@
+/* Setup code — the code printed on an accessory, shown in groups with tabular digits, a scanner frame, and the field
+   for typing the code by hand. Nothing here draws Apple's HomeKit or Apple Home marks; those are licensed artwork. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-setup-code-font: 500 22px/28px var(--mb-font-mono);
+  --mb-setup-code-padding: 8px 14px;
+  --mb-setup-code-radius: 10px;
+  --mb-setup-code-scanner-size: 220px;
+  --mb-setup-code-scanner-radius: 16px;
+  --mb-setup-code-instruction-font: 400 13px/18px var(--mb-font);
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-setup-code-font: 500 28px/34px var(--mb-font-mono);
+  --mb-setup-code-padding: 10px 18px;
+  --mb-setup-code-radius: 14px;
+  --mb-setup-code-scanner-size: 260px;
+  --mb-setup-code-scanner-radius: 24px;
+  --mb-setup-code-instruction-font: 400 15px/20px var(--mb-font);
+}
+
+.mb-setup-code {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5ch;
+  padding: var(--mb-setup-code-padding);
+  border-radius: var(--mb-setup-code-radius);
+  background: var(--mb-fill-tertiary);
+  box-shadow: inset 0 0 0 1px var(--mb-separator-strong);
+  color: var(--mb-label);
+  font: var(--mb-setup-code-font);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  direction: ltr;
+}
+
+/* A dash between groups, as on the accessory's label. */
+.mb-setup-code-group + .mb-setup-code-group::before {
+  content: "-";
+  margin-inline-end: 0.5ch;
+  color: var(--mb-label-tertiary);
+  letter-spacing: 0;
+}
+
+.mb-setup-code-scanner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.mb-setup-code-scanner-view {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--mb-setup-code-scanner-size);
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: var(--mb-setup-code-scanner-radius);
+  /* A dark well with a faint lens vignette, standing in for the camera's picture. */
+  background:
+    radial-gradient(circle at 50% 45%, rgb(255 255 255 / 0.08), rgb(255 255 255 / 0) 65%),
+    rgb(0 0 0 / 0.86);
+}
+
+.mb-setup-code-scanner-view > :where(video, img, canvas, svg:not(.mb-setup-code-scanner-frame)) {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mb-setup-code-scanner-frame {
+  position: absolute;
+  inset: 18%;
+  width: 64%;
+  height: 64%;
+  fill: none;
+  stroke: white;
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+
+.mb-setup-code-scanner-instruction {
+  max-width: var(--mb-setup-code-scanner-size);
+  margin: 0;
+  color: var(--mb-label-secondary);
+  font: var(--mb-setup-code-instruction-font);
+  letter-spacing: var(--mb-tracking-body);
+  text-align: center;
+}
+
+/* Digits read left to right in every language. Eight or eleven cells fit an iPhone's width. */
+.mb-setup-code-field {
+  direction: ltr;
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .mb-setup-code-field {
+    --mb-code-field-cell-width: 34px;
+    --mb-code-field-cell-ratio: 34 / 46;
+    --mb-code-field-cell-gap: 5px;
+    --mb-code-field-run-gap: 8px;
+    --mb-code-field-font: 600 24px/1 var(--mb-font);
+  }
+
+  .mb-setup-code-field[data-format="matter"] {
+    --mb-code-field-cell-width: 26px;
+    --mb-code-field-cell-ratio: 26 / 40;
+    --mb-code-field-cell-gap: 3px;
+    --mb-code-field-font: 600 20px/1 var(--mb-font);
+  }
+}
+
+@supports (corner-shape: squircle) {
+  .mb-setup-code {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-setup-code-radius) * var(--mb-corner-factor));
+  }
+
+  .mb-setup-code-scanner-view {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-setup-code-scanner-radius) * var(--mb-corner-factor));
+  }
+}
+
+@media (forced-colors: active) {
+  .mb-setup-code {
+    border: 1px solid CanvasText;
+  }
+
+  .mb-setup-code-scanner-frame {
+    stroke: CanvasText;
+  }
+}

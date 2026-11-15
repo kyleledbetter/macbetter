@@ -1,0 +1,89 @@
+export const metadata = {
+  title: "Home",
+  description: "Components for building a home app: accessory tiles, scenes, status, and the controls for lights, climate, locks, doors and cameras.",
+}
+
+# Home
+
+<Lead>Components for building a home app in the style of Apple's Home app: accessory tiles, scenes, category status, and the controls for lights, climate, locks, doors, cameras and sensors.</Lead>
+
+<Demo name="home/overview-room" platforms={["ios", "ipados", "macos"]} wallpaper />
+
+## What this set is for
+
+Use these components to build the screens of a home app: a home view with categories, cameras, scenes and rooms; a room view; the control sheet for each accessory; automations; and adding an accessory. The [Home example](/examples/home) puts all of them together for a house with a well-equipped kitchen.
+
+They are UI components only. A web page can't talk to HomeKit or to accessories, so the components take values and report changes, and your app decides where those come from. A real app feeds them in one of two ways:
+
+- **A native app.** HomeKit runs in an iOS, iPadOS, macOS, tvOS or watchOS app. If you render a web view inside a native app, the native side reads `HMHome`, `HMAccessory` and `HMCharacteristic` values and passes them to the page, and writes changes back.
+- **A bridge or an API.** A home hub or a vendor's cloud service exposes accessory state over the network, and the page reads and writes through it.
+
+macbetter is not made or endorsed by Apple, and it doesn't use HomeKit or Matter.
+
+## Apple's vocabulary
+
+The Human Interface Guidelines ask apps to use HomeKit's object model and words, so that people can control the same things by voice. The component names follow the words people see, not the API's.
+
+| Word in the UI | What it means | HomeKit API |
+| --- | --- | --- |
+| Home | A house, an office or another place. People can have more than one. | `HMHome` |
+| Room | A name that means something to people, like Kitchen. | `HMRoom` |
+| Zone | A set of rooms, like Upstairs. Optional. | `HMZone` |
+| Accessory | The physical device: a lamp, a lock, a camera. | `HMAccessory` |
+| (the feature's own name) | A controllable feature of an accessory, like "Ceiling fan light". Never call it a service in the UI. | `HMService` |
+| (the attribute's own name) | A controllable attribute, like brightness or speed. Never call it a characteristic in the UI. | `HMCharacteristic` |
+| Scene | A set of actions run together, like Good Morning. Always say scene, never action set. | `HMActionSet` |
+| Automation | Something that runs on its own at a time, when people arrive or leave, or when an accessory or sensor changes. | `HMTrigger`, `HMEventTrigger`, `HMTimerTrigger` |
+
+## The HIG rules that matter most
+
+- **Names.** Accessory names use letters, numbers, spaces and apostrophes, start and end with a letter or number, and have no emoji. Don't put the room in the name: "Pendant lights" in the Kitchen, not "Kitchen pendant lights". Never suggest a company name or model number.
+- **Show where things are.** Show the room, and the home when there's more than one, near each accessory. Don't hide them in settings.
+- **Setup.** Use the system setup flow in a native app. Don't require an account. Ask for a name and a room, then show an example Siri phrase that uses the name.
+- **Security.** Ask before actions that affect security, like unlocking a door or opening a garage door. Apple's Controls guidance requires authentication for them.
+- **Cameras.** Don't cover the camera image. Keep badges small and at the edges. Show a microphone button only when the camera supports two-way audio.
+- **State.** Show progress while an accessory changes ("Unlocking…") and say when it doesn't respond. Every state in these components is shown with words or a shape as well as color.
+
+## Components and the HomeKit data they show
+
+| Component | Use it for | Services | Characteristics |
+| --- | --- | --- | --- |
+| [Accessory Tile](/docs/home/accessory-tile) | One accessory in a grid. The icon turns it on or off; the name opens its controls. | Any user-interactive service | Power state, plus a status summary |
+| [Scene Tile](/docs/home/scene-tile) | Running a scene. | — | `HMActionSet` |
+| [Home Status](/docs/home/home-status) | Category buttons under the home name, like "Lights 3 on". | Grouped by category | Summaries |
+| [Home Section](/docs/home/home-section) | A room or a section heading with a summary. | — | `HMRoom` |
+| [Level Control](/docs/home/level-control) | Brightness, shade position, fan speed, speaker volume. | Lightbulb, window covering, fan, speaker | Brightness, target position, rotation speed, volume (all 0–100%) |
+| [Light Color Picker](/docs/home/light-color-picker) | Light color and color temperature. | Lightbulb | Hue (0–360°), saturation (%), color temperature (mireds) |
+| [Thermostat Control](/docs/home/thermostat-control) | Target temperature and mode. | Thermostat, heater cooler | Current and target temperature (°C), heating and cooling thresholds, target and current heating cooling state, temperature units |
+| [Lock Control](/docs/home/lock-control) | Locking and unlocking, with a confirmation. | Lock mechanism | Current and target lock mechanism state (secured, unsecured, jammed, unknown) |
+| [Door Control](/docs/home/door-control) | Garage doors, doors and gates. | Garage door opener, door | Current and target door state (open, closed, opening, closing, stopped), obstruction detected |
+| [Camera View](/docs/home/camera-view) | A live stream or a snapshot, with a status badge. | Camera RTP stream management, microphone, speaker | Streaming status, mute |
+| [Sensor Readout](/docs/home/sensor-readout) | Temperature, humidity, air quality, battery, contact, motion, leak and smoke. | Sensors, battery | Current temperature, relative humidity, air quality, battery level, status low battery, contact state, motion detected, leak detected, smoke detected |
+| [Setup Code](/docs/home/setup-code) | Showing or entering an accessory's setup code, and a scan frame. | — | `HMAccessorySetupRequest` |
+| [Automation Row](/docs/home/automation-row) | An automation in a list, with a switch to turn it on or off. | — | `HMTrigger.isEnabled` |
+| [Energy Readout](/docs/home/energy-readout) | A grid forecast that marks cleaner times, and usage. | — | EnergyKit |
+
+A fan is a Level Control with steps and a switch or a segmented control for direction. Window shades are a Level Control for position. The [Level Control page](/docs/home/level-control) shows both.
+
+## The other frameworks a home app uses
+
+| Framework | What it's for | What it means for your UI |
+| --- | --- | --- |
+| HomeKit | Homes, rooms, accessories, scenes and automations. | Everything in this set. |
+| Matter and MatterSupport | The cross-vendor standard for adding and controlling accessories. | Setup codes of 11 or 21 digits as well as 8; the same controls afterward. |
+| HomeKit Secure Video | Encrypted camera recording analyzed on the home hub. | A Live view, a timeline of clips, and symbols for people, animals, vehicles and packages. |
+| AccessorySetupKit | Finding and setting up Bluetooth and Wi-Fi accessories with your own image and name. | A system sheet in a native app; nothing to draw on the web. |
+| EnergyKit | Grid forecasts and electricity use, US only. | A forecast strip and usage figures. The Home app shows the detailed history itself. |
+| WeatherKit | Current conditions and forecasts, with required attribution. | Outdoor temperature beside a home summary. |
+| WidgetKit | Home Screen widgets and Control Center controls. | Small tiles and toggles outside the app. Not part of a web page. |
+| ActivityKit | Live Activities on the Lock Screen and in the Dynamic Island. | Progress for tasks with an end, like a garage door closing. Not part of a web page. |
+| App Intents | Actions for Siri, Shortcuts, widgets and controls. | Example phrases after setup. |
+| ThreadNetwork | Thread border router credentials. | Nothing to draw; it shows up only as whether an accessory responds. |
+
+## What isn't included
+
+- **Apple's marks.** The HomeKit icon, the Apple Home app icon and the "Works with Apple Home" badge are Apple's, licensed to accessory makers through the MFi Program and the Works with Apple Home artwork license. Apple asks that nobody draw imitations of them. macbetter doesn't include them, and the setup screens here use a plain code and frame.
+- **Connectivity.** Nothing here discovers, pairs with or controls an accessory.
+- **Video.** Camera View draws a local placeholder scene. Pass your own `<video>` or image when you have a stream.
+
+The research behind this set, with every Apple source and what it said, is in [docs/homekit-research.md](https://github.com/kyleledbetter/macbetter/blob/main/docs/homekit-research.md).

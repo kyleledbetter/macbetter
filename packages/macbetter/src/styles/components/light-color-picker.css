@@ -1,0 +1,94 @@
+/* Light color picker — the row of color and white presets under a light's brightness control.
+   A selected swatch gets a ring with a gap, like the Home app; whites come first, then colors. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-light-color-picker-size: 28px;
+  --mb-light-color-picker-gap: 10px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-light-color-picker-size: 44px;
+  --mb-light-color-picker-gap: 14px;
+}
+
+.mb-light-color-picker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--mb-light-color-picker-gap);
+  max-width: calc(var(--mb-light-color-picker-size) * 5 + var(--mb-light-color-picker-gap) * 4);
+}
+
+.mb-light-color-picker-swatch {
+  position: relative;
+  flex: none;
+  width: var(--mb-light-color-picker-size);
+  height: var(--mb-light-color-picker-size);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--mb-radius-full);
+  background: var(--mb-light-swatch);
+  /* A hairline keeps pale whites visible on a light sheet. */
+  box-shadow: inset 0 0 0 var(--mb-hairline) light-dark(rgb(0 0 0 / 0.18), rgb(255 255 255 / 0.12));
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+  transition: scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+/* The ring sits outside the swatch with a gap the size of the page behind it. */
+.mb-light-color-picker-swatch::before {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border: 2.5px solid var(--mb-label);
+  border-radius: var(--mb-radius-full);
+  opacity: 0;
+  scale: 0.85;
+  transition:
+    opacity var(--mb-duration-fast) var(--mb-ease-out),
+    scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+.mb-light-color-picker-swatch[data-checked]::before {
+  opacity: 1;
+  scale: 1;
+}
+
+.mb-light-color-picker-swatch:active {
+  scale: 0.92;
+}
+
+.mb-light-color-picker-swatch:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: 7px;
+}
+
+.mb-light-color-picker-swatch[data-disabled] {
+  opacity: 0.4;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-light-color-picker-swatch:not([data-checked]):hover::before {
+    opacity: 0.35;
+    scale: 1;
+  }
+}
+
+@media (forced-colors: active) {
+  .mb-light-color-picker-swatch {
+    forced-color-adjust: none;
+    border: 1px solid CanvasText;
+  }
+
+  .mb-light-color-picker-swatch::before {
+    border-color: Highlight;
+  }
+}
+
+/* A Color Well at the end of the row takes the swatches' size. */
+.mb-light-color-picker > :where(.mb-color-well) {
+  --mb-color-well-w: var(--mb-light-color-picker-size);
+  --mb-color-well-h: var(--mb-light-color-picker-size);
+}

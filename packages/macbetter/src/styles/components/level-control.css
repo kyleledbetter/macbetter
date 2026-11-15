@@ -1,0 +1,247 @@
+/* Level control — the Home app's fat slider for brightness, shade position, fan speed and volume.
+   The fill is the control: there's no knob. Drag anywhere on the fill's edge, or press the track to jump. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-level-control-thickness-lg: 88px;
+  --mb-level-control-length-lg: 224px;
+  --mb-level-control-radius-lg: 22px;
+  --mb-level-control-thickness-md: 56px;
+  --mb-level-control-length-md: 160px;
+  --mb-level-control-radius-md: 15px;
+  --mb-level-control-icon: 22px;
+  --mb-level-control-grab: 24px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-level-control-thickness-lg: 124px;
+  --mb-level-control-length-lg: 300px;
+  --mb-level-control-radius-lg: 34px;
+  --mb-level-control-thickness-md: 72px;
+  --mb-level-control-length-md: 200px;
+  --mb-level-control-radius-md: 22px;
+  --mb-level-control-icon: 28px;
+  --mb-level-control-grab: var(--mb-hit-target);
+}
+
+.mb-level-control {
+  --mb-level-control-thickness: var(--mb-level-control-thickness-lg);
+  --mb-level-control-length: var(--mb-level-control-length-lg);
+  --mb-level-control-radius: var(--mb-level-control-radius-lg);
+  /* The empty track is dark in both schemes, so a white or pale fill holds 3:1 against it. */
+  --mb-level-control-track: light-dark(
+    color-mix(in oklch, var(--mb-ink) 58%, transparent),
+    color-mix(in oklch, var(--mb-ink) 20%, transparent)
+  );
+  --mb-level-control-fill: var(--mb-accent);
+  --mb-level-control-icon-off: light-dark(rgb(255 255 255 / 0.92), rgb(255 255 255 / 0.72));
+  --mb-level-control-icon-on: var(--mb-on-accent);
+  --mb-level-control-divider: rgb(0 0 0 / 0.16);
+
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--mb-space-3);
+  color: var(--mb-label);
+  font: var(--mb-text-body);
+  letter-spacing: var(--mb-tracking-body);
+}
+
+.mb-level-control[data-size="md"] {
+  --mb-level-control-thickness: var(--mb-level-control-thickness-md);
+  --mb-level-control-length: var(--mb-level-control-length-md);
+  --mb-level-control-radius: var(--mb-level-control-radius-md);
+}
+
+.mb-level-control[data-orientation="horizontal"] {
+  display: flex;
+  width: 100%;
+  min-width: 200px;
+}
+
+.mb-level-control[data-tone="light"] {
+  --mb-level-control-fill: color-mix(in oklch, var(--mb-yellow) 42%, white);
+  --mb-level-control-icon-on: rgb(0 0 0 / 0.6);
+}
+
+.mb-level-control[data-tone="neutral"] {
+  --mb-level-control-fill: #ffffff;
+  --mb-level-control-icon-on: rgb(0 0 0 / 0.6);
+}
+
+/* An accent fill reads against a pale track, not a dark one. */
+.mb-level-control[data-tone="accent"] {
+  --mb-level-control-track: color-mix(in oklch, var(--mb-ink) 10%, transparent);
+  --mb-level-control-icon-off: var(--mb-label-secondary);
+  --mb-level-control-divider: rgb(255 255 255 / 0.22);
+}
+
+.mb-level-control-control {
+  display: flex;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mb-level-control-track {
+  overflow: hidden;
+  width: var(--mb-level-control-thickness);
+  height: var(--mb-level-control-length);
+  border-radius: var(--mb-level-control-radius);
+  background: var(--mb-level-control-track);
+  -webkit-backdrop-filter: var(--mb-material-filter);
+  backdrop-filter: var(--mb-material-filter);
+  box-shadow: var(--mb-glass-rim);
+  cursor: default;
+  transition: scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+.mb-level-control[data-orientation="horizontal"] .mb-level-control-control,
+.mb-level-control[data-orientation="horizontal"] .mb-level-control-track {
+  width: 100%;
+}
+
+.mb-level-control[data-orientation="horizontal"] .mb-level-control-track {
+  height: var(--mb-level-control-thickness);
+}
+
+.mb-level-control-fill {
+  overflow: hidden;
+  background: var(--mb-level-control-fill);
+}
+
+/* Glides to a pressed point; follows the finger 1:1 while dragging. */
+.mb-level-control:not([data-dragging]) .mb-level-control-fill {
+  transition:
+    height var(--mb-spring-snappy-duration) var(--mb-spring-snappy),
+    width var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+/* Both copies of the icon sit at the same spot of the track; the fill clips its own copy. */
+.mb-level-control-icon {
+  position: absolute;
+  inset-block-end: calc((var(--mb-level-control-thickness) - var(--mb-level-control-icon)) / 2);
+  inset-inline-start: calc((var(--mb-level-control-thickness) - var(--mb-level-control-icon)) / 2);
+  display: grid;
+  place-items: center;
+  width: var(--mb-level-control-icon);
+  height: var(--mb-level-control-icon);
+  color: var(--mb-level-control-icon-off);
+  pointer-events: none;
+}
+
+.mb-level-control-icon[data-on-fill] {
+  color: var(--mb-level-control-icon-on);
+}
+
+.mb-level-control-icon :where(svg) {
+  width: 100%;
+  height: 100%;
+}
+
+.mb-level-control[data-orientation="horizontal"] .mb-level-control-icon {
+  inset-block-end: auto;
+  inset-block-start: calc((var(--mb-level-control-thickness) - var(--mb-level-control-icon)) / 2);
+}
+
+.mb-level-control-steps {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.mb-level-control-step {
+  position: absolute;
+  inset-inline: 0;
+  bottom: calc(100% * var(--mb-level-control-step) / var(--mb-level-control-segments));
+  height: 1px;
+  background: var(--mb-level-control-divider);
+}
+
+.mb-level-control[data-orientation="horizontal"] .mb-level-control-step {
+  inset-block: 0;
+  inset-inline: auto;
+  inset-inline-start: calc(100% * var(--mb-level-control-step) / var(--mb-level-control-segments));
+  bottom: 0;
+  width: 1px;
+  height: auto;
+}
+
+/* The thumb is invisible: a band across the fill's edge that takes focus and starts a drag. */
+.mb-level-control-thumb {
+  width: 100%;
+  height: var(--mb-level-control-grab);
+}
+
+.mb-level-control[data-orientation="horizontal"] .mb-level-control-thumb {
+  width: var(--mb-level-control-grab);
+  height: 100%;
+}
+
+.mb-level-control-track:has(:focus-visible) {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: var(--mb-focus-ring-offset);
+}
+
+.mb-level-control-value {
+  font: var(--mb-text-headline);
+  font-variant-numeric: tabular-nums;
+}
+
+.mb-level-control[data-disabled] {
+  opacity: 0.45;
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  /* Under the finger the control swells a little, as Control Center's sliders do. */
+  .mb-level-control[data-dragging] .mb-level-control-track {
+    scale: 1.03;
+  }
+}
+
+@supports (corner-shape: squircle) {
+  .mb-level-control-track {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-level-control-radius) * var(--mb-corner-factor));
+  }
+}
+
+@media (prefers-contrast: more) {
+  .mb-level-control {
+    --mb-level-control-track: light-dark(
+      color-mix(in oklch, var(--mb-ink) 68%, transparent),
+      color-mix(in oklch, var(--mb-ink) 28%, transparent)
+    );
+  }
+
+  .mb-level-control-track {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: 0 0 0 var(--mb-hairline) var(--mb-control-border);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :where(:root:not([data-transparency="full"])) {
+    .mb-level-control {
+      --mb-level-control-track: light-dark(
+        color-mix(in oklch, var(--mb-ink) 58%, var(--mb-bg)),
+        color-mix(in oklch, var(--mb-ink) 20%, var(--mb-bg))
+      );
+    }
+
+    .mb-level-control-track {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .mb-level-control-track {
+    border: 1px solid CanvasText;
+    background: Canvas;
+  }
+
+  .mb-level-control-fill {
+    background: Highlight;
+  }
+}

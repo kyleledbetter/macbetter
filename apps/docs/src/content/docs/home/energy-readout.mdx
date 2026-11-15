@@ -1,0 +1,63 @@
+export const metadata = { title: "Energy Readout", description: "Show the Grid Forecast: the hours ahead when cleaner electricity is expected." }
+
+# Energy Readout
+
+<Lead>Show the Grid Forecast: the hours ahead when cleaner electricity is expected.</Lead>
+
+<Demo name="home/energy-readout-basic" platforms={["ios", "ipados", "macos"]} wallpaper />
+
+## When to use it
+
+The Home app's Energy category shows a Grid Forecast in which green bars mark when cleaner energy is available, for example from 4 p.m. until 10 p.m. Apps that run thermostats or charge electric vehicles get the same forecast from EnergyKit and can schedule around it.
+
+- Use it to explain a schedule your app chose: "Charging during cleaner hours".
+- Say the cleaner hours in a sentence in `summary`; the bars are the picture, not the message.
+- EnergyKit's forecast is available only in the contiguous United States. Outside it, don't show an empty forecast.
+
+<Callout type="note" title="The Home app shows the history">
+  EnergyKit sends an app's usage to the Home app, which draws the charts, activity logs and monthly trends itself.
+  Apple's documentation says apps get these "without building custom statistics or graphing UI". This component
+  covers the forecast and a single reading, not a usage history.
+</Callout>
+
+## Usage
+
+```tsx
+import { EnergyReadout } from "macbetter/energy-readout"
+```
+
+Pass one entry per hour with its label and whether it's cleaner, the index of the hour now, and optionally a usage figure.
+
+## Platform behavior
+
+- **iOS and iPadOS.** 56-point bars on a translucent card with 18-point corners.
+- **macOS.** 44-point bars and 12-point corners.
+- **Every platform.** Cleaner hours are taller as well as green; the hour now has a ring.
+
+## Accessibility
+
+- The forecast is a list with one item per hour, each read as "4 PM: Cleaner" or "2 PM: Less clean, Now".
+- The title is a heading, and the summary sentence says the whole forecast at once.
+- Height carries the state as well as color.
+
+## API
+
+<PropsTable
+  rows={[
+    { name: "forecast", type: "{ label: string; cleaner: boolean }[]", description: "One entry per hour, in order." },
+    { name: "now", type: "number", default: "0", description: "The index of the hour now." },
+    { name: "title", type: "ReactNode", default: '"Grid Forecast"', description: "The heading." },
+    { name: "summary", type: "ReactNode", description: "The forecast in a sentence. Worked out from the hours when left out." },
+    { name: "usage", type: "{ value: string; label: string }", description: "A reading beside the forecast." },
+    { name: "cleanerLabel / lessCleanLabel / nowLabel", type: "string", description: "The words for each bar, in the page's language." },
+  ]}
+/>
+
+| Attribute | On | Values |
+| --- | --- | --- |
+| `data-cleaner`, `data-now` | `.mb-energy-readout-bar` | Present when set |
+
+| Variable | What it sets |
+| --- | --- |
+| `--mb-energy-readout-bars-height` | The tallest bar |
+| `--mb-energy-readout-radius` | The card's corners |

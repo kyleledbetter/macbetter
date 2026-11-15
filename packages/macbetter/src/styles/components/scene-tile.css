@@ -1,0 +1,226 @@
+/* Scene tile — runs a scene. It shares the accessory tile's off and on looks: dim when the home doesn't match the
+   scene, bright with dark text when every accessory in it is set the way the scene sets it. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-scene-tile-height: 44px;
+  --mb-scene-tile-height-sm: 36px;
+  --mb-scene-tile-radius: 12px;
+  --mb-scene-tile-icon-size: 26px;
+  --mb-scene-tile-glyph-size: 15px;
+  --mb-scene-tile-font: 600 13px/16px var(--mb-font);
+  --mb-scene-row-gap: 8px;
+  --mb-scene-tile-min-width: 150px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-scene-tile-height: 56px;
+  --mb-scene-tile-height-sm: 44px;
+  --mb-scene-tile-radius: 16px;
+  --mb-scene-tile-icon-size: 32px;
+  --mb-scene-tile-glyph-size: 18px;
+  --mb-scene-tile-font: 600 15px/18px var(--mb-font);
+  --mb-scene-row-gap: 10px;
+  --mb-scene-tile-min-width: 150px;
+}
+
+.mb-scene-tile {
+  --mb-scene-tile-bg: light-dark(
+    color-mix(in oklch, var(--mb-ink) 7%, rgb(255 255 255 / 0.3)),
+    color-mix(in oklch, var(--mb-bg-elevated) 58%, transparent)
+  );
+  --mb-scene-tile-fg: var(--mb-label);
+  --mb-scene-tile-icon-bg: var(--mb-fill-secondary);
+  --mb-scene-tile-icon-fg: var(--mb-label-secondary);
+  --mb-scene-tile-edge: light-dark(rgb(0 0 0 / 0.06), rgb(255 255 255 / 0.08));
+
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 10px;
+  box-sizing: border-box;
+  min-width: var(--mb-scene-tile-min-width);
+  height: var(--mb-scene-tile-height);
+  margin: 0;
+  padding-block: 0;
+  padding-inline: calc((var(--mb-scene-tile-height) - var(--mb-scene-tile-icon-size)) / 2) 14px;
+  border: 0;
+  border-radius: var(--mb-scene-tile-radius);
+  background: var(--mb-scene-tile-bg);
+  box-shadow: inset 0 0 0 var(--mb-hairline) var(--mb-scene-tile-edge);
+  color: var(--mb-scene-tile-fg);
+  font: var(--mb-scene-tile-font);
+  letter-spacing: var(--mb-tracking-body);
+  text-align: start;
+  white-space: nowrap;
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--mb-duration-base) var(--mb-ease-out),
+    color var(--mb-duration-base) var(--mb-ease-out),
+    scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+.mb-scene-tile[data-size="sm"] {
+  --mb-scene-tile-height: var(--mb-scene-tile-height-sm);
+  --mb-scene-tile-icon-size: calc(var(--mb-scene-tile-height-sm) - 12px);
+}
+
+.mb-scene-tile[data-active] {
+  --mb-scene-tile-bg: light-dark(rgb(255 255 255 / 0.97), color-mix(in oklch, var(--mb-tint) 8%, rgb(246 246 248)));
+  --mb-scene-tile-fg: rgb(0 0 0 / 0.88);
+  --mb-scene-tile-icon-bg: oklch(from var(--mb-accent) min(l, 0.62) c h);
+  --mb-scene-tile-icon-fg: white;
+  --mb-scene-tile-edge: rgb(0 0 0 / 0.04);
+  box-shadow:
+    inset 0 0 0 var(--mb-hairline) var(--mb-scene-tile-edge),
+    0 1px 3px rgb(0 0 0 / 0.12);
+}
+
+.mb-scene-tile-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--mb-scene-tile-icon-size);
+  height: var(--mb-scene-tile-icon-size);
+  border-radius: var(--mb-radius-full);
+  background: var(--mb-scene-tile-icon-bg);
+  color: var(--mb-scene-tile-icon-fg);
+  transition:
+    background-color var(--mb-duration-base) var(--mb-ease-out),
+    color var(--mb-duration-base) var(--mb-ease-out);
+}
+
+.mb-scene-tile-icon > :where(svg:not(.mb-activity-indicator-spokes)) {
+  width: var(--mb-scene-tile-glyph-size);
+  height: var(--mb-scene-tile-glyph-size);
+}
+
+.mb-scene-tile-name {
+  /* Two lines before truncating, as in the Home app. */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  min-width: 0;
+  overflow: hidden;
+  white-space: normal;
+}
+
+.mb-scene-tile::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: max(100%, var(--mb-hit-target));
+  height: max(100%, var(--mb-hit-target));
+  translate: -50% -50%;
+}
+
+.mb-scene-tile:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: var(--mb-focus-ring-offset);
+}
+
+.mb-scene-tile[data-disabled] {
+  opacity: 0.5;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-scene-tile:not([data-active], [data-disabled]):hover {
+    --mb-scene-tile-bg: light-dark(
+      color-mix(in oklch, var(--mb-ink) 4%, rgb(255 255 255 / 0.5)),
+      color-mix(in oklch, var(--mb-bg-elevated) 68%, transparent)
+    );
+  }
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .mb-scene-tile:not([data-disabled]):active {
+    scale: 0.96;
+  }
+}
+
+@scope ([data-platform="macos"]) to (:scope [data-platform]) {
+  .mb-scene-tile:not([data-disabled]):active {
+    --mb-scene-tile-bg: light-dark(
+      color-mix(in oklch, var(--mb-bg-elevated) 84%, transparent),
+      color-mix(in oklch, var(--mb-bg-elevated) 64%, transparent)
+    );
+  }
+}
+
+/* The row: two tiles abreast that scroll on iPhone; a wrapping grid on iPad and Mac. */
+.mb-scene-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--mb-scene-tile-min-width), 1fr));
+  gap: var(--mb-scene-row-gap);
+  min-width: 0;
+}
+
+.mb-scene-row > .mb-scene-tile {
+  min-width: 0;
+}
+
+@scope ([data-platform="ios"]) to (:scope [data-platform]) {
+  .mb-scene-row {
+    grid-auto-flow: column;
+    grid-template-columns: none;
+    grid-auto-columns: calc((100% - var(--mb-scene-row-gap)) / 2);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 0;
+    scrollbar-width: none;
+  }
+
+  .mb-scene-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mb-scene-row > .mb-scene-tile {
+    scroll-snap-align: start;
+  }
+}
+
+@supports (corner-shape: squircle) {
+  .mb-scene-tile {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-scene-tile-radius) * var(--mb-corner-factor));
+  }
+}
+
+@media (prefers-contrast: more) {
+  .mb-scene-tile {
+    --mb-scene-tile-edge: var(--mb-control-border);
+    --mb-scene-tile-bg: var(--mb-bg-elevated);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .mb-scene-tile[data-active] {
+    --mb-scene-tile-bg: rgb(255 255 255);
+    box-shadow: inset 0 0 0 2px var(--mb-scene-tile-icon-bg);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :where(:root:not([data-transparency="full"])) {
+    .mb-scene-tile:not([data-active]) {
+      background-color: var(--mb-bg-elevated);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .mb-scene-tile {
+    border: 1px solid ButtonText;
+  }
+
+  .mb-scene-tile[data-active] {
+    border: 3px solid Highlight;
+  }
+}

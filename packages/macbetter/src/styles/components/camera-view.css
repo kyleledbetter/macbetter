@@ -1,0 +1,228 @@
+/* Camera view — a camera's picture with its name and state in the corners. The HIG says not to block camera images,
+   so the badges stay small and at the edges, and the controls sit on a soft scrim along the bottom. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-camera-view-radius: 12px;
+  --mb-camera-view-inset: 8px;
+  --mb-camera-view-name-font: 600 12px/15px var(--mb-font);
+  --mb-camera-view-badge-font: 600 11px/14px var(--mb-font);
+  --mb-camera-tile-width: 220px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-camera-view-radius: 18px;
+  --mb-camera-view-inset: 10px;
+  --mb-camera-view-name-font: 600 14px/18px var(--mb-font);
+  --mb-camera-view-badge-font: 600 12px/15px var(--mb-font);
+  --mb-camera-tile-width: 260px;
+}
+
+.mb-camera-view {
+  /* Text over the picture is white on a dark scrim in either color scheme, as it is over video in Apple's apps. */
+  --mb-camera-view-scrim: rgb(0 0 0 / 0.5);
+
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  margin: 0;
+  overflow: hidden;
+  border-radius: var(--mb-camera-view-radius);
+  background: rgb(0 0 0);
+  color: white;
+  isolation: isolate;
+}
+
+.mb-camera-view-frame {
+  position: absolute;
+  inset: 0;
+  display: block;
+  transition: filter var(--mb-duration-slow) var(--mb-ease-out);
+}
+
+.mb-camera-view-frame > :where(svg, img, video, canvas) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mb-camera-view[data-state="offline"] .mb-camera-view-frame {
+  filter: grayscale(1) brightness(0.35) blur(6px);
+}
+
+.mb-camera-view[data-state="connecting"] .mb-camera-view-frame {
+  filter: brightness(0.7);
+}
+
+.mb-camera-scene[data-time="night"] {
+  filter: grayscale(1) brightness(0.62) contrast(1.35);
+}
+
+/* Name and room, top leading, on a gradient that fades into the picture. */
+.mb-camera-view-caption {
+  position: absolute;
+  z-index: 1;
+  inset-block-start: 0;
+  inset-inline: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: var(--mb-camera-view-inset) calc(var(--mb-camera-view-inset) + 70px) 18px var(--mb-camera-view-inset);
+  background: linear-gradient(to bottom, rgb(0 0 0 / 0.5), rgb(0 0 0 / 0));
+  pointer-events: none;
+}
+
+:where([dir="rtl"]) .mb-camera-view-caption {
+  padding-inline: var(--mb-camera-view-inset) calc(var(--mb-camera-view-inset) + 70px);
+}
+
+.mb-camera-view-name,
+.mb-camera-view-room {
+  overflow: hidden;
+  font: var(--mb-camera-view-name-font);
+  letter-spacing: var(--mb-tracking-caption);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.4);
+}
+
+.mb-camera-view-room {
+  flex: none;
+  font-weight: 400;
+  opacity: 0.85;
+}
+
+/* Live, or the time of the still, top trailing. */
+.mb-camera-view-badges {
+  position: absolute;
+  z-index: 1;
+  inset-block-start: var(--mb-camera-view-inset);
+  inset-inline-end: var(--mb-camera-view-inset);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  pointer-events: none;
+}
+
+.mb-camera-view-time,
+.mb-camera-view-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  border-radius: var(--mb-radius-full);
+  background: var(--mb-camera-view-scrim);
+  font: var(--mb-camera-view-badge-font);
+  letter-spacing: var(--mb-tracking-caption);
+  font-variant-numeric: tabular-nums;
+}
+
+.mb-camera-view-live {
+  text-transform: uppercase;
+}
+
+/* The dot is red, and the word says Live: the state never rests on the color. */
+.mb-camera-view-live-dot {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: oklch(from var(--mb-red) 0.66 0.22 h);
+}
+
+.mb-camera-view-spinner {
+  color: white;
+}
+
+.mb-camera-view-offline {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 12px;
+  font: var(--mb-camera-view-name-font);
+  letter-spacing: var(--mb-tracking-caption);
+  text-align: center;
+  opacity: 0.9;
+}
+
+.mb-camera-view-controls {
+  position: absolute;
+  z-index: 1;
+  inset-block-end: 0;
+  inset-inline: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px var(--mb-camera-view-inset) var(--mb-camera-view-inset);
+  background: linear-gradient(to top, rgb(0 0 0 / 0.45), rgb(0 0 0 / 0));
+}
+
+/* As a tile in the Cameras row. */
+.mb-camera-tile {
+  flex: none;
+  width: var(--mb-camera-tile-width);
+  padding: 0;
+  border: 0;
+  font: inherit;
+  text-align: start;
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+  transition: scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+.mb-camera-tile:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-camera-tile:hover .mb-camera-view-frame {
+    filter: brightness(1.08);
+  }
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .mb-camera-tile:active {
+    scale: 0.97;
+  }
+}
+
+@supports (corner-shape: squircle) {
+  .mb-camera-view {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-camera-view-radius) * var(--mb-corner-factor));
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :where(:root:not([data-transparency="full"])) {
+    .mb-camera-view-time,
+    .mb-camera-view-live {
+      background: rgb(0 0 0 / 0.78);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+}
+
+@media (prefers-contrast: more) {
+  .mb-camera-view-time,
+  .mb-camera-view-live {
+    background: rgb(0 0 0 / 0.85);
+  }
+
+  .mb-camera-view-caption {
+    background: linear-gradient(to bottom, rgb(0 0 0 / 0.75), rgb(0 0 0 / 0));
+  }
+}
+
+@media (forced-colors: active) {
+  .mb-camera-view {
+    border: 1px solid CanvasText;
+  }
+}

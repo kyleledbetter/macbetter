@@ -1,0 +1,77 @@
+export const metadata = {
+  title: "Lock Control",
+  description: "Lock or unlock a door, and ask before unlocking.",
+}
+
+# Lock Control
+
+<Lead>Lock or unlock a door, and ask before unlocking.</Lead>
+
+<Demo name="home/lock-control-basic" platforms={["ios", "ipados", "macos"]} wallpaper />
+
+## When to use it
+
+Use it in a lock's control sheet. It shows HomeKit's four lock states (locked, unlocked, jammed and unknown) and what the lock is doing while it moves.
+
+- Unlocking asks first. The HIG asks you to require authentication for actions that affect security, like unlocking the door to a house; a native app would also check Face ID or the passcode. Locking never asks.
+- Pass `target` as soon as someone presses it, and `state` when the lock reports back. While they differ, the control says "Locking…" or "Unlocking…".
+- When a lock reports jammed, say so. The control turns yellow and reads "Jammed"; pressing it tries to lock again.
+
+## Usage
+
+```tsx
+import { LockControl } from "macbetter/lock-control"
+```
+
+### Locking and unlocking
+
+<Demo name="home/lock-control-basic" platforms={["ios", "ipados", "macos"]} wallpaper />
+
+### States
+
+Locked, unlocking and jammed.
+
+<Demo name="home/lock-control-states" platforms={["ios", "ipados", "macos"]} wallpaper />
+
+## Platform behavior
+
+- **iOS and iPadOS.** A 124 × 240-point button with a continuous corner, and a confirmation alert.
+- **macOS.** 88 × 168 points, sized for a popover; the confirmation is a Mac alert.
+- **Every platform.** Unlocked is the bright look, like a lit accessory tile: it's the state that wants attention. The shackle lifts when unlocked.
+
+## Accessibility
+
+- The button is named for what it does, "Unlock Front door", and the state under it is a live region, so screen readers hear "Unlocking…" and then "Unlocked".
+- Enter or Space presses it. The alert takes focus, Escape cancels, and focus returns to the button.
+- State is in words and in the glyph's shape, not only in color.
+
+## API
+
+<PropsTable
+  rows={[
+    { name: "name", type: "string", description: "The lock's name, like \"Front door\". Required." },
+    { name: "state", type: '"secured" | "unsecured" | "jammed" | "unknown"', description: "The lock mechanism's current state. Required." },
+    { name: "target", type: '"secured" | "unsecured"', description: "What it was last asked to do." },
+    { name: "onTargetChange", type: "(target) => void", description: "Runs when someone locks it, or confirms unlocking." },
+    { name: "confirmUnlock", type: "boolean", default: "true", description: "Asks before unlocking." },
+    { name: "confirmDescription", type: "string", description: "The explanation in the unlock alert." },
+    { name: "disabled", type: "boolean", default: "false", description: "Can't be pressed, as when the lock doesn't respond." },
+  ]}
+/>
+
+### Data attributes
+
+| Attribute | On | Values |
+| --- | --- | --- |
+| `data-state` | Root | `secured`, `unsecured`, `jammed`, `unknown` |
+| `data-position` | Root | `locked`, `unlocked`: where it is, or is going |
+| `data-pending` | Root | Present while locking or unlocking |
+
+### CSS variables
+
+| Variable | macOS | iOS | What it sets |
+| --- | --- | --- | --- |
+| `--mb-lock-control-width` | `88px` | `124px` | Button width |
+| `--mb-lock-control-height` | `168px` | `240px` | Button height |
+| `--mb-lock-control-radius` | `24px` | `34px` | Corner radius |
+| `--mb-lock-control-glyph` | `44px` | `64px` | Padlock size |

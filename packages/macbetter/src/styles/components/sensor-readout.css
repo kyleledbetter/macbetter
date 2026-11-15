@@ -1,0 +1,231 @@
+/* Sensor readout — a reading in a row or a small tile. Warnings and alerts change the icon and value color, and the
+   value says what's wrong in words. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-sensor-readout-min-height: 40px;
+  --mb-sensor-readout-padding: 8px 12px;
+  --mb-sensor-readout-inset: 12px;
+  --mb-sensor-readout-icon-size: 24px;
+  --mb-sensor-readout-glyph-size: 14px;
+  --mb-sensor-readout-label-font: 400 13px/16px var(--mb-font);
+  --mb-sensor-readout-detail-font: 400 11px/14px var(--mb-font);
+  --mb-sensor-readout-value-font: 600 13px/16px var(--mb-font);
+  --mb-sensor-readout-tile-value-font: 600 22px/26px var(--mb-font-rounded);
+  --mb-sensor-group-radius: 10px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-sensor-readout-min-height: 52px;
+  --mb-sensor-readout-padding: 10px 16px;
+  --mb-sensor-readout-inset: 16px;
+  --mb-sensor-readout-icon-size: 30px;
+  --mb-sensor-readout-glyph-size: 18px;
+  --mb-sensor-readout-label-font: 400 17px/22px var(--mb-font);
+  --mb-sensor-readout-detail-font: 400 13px/18px var(--mb-font);
+  --mb-sensor-readout-value-font: 400 17px/22px var(--mb-font);
+  --mb-sensor-readout-tile-value-font: 600 28px/34px var(--mb-font-rounded);
+  --mb-sensor-group-radius: 16px;
+}
+
+.mb-sensor-readout {
+  --mb-sensor-readout-tone: var(--mb-label-secondary);
+  --mb-sensor-readout-value-color: var(--mb-label-secondary);
+  --mb-sensor-readout-fill: var(--mb-green);
+
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    "icon text value"
+    "icon meter meter";
+  align-items: center;
+  column-gap: 12px;
+  row-gap: 6px;
+  box-sizing: border-box;
+  min-height: var(--mb-sensor-readout-min-height);
+  padding: var(--mb-sensor-readout-padding);
+  color: var(--mb-label);
+}
+
+.mb-sensor-readout:not(:has(> .mb-sensor-readout-meter)) {
+  grid-template-areas: "icon text value";
+}
+
+.mb-sensor-readout:not(:has(> .mb-sensor-readout-icon)) {
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "text value"
+    "meter meter";
+}
+
+.mb-sensor-readout[data-level="warning"] {
+  --mb-sensor-readout-tone: light-dark(oklch(from var(--mb-orange) min(l, 0.58) c h), var(--mb-orange));
+  --mb-sensor-readout-value-color: var(--mb-sensor-readout-tone);
+  --mb-sensor-readout-fill: var(--mb-orange);
+}
+
+.mb-sensor-readout[data-level="alert"] {
+  --mb-sensor-readout-tone: var(--mb-destructive-text);
+  --mb-sensor-readout-value-color: var(--mb-destructive-text);
+  --mb-sensor-readout-fill: var(--mb-red);
+}
+
+.mb-sensor-readout-icon {
+  grid-area: icon;
+  display: grid;
+  place-items: center;
+  width: var(--mb-sensor-readout-icon-size);
+  height: var(--mb-sensor-readout-icon-size);
+  border-radius: var(--mb-radius-full);
+  background: var(--mb-fill-tertiary);
+  color: var(--mb-sensor-readout-tone);
+}
+
+.mb-sensor-readout[data-level="alert"] .mb-sensor-readout-icon {
+  background: oklch(from var(--mb-red) 0.6 0.21 h);
+  color: white;
+}
+
+.mb-sensor-readout-icon > :where(svg) {
+  width: var(--mb-sensor-readout-glyph-size);
+  height: var(--mb-sensor-readout-glyph-size);
+}
+
+.mb-sensor-readout-text {
+  grid-area: text;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.mb-sensor-readout-label {
+  overflow: hidden;
+  font: var(--mb-sensor-readout-label-font);
+  letter-spacing: var(--mb-tracking-body);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.mb-sensor-readout-detail {
+  color: var(--mb-label-secondary);
+  font: var(--mb-sensor-readout-detail-font);
+  letter-spacing: var(--mb-tracking-caption);
+}
+
+.mb-sensor-readout-value {
+  grid-area: value;
+  color: var(--mb-sensor-readout-value-color);
+  font: var(--mb-sensor-readout-value-font);
+  letter-spacing: var(--mb-tracking-body);
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+  white-space: nowrap;
+}
+
+.mb-sensor-readout:is([data-level="warning"], [data-level="alert"]) .mb-sensor-readout-value {
+  font-weight: 600;
+}
+
+.mb-sensor-readout-meter {
+  grid-area: meter;
+  display: block;
+}
+
+.mb-sensor-readout-meter-track {
+  position: relative;
+  display: block;
+  height: 4px;
+  overflow: hidden;
+  border-radius: var(--mb-radius-full);
+  background: var(--mb-fill-secondary);
+}
+
+.mb-sensor-readout-meter-indicator {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  border-radius: inherit;
+  background: var(--mb-sensor-readout-fill);
+}
+
+/* A tile: icon, then the value large, then what it measures. */
+.mb-sensor-readout[data-layout="tile"] {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "icon"
+    "value"
+    "text"
+    "meter";
+  align-items: start;
+  align-content: start;
+  row-gap: 4px;
+  min-width: 0;
+  padding: 12px;
+  border-radius: var(--mb-sensor-group-radius);
+  background: var(--mb-fill-quaternary);
+  box-shadow: inset 0 0 0 var(--mb-hairline) var(--mb-separator);
+}
+
+.mb-sensor-readout[data-layout="tile"] .mb-sensor-readout-icon {
+  margin-block-end: 4px;
+}
+
+.mb-sensor-readout[data-layout="tile"] .mb-sensor-readout-value {
+  color: var(--mb-label);
+  font: var(--mb-sensor-readout-tile-value-font);
+  text-align: start;
+}
+
+.mb-sensor-readout[data-layout="tile"]:is([data-level="warning"], [data-level="alert"]) .mb-sensor-readout-value {
+  color: var(--mb-sensor-readout-value-color);
+}
+
+.mb-sensor-readout[data-layout="tile"] .mb-sensor-readout-label {
+  color: var(--mb-label-secondary);
+  font: var(--mb-sensor-readout-detail-font);
+}
+
+.mb-sensor-readout[data-layout="tile"] .mb-sensor-readout-meter {
+  margin-block-start: 6px;
+}
+
+/* A group of rows on one rounded surface, with inset separators. */
+.mb-sensor-group {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--mb-sensor-group-radius);
+  background: var(--mb-bg-grouped-secondary);
+  box-shadow: inset 0 0 0 var(--mb-hairline) light-dark(var(--mb-separator), transparent);
+}
+
+.mb-sensor-group > .mb-sensor-readout {
+  position: relative;
+}
+
+/* The separator starts where the text does, as in an inset list. */
+.mb-sensor-group > .mb-sensor-readout + .mb-sensor-readout::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: var(--mb-sensor-group-separator-start, var(--mb-sensor-readout-inset)) 0;
+  height: var(--mb-hairline);
+  background: var(--mb-separator);
+}
+
+.mb-sensor-group > .mb-sensor-readout + .mb-sensor-readout:has(> .mb-sensor-readout-icon) {
+  --mb-sensor-group-separator-start: calc(var(--mb-sensor-readout-inset) + var(--mb-sensor-readout-icon-size) + 12px);
+}
+
+@supports (corner-shape: squircle) {
+  .mb-sensor-group,
+  .mb-sensor-readout[data-layout="tile"] {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-sensor-group-radius) * var(--mb-corner-factor));
+  }
+}
+
+@media (forced-colors: active) {
+  .mb-sensor-readout-meter-indicator {
+    background: Highlight;
+  }
+}

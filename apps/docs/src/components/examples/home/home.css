@@ -1,0 +1,345 @@
+/* Home example. The components bring their own look; this lays them out on a room wallpaper. */
+
+/* The Home app sets a blurred wallpaper behind everything; translucent tiles read against it. */
+.ex-home-wallpaper,
+.ex-app-root.ex-home-wallpaper {
+  background-color: var(--mb-bg);
+  background-image:
+    radial-gradient(120% 70% at 10% 0%, light-dark(color-mix(in oklch, var(--mb-orange) 34%, transparent), color-mix(in oklch, var(--mb-orange) 30%, transparent)), transparent 70%),
+    radial-gradient(90% 60% at 100% 35%, light-dark(color-mix(in oklch, var(--mb-teal) 26%, transparent), color-mix(in oklch, var(--mb-indigo) 34%, transparent)), transparent 70%),
+    radial-gradient(110% 70% at 30% 100%, light-dark(color-mix(in oklch, var(--mb-pink) 20%, transparent), color-mix(in oklch, var(--mb-purple) 26%, transparent)), transparent 70%),
+    linear-gradient(light-dark(color-mix(in oklch, var(--mb-yellow) 10%, var(--mb-bg)), color-mix(in oklch, black 30%, var(--mb-bg))), light-dark(var(--mb-bg-secondary), var(--mb-bg)));
+  background-attachment: local, local, local, local;
+}
+
+.ex-home-phone .mb-tab-bar,
+.ex-home-phone .mb-tab-bar-panel {
+  background-color: transparent;
+}
+
+.ex-app-root.ex-home-phone {
+  background-attachment: scroll;
+}
+
+.ex-home-stack {
+  padding-bottom: 110px;
+  background: transparent;
+}
+
+.ex-home-overview {
+  display: grid;
+  gap: 22px;
+  padding: 4px 16px 24px;
+}
+
+.ex-home-room-summary {
+  margin: -6px 0 0;
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-subheadline);
+}
+
+/* Cameras: a row that scrolls sideways on iPhone, a grid on the Mac. */
+/* Grid children default to min-width: auto, which would let the camera row widen the whole column. */
+.ex-home-overview > * {
+  min-width: 0;
+}
+
+.ex-home-cameras {
+  display: flex;
+  gap: 10px;
+  margin-inline: -16px;
+  padding-inline: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 16px;
+  scrollbar-width: none;
+}
+
+.ex-home-cameras > * {
+  scroll-snap-align: start;
+}
+
+@scope ([data-platform="macos"]) to (:scope [data-platform]) {
+  .ex-home-cameras {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    --mb-camera-tile-width: 100%;
+    margin-inline: 0;
+    padding-inline: 0;
+    overflow: visible;
+  }
+
+  .ex-home-overview {
+    gap: 20px;
+    padding: 18px 24px 32px;
+  }
+}
+
+/* ── Control sheet ─────────────────────────────────────────────── */
+
+.ex-home-sheet {
+  overflow-y: auto;
+}
+
+.ex-home-controls-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 22px 18px 8px;
+}
+
+.ex-home-controls-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--mb-fill-secondary);
+  color: var(--mb-label);
+  font-size: 22px;
+}
+
+.ex-home-controls-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.ex-home-controls-title {
+  display: grid;
+  flex: 1 1 auto;
+  min-width: 0;
+  font: var(--mb-text-body);
+}
+
+.ex-home-controls-title strong {
+  font: var(--mb-text-headline);
+}
+
+.ex-home-controls-title span {
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-subheadline);
+}
+
+.ex-home-controls {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 18px 18px 32px;
+}
+
+.ex-home-controls > :is(.mb-sensor-group, .mb-button, .ex-home-switch-row) {
+  align-self: stretch;
+}
+
+.ex-home-controls[data-compact] {
+  gap: 14px;
+  padding: 10px 4px 6px;
+}
+
+.ex-home-controls-caption {
+  margin: 0;
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-footnote);
+  text-align: center;
+}
+
+.ex-home-camera-controls > .mb-camera-view {
+  align-self: stretch;
+}
+
+.ex-home-now-playing {
+  display: grid;
+  margin: 0;
+  font: var(--mb-text-headline);
+  text-align: center;
+}
+
+.ex-home-muted {
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-subheadline);
+}
+
+.ex-home-switch-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: var(--mb-row-height);
+  padding-inline: 16px;
+  border-radius: var(--mb-group-radius);
+  background: var(--mb-bg-grouped-secondary);
+  font: var(--mb-text-body);
+}
+
+/* Sits beside the sheet's centered title, like a navigation bar's trailing button. */
+.ex-home-sheet-done {
+  position: absolute;
+  z-index: 3;
+  top: 10px;
+  inset-inline-end: 8px;
+}
+
+.ex-home-editor-actions {
+  display: grid;
+  gap: 10px;
+  padding: 4px 16px 32px;
+}
+
+/* An action sheet inside the phone screen, for unlocking and opening. */
+.ex-home-confirm-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.ex-home-confirm-backdrop {
+  position: absolute;
+  inset: 0;
+  background: var(--mb-scrim);
+}
+
+.ex-home-confirm {
+  position: relative;
+  display: grid;
+  gap: 8px;
+  padding: 0 10px 34px;
+  animation: ex-sheet-in var(--mb-spring-sheet-duration) var(--mb-spring-sheet) both;
+}
+
+.ex-home-confirm-group,
+.ex-home-confirm-cancel {
+  overflow: hidden;
+  border-radius: 14px;
+  background: var(--mb-material-thick);
+  -webkit-backdrop-filter: var(--mb-material-filter);
+  backdrop-filter: var(--mb-material-filter);
+}
+
+.ex-home-confirm-title {
+  margin: 0;
+  padding: 14px 16px;
+  border-bottom: var(--mb-hairline) solid var(--mb-separator);
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-footnote);
+  font-weight: 600;
+  text-align: center;
+}
+
+.ex-home-confirm-group .ex-home-confirm-action {
+  height: 56px;
+  border-radius: 0;
+  color: var(--mb-destructive-text);
+  font: var(--mb-text-title-3);
+  font-weight: 400;
+}
+
+.ex-home-confirm-cancel.mb-button {
+  height: 56px;
+  font: var(--mb-text-title-3);
+  font-weight: 600;
+}
+
+/* ── Setup ─────────────────────────────────────────────────────── */
+
+.ex-home-setup {
+  display: grid;
+  gap: 14px;
+  justify-items: center;
+  padding: 28px 22px 32px;
+  text-align: center;
+}
+
+.ex-home-setup > :is(.mb-button, .mb-field, .mb-radio-group) {
+  justify-self: stretch;
+  text-align: start;
+}
+
+.ex-home-setup-title {
+  margin: 0;
+  font: var(--mb-text-title-2);
+  letter-spacing: var(--mb-tracking-title);
+}
+
+.ex-home-setup-copy {
+  margin: 0;
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-body);
+}
+
+.ex-home-setup-scanner {
+  justify-self: stretch;
+}
+
+.ex-home-setup-device {
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  border-radius: 22px;
+  background: var(--mb-fill-secondary);
+  color: var(--mb-label);
+}
+
+.ex-home-setup-device[data-done] {
+  background: color-mix(in oklch, var(--mb-green) 22%, transparent);
+  color: var(--mb-green);
+}
+
+.ex-home-setup-device svg {
+  width: 48px;
+  height: 48px;
+}
+
+.ex-home-setup-hint[data-problem] {
+  color: var(--mb-destructive-text);
+}
+
+/* ── Mac ───────────────────────────────────────────────────────── */
+
+.ex-home-app-glyph {
+  color: var(--mb-orange);
+}
+
+.ex-home-mac-body {
+  overflow-y: auto;
+}
+
+.ex-home-mac-automation {
+  max-width: 640px;
+  padding: 18px 24px;
+}
+
+.ex-home-popover {
+  width: 300px;
+  padding: 4px 10px 12px;
+}
+
+.ex-home-popover .ex-home-controls-header {
+  padding: 10px 6px 4px;
+}
+
+.ex-home-popover-camera {
+  width: 420px;
+}
+
+.ex-home-dialog {
+  width: min(520px, 90vw);
+}
+
+.ex-home-dialog .ex-home-editor-actions {
+  padding-inline: 0;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .ex-home-confirm-group,
+  .ex-home-confirm-cancel {
+    background: var(--mb-bg-elevated);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}

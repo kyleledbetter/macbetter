@@ -1,0 +1,80 @@
+export const metadata = { title: "Setup Code", description: "Show an accessory's setup code, frame a code for scanning, and let people type one by hand." }
+
+# Setup Code
+
+<Lead>Show an accessory's setup code, frame a code for scanning, and let people type one by hand.</Lead>
+
+<Demo name="home/setup-code-flow" platforms={["ios", "ipados"]} />
+
+## When to use it
+
+Adding an accessory to Apple Home means scanning its QR code or entering its code: an 8-digit Apple Home setup code on the accessory, its box or its documentation, or an 11- or 21-digit pairing code for a Matter accessory. Then people name it and assign it to a room.
+
+The HIG is clear that a real app should use the system's setup flow (`HMAccessorySetupManager`), which handles pairing, naming, the room and favorites in a few steps. Use these components for what comes around it: a code printed in your manual or packaging, a mockup of the flow, or an app's own help screens.
+
+- Don't ask people to create an account before setup. Offer it afterwards, if at all.
+- After setup, suggest a name that follows the HIG's naming rules and teach a Siri phrase with it.
+
+<Callout type="warning" title="No Apple marks">
+  These components draw no HomeKit icon, Apple Home icon or Works with Apple Home badge, and nothing that imitates them.
+  Those marks are licensed by Apple: the HIG says to use only Apple-provided icons, and the badge requires Matter
+  certification and Apple's artwork license agreement. If your product qualifies, get the artwork from Apple.
+</Callout>
+
+## Usage
+
+```tsx
+import { SetupCode, SetupCodeField, SetupCodeScanner } from "macbetter/setup-code"
+```
+
+### Showing a code
+
+`SetupCode` groups the digits the way they're printed on accessories: 3, 2 and 3 for a setup code, and 4, 3 and 4 for an 11-digit Matter code. Apple's documentation gives the number of digits but not the grouping; the grouping comes from the labels on accessories.
+
+<Demo name="home/setup-code-basic" platforms={["ios", "ipados", "macos"]} />
+
+### Scanning and typing
+
+`SetupCodeScanner` draws the frame and the instruction. Put a camera preview inside it in an app that has one; on its own, it's a dark placeholder. `SetupCodeField` is a [Code Field](/docs/components/code-field) with 8 cells in runs of 3, 2 and 3 that accepts digits only. `format="matter"` gives 11 cells.
+
+## Platform behavior
+
+- **iOS and iPadOS.** Larger digits and a 260-point scanner. Accessories can only be added from iPhone or iPad; the Mac's Home app sends people there.
+- **macOS.** Smaller digits and a 220-point frame, for codes shown in help or settings.
+- **Every platform.** Digits read left to right in right-to-left languages.
+
+## Accessibility
+
+- `SetupCode` reads as one image named "Setup code" followed by each digit, so screen readers say "4 8 2…" and not "four hundred eighty-two".
+- `SetupCodeField` is a single text input with a numeric keyboard; name it with a `FieldLabel`. It ignores anything but digits.
+- The scanner's frame is decorative; the instruction is text.
+
+## API
+
+### SetupCode
+
+<PropsTable
+  rows={[
+    { name: "code", type: "string", description: "The digits, with or without dashes." },
+    { name: "format", type: '"homekit" | "matter"', default: '"homekit"', description: "How the digits are grouped." },
+    { name: "label", type: "string", default: '"Setup code"', description: "Names the code." },
+  ]}
+/>
+
+### SetupCodeScanner
+
+<PropsTable
+  rows={[
+    { name: "instruction", type: "ReactNode", default: '"Position the code in the frame."', description: "The text under the frame." },
+    { name: "children", type: "ReactNode", description: "A camera preview." },
+  ]}
+/>
+
+### SetupCodeField
+
+Takes Code Field's props except `length` and `groupSize`, plus `format`.
+
+| Variable | What it sets |
+| --- | --- |
+| `--mb-setup-code-font` | The digits |
+| `--mb-setup-code-scanner-size` | The scanner's width |

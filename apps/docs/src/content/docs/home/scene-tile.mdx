@@ -1,0 +1,62 @@
+export const metadata = { title: "Scene Tile", description: "Run a scene, a group of actions that sets several accessories at once." }
+
+# Scene Tile
+
+<Lead>Run a scene, a group of actions that sets several accessories at once.</Lead>
+
+<Demo name="home/scene-tile-basic" platforms={["ios", "ipados", "macos"]} wallpaper />
+
+## When to use it
+
+A scene sets several accessories with one tap: Good Morning raises the blinds and turns on the kitchen lights, Movie Time dims the living room. The HIG asks you to call it a scene in your interface, even though HomeKit's API calls it an action set.
+
+- Name scenes for the moment, not the devices: "Good Night", "Dinner Party".
+- Mark a scene `active` when every accessory in it is set the way the scene sets it. The Home app shows it as on.
+- Mark it `running` while its accessories are still changing.
+- In a scene's detail view, the HIG suggests teaching the Siri phrase: You can say "Hey Siri, set Movie Time."
+
+## Usage
+
+```tsx
+import { SceneRow, SceneTile } from "macbetter/scene-tile"
+```
+
+Put tiles in a `SceneRow` and name the row. `SceneTile` is a button: run the scene from `onClick`.
+
+## Platform behavior
+
+- **iOS.** The row shows two tiles abreast and scrolls sideways, snapping to each tile. Tiles give on press.
+- **iPadOS and macOS.** The row wraps into a grid. On macOS the tile brightens under the pointer and on press.
+- **Every platform.** An active scene has the bright on look, with its icon in an accent-colored circle.
+
+## Accessibility
+
+- Each tile is a button named by the scene. An active tile adds "On" to its name for assistive tech.
+- A running tile sets `aria-busy` and shows a spinner in place of its icon.
+- The row is a group; give it `aria-label="Scenes"`.
+
+## API
+
+<PropsTable
+  rows={[
+    { name: "icon", type: "ReactNode", description: "The scene's glyph." },
+    { name: "name", type: "ReactNode", description: "The scene's name. Children work too." },
+    { name: "active", type: "boolean", default: "false", description: "Every accessory is set the way the scene sets it." },
+    { name: "running", type: "boolean", default: "false", description: "The scene's accessories are still changing." },
+    { name: "size", type: '"sm" | "md"', default: '"md"', description: "md is the Home tab's tile; sm is a shorter one for dense lists." },
+    { name: "activeLabel", type: "string", default: '"On"', description: "What assistive tech hears for active, in the page's language." },
+  ]}
+/>
+
+`SceneTile` takes the rest of ui-sdk `Button`'s props. `SceneRow` is a `div`.
+
+| Attribute | Values |
+| --- | --- |
+| `data-size` | `sm`, `md` |
+| `data-active`, `data-running` | Present when set |
+
+| Variable | What it sets |
+| --- | --- |
+| `--mb-scene-tile-height`, `--mb-scene-tile-radius` | The tile's height and corners |
+| `--mb-scene-tile-min-width` | The narrowest a tile gets in a wrapping row |
+| `--mb-scene-row-gap` | The space between tiles |

@@ -1,0 +1,52 @@
+/* Automation row — a List row whose body opens the automation and whose switch turns it on or off.
+   The open button lies under the row's text and the switch sits above it, so the two never nest. */
+
+.mb-automation-row {
+  isolation: isolate;
+}
+
+.mb-automation-row-open {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mb-automation-row-open:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: calc(var(--mb-focus-ring-width) * -1);
+}
+
+.mb-automation-row > :where(.mb-list-row-icon, .mb-list-row-title, .mb-list-row-subtitle) {
+  pointer-events: none;
+}
+
+.mb-automation-row-switch {
+  position: relative;
+  z-index: 1;
+}
+
+/* A turned-off automation keeps its row; its title and icon step back. */
+.mb-automation-row:has(> .mb-automation-row-switch[data-off]) > :where(.mb-list-row-title) {
+  color: var(--mb-label-secondary);
+}
+
+.mb-automation-row:has(> .mb-automation-row-switch[data-off]) > :where(.mb-list-row-icon) {
+  opacity: 0.55;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-automation-row:has(> .mb-automation-row-open:hover) {
+    background: var(--mb-fill-quaternary);
+  }
+}
+
+.mb-automation-row:has(> .mb-automation-row-open:active) {
+  background: var(--mb-fill-tertiary);
+}
