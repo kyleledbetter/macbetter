@@ -20,7 +20,7 @@ Nothing else depends on the lights. Without them, a centered title stays centere
 
 ## When to use it
 
-Use a window to give an app that runs in the browser the frame of a Mac app: a title bar with its toolbar, an inset glass sidebar and the content beside it. Use it as well to present a Mac app inside a web page, like a product tour or a marketing screenshot that people can use.
+Use a window to give an app that runs in the browser the frame of a Mac app: a title bar with its toolbar, a full-height sidebar and the content beside it. Use it as well to present a Mac app inside a web page, like a product tour or a marketing screenshot that people can use.
 
 To present an iPhone or iPad layout, use a [device frame](/docs/components/device-frame).
 
@@ -109,11 +109,19 @@ Dense tools, like a log viewer or a database console, use the 28-point `compact`
 
 ### Traffic lights in a Mac mock-up
 
-To draw a Mac app, put the traffic lights at the top of the sidebar, where macOS puts them. Put a `WindowSidebar` first and it becomes a pane of glass inset from the window's edges, spanning the full height. The title bar and body take the column beside it, and a [Toolbar](/docs/components/toolbar) in the title bar becomes the unified toolbar. A [Sidebar](/docs/components/sidebar) inside drops its own material, so glass never sits on glass.
+To draw a Mac app, put the traffic lights at the top of the sidebar, where macOS puts them. Put a `WindowSidebar` first and it runs the full height of the window, edge to edge, with a hairline against the content. The title bar and body take the column beside it, and a [Toolbar](/docs/components/toolbar) in the title bar becomes the unified toolbar. A [Sidebar](/docs/components/sidebar) inside drops its own material, so one material never sits on another.
 
 When the window gets narrow, the toolbar's search field folds into a magnifying glass before anything else gives way, and below 540 points the sidebar hides, as a Mac window does when you drag it small.
 
 <Demo name="window/finder" platforms={["macos"]} wallpaper height={560} />
+
+### Sidebar style
+
+The sidebar runs edge to edge by default. macOS 26 drew it as a floating pane of glass, inset from the window with its own shadow; macOS 27 went back to a sidebar that meets the window's edges. Pass `variant="floating"` if you want the earlier look.
+
+```tsx
+<WindowSidebar variant="floating">…</WindowSidebar>
+```
 
 ### Traffic lights that work
 
@@ -188,7 +196,7 @@ Slots for a title bar with a centered title. `WindowTitlebarLeading` holds what 
 
 ### WindowSidebarHeader
 
-The top of a `WindowSidebar`, as tall as the title bar minus the sidebar's inset. It holds traffic lights, a `WindowAppName`, a menu trigger, or nothing, and keeps its height when empty. A menu trigger or app name inside lines its content up with the sidebar rows. A second item goes to the trailing edge. Takes the props of a `div`.
+The top of a `WindowSidebar`, as tall as the title bar (less the inset when the sidebar floats). It holds traffic lights, a `WindowAppName`, a menu trigger, or nothing, and keeps its height when empty. A menu trigger or app name inside lines its content up with the sidebar rows. A second item goes to the trailing edge. Takes the props of a `div`.
 
 ### WindowAppName
 
@@ -211,7 +219,19 @@ Put it in a `WindowSidebarHeader` or `WindowTitlebarLeading`, or inside a `MenuT
   ]}
 />
 
-`WindowSidebar` and `WindowBody` take the props of a `div`.
+`WindowBody` takes the props of a `div`. `WindowSidebar` does too, plus `variant`:
+
+<PropsTable
+  rows={[
+    {
+      name: "variant",
+      type: '"edge" | "floating"',
+      default: '"edge"',
+      description:
+        "`edge` runs the sidebar edge to edge at full height, as current macOS draws it. `floating` insets it as a pane of glass with its own shadow, as macOS 26 did.",
+    },
+  ]}
+/>
 
 ### Data attributes and CSS variables
 
@@ -222,7 +242,9 @@ Put it in a `WindowSidebarHeader` or `WindowTitlebarLeading`, or inside a `MenuT
 | `data-align` | `.mb-window-title` | `leading` or `center`. |
 | `data-light` | `.mb-window-traffic-light` | `close`, `minimize` or `zoom`. |
 | `--mb-window-radius` | `.mb-window` | Corner radius. 16 points. |
-| `--mb-window-sidebar-width` | `.mb-window` | Width of the inset sidebar. 220 points. |
+| `--mb-window-sidebar-width` | `.mb-window` | Width of the sidebar. 220 points. |
+| `--mb-window-sidebar-inset` | `.mb-window` | Space around a floating sidebar. 0 for the edge-to-edge sidebar, 6 points when floating. |
+| `data-variant` | `.mb-window-sidebar` | `edge` or `floating`. |
 | `--mb-window-titlebar-height` | `.mb-window` | Height of the unified title bar. The sidebar header follows it. |
 | `--mb-window-titlebar-padding-start` | `.mb-window-titlebar` | Space before the first item. 16 points, 8 when compact. |
 | `--mb-window-titlebar-padding-end` | `.mb-window-titlebar` | Space after the last item. 8 points. |

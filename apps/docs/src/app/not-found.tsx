@@ -21,11 +21,11 @@ export default function NotFound() {
           <MacbetterMark size={64} tone="ember" />
           <p className="stack-eyebrow type-eyebrow-reduced mt-8">Page not found</p>
           <h1 className="stack-headline type-headline-elevated">
-            This page drifted&nbsp;off.
+            This page doesn’t&nbsp;exist.
           </h1>
           <p className="stack-copy type-intro type-two-tone">
             The address may be mistyped, or the page may have moved.{" "}
-            <strong>These are good places to pick up&nbsp;again.</strong>
+            <strong>Try one of these pages&nbsp;instead.</strong>
           </p>
           <nav aria-label="Suggested pages" className="stack-links type-body">
             {destinations.map((destination) => (

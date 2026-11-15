@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react"
 
 const styles = [
   { name: "Headline super", className: "type-headline-super", sample: "Ship it everywhere." },
-  { name: "Headline elevated", className: "type-headline-elevated", sample: "One codebase." },
+  { name: "Headline elevated", className: "type-headline-elevated", sample: "A section headline" },
   { name: "Headline", className: "type-headline", sample: "Any brand." },
   { name: "Headline reduced", className: "type-headline-reduced", sample: "Explore the docs." },
   { name: "Eyebrow", className: "type-eyebrow", sample: "Materials and motion" },

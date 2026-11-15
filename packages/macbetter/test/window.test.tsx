@@ -129,3 +129,19 @@ test("an app name inside a menu trigger becomes a workspace switcher that opens 
   await user.click(await screen.findByRole("menuitem", { name: "Acme Studio" }))
   expect(onAction).toHaveBeenCalledWith("acme", expect.anything())
 })
+
+test("a sidebar runs edge to edge unless it's asked to float", () => {
+  const { container } = render(
+    <>
+      <Window aria-label="One">
+        <WindowSidebar>Sidebar</WindowSidebar>
+      </Window>
+      <Window aria-label="Two">
+        <WindowSidebar variant="floating">Sidebar</WindowSidebar>
+      </Window>
+    </>
+  )
+  const [edge, floating] = Array.from(container.querySelectorAll<HTMLElement>(".mb-window-sidebar"))
+  expect(edge?.dataset.variant).toBe("edge")
+  expect(floating?.dataset.variant).toBe("floating")
+})

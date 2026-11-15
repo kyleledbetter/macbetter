@@ -19,8 +19,8 @@ function Hero() {
           className="stack-copy lp-hero-intro type-intro-elevated type-two-tone lp-enter"
           style={{ "--i": 2 } as React.CSSProperties}
         >
-          A set of React components that look and behave like Apple’s own controls.{" "}
-          <strong>Theme it to any brand, ship it to every screen,</strong> and let ui-sdk handle the keyboard, focus
+          macbetter is a set of React components that look and behave like Apple’s controls on macOS, iPadOS
+          and iOS. <strong>You can theme them for your brand,</strong> and ui-sdk handles the keyboard, focus
           and&nbsp;accessibility.
         </p>
         <div className="lp-hero-actions lp-enter" style={{ "--i": 3 } as React.CSSProperties} data-platform="macos">

@@ -128,8 +128,16 @@ function WindowTitlebarTrailing({ className, ...props }: React.ComponentProps<"d
   return <div className={join("mb-window-titlebar-trailing", className)} {...props} />
 }
 
-function WindowSidebar({ className, ...props }: React.ComponentProps<"div">) {
-  return <div className={join("mb-window-sidebar", className)} {...props} />
+type WindowSidebarProps = React.ComponentProps<"div"> & {
+  /**
+   * `edge` runs the sidebar the full height of the window, edge to edge, as current macOS does.
+   * `floating` insets it as a pane of glass with its own shadow, as macOS 26 did.
+   */
+  variant?: "edge" | "floating"
+}
+
+function WindowSidebar({ variant = "edge", className, ...props }: WindowSidebarProps) {
+  return <div data-variant={variant} className={join("mb-window-sidebar", className)} {...props} />
 }
 
 /**
@@ -176,4 +184,11 @@ export {
   WindowTitlebarTrailing,
   WindowTrafficLights,
 }
-export type { WindowAppNameProps, WindowProps, WindowTitlebarProps, WindowTitleProps, WindowTrafficLightsProps }
+export type {
+  WindowAppNameProps,
+  WindowProps,
+  WindowSidebarProps,
+  WindowTitlebarProps,
+  WindowTitleProps,
+  WindowTrafficLightsProps,
+}

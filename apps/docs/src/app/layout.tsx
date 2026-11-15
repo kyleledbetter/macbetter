@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://macbetter.dev"),
   title: { default: `macbetter — ${tagline}`, template: "%s · macbetter" },
   description:
-    "macbetter is a design system: Apple-grade components for the web, themeable to any brand and built on ui-sdk.",
+    "macbetter is a design system: Apple-style components for the web, themeable to any brand and built on ui-sdk.",
   applicationName: "macbetter",
   authors: [{ name: "Kyle Ledbetter", url: "https://github.com/kyleledbetter" }],
   creator: "Kyle Ledbetter",

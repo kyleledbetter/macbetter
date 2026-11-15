@@ -64,11 +64,7 @@ function Foundation() {
         id="lp-foundation"
         eyebrow="Accessibility and agents"
         headline={
-          <>
-            Built on ui-sdk.
-            <br />
-            Ready for people and&nbsp;agents.
-          </>
+<>Keyboard, focus and screen reader support come from the UI&nbsp;SDK.</>
         }
         links={
           <>

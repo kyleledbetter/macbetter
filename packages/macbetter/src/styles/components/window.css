@@ -1,10 +1,11 @@
-/* Window — a macOS window: title bar, traffic lights, an inset glass sidebar and the content. */
+/* Window — a macOS window: title bar, optional traffic lights, a full-height sidebar and the content. */
 
 .mb-window {
   --mb-window-radius: var(--mb-radius-xl);
   --mb-window-titlebar-height: var(--mb-bar-height);
   --mb-window-sidebar-width: 220px;
-  --mb-window-sidebar-inset: 6px;
+  /* 0 for the edge-to-edge sidebar; the floating variant insets it. */
+  --mb-window-sidebar-inset: 0px;
   /* The traffic lights are system chrome: they keep Apple's colors in every theme. */
   --mb-window-close: #ff5f57;
   --mb-window-minimize: #febc2e;
@@ -38,6 +39,10 @@
 
 .mb-window:has(> .mb-window-sidebar) > :not(.mb-window-sidebar) {
   grid-column: 2;
+}
+
+.mb-window:has(> .mb-window-sidebar[data-variant="floating"]) {
+  --mb-window-sidebar-inset: 6px;
 }
 
 /* Title bar */
@@ -256,7 +261,10 @@ button.mb-window-traffic-light:focus-visible {
   box-shadow: none;
 }
 
-/* Sidebar: a floating pane of glass, inset from the window's edges. */
+/*
+ * Sidebar: runs the full height of the window, edge to edge, with a hairline
+ * against the content, as current macOS draws it.
+ */
 .mb-window-sidebar {
   --mb-sidebar-bg: transparent;
   --mb-sidebar-filter: none;
@@ -273,10 +281,22 @@ button.mb-window-traffic-light:focus-visible {
   margin: var(--mb-window-sidebar-inset);
   margin-inline-end: 0;
   overflow: hidden;
-  border-radius: calc(var(--mb-window-radius) - var(--mb-window-sidebar-inset));
   background: var(--mb-material-sidebar);
   -webkit-backdrop-filter: var(--mb-material-filter);
   backdrop-filter: var(--mb-material-filter);
+  box-shadow: inset calc(var(--mb-hairline) * -1) 0 0 var(--mb-separator);
+  /* Its own leading corners match the window's: a blurred layer isn't always clipped by its parent's curve. */
+  border-start-start-radius: var(--mb-window-radius);
+  border-end-start-radius: var(--mb-window-radius);
+}
+
+:where([dir="rtl"]) .mb-window-sidebar {
+  box-shadow: inset var(--mb-hairline) 0 0 var(--mb-separator);
+}
+
+/* Floating: a pane of glass inset from the window's edges with its own shadow, as macOS 26 drew it. */
+.mb-window-sidebar[data-variant="floating"] {
+  border-radius: calc(var(--mb-window-radius) - var(--mb-window-sidebar-inset));
   box-shadow:
     var(--mb-glass-rim),
     0 0 0 var(--mb-hairline) var(--mb-glass-border),
@@ -388,7 +408,7 @@ button.mb-window-traffic-light:focus-visible {
   background: var(--mb-bg);
 }
 
-/* Continuous corners on the window and, concentric with them, the inset sidebar. Traffic lights stay round. */
+/* Continuous corners on the window and, concentric with them, a floating sidebar. Traffic lights stay round. */
 @supports (corner-shape: squircle) {
   .mb-window {
     corner-shape: var(--mb-corner-shape);
@@ -396,6 +416,12 @@ button.mb-window-traffic-light:focus-visible {
   }
 
   .mb-window-sidebar {
+    corner-shape: var(--mb-corner-shape);
+    border-start-start-radius: calc(var(--mb-window-radius) * var(--mb-corner-factor));
+    border-end-start-radius: calc(var(--mb-window-radius) * var(--mb-corner-factor));
+  }
+
+  .mb-window-sidebar[data-variant="floating"] {
     corner-shape: var(--mb-corner-shape);
     border-radius: calc((var(--mb-window-radius) - var(--mb-window-sidebar-inset)) * var(--mb-corner-factor));
   }

@@ -97,9 +97,7 @@ function ExamplesGallery() {
         <header className="stack ex-index-header">
           <p className="stack-eyebrow docs-eyebrow">Examples</p>
           <h1 className="stack-headline type-headline">
-            Four apps.
-            <br />
-            Nothing but&nbsp;macbetter.
+            Better examples for better&nbsp;apps.
           </h1>
           <p className="stack-copy type-intro type-two-tone">
             Settings, Mail, Analytics and Music, built only from macbetter components.{" "}

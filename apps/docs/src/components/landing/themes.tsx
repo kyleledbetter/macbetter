@@ -76,7 +76,7 @@ function Themes() {
               </>
             }
           >
-            A theme answers about a dozen questions: the accent, the ink, the surfaces, a tint for fills, a radius
+            A theme sets about a dozen values: the accent, the text color, the surfaces, a tint for fills, a radius
             scale and a font. <strong>Every other color, shadow and corner derives from those seeds,</strong> in
             light and&nbsp;dark.
           </SectionHeading>

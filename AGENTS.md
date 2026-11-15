@@ -1,6 +1,6 @@
 # macbetter — working agreement
 
-macbetter is a design system: macOS, iPadOS and iOS in one web framework, themeable to any brand, built on [ui-sdk](https://ui-sdk.dev). The bar is Apple's own: if a control wouldn't pass for the native one at a glance and under the hand, it isn't done.
+macbetter is a design system: macOS, iPadOS and iOS in one web framework, themeable to any brand, built on [ui-sdk](https://ui-sdk.dev). The bar is Apple's own: if a control wouldn't pass for the native one when you look at it and use it, it isn't done.
 
 ## Layout
 
@@ -104,7 +104,7 @@ export const metadata = { title: "Switch", description: "Turn a setting on or of
 - Demos are centered in a flex row with wrapping. Wrap in your own `<div>` to lay out a column, using Tailwind classes or inline `style`.
 - Other MDX helpers: `<Callout type="note|tip|warning" title="…">`, `<Steps>`, fenced code blocks.
 - Icons in demos come from `lucide-react`, always with `aria-hidden="true"` beside a text label, or inside a button that has `aria-label`.
-- **Writing.** Plain, direct, second person. Sentence case headings. Say what the thing does and when to use it. No marketing words, no "seamless", no "powerful", no emoji.
+- **Writing.** Plain, direct, second person. Sentence case headings. Say what the thing does and when to use it. No marketing words, no "seamless", no "powerful", no emoji. No slogan headlines: never the two-beat pattern ("Three platforms. One codebase."), paired fragments, or clever phrasing. A headline is one plain sentence that says what the thing is or does. Write "macbetter" in lowercase everywhere, including at the start of a sentence.
 
 ## Verify before you report
 

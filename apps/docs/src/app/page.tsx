@@ -18,9 +18,9 @@ import { socialMetadata, tagline } from "@/lib/og/routes"
 export const metadata: Metadata = {
   title: { absolute: `macbetter — ${tagline}` },
   description:
-    "macbetter is a design system: Apple-grade React components for macOS, iPadOS and iOS, themeable to any brand and built on ui-sdk.",
+    "macbetter is a design system: Apple-style React components for macOS, iPadOS and iOS, themeable to any brand and built on ui-sdk.",
   alternates: { canonical: "/" },
-  ...socialMetadata({ path: "", description: "Apple-grade components for React, themeable to any brand, built on ui-sdk." }),
+  ...socialMetadata({ path: "", description: "Apple-style components for React, themeable to any brand, built on ui-sdk." }),
 }
 
 const sections = [

@@ -136,8 +136,8 @@ function Bento() {
         headline={<>Every UI element from the Human Interface Guidelines (and&nbsp;more).</>}
         links={<MoreLink href="/docs/components">Explore all components</MoreLink>}
       >
-        Menus, sliders, calendars, alerts and command palettes that look and behave like the native control, at a
-        glance and under the hand. <strong>Every tile below&nbsp;works.</strong>
+        Menus, sliders, calendars, alerts and command palettes that look and behave like the native controls.{" "}
+        <strong>Every tile below is a working&nbsp;component.</strong>
       </SectionHeading>
       <div className="lp-bento lp-reveal" data-platform="macos">
         <Tile area="menu" name="Menu" slug="menu" className="lp-tile-menu">
