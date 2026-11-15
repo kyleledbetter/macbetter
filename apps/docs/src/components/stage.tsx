@@ -2,10 +2,11 @@
 
 import { SegmentedControl, SegmentedControlItem } from "macbetter/segmented-control"
 import { Button } from "macbetter/button"
+import { Toggle } from "macbetter/toggle"
 import type { Platform } from "macbetter"
-import { ContrastIcon, MaximizeIcon, MinimizeIcon } from "lucide-react"
+import { CodeIcon, ContrastIcon } from "lucide-react"
 import { usePreference } from "@ui-sdk/react/preferences"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { theme } from "@/lib/preferences"
 
 type StageProps = {
@@ -19,6 +20,8 @@ type StageProps = {
   height?: number
   /** Hides the platform picker, for demos that look the same everywhere. */
   bare?: boolean
+  /** The demo's source, shown under the preview when the reader turns it on. */
+  code?: React.ReactNode
 }
 
 const labels: Record<Platform, string> = { macos: "macOS", ipados: "iPadOS", ios: "iOS" }
@@ -32,6 +35,7 @@ function Stage({
   fill,
   height,
   bare,
+  code,
 }: StageProps) {
   const [platform, setPlatform] = useState<Platform>(platforms[0] ?? "macos")
   useEffect(() => {
@@ -42,22 +46,14 @@ function Stage({
   }, [])
   const [scheme, setScheme] = useState<"light" | "dark" | null>(null)
   const { value: themeName } = usePreference(theme)
-  const ref = useRef<HTMLDivElement>(null)
-  const [fullscreen, setFullscreen] = useState(false)
-  const [canFullscreen, setCanFullscreen] = useState(false)
-
-  useEffect(() => {
-    setCanFullscreen(Boolean(document.fullscreenEnabled))
-    const sync = () => setFullscreen(document.fullscreenElement === ref.current)
-    document.addEventListener("fullscreenchange", sync)
-    return () => document.removeEventListener("fullscreenchange", sync)
-  }, [])
+  const [showCode, setShowCode] = useState(false)
 
   const width = widths[platform]
   const minHeight = height ?? 220
 
   return (
-    <div ref={ref} className="docs-stage not-prose" data-wallpaper={wallpaper ? "" : undefined}>
+    <>
+    <div className="docs-stage not-prose" data-wallpaper={wallpaper ? "" : undefined}>
       <div data-platform="macos" className="docs-stage-bar">
         {bare ? (
           <span />
@@ -98,19 +94,17 @@ function Stage({
           >
             <ContrastIcon aria-hidden="true" />
           </Button>
-          {canFullscreen ? (
-            <Button
+          {code ? (
+            <Toggle
               variant="plain"
-              tone="neutral"
+              tone="accent"
               size="sm"
-              shape="circle"
-              aria-label={fullscreen ? "Exit full screen" : "View full screen"}
-              onClick={() =>
-                fullscreen ? document.exitFullscreen() : ref.current?.requestFullscreen().catch(() => {})
-              }
+              aria-label="Show the code"
+              pressed={showCode}
+              onPressedChange={setShowCode}
             >
-              {fullscreen ? <MinimizeIcon aria-hidden="true" /> : <MaximizeIcon aria-hidden="true" />}
-            </Button>
+              <CodeIcon aria-hidden="true" />
+            </Toggle>
           ) : null}
         </div>
       </div>
@@ -137,6 +131,8 @@ function Stage({
         </div>
       </div>
     </div>
+    {showCode ? code : null}
+    </>
   )
 }
 

@@ -919,21 +919,6 @@ body[data-macbetter] {
   box-shadow: -0.5px 0 0 rgb(255 255 255 / 0.18), 0.5px 0 0 rgb(255 255 255 / 0.18);
 }
 
-.docs-stage:fullscreen {
-  display: flex;
-  flex-direction: column;
-  border-radius: 0;
-}
-
-.docs-stage:fullscreen .docs-stage-canvas {
-  flex: 1 1 auto;
-  overflow: auto;
-}
-
-.docs-stage:fullscreen .docs-stage-screen {
-  min-height: 100% !important;
-}
-
 /* ── Component index: lineup tiles ─────────────────────────── */
 
 .docs-component-card {

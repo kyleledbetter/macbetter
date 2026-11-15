@@ -12,7 +12,7 @@ type DemoProps = {
   fill?: boolean
   height?: number
   bare?: boolean
-  /** Hides the source, for demos that only illustrate. */
+  /** Keeps the source closed until the reader turns it on, for demos that only illustrate. */
   hideCode?: boolean
 }
 
@@ -25,7 +25,7 @@ async function Demo({ name, hideCode, ...stage }: DemoProps) {
   const { default: Example } = await import(`@/demos/${name}.tsx`)
   return (
     <div className="my-6">
-      <Stage {...stage}>
+      <Stage {...stage} code={hideCode ? <CodeBlock code={sourceOf(name)} lang="tsx" /> : undefined}>
         <Example />
       </Stage>
       {hideCode ? null : <CodeBlock code={sourceOf(name)} lang="tsx" />}
