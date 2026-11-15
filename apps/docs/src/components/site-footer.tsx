@@ -106,7 +106,7 @@ function SiteFooter({ path = [], children }: { path?: string[]; children?: React
         </nav>
         <div className="site-footer-legal">
           <p>
-            Copyright © 2026 <a href="https://github.com/kyleledbetter">Kyle Ledbetter</a>. Apache 2.0. Not affiliated
+            Copyright © 2026 <a href="https://x.com/kyleledbetter" target="_blank" rel="noreferrer">Kyle Ledbetter</a>. Apache 2.0. Not affiliated
             with Apple.
           </p>
           <p className="site-footer-legal-links">
