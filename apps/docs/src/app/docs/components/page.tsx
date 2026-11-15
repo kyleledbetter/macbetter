@@ -36,7 +36,7 @@ export default function ComponentsIndex() {
       <header className="stack">
         <p className="stack-eyebrow docs-eyebrow">Components</p>
         <h1 className="stack-headline type-headline">
-          Designed by Apple in&nbsp;California.
+          Inspired by Apple in&nbsp;California.
         </h1>
         <p className="stack-copy type-intro type-two-tone">
           {count} components for macOS, iPadOS and iOS. Each one is a ui-sdk part with Apple’s metrics, materials and
