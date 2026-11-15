@@ -4,29 +4,48 @@ import { Button } from "macbetter/button"
 import { Window, WindowBody, WindowTitle, WindowTitlebar, WindowTrafficLights } from "macbetter/window"
 import { useState } from "react"
 
-export default function Example() {
-  const [open, setOpen] = useState(true)
-  const [zoomed, setZoomed] = useState(false)
+const apps = [
+  { id: "calculator", title: "Calculator", value: "1,280" },
+  { id: "timer", title: "Focus Timer", value: "24:59" },
+]
 
-  if (!open) {
-    return <Button onClick={() => setOpen(true)}>Reopen Calculator</Button>
+export default function Example() {
+  const [key, setKey] = useState("calculator")
+  const [closed, setClosed] = useState<string[]>([])
+  const [zoomed, setZoomed] = useState<string[]>([])
+  const toggle = (list: string[], id: string) => (list.includes(id) ? list.filter((x) => x !== id) : [...list, id])
+
+  if (closed.length === apps.length) {
+    return <Button onClick={() => setClosed([])}>Reopen windows</Button>
   }
 
   return (
-    <Window aria-label="Calculator" style={{ width: zoomed ? 420 : 300, height: 180 }}>
-      <WindowTitlebar variant="compact" bordered={false}>
-        <WindowTrafficLights
-          onClose={() => setOpen(false)}
-          onMinimize={() => setOpen(false)}
-          onZoom={() => setZoomed((value) => !value)}
-        />
-        <WindowTitle align="center">Calculator</WindowTitle>
-      </WindowTitlebar>
-      <WindowBody style={{ display: "grid", placeItems: "end", padding: "16px 20px" }}>
-        <output className="mb-text-large-title" style={{ fontVariantNumeric: "tabular-nums" }}>
-          1,280
-        </output>
-      </WindowBody>
-    </Window>
+    <div style={{ display: "flex", flexWrap: "wrap", gap: 24, justifyContent: "center", width: "100%" }}>
+      {apps
+        .filter((app) => !closed.includes(app.id))
+        .map((app) => (
+          <Window
+            key={app.id}
+            aria-label={app.title}
+            inactive={key !== app.id}
+            onPointerDown={() => setKey(app.id)}
+            style={{ width: zoomed.includes(app.id) ? 380 : 260, maxWidth: "100%", height: 170 }}
+          >
+            <WindowTitlebar variant="compact" bordered={false}>
+              <WindowTrafficLights
+                onClose={() => setClosed((list) => [...list, app.id])}
+                onMinimize={() => setClosed((list) => [...list, app.id])}
+                onZoom={() => setZoomed((list) => toggle(list, app.id))}
+              />
+              <WindowTitle align="center">{app.title}</WindowTitle>
+            </WindowTitlebar>
+            <WindowBody style={{ display: "grid", placeItems: "end", padding: "16px 20px" }}>
+              <output className="mb-text-large-title" style={{ fontVariantNumeric: "tabular-nums" }}>
+                {app.value}
+              </output>
+            </WindowBody>
+          </Window>
+        ))}
+    </div>
   )
 }

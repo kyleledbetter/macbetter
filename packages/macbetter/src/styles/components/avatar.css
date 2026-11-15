@@ -122,6 +122,12 @@
   pointer-events: none;
 }
 
+/* A symbol in place of initials, for an app or a team. */
+.mb-avatar-fallback > svg:not(.mb-avatar-placeholder) {
+  width: 60%;
+  height: 60%;
+}
+
 .mb-avatar-placeholder {
   width: 74%;
   height: 74%;

@@ -4,14 +4,25 @@ import { Toolbar, ToolbarButton, ToolbarLink, ToolbarSeparator } from "@ui-sdk/r
 import * as React from "react"
 import { cx, join } from "../lib/cx"
 
+type DockAppearance = "default" | "dark" | "clear" | "tinted"
+
 type DockProps = React.ComponentProps<typeof Toolbar> & {
   /** How large the icon under the pointer grows, as a multiple of its size. 1 turns magnification off. */
   magnification?: number
+  /** The app-icon style, as people choose it in macOS: full color, dark, clear glass, or one tint. */
+  appearance?: DockAppearance
 }
 
 const ITEM = ".mb-dock-item"
 
-function Dock({ magnification = 1.75, className, onPointerMove, onPointerLeave, ...props }: DockProps) {
+function Dock({
+  magnification = 1.75,
+  appearance = "default",
+  className,
+  onPointerMove,
+  onPointerLeave,
+  ...props
+}: DockProps) {
   const ref = React.useRef<HTMLDivElement>(null)
   const frame = React.useRef(0)
   const pointer = React.useRef<number | null>(null)
@@ -48,6 +59,7 @@ function Dock({ magnification = 1.75, className, onPointerMove, onPointerLeave, 
     <Toolbar
       ref={ref}
       className={cx("mb-dock", className)}
+      data-appearance={appearance}
       onPointerMove={(event) => {
         onPointerMove?.(event)
         if (event.pointerType !== "mouse" || magnification <= 1) return
@@ -75,6 +87,8 @@ type DockItemProps = {
   label: string
   /** Draws the dot under an app that's open. */
   running?: boolean
+  /** The icon's background color, drawn as a gradient that's lighter at the top. Any CSS color. */
+  tint?: string
   /** Renders the item as a link. */
   href?: string
   disabled?: boolean
@@ -83,7 +97,7 @@ type DockItemProps = {
   children: React.ReactNode
 }
 
-function DockItem({ label, running, href, disabled, className, onClick, children }: DockItemProps) {
+function DockItem({ label, running, tint, href, disabled, className, onClick, children }: DockItemProps) {
   const [bouncing, setBouncing] = React.useState(false)
   const shared = {
     "aria-label": label,
@@ -104,7 +118,12 @@ function DockItem({ label, running, href, disabled, className, onClick, children
       <span aria-hidden="true" className="mb-dock-item-label">
         {label}
       </span>
-      <span className="mb-dock-item-icon">{children}</span>
+      <span
+        className="mb-dock-item-icon"
+        style={tint ? ({ "--mb-dock-item-tint": tint } as React.CSSProperties) : undefined}
+      >
+        {children}
+      </span>
     </>
   )
   return href ? (
@@ -123,4 +142,4 @@ function DockSeparator({ className, ...props }: React.ComponentProps<typeof Tool
 }
 
 export { Dock, DockItem, DockSeparator }
-export type { DockItemProps, DockProps }
+export type { DockAppearance, DockItemProps, DockProps }

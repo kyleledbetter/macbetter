@@ -37,7 +37,10 @@ function WindowTitlebar({ variant = "unified", bordered = true, className, ...pr
 }
 
 type WindowTitleProps = React.ComponentProps<"div"> & {
-  /** `center` for a title-only window, `leading` beside a unified toolbar. */
+  /**
+   * `leading` beside a unified toolbar. `center` keeps the title in the middle of the bar whatever sits on
+   * either side, and truncates it before it reaches them; no spacer needed.
+   */
   align?: "center" | "leading"
   subtitle?: React.ReactNode
 }
@@ -110,13 +113,67 @@ function WindowTrafficLights({ onClose, onMinimize, onZoom, className, ...props 
   )
 }
 
+/** What comes before a centered title: traffic lights, an app name, a menu. */
+function WindowTitlebarLeading({ className, ...props }: React.ComponentProps<"div">) {
+  return <div className={join("mb-window-titlebar-leading", className)} {...props} />
+}
+
+/** A control held in the middle of the bar, like Calendar's Day, Week, Month and Year. Centers like a centered title. */
+function WindowTitlebarCenter({ className, ...props }: React.ComponentProps<"div">) {
+  return <div className={join("mb-window-titlebar-center", className)} {...props} />
+}
+
+/** What comes after a centered title, held against the trailing edge: a toolbar, an account menu. */
+function WindowTitlebarTrailing({ className, ...props }: React.ComponentProps<"div">) {
+  return <div className={join("mb-window-titlebar-trailing", className)} {...props} />
+}
+
 function WindowSidebar({ className, ...props }: React.ComponentProps<"div">) {
   return <div className={join("mb-window-sidebar", className)} {...props} />
+}
+
+/**
+ * The top of a sidebar, level with the title bar: traffic lights, an app name, a workspace menu,
+ * or nothing. It keeps its height when empty, so the list below starts where it would beside the lights.
+ */
+function WindowSidebarHeader({ className, ...props }: React.ComponentProps<"div">) {
+  return <div className={join("mb-window-sidebar-header", className)} {...props} />
+}
+
+type WindowAppNameProps = React.ComponentProps<"span"> & {
+  /** A 20-point app icon or workspace avatar. Decorative: the name is what's read. */
+  icon?: React.ReactNode
+}
+
+/** The app or workspace name where the traffic lights would sit. Put it inside a MenuTrigger to make it a switcher. */
+function WindowAppName({ icon, className, children, ...props }: WindowAppNameProps) {
+  return (
+    <span className={join("mb-window-app-name", className)} {...props}>
+      {icon ? (
+        <span aria-hidden="true" className="mb-window-app-name-icon">
+          {icon}
+        </span>
+      ) : null}
+      <span className="mb-window-app-name-text">{children}</span>
+    </span>
+  )
 }
 
 function WindowBody({ className, ...props }: React.ComponentProps<"div">) {
   return <div className={join("mb-window-body", className)} {...props} />
 }
 
-export { Window, WindowBody, WindowSidebar, WindowTitle, WindowTitlebar, WindowTrafficLights }
-export type { WindowProps, WindowTitlebarProps, WindowTitleProps, WindowTrafficLightsProps }
+export {
+  Window,
+  WindowAppName,
+  WindowBody,
+  WindowSidebar,
+  WindowSidebarHeader,
+  WindowTitle,
+  WindowTitlebar,
+  WindowTitlebarCenter,
+  WindowTitlebarLeading,
+  WindowTitlebarTrailing,
+  WindowTrafficLights,
+}
+export type { WindowAppNameProps, WindowProps, WindowTitlebarProps, WindowTitleProps, WindowTrafficLightsProps }

@@ -1,13 +1,29 @@
-/* Dock — a glass shelf of app icons that swell under the pointer. */
+/* Dock — a Liquid Glass shelf of app icons that swell under the pointer. */
 
 .mb-dock {
   --mb-dock-icon-size: 48px;
-  --mb-dock-padding: 5px;
+  --mb-dock-padding: 6px;
   /* The ends get the same room as the running dots below, so the first and last icons don't crowd the curve. */
   --mb-dock-padding-inline: calc(var(--mb-dock-padding) + 4px);
   --mb-dock-radius: calc(var(--mb-dock-icon-size) * 0.36 + var(--mb-dock-padding));
+  /* The one color every icon takes in the tinted appearance. */
+  --mb-dock-tint: var(--mb-accent);
+
+  /* Clear glass: little fill, a strong blur and saturation, so the wallpaper reads through as color. */
+  --mb-dock-fill: light-dark(
+    color-mix(in oklch, var(--mb-bg-elevated) 24%, transparent),
+    color-mix(in oklch, var(--mb-bg-elevated) 22%, transparent)
+  );
+  --mb-dock-scrim: light-dark(transparent, rgb(0 0 0 / 0.16));
+  --mb-dock-filter: blur(28px) saturate(220%);
+  --mb-dock-sheen: light-dark(rgb(255 255 255 / 0.34), rgb(255 255 255 / 0.07));
+  --mb-dock-caustic: light-dark(rgb(255 255 255 / 0.22), rgb(255 255 255 / 0.05));
+  --mb-dock-glow: light-dark(rgb(255 255 255 / 0.3), rgb(255 255 255 / 0.05));
+  --mb-dock-specular: light-dark(rgb(255 255 255 / 0.95), rgb(255 255 255 / 0.42));
+  --mb-dock-specular-soft: light-dark(rgb(255 255 255 / 0.4), rgb(255 255 255 / 0.12));
 
   position: relative;
+  isolation: isolate;
   display: inline-flex;
   flex: none;
   align-items: flex-end;
@@ -15,25 +31,52 @@
   height: calc(var(--mb-dock-icon-size) + var(--mb-dock-padding) * 2 + 4px);
   padding: var(--mb-dock-padding) var(--mb-dock-padding-inline) calc(var(--mb-dock-padding) + 4px);
   border-radius: var(--mb-dock-radius);
-  background-color: color-mix(in oklch, var(--mb-bg-elevated) 38%, transparent);
-  background-image: linear-gradient(
-    to bottom,
-    light-dark(rgb(255 255 255 / 0.42), rgb(255 255 255 / 0.08)),
-    light-dark(rgb(255 255 255 / 0.12), rgb(255 255 255 / 0.02))
-  );
-  -webkit-backdrop-filter: blur(24px) saturate(190%);
-  backdrop-filter: blur(24px) saturate(190%);
+  background-color: var(--mb-dock-fill);
+  background-image:
+    linear-gradient(to bottom, var(--mb-dock-sheen), transparent 55%),
+    radial-gradient(90% 60% at 50% 120%, var(--mb-dock-caustic), transparent 70%),
+    linear-gradient(var(--mb-dock-scrim), var(--mb-dock-scrim));
+  -webkit-backdrop-filter: var(--mb-dock-filter);
+  backdrop-filter: var(--mb-dock-filter);
   box-shadow:
-    inset 0 1px 0 0 var(--mb-glass-edge),
-    inset 0 0 0 var(--mb-hairline) var(--mb-glass-edge-soft),
+    inset 0 0 16px 0 var(--mb-dock-glow),
     0 0 0 var(--mb-hairline) var(--mb-glass-border),
-    var(--mb-shadow-3);
+    0 1px 3px var(--mb-shadow-color),
+    0 14px 36px -10px var(--mb-shadow-color-strong);
   user-select: none;
   -webkit-user-select: none;
 }
 
+/* The specular rim: bright along the top edge, softer along the bottom, where light leaves the glass. */
+.mb-dock::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    to bottom,
+    var(--mb-dock-specular) 0%,
+    var(--mb-dock-specular-soft) 18%,
+    transparent 45%,
+    transparent 70%,
+    var(--mb-dock-specular-soft) 100%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+  pointer-events: none;
+}
+
 .mb-dock-item {
   --mb-dock-scale: 1;
+  /* One point of the icon at its current size: 1px at 48px, so the bevel and shadows grow with magnification. */
+  --mb-dock-unit: calc(var(--mb-dock-icon-size) * var(--mb-dock-scale) / 48);
 
   position: relative;
   display: block;
@@ -60,23 +103,139 @@
   transition-timing-function: linear;
 }
 
+/*
+ * The app icon: a squircle with a soft light-to-dark gradient, a specular
+ * top edge, an inner bevel and a drop shadow, and a raised glyph on top.
+ */
 .mb-dock-item-icon {
+  --mb-dock-item-tint: var(--mb-tint);
+  --mb-dock-item-top: oklch(from var(--mb-dock-item-tint) calc(l + 0.07) calc(c * 0.95) calc(h - 6));
+  --mb-dock-item-bottom: oklch(from var(--mb-dock-item-tint) calc(l - 0.07) c calc(h + 4));
+  --mb-dock-item-glyph: #ffffff;
+  --mb-dock-item-glyph-size: 66%;
+  --mb-dock-item-bevel: rgb(255 255 255 / 0.4);
+  --mb-dock-item-specular: rgb(255 255 255 / 0.8);
+  --mb-dock-item-specular-soft: rgb(255 255 255 / 0.18);
+  --mb-dock-item-light: rgb(255 255 255 / 0.14);
+  --mb-dock-item-shade: rgb(0 0 0 / 0.08);
+
+  position: relative;
+  isolation: isolate;
   display: grid;
   place-items: center;
   width: 100%;
   height: 100%;
   overflow: hidden;
   border-radius: var(--mb-squircle-radius-icon);
+  background: linear-gradient(to bottom, var(--mb-dock-item-top), var(--mb-dock-item-bottom));
+  color: var(--mb-dock-item-glyph);
   box-shadow:
-    inset 0 0.5px 0 rgb(255 255 255 / 0.35),
-    0 0 0 0.5px rgb(0 0 0 / 0.12),
-    0 1px 2px rgb(0 0 0 / 0.2),
-    0 3px 8px -2px rgb(0 0 0 / 0.25);
+    inset 0 calc(var(--mb-dock-unit) * 1) calc(var(--mb-dock-unit) * 0.5) var(--mb-dock-item-bevel),
+    inset 0 calc(var(--mb-dock-unit) * -1) calc(var(--mb-dock-unit) * 1.5) rgb(0 0 0 / 0.14),
+    0 0 0 0.5px rgb(0 0 0 / 0.1),
+    0 calc(var(--mb-dock-unit) * 1) calc(var(--mb-dock-unit) * 1.5) rgb(0 0 0 / 0.16),
+    0 calc(var(--mb-dock-unit) * 3) calc(var(--mb-dock-unit) * 7) calc(var(--mb-dock-unit) * -2) rgb(0 0 0 / 0.3);
 }
 
-.mb-dock-item-icon > :only-child {
+/* The specular ring, brightest at the top-leading corner and again at the bottom-trailing one. */
+.mb-dock-item-icon::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  padding: calc(var(--mb-dock-unit) * 1);
+  border-radius: inherit;
+  background: linear-gradient(
+    165deg,
+    var(--mb-dock-item-specular) 0%,
+    var(--mb-dock-item-specular-soft) 24%,
+    transparent 44%,
+    transparent 72%,
+    var(--mb-dock-item-specular-soft) 100%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+  pointer-events: none;
+}
+
+/* Light from above, over the glyph too, so it reads as lit from the top and shaded at the foot. */
+.mb-dock-item-icon::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to bottom,
+    var(--mb-dock-item-light),
+    transparent 48%,
+    transparent 62%,
+    var(--mb-dock-item-shade)
+  );
+  pointer-events: none;
+}
+
+/* A glyph, solid or stroked: sized to the icon grid, raised with a short contact shadow and a soft one under it. */
+.mb-dock-item-icon > svg {
+  position: relative;
+  width: var(--mb-dock-item-glyph-size);
+  height: var(--mb-dock-item-glyph-size);
+  filter:
+    drop-shadow(0 calc(var(--mb-dock-unit) * 0.5) calc(var(--mb-dock-unit) * 0.5) rgb(0 0 0 / 0.2))
+    drop-shadow(0 calc(var(--mb-dock-unit) * 1.5) calc(var(--mb-dock-unit) * 2.5) rgb(0 0 0 / 0.16));
+}
+
+/* Anything else (an image, a drawn tile) fills the icon. */
+.mb-dock-item-icon > :not(svg) {
+  position: relative;
   width: 100%;
   height: 100%;
+}
+
+/* Dark: a near-black tile, the app's color moves to the glyph. */
+:where(.mb-dock[data-appearance="dark"]) .mb-dock-item-icon {
+  --mb-dock-item-top: oklch(from var(--mb-dock-item-tint) 0.33 calc(c * 0.1) h);
+  --mb-dock-item-bottom: oklch(from var(--mb-dock-item-tint) 0.19 calc(c * 0.08) h);
+  --mb-dock-item-glyph: oklch(from var(--mb-dock-item-tint) clamp(0.7, calc(l + 0.1), 0.84) c h);
+  --mb-dock-item-bevel: rgb(255 255 255 / 0.18);
+  --mb-dock-item-specular: rgb(255 255 255 / 0.5);
+  --mb-dock-item-specular-soft: rgb(255 255 255 / 0.1);
+  --mb-dock-item-light: rgb(255 255 255 / 0.07);
+}
+
+/* Clear: colorless glass that lets the shelf show through, with a white glyph. */
+:where(.mb-dock[data-appearance="clear"]) .mb-dock-item-icon {
+  --mb-dock-item-top: light-dark(rgb(255 255 255 / 0.5), rgb(255 255 255 / 0.2));
+  --mb-dock-item-bottom: light-dark(rgb(255 255 255 / 0.2), rgb(255 255 255 / 0.06));
+  --mb-dock-item-glyph: rgb(255 255 255 / 0.96);
+  --mb-dock-item-bevel: rgb(255 255 255 / 0.5);
+  --mb-dock-item-specular: rgb(255 255 255 / 0.9);
+  --mb-dock-item-specular-soft: rgb(255 255 255 / 0.25);
+  --mb-dock-item-light: rgb(255 255 255 / 0.1);
+  --mb-dock-item-shade: transparent;
+}
+
+:where(.mb-dock[data-appearance="clear"]) .mb-dock-item-icon > svg {
+  filter:
+    drop-shadow(0 calc(var(--mb-dock-unit) * 0.5) calc(var(--mb-dock-unit) * 0.75) rgb(0 0 0 / 0.3))
+    drop-shadow(0 calc(var(--mb-dock-unit) * 1.5) calc(var(--mb-dock-unit) * 3) rgb(0 0 0 / 0.2));
+}
+
+/* Tinted: every icon in one color. Light infuses the glass with it; dark keeps the tile dark and tints the glyph. */
+:where(.mb-dock[data-appearance="tinted"]) .mb-dock-item-icon {
+  --mb-dock-item-top: light-dark(
+    oklch(from var(--mb-dock-tint) calc(l + 0.08) calc(c * 0.85) h / 0.88),
+    oklch(from var(--mb-dock-tint) 0.3 calc(c * 0.3) h)
+  );
+  --mb-dock-item-bottom: light-dark(
+    oklch(from var(--mb-dock-tint) calc(l - 0.06) c h / 0.88),
+    oklch(from var(--mb-dock-tint) 0.18 calc(c * 0.22) h)
+  );
+  --mb-dock-item-glyph: light-dark(#ffffff, oklch(from var(--mb-dock-tint) clamp(0.72, calc(l + 0.12), 0.86) c h));
 }
 
 .mb-dock-item:active .mb-dock-item-icon {
@@ -94,7 +253,7 @@
   translate: -50% 0;
   border-radius: 50%;
   background: var(--mb-label);
-  opacity: 0.8;
+  opacity: 0.75;
 }
 
 /* The name above the icon. */
@@ -162,8 +321,9 @@
   flex: none;
   align-self: stretch;
   width: 1px;
-  margin: 2px 6px -2px;
-  background: light-dark(rgb(0 0 0 / 0.16), rgb(255 255 255 / 0.2));
+  margin: 6px 5px 2px;
+  border-radius: 1px;
+  background: light-dark(rgb(0 0 0 / 0.14), rgb(255 255 255 / 0.22));
 }
 
 /* Continuous corners on the shelf and the icon tiles (and the focus ring around one). The running dot stays round. */
@@ -186,6 +346,17 @@
     background-image: none;
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
+    box-shadow:
+      0 0 0 var(--mb-hairline) var(--mb-control-border),
+      var(--mb-shadow-3);
+  }
+
+  .mb-dock::before {
+    display: none;
+  }
+
+  .mb-dock-item-icon {
+    box-shadow: 0 0 0 1px var(--mb-control-border);
   }
 }
 
@@ -197,5 +368,28 @@
       -webkit-backdrop-filter: none;
       backdrop-filter: none;
     }
+
+    .mb-dock::before {
+      opacity: 0.5;
+    }
+
+    /* Clear icons become solid, so they don't fall back to bare glyphs. */
+    :where(.mb-dock[data-appearance="clear"]) .mb-dock-item-icon {
+      --mb-dock-item-top: light-dark(rgb(0 0 0 / 0.42), rgb(255 255 255 / 0.24));
+      --mb-dock-item-bottom: light-dark(rgb(0 0 0 / 0.54), rgb(255 255 255 / 0.14));
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .mb-dock {
+    border: 1px solid CanvasText;
+    background: Canvas;
+  }
+
+  .mb-dock::before,
+  .mb-dock-item-icon::before,
+  .mb-dock-item-icon::after {
+    display: none;
   }
 }

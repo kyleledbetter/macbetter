@@ -228,17 +228,6 @@
     translate: -50% 0;
   }
 
-  .lp-app-icon {
-    display: grid;
-    place-items: center;
-    color: #fff;
-  }
-
-  .lp-app-icon svg {
-    width: 54%;
-    height: 54%;
-  }
-
   /* The scene's menu bar. */
   .lp-menubar {
     position: absolute;

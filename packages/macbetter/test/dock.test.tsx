@@ -52,6 +52,30 @@ test("one tab stop, arrows between items, and a bounce when an app launches", as
   expect(mail.hasAttribute("data-bouncing")).toBe(false)
 })
 
+test("draws the app icon from a tint and passes the appearance to the shelf", () => {
+  render(
+    <Dock aria-label="Dock" appearance="tinted">
+      <DockItem label="Safari" tint="var(--mb-cyan)">
+        <svg data-testid="glyph" />
+      </DockItem>
+      <DockItem label="Notes">
+        <svg />
+      </DockItem>
+    </Dock>
+  )
+  expect(screen.getByRole("toolbar", { name: "Dock" }).getAttribute("data-appearance")).toBe("tinted")
+  const icon = screen.getByRole("button", { name: "Safari" }).querySelector<HTMLElement>(".mb-dock-item-icon")
+  expect(icon?.style.getPropertyValue("--mb-dock-item-tint")).toBe("var(--mb-cyan)")
+  expect(icon?.firstElementChild).toBe(screen.getByTestId("glyph"))
+  const plain = screen.getByRole("button", { name: "Notes" }).querySelector<HTMLElement>(".mb-dock-item-icon")
+  expect(plain?.getAttribute("style")).toBeNull()
+})
+
+test("uses the default appearance unless told otherwise", () => {
+  render(<Example />)
+  expect(screen.getByRole("toolbar", { name: "Dock" }).getAttribute("data-appearance")).toBe("default")
+})
+
 test("magnifies the items near a mouse pointer and lets go when it leaves", async () => {
   render(<Example />)
   const dock = screen.getByRole("toolbar", { name: "Dock" })

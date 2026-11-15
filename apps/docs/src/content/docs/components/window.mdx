@@ -1,65 +1,157 @@
 export const metadata = {
   title: "Window",
-  description: "Frame a Mac app in a window with a title bar, traffic lights, sidebar and toolbar.",
+  description: "Frame an app in a macOS window with a title bar, sidebar and toolbar, with or without traffic lights.",
 }
 
 # Window
 
-<Lead>Frame a Mac app in a window with a title bar, traffic lights, sidebar and toolbar.</Lead>
+<Lead>Frame an app in a macOS window with a title bar, sidebar and toolbar, with or without traffic lights.</Lead>
 
-<Demo name="window/finder" platforms={["macos"]} wallpaper height={560} />
+<Demo name="window/workspace-switcher" platforms={["macos"]} wallpaper height={540} />
+
+## Traffic lights are optional
+
+`WindowTrafficLights` draws the red, yellow and green buttons in the corner. They're decoration, and a window doesn't need them. A web page can't close, minimize or zoom the browser window it runs in, so in a web app the lights do nothing.
+
+- **Include them** when you're drawing a Mac app: a marketing mock-up, a product tour, a screenshot people can click through. Include them too when your app runs on the desktop in Electron or Tauri with the system title bar hidden. There they're real controls: pass [handlers](#traffic-lights-that-work) and they become buttons.
+- **Leave them out** of a web app in a browser tab. Buttons that do nothing look broken, and they suggest the page is a separate window that people can close. Put your app's name, a workspace switcher or your navigation in that corner instead, or leave it empty.
+
+Nothing else depends on the lights. Without them, a centered title stays centered and the sidebar list starts at the same height.
 
 ## When to use it
 
-Use a window to present a Mac app inside a web page: a product tour, a marketing screenshot that people can use, or an app that runs in the browser and should feel like it belongs on the desktop. The title bar, traffic lights and toolbar tell people at a glance what kind of app it is.
+Use a window to give an app that runs in the browser the frame of a Mac app: a title bar with its toolbar, an inset glass sidebar and the content beside it. Use it as well to present a Mac app inside a web page, like a product tour or a marketing screenshot that people can use.
 
 To present an iPhone or iPad layout, use a [device frame](/docs/components/device-frame).
 
-A window isn't window management. A window doesn't move, resize or close by itself: wire the traffic lights to your own handlers if they should do something.
+A window isn't window management. It doesn't move, resize or close by itself.
 
 ## Usage
 
 ```tsx
 import {
   Window,
+  WindowAppName,
   WindowBody,
   WindowSidebar,
+  WindowSidebarHeader,
   WindowTitle,
   WindowTitlebar,
+  WindowTitlebarCenter,
+  WindowTitlebarLeading,
+  WindowTitlebarTrailing,
   WindowTrafficLights,
 } from "macbetter/window"
 ```
 
-### Title-only windows
+### Anatomy
 
-A compact title bar holds the traffic lights and a centered title, like a utility window or About This Mac. Set `inactive` to draw a window behind the key window: its traffic lights turn gray and its title dims.
+```tsx
+<Window aria-label="Tracker">
+  <WindowSidebar>
+    <WindowSidebarHeader>{/* traffic lights, app name, workspace menu, or nothing */}</WindowSidebarHeader>
+    <Sidebar aria-label="Projects">…</Sidebar>
+  </WindowSidebar>
+  <WindowTitlebar>
+    <Toolbar aria-label="Issues">…</Toolbar>
+  </WindowTitlebar>
+  <WindowBody>…</WindowBody>
+</Window>
+```
 
-<Demo name="window/basic" platforms={["macos"]} wallpaper height={300} />
+Every part except `Window`, `WindowTitlebar` and `WindowBody` is optional. A window without a sidebar puts its title bar straight above the body. A title bar holds either a [Toolbar](/docs/components/toolbar), which runs from the leading edge to the trailing edge, or a centered title or control with `WindowTitlebarLeading` and `WindowTitlebarTrailing` on either side of it.
 
-### Sidebar and toolbar
+### Centered titles
 
-Put a `WindowSidebar` first and it becomes a pane of glass inset from the window's edges, spanning the full height. Place the traffic lights at its top. The title bar and body take the column beside it, and a [Toolbar](/docs/components/toolbar) in the title bar becomes the unified toolbar. A [Sidebar](/docs/components/sidebar) inside drops its own material, so glass never sits on glass.
+Set `align="center"` on `WindowTitle`, or put a control in `WindowTitlebarCenter`, and the title bar splits into three tracks: equal sides with the title between them. You don't need a spacer to balance the sides. The title stays in the middle of the bar whether the corner holds traffic lights, an app name, a menu or nothing. When the sides are too wide for that, the title moves toward the narrower side, and when there's no room left it truncates instead of running under a control.
+
+Put what comes before the title in `WindowTitlebarLeading` and what comes after it in `WindowTitlebarTrailing`. Traffic lights on their own can sit straight in the title bar.
+
+## What to put in the top-left corner
+
+Each of these is a pattern real apps use. Pick the one that matches what people need to see or change most.
+
+### Nothing, with a centered title
+
+A document editor puts the document's name in the middle and its save state under it, with the actions on the right. Nothing sits on the left, and the title still centers on the window.
+
+<Demo name="window/document" platforms={["macos"]} wallpaper height={480} />
+
+### Your app's name
+
+When people use one app in a tab among many, the app's icon and name at the top of the sidebar tell them where they are. Use `WindowAppName` in a `WindowSidebarHeader`. The header keeps the height the traffic lights would have taken, so the sidebar list starts level with the toolbar's content.
+
+<Demo name="window/app-name" platforms={["macos"]} wallpaper height={520} />
+
+### A workspace switcher
+
+Apps where one person belongs to several teams or workspaces, like an issue tracker or a chat app, show the current workspace in the corner and switch it from a menu there. Put `WindowAppName` inside a plain [MenuTrigger](/docs/components/menu), and list the workspaces, Create Workspace… and the workspace's settings in the menu. A second item in the header, like New Issue, goes to its trailing edge.
+
+<Demo name="window/workspace-switcher" platforms={["macos"]} wallpaper height={540} />
+
+### Navigation in a menu
+
+An app with a few top-level sections and no sidebar can keep them in a pull-down menu at the leading edge of the title bar. The current section is the centered title, and search and the main action sit on the trailing side. This leaves the full width of the window to the content.
+
+<Demo name="window/section-menu" platforms={["macos"]} wallpaper height={500} />
+
+### Views in the middle of the title bar
+
+For a few views of the same content, like a schedule by day, week or month, put a [segmented control](/docs/components/segmented-control) in `WindowTitlebarCenter`, as Calendar does. Controls that move through the content go on the leading side, and Add on the trailing side.
+
+<Demo name="window/segmented-views" platforms={["macos"]} wallpaper height={440} />
+
+### An account menu in a compact title bar
+
+Dense tools, like a log viewer or a database console, use the 28-point `compact` title bar to give the rows more room. The account menu sits at the trailing edge: an [avatar](/docs/components/avatar) in a plain, circular menu trigger, named for the person signed in.
+
+<Demo name="window/account" platforms={["macos"]} wallpaper height={380} />
+
+### Traffic lights in a Mac mock-up
+
+To draw a Mac app, put the traffic lights at the top of the sidebar, where macOS puts them. Put a `WindowSidebar` first and it becomes a pane of glass inset from the window's edges, spanning the full height. The title bar and body take the column beside it, and a [Toolbar](/docs/components/toolbar) in the title bar becomes the unified toolbar. A [Sidebar](/docs/components/sidebar) inside drops its own material, so glass never sits on glass.
 
 When the window gets narrow, the toolbar's search field folds into a magnifying glass before anything else gives way, and below 540 points the sidebar hides, as a Mac window does when you drag it small.
 
 <Demo name="window/finder" platforms={["macos"]} wallpaper height={560} />
 
-### Window controls
+### Traffic lights that work
 
-Pass `onClose`, `onMinimize` or `onZoom` to `WindowTrafficLights` and each light becomes a button. Their glyphs appear when the pointer is over the group or a light has keyboard focus.
+In a desktop app built with Electron or Tauri, hide the system title bar and draw your own. Pass `onClose`, `onMinimize` or `onZoom` to `WindowTrafficLights` and each light becomes a button; call your shell's window API from it.
+
+```tsx
+<WindowTrafficLights
+  onClose={() => window.desktop.close()}
+  onMinimize={() => window.desktop.minimize()}
+  onZoom={() => window.desktop.toggleMaximize()}
+/>
+```
+
+`window.desktop` stands for whatever your preload script or Tauri's window API exposes. The glyphs appear when the pointer is over the group or a light has keyboard focus.
+
+Set `inactive` on a window that isn't the key window, for example when the desktop window loses focus. Its traffic lights turn gray, its title and app name dim, and its sidebar selection turns gray. In this demo, click a window to make it the key window.
 
 <Demo name="window/controls" platforms={["macos"]} wallpaper height={300} />
 
+### Utility windows and settings
+
+A floating inspector in a design tool needs only a compact title bar with its name. A settings window shows the current pane's name as its title and its panes as [tabs](/docs/components/tabs) below it. Neither needs traffic lights in the browser.
+
+<Demo name="window/utility" platforms={["macos"]} wallpaper height={400} />
+
 ## Platform behavior
 
-A window is a macOS idiom, and it draws the same whatever platform the page is on. Its title bar is 52 points tall when it holds a toolbar and 28 points when it only holds a title, and it keeps Apple's red, yellow and green traffic lights in every theme, because they're system chrome rather than brand color.
+A window is a macOS idiom, and it draws the same whatever platform the page is on. Its title bar is 52 points tall when it holds a toolbar and 28 points when it's `compact`, and the traffic lights keep Apple's red, yellow and green in every theme, because they're system chrome rather than brand color.
 
-In a right-to-left language the window mirrors, as macOS does: the traffic lights and the sidebar move to the right edge, with Close nearest the corner.
+In a right-to-left language the window mirrors, as macOS does: the traffic lights, the sidebar and the leading side of the title bar move to the right edge, with Close nearest the corner.
 
 ## Accessibility
 
 - `Window` is a group. Name it with `aria-label`, usually the app's or the document's name.
-- Without handlers, the traffic lights are decorative and hidden from assistive technology. Pass `onClose`, `onMinimize` or `onZoom` and each becomes a real button named Close, Minimize or Zoom, in a group named Window controls. Their glyphs show when the pointer is over the group or a light has keyboard focus.
+- Without handlers, the traffic lights are decorative and hidden from assistive technology. Pass `onClose`, `onMinimize` or `onZoom` and each becomes a real button named Close, Minimize or Zoom, in a group named Window controls.
+- The icon in `WindowAppName` is hidden from assistive technology, so the name is read once.
+- A menu in the corner needs a name that says what it changes, not only what it shows: `aria-label="Workspace: Northwind"` or `aria-label="Account: Maya Okafor"`. An avatar-only trigger has no visible text, so its label is the only name it has.
+- A centered title is plain text. If it names the page, also name the window or the page's main heading with it.
 
 ## API
 
@@ -67,7 +159,7 @@ In a right-to-left language the window mirrors, as macOS does: the traffic light
 
 <PropsTable
   rows={[
-    { name: "inactive", type: "boolean", default: "false", description: "Draws the window behind the key window: gray traffic lights, dimmed title, gray sidebar selection." },
+    { name: "inactive", type: "boolean", default: "false", description: "Draws the window behind the key window: gray traffic lights, dimmed title and app name, gray sidebar selection." },
     { name: "aria-label", type: "string", description: "Names the window." },
   ]}
 />
@@ -76,7 +168,7 @@ In a right-to-left language the window mirrors, as macOS does: the traffic light
 
 <PropsTable
   rows={[
-    { name: "variant", type: '"unified" | "compact"', default: '"unified"', description: "Unified is 52 points and holds a toolbar. Compact is 28 points and holds a title." },
+    { name: "variant", type: '"unified" | "compact"', default: '"unified"', description: "Unified is 52 points and holds a toolbar. Compact is 28 points, for a title or a few small controls." },
     { name: "bordered", type: "boolean", default: "true", description: "Draws the hairline between the title bar and the content." },
   ]}
 />
@@ -85,10 +177,29 @@ In a right-to-left language the window mirrors, as macOS does: the traffic light
 
 <PropsTable
   rows={[
-    { name: "align", type: '"leading" | "center"', default: '"leading"', description: "Center for title-only windows, leading beside a toolbar." },
-    { name: "subtitle", type: "ReactNode", description: "A second, smaller line, like an item count." },
+    { name: "align", type: '"leading" | "center"', default: '"leading"', description: "Leading beside a toolbar. Center keeps the title in the middle of the bar, between the leading and trailing slots, and truncates it before it reaches them." },
+    { name: "subtitle", type: "ReactNode", description: "A second, smaller line, like an item count or Edited." },
   ]}
 />
+
+### WindowTitlebarLeading, WindowTitlebarCenter and WindowTitlebarTrailing
+
+Slots for a title bar with a centered title. `WindowTitlebarLeading` holds what comes before it, like an app name or a navigation menu. `WindowTitlebarCenter` holds a control in place of a title, like a segmented control, and centers the same way. `WindowTitlebarTrailing` holds what comes after it, against the trailing edge; a toolbar inside it lines its items up at the end. Each takes the props of a `div`.
+
+### WindowSidebarHeader
+
+The top of a `WindowSidebar`, as tall as the title bar minus the sidebar's inset. It holds traffic lights, a `WindowAppName`, a menu trigger, or nothing, and keeps its height when empty. A menu trigger or app name inside lines its content up with the sidebar rows. A second item goes to the trailing edge. Takes the props of a `div`.
+
+### WindowAppName
+
+<PropsTable
+  rows={[
+    { name: "icon", type: "ReactNode", description: "A 20-point app icon or workspace avatar, like Avatar with shape=\"app\" and size=\"xs\". Hidden from assistive technology." },
+    { name: "children", type: "ReactNode", description: "The app's or workspace's name, in 13-point semibold. Truncates when space runs out." },
+  ]}
+/>
+
+Put it in a `WindowSidebarHeader` or `WindowTitlebarLeading`, or inside a `MenuTrigger` to make it a switcher; the trigger adds the pull-down chevron.
 
 ### WindowTrafficLights
 
@@ -108,8 +219,11 @@ In a right-to-left language the window mirrors, as macOS does: the traffic light
 | --- | --- | --- |
 | `data-inactive` | `.mb-window` | The window is behind the key window. |
 | `data-variant` | `.mb-window-titlebar` | `unified` or `compact`. |
+| `data-align` | `.mb-window-title` | `leading` or `center`. |
 | `data-light` | `.mb-window-traffic-light` | `close`, `minimize` or `zoom`. |
 | `--mb-window-radius` | `.mb-window` | Corner radius. 16 points. |
 | `--mb-window-sidebar-width` | `.mb-window` | Width of the inset sidebar. 220 points. |
-| `--mb-window-titlebar-height` | `.mb-window` | Height of the unified title bar. |
+| `--mb-window-titlebar-height` | `.mb-window` | Height of the unified title bar. The sidebar header follows it. |
+| `--mb-window-titlebar-padding-start` | `.mb-window-titlebar` | Space before the first item. 16 points, 8 when compact. |
+| `--mb-window-titlebar-padding-end` | `.mb-window-titlebar` | Space after the last item. 8 points. |
 | `--mb-window-sidebar-inset` | `.mb-window` | The gap between the sidebar's glass and the window's edges. 6 points. |

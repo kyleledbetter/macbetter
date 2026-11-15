@@ -1,22 +1,23 @@
+import { ChatCircleIcon } from "@phosphor-icons/react/dist/ssr/ChatCircle"
+import { CompassIcon } from "@phosphor-icons/react/dist/ssr/Compass"
+import { EnvelopeSimpleIcon } from "@phosphor-icons/react/dist/ssr/EnvelopeSimple"
+import { FolderSimpleIcon } from "@phosphor-icons/react/dist/ssr/FolderSimple"
 import { Dock, DockItem } from "macbetter/dock"
-import { CompassIcon, FolderIcon, MailIcon, MessageCircleIcon } from "lucide-react"
 
 const apps = [
-  { name: "Finder", icon: FolderIcon, from: "var(--mb-cyan)", to: "var(--mb-blue)" },
-  { name: "Safari", icon: CompassIcon, from: "var(--mb-teal)", to: "var(--mb-blue)" },
-  { name: "Messages", icon: MessageCircleIcon, from: "var(--mb-mint)", to: "var(--mb-green)" },
-  { name: "Mail", icon: MailIcon, from: "var(--mb-cyan)", to: "var(--mb-indigo)" },
+  { name: "Finder", icon: FolderSimpleIcon, tint: "var(--mb-blue)" },
+  { name: "Safari", icon: CompassIcon, tint: "var(--mb-cyan)" },
+  { name: "Messages", icon: ChatCircleIcon, tint: "var(--mb-green)" },
+  { name: "Mail", icon: EnvelopeSimpleIcon, tint: "var(--mb-blue)" },
 ]
 
 export default function Example() {
   return (
     <div style={{ display: "flex", alignItems: "flex-end", height: 160 }}>
       <Dock aria-label="Dock">
-        {apps.map(({ name, icon: Icon, from, to }) => (
-          <DockItem key={name} label={name} running={name === "Finder"}>
-            <span style={{ display: "grid", placeItems: "center", background: `linear-gradient(160deg, ${from}, ${to})` }}>
-              <Icon aria-hidden="true" strokeWidth={1.75} style={{ width: "54%", height: "54%" }} />
-            </span>
+        {apps.map(({ name, icon: Icon, tint }) => (
+          <DockItem key={name} label={name} tint={tint} running={name === "Finder"}>
+            <Icon weight="fill" aria-hidden="true" />
           </DockItem>
         ))}
       </Dock>

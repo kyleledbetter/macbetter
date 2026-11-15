@@ -3,18 +3,16 @@
 import { Dock, DockItem, DockSeparator } from "macbetter/dock"
 import { Menu, MenuCheckboxItem, MenuItem, MenuSeparator } from "macbetter/menu"
 import { MenuBar, MenuBarContent, MenuBarTrigger } from "macbetter/menu-bar"
-import {
-  CalendarDaysIcon,
-  CompassIcon,
-  FolderKanbanIcon,
-  ImageIcon,
-  MailIcon,
-  MusicIcon,
-  NotebookPenIcon,
-  SettingsIcon,
-  Trash2Icon,
-  WifiIcon,
-} from "lucide-react"
+import { CalendarBlankIcon } from "@phosphor-icons/react/dist/ssr/CalendarBlank"
+import { CompassIcon } from "@phosphor-icons/react/dist/ssr/Compass"
+import { EnvelopeSimpleIcon } from "@phosphor-icons/react/dist/ssr/EnvelopeSimple"
+import { FlowerIcon } from "@phosphor-icons/react/dist/ssr/Flower"
+import { GearSixIcon } from "@phosphor-icons/react/dist/ssr/GearSix"
+import { KanbanIcon } from "@phosphor-icons/react/dist/ssr/Kanban"
+import { MusicNoteIcon } from "@phosphor-icons/react/dist/ssr/MusicNote"
+import { NotePencilIcon } from "@phosphor-icons/react/dist/ssr/NotePencil"
+import { TrashIcon } from "@phosphor-icons/react/dist/ssr/Trash"
+import { WifiIcon } from "lucide-react"
 import { useCallback, useState } from "react"
 import { MacbetterMark } from "@/components/logo"
 import type { Status, Task } from "./data"
@@ -50,28 +48,15 @@ function useSceneState(): SceneState {
 }
 
 const apps = [
-  { name: "Projects", icon: FolderKanbanIcon, from: "var(--mb-accent)", to: "color-mix(in oklch, var(--mb-accent), black 30%)" },
-  { name: "Browser", icon: CompassIcon, from: "var(--mb-teal)", to: "var(--mb-blue)" },
-  { name: "Mail", icon: MailIcon, from: "var(--mb-cyan)", to: "var(--mb-indigo)" },
-  { name: "Calendar", icon: CalendarDaysIcon, from: "var(--mb-red)", to: "var(--mb-orange)" },
-  { name: "Notes", icon: NotebookPenIcon, from: "var(--mb-yellow)", to: "var(--mb-orange)" },
-  { name: "Photos", icon: ImageIcon, from: "var(--mb-yellow)", to: "var(--mb-pink)" },
-  { name: "Music", icon: MusicIcon, from: "var(--mb-pink)", to: "var(--mb-red)" },
-  {
-    name: "Settings",
-    icon: SettingsIcon,
-    from: "var(--mb-tint)",
-    to: "color-mix(in oklch, var(--mb-tint), black 45%)",
-  },
+  { name: "Projects", icon: KanbanIcon, tint: "var(--mb-accent)" },
+  { name: "Browser", icon: CompassIcon, tint: "var(--mb-cyan)" },
+  { name: "Mail", icon: EnvelopeSimpleIcon, tint: "var(--mb-blue)" },
+  { name: "Calendar", icon: CalendarBlankIcon, tint: "var(--mb-red)" },
+  { name: "Notes", icon: NotePencilIcon, tint: "var(--mb-yellow)" },
+  { name: "Photos", icon: FlowerIcon, tint: "var(--mb-pink)" },
+  { name: "Music", icon: MusicNoteIcon, tint: "var(--mb-red)" },
+  { name: "Settings", icon: GearSixIcon, tint: "var(--mb-tint)" },
 ]
-
-function AppIcon({ icon: Icon, from, to }: { icon: typeof MailIcon; from: string; to: string }) {
-  return (
-    <span className="lp-app-icon" style={{ background: `linear-gradient(160deg, ${from}, ${to})` }}>
-      <Icon aria-hidden="true" strokeWidth={1.75} />
-    </span>
-  )
-}
 
 function SceneMenuBar() {
   return (
@@ -143,19 +128,20 @@ function HeroScene() {
         </div>
         <div className="lp-scene-dock">
           <Dock aria-label="Dock">
-            {apps.map((app) => (
+            {apps.map(({ name, icon: Icon, tint }) => (
               <DockItem
-                key={app.name}
-                label={app.name}
-                running={running.includes(app.name)}
-                onClick={() => setRunning((open) => (open.includes(app.name) ? open : [...open, app.name]))}
+                key={name}
+                label={name}
+                tint={tint}
+                running={running.includes(name)}
+                onClick={() => setRunning((open) => (open.includes(name) ? open : [...open, name]))}
               >
-                <AppIcon {...app} />
+                <Icon weight="fill" aria-hidden="true" />
               </DockItem>
             ))}
             <DockSeparator />
-            <DockItem label="Trash">
-              <AppIcon icon={Trash2Icon} from="color-mix(in oklch, var(--mb-tint) 45%, white)" to="var(--mb-tint)" />
+            <DockItem label="Trash" tint="var(--mb-tint)">
+              <TrashIcon weight="fill" aria-hidden="true" />
             </DockItem>
           </Dock>
         </div>

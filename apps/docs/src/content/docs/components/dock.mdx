@@ -23,9 +23,42 @@ import { Dock, DockItem, DockSeparator } from "macbetter/dock"
 
 ### Items, labels and the running dot
 
-Give every `DockItem` a `label`: it's the item's accessible name and the label that appears above it on hover. Put the icon inside as its only child; the dock rounds it to the app-icon shape and sizes it. `running` draws the dot under an open app.
+Give every `DockItem` a `label`: it's the item's accessible name and the label that appears above it on hover. Give it a `tint` and put a solid white glyph inside as its only child. The dock draws the rest of the app icon: the rounded-rectangle tile, a gradient from the tint that's lighter at the top, a bright top edge, an inner bevel, a drop shadow under the tile, and a small shadow under the glyph so it sits raised on the tile. `running` draws the dot under an open app.
 
 <Demo name="dock/basic" platforms={["macos"]} wallpaper height={300} />
+
+`tint` takes any CSS color. The system colors (`var(--mb-blue)`, `var(--mb-green)`…) match the rest of macbetter. Without a `tint`, the tile takes the theme's neutral color.
+
+### Icons
+
+Lucide, the icon set used everywhere else in these docs, only has stroked icons. A Dock icon needs a solid glyph, so the Dock examples use the `fill` weight of [Phosphor](https://phosphoricons.com) (MIT). Its fill weight covers every glyph a dock needs (folder, compass, envelope, chat, calendar, note, music, gear, trash, terminal, map, shopping bag), and its round corners and even weight sit well beside Lucide's stroked icons in the rest of the interface.
+
+```sh
+npm install @phosphor-icons/react
+```
+
+Import each icon from its own file. Each Phosphor component carries all six of its weights, so one icon adds about 2.5 KB minified (about 0.7 KB gzipped). Importing from the package root also works, but your bundler then has to read the whole package to drop the icons you don't use.
+
+```tsx
+import { CompassIcon } from "@phosphor-icons/react/dist/ssr/Compass"
+
+<DockItem label="Safari" tint="var(--mb-cyan)">
+  <CompassIcon weight="fill" aria-hidden="true" />
+</DockItem>
+```
+
+The `dist/ssr` files work in Server Components and Client Components. The dock doesn't depend on Phosphor: any solid SVG works, from another icon set or your own artwork. Draw it in `currentColor` and leave the padding to the dock, which sizes the SVG to 66% of the tile. A stroked icon also works, but it reads lighter than the apps around it. To use your own finished artwork instead of a glyph, pass an `<img>` or any other element: it fills the whole tile.
+
+### Appearances
+
+macOS lets people choose how app icons look. Set `appearance` on the dock to match:
+
+- `default`: the full-color icon.
+- `dark`: a near-black tile, with the app's color moved to the glyph.
+- `clear`: colorless glass with a white glyph, so the wallpaper shows through the shelf and the icons.
+- `tinted`: every icon in one color, `--mb-dock-tint` (the accent color unless you set it). In light mode the color fills the glass; in dark mode the tile stays dark and the glyph takes the color.
+
+<Demo name="dock/appearances" platforms={["macos"]} wallpaper height={340} />
 
 ### Magnification and launching
 
@@ -33,7 +66,8 @@ Move the pointer along the dock: icons grow with their distance from the pointer
 
 ## Platform behavior
 
-- **macOS**: the dock is a glass shelf. Magnification follows a mouse or trackpad pointer only, never touch, and is off under Reduce Motion.
+- **macOS**: the dock is a shelf of clear Liquid Glass. It blurs and saturates the wallpaper behind it, with a bright edge along the top, a softer one along the bottom and a soft shadow under it. Magnification follows a mouse or trackpad pointer only, never touch, and is off under Reduce Motion.
+- With Reduce Transparency, the shelf turns opaque and clear icons become solid. With Increase Contrast, the shelf and each icon get a real edge instead of a highlight.
 - **iPadOS and iOS**: there's no magnification without a pointer; items keep their size and the shelf works like a toolbar of icons.
 - Icons default to 48px; set `--mb-dock-icon-size` on the dock to change it.
 - The shelf keeps a little more room at its ends than at its top, so the first and last icons don't crowd its curved corners.
@@ -52,6 +86,7 @@ Move the pointer along the dock: icons grow with their distance from the pointer
 <PropsTable
   rows={[
     { name: "magnification", type: "number", default: "1.75", description: "How large the icon under the pointer grows. 1 turns it off." },
+    { name: "appearance", type: '"default" | "dark" | "clear" | "tinted"', default: '"default"', description: "How the app icons look, as people choose it in macOS." },
     { name: "loop", type: "boolean", description: "Whether arrow keys wrap from the last item to the first." },
     { name: "aria-label", type: "string", description: "Names the dock." },
   ]}
@@ -62,7 +97,9 @@ Move the pointer along the dock: icons grow with their distance from the pointer
 <PropsTable
   rows={[
     { name: "label", type: "string", description: "The app's name, read by assistive technology and shown above the icon." },
+    { name: "tint", type: "string", description: "The icon's background color, any CSS color. The dock draws it as a gradient that's lighter at the top." },
     { name: "running", type: "boolean", description: "Draws the dot under an open app. Items that aren't running bounce when clicked." },
+    { name: "children", type: "ReactNode", description: "The glyph: a solid SVG in currentColor. Any other element fills the whole tile." },
     { name: "href", type: "string", description: "Renders the item as a link." },
     { name: "onClick", type: "(event) => void", description: "Runs when the item is pressed." },
     { name: "disabled", type: "boolean", description: "Keeps the item focusable but inert." },
@@ -78,9 +115,14 @@ The line between apps and documents. Takes no props of its own.
 | Attribute or variable | On | Meaning |
 | --- | --- | --- |
 | `data-magnifying` | `.mb-dock` | The pointer is over the dock |
+| `data-appearance` | `.mb-dock` | `default`, `dark`, `clear` or `tinted` |
 | `data-running` | `.mb-dock-item` | The app is open |
 | `data-bouncing` | `.mb-dock-item` | The app is launching |
 | `--mb-dock-icon-size` | `.mb-dock` | Resting icon size, 48px |
-| `--mb-dock-padding` | `.mb-dock` | Space above the icons, 5px |
-| `--mb-dock-padding-inline` | `.mb-dock` | Space before the first icon and after the last, 9px |
+| `--mb-dock-padding` | `.mb-dock` | Space above the icons, 6px |
+| `--mb-dock-padding-inline` | `.mb-dock` | Space before the first icon and after the last, 10px |
+| `--mb-dock-tint` | `.mb-dock` | The color of every icon in the tinted appearance, the accent color by default |
+| `--mb-dock-fill` | `.mb-dock` | The shelf's glass color, mostly transparent |
+| `--mb-dock-item-tint` | `.mb-dock-item-icon` | The icon's color, set by `tint` |
+| `--mb-dock-item-glyph-size` | `.mb-dock-item-icon` | The glyph's size inside the tile, 66% |
 | `--mb-dock-scale` | `.mb-dock-item` | The icon's current magnification, written as the pointer moves |

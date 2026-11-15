@@ -1,45 +1,29 @@
 "use client"
 
+import { CalendarBlankIcon } from "@phosphor-icons/react/dist/ssr/CalendarBlank"
+import { ChatCircleIcon } from "@phosphor-icons/react/dist/ssr/ChatCircle"
+import { CompassIcon } from "@phosphor-icons/react/dist/ssr/Compass"
+import { EnvelopeSimpleIcon } from "@phosphor-icons/react/dist/ssr/EnvelopeSimple"
+import { FlowerIcon } from "@phosphor-icons/react/dist/ssr/Flower"
+import { FolderSimpleIcon } from "@phosphor-icons/react/dist/ssr/FolderSimple"
+import { GearSixIcon } from "@phosphor-icons/react/dist/ssr/GearSix"
+import { MusicNoteIcon } from "@phosphor-icons/react/dist/ssr/MusicNote"
+import { NotePencilIcon } from "@phosphor-icons/react/dist/ssr/NotePencil"
+import { TrashIcon } from "@phosphor-icons/react/dist/ssr/Trash"
 import { Dock, DockItem, DockSeparator } from "macbetter/dock"
-import {
-  CalendarDaysIcon,
-  CompassIcon,
-  FolderIcon,
-  ImageIcon,
-  MailIcon,
-  MessageCircleIcon,
-  MusicIcon,
-  NotebookPenIcon,
-  SettingsIcon,
-  Trash2Icon,
-} from "lucide-react"
 import { useState } from "react"
 
 const apps = [
-  { name: "Finder", icon: FolderIcon, from: "var(--mb-cyan)", to: "var(--mb-blue)" },
-  { name: "Safari", icon: CompassIcon, from: "var(--mb-teal)", to: "var(--mb-blue)" },
-  { name: "Messages", icon: MessageCircleIcon, from: "var(--mb-mint)", to: "var(--mb-green)" },
-  { name: "Mail", icon: MailIcon, from: "var(--mb-cyan)", to: "var(--mb-indigo)" },
-  { name: "Photos", icon: ImageIcon, from: "var(--mb-yellow)", to: "var(--mb-pink)" },
-  { name: "Music", icon: MusicIcon, from: "var(--mb-pink)", to: "var(--mb-red)" },
-  { name: "Calendar", icon: CalendarDaysIcon, from: "var(--mb-red)", to: "var(--mb-orange)" },
-  { name: "Notes", icon: NotebookPenIcon, from: "var(--mb-yellow)", to: "var(--mb-orange)" },
-  { name: "System Settings", icon: SettingsIcon, from: "var(--mb-tint)", to: "color-mix(in oklch, var(--mb-tint), black 45%)" },
+  { name: "Finder", icon: FolderSimpleIcon, tint: "var(--mb-blue)" },
+  { name: "Safari", icon: CompassIcon, tint: "var(--mb-cyan)" },
+  { name: "Messages", icon: ChatCircleIcon, tint: "var(--mb-green)" },
+  { name: "Mail", icon: EnvelopeSimpleIcon, tint: "var(--mb-blue)" },
+  { name: "Photos", icon: FlowerIcon, tint: "var(--mb-pink)" },
+  { name: "Music", icon: MusicNoteIcon, tint: "var(--mb-red)" },
+  { name: "Calendar", icon: CalendarBlankIcon, tint: "var(--mb-orange)" },
+  { name: "Notes", icon: NotePencilIcon, tint: "var(--mb-yellow)" },
+  { name: "System Settings", icon: GearSixIcon, tint: "var(--mb-tint)" },
 ]
-
-function AppIcon({ icon: Icon, from, to }: { icon: typeof FolderIcon; from: string; to: string }) {
-  return (
-    <span
-      style={{
-        display: "grid",
-        placeItems: "center",
-        background: `linear-gradient(160deg, ${from}, ${to})`,
-      }}
-    >
-      <Icon aria-hidden="true" strokeWidth={1.75} style={{ width: "54%", height: "54%" }} />
-    </span>
-  )
-}
 
 export default function Example() {
   const [running, setRunning] = useState(["Finder", "Safari", "Messages"])
@@ -47,19 +31,20 @@ export default function Example() {
   return (
     <div style={{ display: "flex", alignItems: "flex-end", height: 200 }}>
       <Dock aria-label="Dock">
-        {apps.map((app) => (
+        {apps.map(({ name, icon: Icon, tint }) => (
           <DockItem
-            key={app.name}
-            label={app.name}
-            running={running.includes(app.name)}
-            onClick={() => setRunning((open) => (open.includes(app.name) ? open : [...open, app.name]))}
+            key={name}
+            label={name}
+            tint={tint}
+            running={running.includes(name)}
+            onClick={() => setRunning((open) => (open.includes(name) ? open : [...open, name]))}
           >
-            <AppIcon {...app} />
+            <Icon weight="fill" aria-hidden="true" />
           </DockItem>
         ))}
         <DockSeparator />
-        <DockItem label="Trash">
-          <AppIcon icon={Trash2Icon} from="color-mix(in oklch, var(--mb-tint) 45%, white)" to="var(--mb-tint)" />
+        <DockItem label="Trash" tint="var(--mb-tint)">
+          <TrashIcon weight="fill" aria-hidden="true" />
         </DockItem>
       </Dock>
     </div>

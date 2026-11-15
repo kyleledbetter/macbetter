@@ -9,6 +9,7 @@ import {
   AlertIcon,
   AlertTitle,
 } from "macbetter/alert"
+import { Avatar } from "macbetter/avatar"
 import { Badge } from "macbetter/badge"
 import { Button } from "macbetter/button"
 import { Card } from "macbetter/card"
@@ -22,7 +23,17 @@ import {
   ListRowValue,
   ListSection,
 } from "macbetter/list"
-import { Menu, MenuContent, MenuItem, MenuItemIcon, MenuSeparator, MenuTrigger } from "macbetter/menu"
+import {
+  Menu,
+  MenuContent,
+  MenuGroupLabel,
+  MenuItem,
+  MenuItemIcon,
+  MenuRadioGroup,
+  MenuRadioItem,
+  MenuSeparator,
+  MenuTrigger,
+} from "macbetter/menu"
 import { NavigationBar, NavigationBarTrailing, NavigationStack } from "macbetter/navigation-bar"
 import { Progress, ProgressLabel, ProgressValue } from "macbetter/progress"
 import { SegmentedControl, SegmentedControlItem } from "macbetter/segmented-control"
@@ -47,7 +58,14 @@ import {
   ToolbarSpacer,
   ToolbarTitle,
 } from "macbetter/toolbar"
-import { Window, WindowBody, WindowSidebar, WindowTitlebar, WindowTrafficLights } from "macbetter/window"
+import {
+  Window,
+  WindowAppName,
+  WindowBody,
+  WindowSidebar,
+  WindowSidebarHeader,
+  WindowTitlebar,
+} from "macbetter/window"
 import {
   BellIcon,
   BotIcon,
@@ -444,22 +462,37 @@ function AlertsPage() {
 
 function MacAnalytics({ store }: { store: Store }) {
   const [page, setPage] = React.useState<Page>("overview")
+  const [workspace, setWorkspace] = React.useState("Northwind")
   const label = pages.find((p) => p.id === page)?.label ?? "Overview"
   return (
     <MacFrame>
       <Window aria-label="macbetter">
         <WindowSidebar>
-          <WindowTrafficLights />
+          <WindowSidebarHeader>
+            <Menu onAction={(action) => toast(action === "create" ? "Create a workspace" : `${workspace} settings`)}>
+              <MenuTrigger variant="plain" tone="neutral" aria-label={`Workspace: ${workspace}`}>
+                <WindowAppName icon={<Avatar shape="app" size="xs" name={workspace} color="auto" />}>{workspace}</WindowAppName>
+              </MenuTrigger>
+              <MenuContent align="start">
+                <MenuRadioGroup value={workspace} onValueChange={(value) => setWorkspace(value as string)}>
+                  <MenuGroupLabel>Workspaces</MenuGroupLabel>
+                  {["Northwind", "Contoso", "Personal"].map((name) => (
+                    <MenuRadioItem key={name} value={name} closeOnSelect>
+                      {name}
+                    </MenuRadioItem>
+                  ))}
+                </MenuRadioGroup>
+                <MenuSeparator />
+                <MenuItem value="create">
+                  Create Workspace…
+                </MenuItem>
+                <MenuItem value="settings">
+                  Workspace Settings
+                </MenuItem>
+              </MenuContent>
+            </Menu>
+          </WindowSidebarHeader>
           <Sidebar aria-label="Workspace">
-            <div className="ex-workspace">
-              <span className="ex-workspace-mark" aria-hidden="true">
-                N
-              </span>
-              <span>
-                <strong>Northwind</strong>
-                <span>macbetter workspace</span>
-              </span>
-            </div>
             <SidebarSection title="Analytics">
               {pages.map((p) => (
                 <SidebarItem
@@ -488,7 +521,7 @@ function MacAnalytics({ store }: { store: Store }) {
         </WindowSidebar>
         <WindowTitlebar>
           <Toolbar aria-label="Dashboard">
-            <ToolbarTitle subtitle={`northwind · ${store.env}`}>{label}</ToolbarTitle>
+            <ToolbarTitle subtitle={`${workspace.toLowerCase()} · ${store.env}`}>{label}</ToolbarTitle>
             <ToolbarSpacer />
             <RangePicker store={store} />
             <Select

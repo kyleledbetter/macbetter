@@ -280,40 +280,6 @@
   height: 55%;
 }
 
-/* Sidebar workspace */
-
-.ex-workspace {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 4px 8px 10px;
-}
-
-.ex-workspace > span:last-child {
-  display: grid;
-  line-height: 15px;
-}
-
-.ex-workspace strong {
-  font-weight: 600;
-}
-
-.ex-workspace span span {
-  color: var(--mb-label-secondary);
-  font-size: 11px;
-}
-
-.ex-workspace-mark {
-  display: grid;
-  place-items: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
-  background: linear-gradient(150deg, var(--mb-accent-secondary), oklch(from var(--mb-accent-secondary) calc(l - 0.15) c h));
-  color: #fff;
-  font: 700 14px/1 var(--mb-font-display);
-}
-
 .ex-dash-list {
   background: transparent;
 }
