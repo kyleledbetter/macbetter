@@ -25,7 +25,7 @@ export default function Example() {
           <ListRowIcon color="indigo">
             <MailIcon aria-hidden="true" />
           </ListRowIcon>
-          <ListRowTitle>Macbetter</ListRowTitle>
+          <ListRowTitle>macbetter</ListRowTitle>
           <ListRowSubtitle>Mail, Calendars</ListRowSubtitle>
           <ListRowAccessory type="disclosure" />
         </ListRow>

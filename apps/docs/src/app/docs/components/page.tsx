@@ -6,7 +6,7 @@ import { docExists, docInfo } from "@/lib/docs"
 import { componentSections } from "@/lib/nav"
 import { socialMetadata } from "@/lib/og/routes"
 
-const description = "Every Macbetter component, grouped the way the sidebar groups them. Each one adapts to macOS, iPadOS and iOS."
+const description = "Every macbetter component, grouped the way the sidebar groups them. Each one adapts to macOS, iPadOS and iOS."
 
 export const metadata: Metadata = {
   title: "Components",

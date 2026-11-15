@@ -40,11 +40,11 @@ function MobileNav({ sections }: { sections: NavSection[] }) {
       >
         <MenuIcon aria-hidden="true" />
       </SheetTrigger>
-      {/* The platform goes on a wrapper: Macbetter's @scope rules don't match an element that is its own boundary. */}
+      {/* The platform goes on a wrapper: macbetter's @scope rules don't match an element that is its own boundary. */}
       <div data-platform={platform} className="contents">
         <SheetContent className="docs-nav-sheet">
           <SheetHeader className="docs-nav-sheet-header">
-            <SheetTitle>Macbetter</SheetTitle>
+            <SheetTitle>macbetter</SheetTitle>
             <SheetClose>Done</SheetClose>
           </SheetHeader>
           <SheetBody data-docs-scroller="" className="docs-nav-sheet-body">

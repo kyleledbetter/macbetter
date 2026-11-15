@@ -39,12 +39,12 @@ function ogPaths(): string[] {
 }
 
 function ogCard(path: string): OgCard | null {
-  if (path === "") return { title: tagline, eyebrow: "Macbetter" }
+  if (path === "") return { title: tagline, eyebrow: "macbetter" }
   if (path === "themes") {
     return { title: "Theme Studio", eyebrow: "Themes", description: "Your brand’s colors on macOS, iPadOS and iOS." }
   }
   if (path === "examples") {
-    return { title: "Built with Macbetter", eyebrow: "Examples", description: "Settings, Mail, Analytics and Music." }
+    return { title: "Built with macbetter", eyebrow: "Examples", description: "Settings, Mail, Analytics and Music." }
   }
   if (path.startsWith("examples/")) {
     const example = examples().find((entry) => `examples/${entry.slug}` === path)
@@ -89,16 +89,16 @@ function socialMetadata({
   const image = {
     url: ogImageUrl(path),
     ...ogSize,
-    alt: !card ? "Macbetter" : path === "" ? `Macbetter — ${card.title}` : `${card.title} · Macbetter`,
+    alt: !card ? "macbetter" : path === "" ? `macbetter — ${card.title}` : `${card.title} · macbetter`,
     type: "image/png",
   }
-  const fullTitle = title ? `${title} · Macbetter` : undefined
+  const fullTitle = title ? `${title} · macbetter` : undefined
   return {
     openGraph: {
       title: fullTitle,
       description,
       url: `/${path}`,
-      siteName: "Macbetter",
+      siteName: "macbetter",
       locale: "en_US",
       type,
       images: [image],

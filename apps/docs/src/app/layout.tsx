@@ -11,14 +11,14 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://macbetter.dev"),
-  title: { default: `Macbetter — ${tagline}`, template: "%s · Macbetter" },
+  title: { default: `macbetter — ${tagline}`, template: "%s · macbetter" },
   description:
-    "Macbetter is a design system: Apple-grade components for the web, themeable to any brand and built on ui-sdk.",
-  applicationName: "Macbetter",
+    "macbetter is a design system: Apple-grade components for the web, themeable to any brand and built on ui-sdk.",
+  applicationName: "macbetter",
   authors: [{ name: "Kyle Ledbetter", url: "https://github.com/kyleledbetter" }],
   creator: "Kyle Ledbetter",
   // Pages without a card of their own (the 404) share the home page's.
-  openGraph: { type: "website", siteName: "Macbetter", locale: "en_US", images: [{ url: ogImageUrl(""), ...ogSize }] },
+  openGraph: { type: "website", siteName: "macbetter", locale: "en_US", images: [{ url: ogImageUrl(""), ...ogSize }] },
   twitter: { card: "summary_large_image", images: [{ url: ogImageUrl(""), ...ogSize }] },
 }
 

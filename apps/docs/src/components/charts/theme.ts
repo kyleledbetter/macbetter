@@ -4,9 +4,9 @@ import * as React from "react"
 import type { ChartConfig } from "./evil/ui/echarts-chart"
 
 /*
- * The Macbetter adapter for ECharts and EvilCharts.
+ * The macbetter adapter for ECharts and EvilCharts.
  *
- * Macbetter colors are CSS: light-dark(), color-mix() and oklch(), resolved
+ * macbetter colors are CSS: light-dark(), color-mix() and oklch(), resolved
  * per element by data-theme, data-scheme and data-platform. A canvas can't
  * read CSS, so the adapter paints each token on a probe inside the chart's
  * own container, reads back a plain rgba() string, and does it again whenever
@@ -278,7 +278,7 @@ function paint(theme: ChartTheme, name: string) {
 }
 
 /**
- * An EvilCharts config from Macbetter colors. EvilCharts takes light and dark
+ * An EvilCharts config from macbetter colors. EvilCharts takes light and dark
  * colors per series; the adapter already resolved them for this chart's
  * scheme, so both get the same value. A color is a chart color name, with an
  * optional opacity ("exercise/40"), or an rgba() string.
@@ -317,7 +317,7 @@ export type { ChartColor, ChartTheme, Platform }
 type EvilSeries = Parameters<typeof evilConfig>[1]
 
 /**
- * Everything an EvilCharts chart needs from Macbetter: put `ref` on an
+ * Everything an EvilCharts chart needs from macbetter: put `ref` on an
  * ancestor (a ChartFrame), pass `config` and `chartOptions` to the chart.
  * Both are null until the theme resolves on the client. Keep `series` stable.
  */

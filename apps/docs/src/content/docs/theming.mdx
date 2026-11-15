@@ -1,11 +1,11 @@
 export const metadata = {
   title: "Theming",
-  description: "Re-skin Macbetter with a handful of seed tokens. Everything else derives from them, in light and dark.",
+  description: "Re-skin macbetter with a handful of seed tokens. Everything else derives from them, in light and dark.",
 }
 
 # Theming
 
-<Lead>A theme answers a few questions about your brand: its accent, its ink, its backgrounds, how round its corners are and which fonts it uses. Macbetter derives every other color and state from those answers.</Lead>
+<Lead>A theme answers a few questions about your brand: its accent, its ink, its backgrounds, how round its corners are and which fonts it uses. macbetter derives every other color and state from those answers.</Lead>
 
 <Demo name="guides/theme-swatches" hideCode />
 
@@ -67,13 +67,13 @@ Every color seed is written with `light-dark()`, so one theme covers both scheme
 --mb-accent: light-dark(#ee5700, #f67f01);
 ```
 
-The browser picks the first value under a light `color-scheme` and the second under a dark one. Macbetter sets `color-scheme: light dark` by default, so the system setting decides. `data-scheme="light"` or `data-scheme="dark"` on any element pins it for that subtree.
+The browser picks the first value under a light `color-scheme` and the second under a dark one. macbetter sets `color-scheme: light dark` by default, so the system setting decides. `data-scheme="light"` or `data-scheme="dark"` on any element pins it for that subtree.
 
 Choose the dark value separately rather than inverting the light one. Dark backgrounds usually need a lighter, more saturated accent to reach the same contrast.
 
 ## Write a theme in CSS
 
-A theme is a rule that sets seeds under a `data-theme` name. Load it after Macbetter's stylesheet:
+A theme is a rule that sets seeds under a `data-theme` name. Load it after macbetter's stylesheet:
 
 ```css title="themes/harbor.css"
 [data-theme="harbor"] {

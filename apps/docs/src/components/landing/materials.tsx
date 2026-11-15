@@ -13,13 +13,7 @@ function Materials() {
       <SectionHeading
         id="lp-materials"
         eyebrow="Materials and motion"
-        headline={
-          <>
-            Glass you can see&nbsp;through.
-            <br />
-            Motion with&nbsp;weight.
-          </>
-        }
+        headline={<>Glass materials and motion straight from Swift UI, built for the&nbsp;web.</>}
         links={
           <>
             <MoreLink href="/docs/foundations/materials">Learn more about materials</MoreLink>

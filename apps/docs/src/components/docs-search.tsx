@@ -116,7 +116,7 @@ function DocsSearch({ entries }: DocsSearchProps) {
       {
         value: "go:/examples",
         label: "Go to Examples",
-        detail: "Whole apps built with Macbetter",
+        detail: "Whole apps built with macbetter",
         icon: <ArrowUpRightIcon />,
         score: 0,
       },

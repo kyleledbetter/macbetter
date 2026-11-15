@@ -7,20 +7,20 @@ test("keeps the link a link and previews it on keyboard focus", async () => {
   const user = userEvent.setup()
   render(
     <HoverCard delay={0}>
-      <HoverCardTrigger href="https://macbetter.dev">Macbetter site</HoverCardTrigger>
+      <HoverCardTrigger href="https://macbetter.dev">macbetter site</HoverCardTrigger>
       <HoverCardContent>
-        <p>Macbetter — macOS, iPadOS and iOS for the web</p>
+        <p>macbetter — macOS, iPadOS and iOS for the web</p>
       </HoverCardContent>
     </HoverCard>
   )
 
-  const link = screen.getByRole("link", { name: "Macbetter site" })
+  const link = screen.getByRole("link", { name: "macbetter site" })
   expect(link.className).toContain("mb-hover-card-trigger")
   expect(link.getAttribute("href")).toBe("https://macbetter.dev")
 
   await user.tab()
   await new Promise((resolve) => setTimeout(resolve, 20))
-  const card = await screen.findByText("Macbetter — macOS, iPadOS and iOS for the web")
+  const card = await screen.findByText("macbetter — macOS, iPadOS and iOS for the web")
   const content = card.closest(".mb-hover-card")
   expect(content).not.toBeNull()
   expect(content?.querySelector(".mb-hover-card-arrow")).toBeNull()

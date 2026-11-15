@@ -12,7 +12,7 @@ const rows = {
     ["Screen Sharing", "Off"],
   ],
   network: [
-    ["Wi-Fi", "Connected to Macbetter"],
+    ["Wi-Fi", "Connected to macbetter"],
     ["IP address", "192.168.1.24"],
     ["Firewall", "Active"],
   ],

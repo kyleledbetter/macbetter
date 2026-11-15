@@ -80,7 +80,7 @@ function SiteFooter({ path = [], children }: { path?: string[]; children?: React
         <nav aria-label="Breadcrumb" className="site-footer-breadcrumbs">
           <ol>
             <li>
-              <Link href="/" aria-label="Macbetter home" className="site-footer-home">
+              <Link href="/" aria-label="macbetter home" className="site-footer-home">
                 <MacbetterMark size={16} />
               </Link>
             </li>

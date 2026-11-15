@@ -1,7 +1,7 @@
 type ClassValue<S> = string | undefined | ((state: S) => string | undefined)
 
 /**
- * Joins Macbetter's class with the caller's, which ui-sdk lets be a function
+ * Joins macbetter's class with the caller's, which ui-sdk lets be a function
  * of the part's state.
  */
 function cx<S>(base: string, className?: ClassValue<S>): string | ((state: S) => string) {

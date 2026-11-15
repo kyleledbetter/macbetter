@@ -16,7 +16,7 @@ type ScreenSheetProps = {
 }
 
 /**
- * A full-height iOS sheet. On a phone it's Macbetter's Sheet. Inside a device
+ * A full-height iOS sheet. On a phone it's macbetter's Sheet. Inside a device
  * frame it's drawn in the frame's screen instead, because a Sheet lives in the
  * browser's top layer and would cover the whole page rather than the phone.
  */

@@ -12,7 +12,7 @@ const data = [
   { month: "Nov", minutes: 1120 },
 ]
 
-// Colors are Macbetter chart colors, not hex: the adapter resolves them for this chart's theme and scheme.
+// Colors are macbetter chart colors, not hex: the adapter resolves them for this chart's theme and scheme.
 const series = { minutes: { label: "Exercise minutes", color: "exercise" } } as const
 
 export default function ExerciseByMonth() {

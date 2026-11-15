@@ -1,18 +1,20 @@
 import { ButtonLink } from "@/components/button-link"
+import { CopyAgentInstructions } from "@/components/copy-agent-instructions"
 import { HeroScene } from "./hero-scene"
 
 function Hero() {
   return (
     <section id="overview" className="lp-hero" aria-labelledby="lp-hero-title">
       <div className="lp-hero-copy stack" data-align="center">
-        <h1 id="lp-hero-title" className="stack-eyebrow type-eyebrow-elevated lp-enter" style={{ "--i": 0 } as React.CSSProperties}>
-          Macbetter
-        </h1>
-        <p className="stack-headline lp-hero-headline type-headline-super lp-enter" style={{ "--i": 1 } as React.CSSProperties}>
+        <h1
+          id="lp-hero-title"
+          className="stack-headline lp-hero-headline type-headline-super lp-enter"
+          style={{ "--i": 1 } as React.CSSProperties}
+        >
           macOS, iPadOS and&nbsp;iOS.
           <br />
           One web framework.
-        </p>
+        </h1>
         <p
           className="stack-copy lp-hero-intro type-intro-elevated type-two-tone lp-enter"
           style={{ "--i": 2 } as React.CSSProperties}
@@ -35,6 +37,7 @@ function Hero() {
           >
             Browse components
           </ButtonLink>
+          <CopyAgentInstructions variant="plain" shape="capsule" className="pill" data-pill="elevated" data-pill-style="outline" />
         </div>
       </div>
       <div className="lp-enter lp-enter-scene" style={{ "--i": 4 } as React.CSSProperties}>

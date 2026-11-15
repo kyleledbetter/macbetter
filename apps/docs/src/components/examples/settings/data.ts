@@ -94,7 +94,7 @@ function searchPanes(query: string) {
 }
 
 const networks = {
-  current: "Macbetter HQ",
+  current: "macbetter HQ",
   known: ["Harbor Cafe Guest", "Pine Street Loft", "Avery’s iPhone"],
   other: ["Hollis Studio", "Northwind 5G", "Library Public", "Saltmarsh Guest"],
 }
@@ -108,7 +108,7 @@ const devices = [
 
 const apps = [
   { id: "calendar", name: "Calendar", color: "red" as const },
-  { id: "macbetter", name: "Macbetter", color: "orange" as const },
+  { id: "macbetter", name: "macbetter", color: "orange" as const },
   { id: "mail", name: "Mail", color: "blue" as const },
   { id: "messages", name: "Messages", color: "green" as const },
   { id: "music", name: "Music", color: "pink" as const },

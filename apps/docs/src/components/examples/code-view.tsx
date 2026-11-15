@@ -236,7 +236,7 @@ function BuiltWith({ source }: { source: ExampleSourceSet }) {
     <section className="ex-code-note" aria-label="How this is built">
       <p>
         <strong>How this is built.</strong> {source.files.length} files and {lines.toLocaleString("en-US")} lines,
-        using {source.components.length} Macbetter components:{" "}
+        using {source.components.length} macbetter components:{" "}
         {source.components.map((component, index) => (
           <React.Fragment key={component.name}>
             {index ? ", " : null}

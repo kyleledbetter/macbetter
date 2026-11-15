@@ -27,7 +27,7 @@ export default function Materials() {
           />
         ))}
         <span className="absolute inset-x-0 top-1/2 -translate-y-1/2 text-center text-[88px] leading-none font-bold tracking-[-0.04em] text-label opacity-80 select-none">
-          Macbetter
+          macbetter
         </span>
       </div>
       <div className="relative grid gap-3 [grid-template-columns:repeat(auto-fill,minmax(min(100%,180px),1fr))]">

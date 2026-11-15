@@ -34,7 +34,7 @@ function Files(props: React.ComponentProps<typeof Table>) {
   )
 }
 
-test("without selection it is a native table with Macbetter's classes", () => {
+test("without selection it is a native table with macbetter's classes", () => {
   render(<Files alternating />)
   const table = screen.getByRole("table", { name: "Files" })
   expect(table.tagName).toBe("TABLE")

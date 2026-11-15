@@ -1,5 +1,5 @@
 /*
- * Macbetter — macOS, iPadOS and iOS in one web framework.
+ * macbetter — macOS, iPadOS and iOS in one web framework.
  *
  * Everything sits in the `macbetter` cascade layer, so any rule you write
  * outside a layer wins without !important.

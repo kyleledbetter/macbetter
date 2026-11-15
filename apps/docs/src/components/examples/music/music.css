@@ -1,6 +1,6 @@
 /* Music example. */
 
-/* Cover art is a Macbetter Artwork drawn from the album's id; this only sets how it sits in the layout. */
+/* Cover art is a macbetter Artwork drawn from the album's id; this only sets how it sits in the layout. */
 .ex-art {
   flex: none;
 }

@@ -9,7 +9,7 @@ import { motion, transparency } from "@/lib/preferences"
 const dismissedKey = "macbetter-effects-notice"
 
 /**
- * Macbetter follows the system's Reduce Motion and Reduce Transparency settings,
+ * macbetter follows the system's Reduce Motion and Reduce Transparency settings,
  * which hides the materials and springs this site exists to show. This says so,
  * and lets a visitor see them anyway.
  */

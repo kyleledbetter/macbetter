@@ -32,7 +32,7 @@ function Finder() {
   )
 }
 
-test("carries Macbetter's classes and variant", () => {
+test("carries macbetter's classes and variant", () => {
   render(<Finder />)
   const toolbar = screen.getByRole("toolbar", { name: "Finder" })
   expect(toolbar.className).toBe("mb-toolbar")

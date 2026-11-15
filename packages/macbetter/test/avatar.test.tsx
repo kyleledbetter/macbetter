@@ -18,8 +18,8 @@ test("shows initials on a gradient until an image loads, and names the person", 
 test("picks a stable color from the name and draws an app icon shape", () => {
   const { container } = render(
     <>
-      <Avatar name="Macbetter" shape="app" color="auto" />
-      <Avatar name="Macbetter" color="auto" />
+      <Avatar name="macbetter" shape="app" color="auto" />
+      <Avatar name="macbetter" color="auto" />
     </>
   )
   const [first, second] = Array.from(container.querySelectorAll<HTMLElement>(".mb-avatar"))

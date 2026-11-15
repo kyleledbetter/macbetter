@@ -36,7 +36,7 @@ export default function Example() {
           </SidebarItem>
         ))}
       </SidebarSection>
-      <SidebarSection title="Macbetter" collapsible>
+      <SidebarSection title="macbetter" collapsible>
         {folders.map((name) => (
           <SidebarItem key={name} icon={<FolderIcon />} current={current === name} onClick={() => setCurrent(name)}>
             {name}

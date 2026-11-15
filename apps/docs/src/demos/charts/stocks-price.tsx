@@ -244,7 +244,7 @@ export default function StockChart() {
       <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 12 }}>
         <div>
           <div style={{ font: "var(--mb-text-title-1)", fontWeight: 700 }}>MCBT</div>
-          <div style={{ color: "var(--mb-label-secondary)", font: "var(--mb-text-subheadline)" }}>Macbetter Inc.</div>
+          <div style={{ color: "var(--mb-label-secondary)", font: "var(--mb-text-subheadline)" }}>macbetter Inc.</div>
         </div>
         <div style={{ textAlign: "end", fontVariantNumeric: "tabular-nums" }}>
           <div style={{ font: "var(--mb-text-title-2)" }}>{formatters.price.format(last)}</div>

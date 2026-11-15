@@ -5,7 +5,7 @@ export const metadata = {
 
 # Motion
 
-<Lead>Motion in Macbetter explains what changed and responds the moment you touch something. Most of it is springs, written as CSS easing curves so they run in plain transitions.</Lead>
+<Lead>Motion in macbetter explains what changed and responds the moment you touch something. Most of it is springs, written as CSS easing curves so they run in plain transitions.</Lead>
 
 ## Try the springs
 
@@ -15,7 +15,7 @@ Each track animates the same shape with a different token. Play it, then press a
 
 ## Spring tokens
 
-Apple describes a spring with two numbers: **damping**, how quickly the motion settles (1 settles without overshooting; lower values bounce), and **response**, roughly how long it takes to get there. Macbetter bakes those springs into `linear()` easing curves, sampled from the spring's motion, and pairs each with the duration it takes to settle.
+Apple describes a spring with two numbers: **damping**, how quickly the motion settles (1 settles without overshooting; lower values bounce), and **response**, roughly how long it takes to get there. macbetter bakes those springs into `linear()` easing curves, sampled from the spring's motion, and pairs each with the duration it takes to settle.
 
 | Token | Duration | Character | Use it for |
 | --- | --- | --- | --- |
@@ -52,7 +52,7 @@ For things that fade or change color rather than move, use a plain easing:
 
 ### Feedback on press
 
-Respond on pointer-down, not on release. Macbetter styles pressed states with `:active` and removes the transition delay while pressed, so a button darkens the instant a finger lands. On iOS and iPadOS, buttons also scale to 97%. Don't wait for a click handler to show that something happened.
+Respond on pointer-down, not on release. macbetter styles pressed states with `:active` and removes the transition delay while pressed, so a button darkens the instant a finger lands. On iOS and iPadOS, buttons also scale to 97%. Don't wait for a click handler to show that something happened.
 
 ### Interruptible
 
@@ -60,7 +60,7 @@ People change their minds mid-gesture. Animate with transitions, which pick up f
 
 ### Exits are faster than entrances
 
-An entrance shows where something came from and deserves a little time. An exit is the person dismissing it, so get out of the way. Macbetter's popups enter from `data-starting-style` and leave on `data-ending-style`, with the exit shorter than the entrance and scaling toward the element that opened them.
+An entrance shows where something came from and deserves a little time. An exit is the person dismissing it, so get out of the way. macbetter's popups enter from `data-starting-style` and leave on `data-ending-style`, with the exit shorter than the entrance and scaling toward the element that opened them.
 
 ### Animate the cheap properties
 
@@ -72,7 +72,7 @@ Motion should explain a change in place or state. A sheet slides up because it c
 
 ## Reduced motion
 
-When someone turns on Reduce Motion (`prefers-reduced-motion: reduce`), `base.css` shortens every transition and animation on Macbetter's elements to effectively zero, and turns off the press scale on buttons. State changes still happen; they just don't travel.
+When someone turns on Reduce Motion (`prefers-reduced-motion: reduce`), `base.css` shortens every transition and animation on macbetter's elements to effectively zero, and turns off the press scale on buttons. State changes still happen; they just don't travel.
 
 If you write your own motion, respect the same setting. Where a slide would now jump, replace it with a short fade:
 

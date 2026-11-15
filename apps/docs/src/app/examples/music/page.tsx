@@ -4,7 +4,7 @@ import { socialMetadata } from "@/lib/og/routes"
 import { MusicExample } from "@/components/examples/music/music"
 
 const description =
-  "A music app with a library, a glass mini player and a full-screen Now Playing sheet, built with Macbetter."
+  "A music app with a library, a glass mini player and a full-screen Now Playing sheet, built with macbetter."
 
 export const metadata: Metadata = {
   title: "Music example",

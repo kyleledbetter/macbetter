@@ -447,7 +447,7 @@ function MacAnalytics({ store }: { store: Store }) {
   const label = pages.find((p) => p.id === page)?.label ?? "Overview"
   return (
     <MacFrame>
-      <Window aria-label="Macbetter">
+      <Window aria-label="macbetter">
         <WindowSidebar>
           <WindowTrafficLights />
           <Sidebar aria-label="Workspace">
@@ -457,7 +457,7 @@ function MacAnalytics({ store }: { store: Store }) {
               </span>
               <span>
                 <strong>Northwind</strong>
-                <span>Macbetter workspace</span>
+                <span>macbetter workspace</span>
               </span>
             </div>
             <SidebarSection title="Analytics">
@@ -553,7 +553,7 @@ function MacAnalytics({ store }: { store: Store }) {
 
 function PhoneAnalytics({ store }: { store: Store }) {
   return (
-    <Phone label="Macbetter on iPhone">
+    <Phone label="macbetter on iPhone">
       <div className="ex-app-root">
         <TabBar defaultValue="overview">
           <TabBarPanel value="overview">
@@ -612,7 +612,7 @@ function PhoneAnalytics({ store }: { store: Store }) {
               <AlertsPage />
             </NavigationStack>
           </TabBarPanel>
-          <TabBarList aria-label="Macbetter">
+          <TabBarList aria-label="macbetter">
             <TabBarItem value="overview" icon={<GaugeIcon />}>
               Overview
             </TabBarItem>

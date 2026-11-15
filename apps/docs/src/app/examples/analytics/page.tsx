@@ -4,7 +4,7 @@ import { socialMetadata } from "@/lib/og/routes"
 import { AnalyticsExample } from "@/components/examples/analytics/analytics"
 
 const description =
-  "A Macbetter dashboard for Supabase data on the Mac and iPhone, with Apple-style charts drawn by ECharts, built with Macbetter."
+  "A macbetter dashboard for Supabase data on the Mac and iPhone, with Apple-style charts drawn by ECharts, built with macbetter."
 
 export const metadata: Metadata = {
   title: "Analytics example",

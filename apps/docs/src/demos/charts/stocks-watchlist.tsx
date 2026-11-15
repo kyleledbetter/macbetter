@@ -6,7 +6,7 @@ import { Sparkline } from "@/components/charts"
 const watchlist = [
   {
     symbol: "MCBT",
-    name: "Macbetter Inc.",
+    name: "macbetter Inc.",
     price: 231.4,
     previousClose: 228.28,
     today: [228.9, 229.3, 228.7, 228.4, 229.1, 229.6, 229.2, 229.0, 229.4, 229.9, 229.5, 229.8, 230.4, 230.1, 230.6, 231.0, 230.7, 231.2, 231.6, 231.3, 231.8, 232.0, 231.6, 231.4],

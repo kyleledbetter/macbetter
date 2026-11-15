@@ -12,13 +12,13 @@ import { Reveal } from "@/components/landing/reveal"
 import { Platforms } from "@/components/landing/platforms"
 import { Themes } from "@/components/landing/themes"
 import "@/components/landing/landing.css"
-import { componentCount, componentPageCount } from "@/lib/counts"
+import { componentPageCount } from "@/lib/counts"
 import { socialMetadata, tagline } from "@/lib/og/routes"
 
 export const metadata: Metadata = {
-  title: { absolute: `Macbetter — ${tagline}` },
+  title: { absolute: `macbetter — ${tagline}` },
   description:
-    "Macbetter is a design system: Apple-grade React components for macOS, iPadOS and iOS, themeable to any brand and built on ui-sdk.",
+    "macbetter is a design system: Apple-grade React components for macOS, iPadOS and iOS, themeable to any brand and built on ui-sdk.",
   alternates: { canonical: "/" },
   ...socialMetadata({ path: "", description: "Apple-grade components for React, themeable to any brand, built on ui-sdk." }),
 }
@@ -36,12 +36,12 @@ export default function Home() {
     <>
       <SiteHeader scrolls />
       <main className="lp">
-        <LocalNav title="Macbetter" sections={sections} cta={{ href: "/docs/installation", label: "Get started" }} />
+        <LocalNav sections={sections} cta={{ href: "/docs/installation", label: "Get started" }} />
         <Hero />
         <Highlights />
         <Platforms />
         <Themes />
-        <Bento count={componentCount()} />
+        <Bento />
         <Materials />
         <Foundation />
         <Closing />
@@ -54,7 +54,7 @@ export default function Home() {
             their own page in these docs so far.
           </li>
           <li>
-            Macbetter is an independent open-source project. Apple, macOS, iPadOS, iOS, Liquid Glass and SF Pro are
+            macbetter is an independent open-source project. Apple, macOS, iPadOS, iOS, Liquid Glass and SF Pro are
             trademarks of Apple Inc. Components draw on the system font; no Apple fonts or artwork are bundled.
           </li>
         </ol>

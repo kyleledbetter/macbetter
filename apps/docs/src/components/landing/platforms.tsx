@@ -73,13 +73,7 @@ function Platforms() {
       <SectionHeading
         id="lp-platforms"
         eyebrow="Platforms"
-        headline={
-          <>
-            Three platforms.
-            <br />
-            One&nbsp;codebase.
-          </>
-        }
+        headline={<>Emulate all Apple interfaces using the UI&nbsp;SDK.</>}
         links={<MoreLink href="/docs/platforms">Learn how platforms work</MoreLink>}
       >
         Put <code>data-platform</code> on any element and the components inside take that platform’s sizes and

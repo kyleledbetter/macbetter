@@ -68,13 +68,7 @@ function Themes() {
             eyebrow="Themes"
             align="start"
             size="headline"
-            headline={
-              <>
-                Any brand.
-                <br />
-                Same native&nbsp;feel.
-              </>
-            }
+            headline={<>Easily customize themes for your&nbsp;brand.</>}
             links={
               <>
                 <MoreLink href="/themes">Open Theme Studio</MoreLink>

@@ -1,10 +1,10 @@
 <p align="center">
   <a href="https://macbetter.dev">
-    <img src=".github/assets/hero.png" alt="A Mac window and an iPhone running the same app, built with Macbetter" width="100%" />
+    <img src=".github/assets/hero.png" alt="A Mac window and an iPhone running the same app, built with macbetter" width="100%" />
   </a>
 </p>
 
-<h1 align="center">Macbetter</h1>
+<h1 align="center">macbetter</h1>
 
 <p align="center">
   macOS, iPadOS and iOS. One web framework.<br />
@@ -21,7 +21,7 @@
 
 ---
 
-Macbetter is a design system that follows Apple's Human Interface Guidelines on the web. The same components render as a Mac app, an iPad app or an iPhone app, depending on one attribute. A short list of color and shape tokens re-skins all of it for your brand, in light and dark. Keyboard handling, focus, ARIA and right-to-left support come from [ui-sdk](https://github.com/vercel-labs/ui), so the components are also readable and operable by AI agents.
+macbetter is a design system that follows Apple's Human Interface Guidelines on the web. The same components render as a Mac app, an iPad app or an iPhone app, depending on one attribute. A short list of color and shape tokens re-skins all of it for your brand, in light and dark. Keyboard handling, focus, ARIA and right-to-left support come from [ui-sdk](https://github.com/vercel-labs/ui), so the components are also readable and operable by AI agents.
 
 It is a personal open-source project by [Kyle Ledbetter](https://github.com/kyleledbetter). It is not affiliated with Apple.
 
@@ -154,7 +154,7 @@ To deploy the site, import the repository into Vercel and set the root directory
 
 ## Status
 
-Macbetter is new and built on a beta of ui-sdk, so expect changes.
+macbetter is new and built on a beta of ui-sdk, so expect changes.
 
 - It has been checked in Chromium only. Safari, Firefox, real iOS devices and screen readers are not tested yet.
 - The package ships TypeScript source. There is no compiled build for bundlers that can't compile dependencies.
@@ -172,4 +172,4 @@ Issues and pull requests are welcome. Read [AGENTS.md](AGENTS.md) first: it has 
 
 [Apache 2.0](LICENSE) © Kyle Ledbetter. The chart components under `apps/docs/src/components/charts/evil` are from EvilCharts and keep their MIT license.
 
-Apple, macOS, iPadOS and iOS are trademarks of Apple Inc. Macbetter is an independent project and is not endorsed by Apple.
+Apple, macOS, iPadOS and iOS are trademarks of Apple Inc. macbetter is an independent project and is not endorsed by Apple.

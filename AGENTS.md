@@ -1,6 +1,6 @@
-# Macbetter — working agreement
+# macbetter — working agreement
 
-Macbetter is a design system: macOS, iPadOS and iOS in one web framework, themeable to any brand, built on [ui-sdk](https://ui-sdk.dev). The bar is Apple's own: if a control wouldn't pass for the native one at a glance and under the hand, it isn't done.
+macbetter is a design system: macOS, iPadOS and iOS in one web framework, themeable to any brand, built on [ui-sdk](https://ui-sdk.dev). The bar is Apple's own: if a control wouldn't pass for the native one at a glance and under the hand, it isn't done.
 
 ## Layout
 
@@ -37,7 +37,7 @@ Next.js here is version 16 and differs from older versions: check `apps/docs/nod
 
 ## Component rules
 
-- **Wrap ui-sdk, don't reimplement it.** A Macbetter component is a ui-sdk part with a class and a few `data-*` props for variants. If ui-sdk ships the behavior (see the table in `references/build-interface.md`), use it. Only chrome that has no behavior of its own (Window, Card, Badge, List rows…) is plain elements. Never hand-write `role=` for something ui-sdk ships.
+- **Wrap ui-sdk, don't reimplement it.** A macbetter component is a ui-sdk part with a class and a few `data-*` props for variants. If ui-sdk ships the behavior (see the table in `references/build-interface.md`), use it. Only chrome that has no behavior of its own (Window, Card, Badge, List rows…) is plain elements. Never hand-write `role=` for something ui-sdk ships.
 - **Pre-compose the boring parts, expose the rest.** `Switch` renders its own thumb; `SegmentedControl` renders its own indicator. Parts a caller needs to place (items, titles, triggers) are exported as their own components. Export the same part names ui-sdk uses, minus nothing: `Menu`, `MenuTrigger`, `MenuContent`, `MenuItem`…
 - **Classes are `mb-<component>` and `mb-<component>-<part>`.** Merge the caller's `className` with `cx()` from `src/lib/cx` (ui-sdk lets `className` be a function of state). Variants are data attributes: `data-variant`, `data-size` (`sm | md | lg`), `data-tone` (`accent | neutral | destructive`).
 - **Style from state attributes** (`data-checked`, `data-open`, `data-highlighted`, `data-disabled`, `data-side`…), never from generated ids, never with inline styles for state.
@@ -111,6 +111,6 @@ export const metadata = { title: "Switch", description: "Turn a setting on or of
 Shared dev server: `http://localhost:4173` (already running — don't start another, don't restart it, don't run `next build`). If it's down, say so.
 
 1. `pnpm --filter macbetter exec tsc --noEmit` and `pnpm --filter docs exec tsc --noEmit`. Other people are working in the repo at the same time: fix errors in your files, ignore errors in files you don't own.
-2. `pnpm --filter macbetter exec vitest run test/<yours>.test.tsx`. Every component gets a test of what Macbetter adds (classes, variants, pre-composed parts, names) and one keyboard interaction; popups are opened and closed. Don't re-test ui-sdk.
+2. `pnpm --filter macbetter exec vitest run test/<yours>.test.tsx`. Every component gets a test of what macbetter adds (classes, variants, pre-composed parts, names) and one keyboard interaction; popups are opened and closed. Don't re-test ui-sdk.
 3. Look at it. `node scripts/shot.mjs /docs/components/<slug> /tmp/…/out.png` and read the PNG. Do it for macOS dark (default), then light (`--scheme light`), then iOS (`--click '.docs-stage [role=radio]:has-text("iOS")'`), and with a popup open (`--click` its trigger). Flags: `--full`, `--selector '.docs-stage'`, `--theme system`, `--mobile` (real phone viewport), `--hover`, `--press`, `--wait`. Console errors print to stderr; a clean run prints nothing. Compare against the real control from memory of macOS and iOS and fix what's off: alignment, optical centering, radius, weight, spacing, contrast. Iterate until you'd ship it.
 4. Report: what you built, every command with its exit code, what you couldn't verify, tokens you wished existed, and anything in the ui-sdk docs or types that was wrong.

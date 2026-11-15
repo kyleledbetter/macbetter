@@ -35,7 +35,7 @@ type MenuTriggerProps = Omit<React.ComponentProps<typeof MenuTriggerPrimitive>, 
   indicator?: boolean
 }
 
-/** A pull-down button: a Macbetter button that opens its menu. */
+/** A pull-down button: a macbetter button that opens its menu. */
 function MenuTrigger({
   variant = "bezeled",
   tone = "accent",

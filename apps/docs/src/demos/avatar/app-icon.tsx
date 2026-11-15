@@ -4,7 +4,7 @@ export default function Example() {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
       <Avatar shape="app" size="xl">
-        <AvatarImage src="/app-icon-square.svg" alt="Macbetter" />
+        <AvatarImage src="/app-icon-square.svg" alt="macbetter" />
         <AvatarFallback>D</AvatarFallback>
       </Avatar>
       <Avatar shape="app" size="xl" name="Marketing" color="orange" />

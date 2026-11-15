@@ -1,6 +1,6 @@
 # Apple web typography and landing-page patterns
 
-A reference for making the Macbetter docs and marketing site read and feel like an Apple-made page. Every number below was pulled from Apple's live, built CSS on 2026-11-14 unless it is marked **inferred**. Where a value is a recommendation for Macbetter rather than an Apple fact, it sits in the "How to apply" section and says so.
+A reference for making the macbetter docs and marketing site read and feel like an Apple-made page. Every number below was pulled from Apple's live, built CSS on 2026-11-14 unless it is marked **inferred**. Where a value is a recommendation for macbetter rather than an Apple fact, it sits in the "How to apply" section and says so.
 
 Short version:
 

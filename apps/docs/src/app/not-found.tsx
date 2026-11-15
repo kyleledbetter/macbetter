@@ -7,7 +7,7 @@ export const metadata: Metadata = { title: "Page not found" }
 
 const destinations = [
   { href: "/docs/introduction", label: "Read the introduction" },
-  { href: "/docs/installation", label: "Install Macbetter" },
+  { href: "/docs/installation", label: "Install macbetter" },
   { href: "/docs/components", label: "Browse components" },
 ]
 

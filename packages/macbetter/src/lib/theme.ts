@@ -78,7 +78,7 @@ function themeVariables(seeds: ThemeSeeds): Record<string, string> {
 }
 
 /**
- * A theme as CSS. Put it after Macbetter's stylesheet and turn it on with
+ * A theme as CSS. Put it after macbetter's stylesheet and turn it on with
  * `data-theme="<name>"` on any element.
  */
 function createTheme(name: string, seeds: ThemeSeeds): string {

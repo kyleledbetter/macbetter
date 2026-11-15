@@ -225,8 +225,8 @@ function NetworkPane({ s, set }: PaneProps) {
           </ListRow>
         ))}
       </ListSection>
-      <ListSection header="VPN" footer="Macbetter VPN routes traffic for internal dashboards through the office network.">
-        <ToggleRow title="Macbetter VPN" subtitle={s.vpn ? "Connected · 00:12:48" : "Not connected"} checked={s.vpn} onCheckedChange={(v) => set("vpn", v)} />
+      <ListSection header="VPN" footer="macbetter VPN routes traffic for internal dashboards through the office network.">
+        <ToggleRow title="macbetter VPN" subtitle={s.vpn ? "Connected · 00:12:48" : "Not connected"} checked={s.vpn} onCheckedChange={(v) => set("vpn", v)} />
       </ListSection>
       <ListSection>
         <ToggleRow
@@ -653,7 +653,7 @@ const paneComponents: Partial<Record<PaneId, (props: PaneProps) => React.ReactNo
   battery: BatteryPane,
 }
 
-/** One settings pane, drawn with Macbetter lists so it takes each platform's idiom on its own. */
+/** One settings pane, drawn with macbetter lists so it takes each platform's idiom on its own. */
 function PaneContent({ id, ...props }: PaneProps & { id: PaneId }) {
   const Component = paneComponents[id]
   return <List className="ex-pane-list">{Component ? <Component {...props} /> : <SimplePane id={id} />}</List>

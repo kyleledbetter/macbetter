@@ -1,17 +1,17 @@
 export const metadata = {
   title: "Installation",
-  description: "Add Macbetter to a React 19 app: install the packages, import the stylesheet and set the platform before first paint.",
+  description: "Add macbetter to a React 19 app: install the packages, import the stylesheet and set the platform before first paint.",
 }
 
 # Installation
 
-<Lead>Add Macbetter to a React app in four steps. You need React 19 or newer.</Lead>
+<Lead>Add macbetter to a React app in four steps. You need React 19 or newer.</Lead>
 
 <Steps>
 
 ### Install the packages
 
-Macbetter's components wrap ui-sdk's, so install ui-sdk next to it. Installing both packages yourself keeps one copy of ui-sdk's core in your app.
+macbetter's components wrap ui-sdk's, so install ui-sdk next to it. Installing both packages yourself keeps one copy of ui-sdk's core in your app.
 
 ```bash
 pnpm add macbetter @ui-sdk/react @ui-sdk/core
@@ -21,7 +21,7 @@ pnpm add macbetter @ui-sdk/react @ui-sdk/core
 
 Import `macbetter/styles.css` once, in your global stylesheet. Everything in it sits in a cascade layer named `macbetter`, so any rule you write outside a layer wins without `!important`.
 
-Declare the layer order at the top of the file. ui-sdk's layer comes first and Macbetter's sits above it. If you use Tailwind CSS v4, list Tailwind's layers around them and import Tailwind before Macbetter, as this site does:
+Declare the layer order at the top of the file. ui-sdk's layer comes first and macbetter's sits above it. If you use Tailwind CSS v4, list Tailwind's layers around them and import Tailwind before macbetter, as this site does:
 
 ```css title="app/globals.css"
 @layer ui-sdk, theme, base, macbetter, components, utilities;
@@ -30,7 +30,7 @@ Declare the layer order at the top of the file. ui-sdk's layer comes first and M
 @import "macbetter/styles.css";
 ```
 
-With that order, Tailwind's utilities override Macbetter's component styles, and Macbetter's tokens override Tailwind's preflight. Without Tailwind, the first line is just:
+With that order, Tailwind's utilities override macbetter's component styles, and macbetter's tokens override Tailwind's preflight. Without Tailwind, the first line is just:
 
 ```css
 @layer ui-sdk, macbetter;
@@ -40,7 +40,7 @@ With that order, Tailwind's utilities override Macbetter's component styles, and
 
 Render `<MacbetterScript />` at the top of `<body>` in your root layout. It's a small inline script that sets `data-platform` on `<html>` before the page paints: `macos` for a fine pointer, and `ios` or `ipados` for touch, split at 744px wide.
 
-Put `data-theme` on `<html>` to choose a theme, and `data-macbetter` on `<body>` to give the page Macbetter's background, text color and font.
+Put `data-theme` on `<html>` to choose a theme, and `data-macbetter` on `<body>` to give the page macbetter's background, text color and font.
 
 ```tsx title="app/layout.tsx"
 import { MacbetterScript } from "macbetter"
@@ -60,7 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 `suppressHydrationWarning` is there because the script changes an attribute on `<html>` before React hydrates.
 
-Colors follow the system's light or dark setting. To pin one, add `data-scheme="light"` or `data-scheme="dark"` to any element. ui-sdk's `createColorScheme` writes `data-color-scheme`, which Macbetter reads the same way.
+Colors follow the system's light or dark setting. To pin one, add `data-scheme="light"` or `data-scheme="dark"` to any element. ui-sdk's `createColorScheme` writes `data-color-scheme`, which macbetter reads the same way.
 
 ### Use a component
 
@@ -87,7 +87,7 @@ export function Example() {
 
 ## Next.js
 
-Macbetter ships its TypeScript source rather than compiled JavaScript. Next.js needs to compile it, so add it to `transpilePackages`:
+macbetter ships its TypeScript source rather than compiled JavaScript. Next.js needs to compile it, so add it to `transpilePackages`:
 
 ```ts title="next.config.ts"
 import type { NextConfig } from "next"

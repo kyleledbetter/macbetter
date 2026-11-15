@@ -8,7 +8,7 @@ type MarkProps = {
   tone?: "label" | "ember"
 }
 
-/** The Macbetter dragon. Inherits `currentColor`, so it follows the label color in every theme. */
+/** The macbetter dragon. Inherits `currentColor`, so it follows the label color in every theme. */
 function MacbetterMark({ size = 24, className, tone = "label" }: MarkProps) {
   const id = `mb-mark-${useId().replace(/[^A-Za-z0-9_-]/g, "")}`
   return (

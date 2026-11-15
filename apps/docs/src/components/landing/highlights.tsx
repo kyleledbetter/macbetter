@@ -15,7 +15,7 @@ const stats = (components: number) => [
 /** A spec strip under the hero: numbers that are true of the package today. */
 function Highlights() {
   return (
-    <section className="lp-highlights" aria-label="Macbetter at a glance">
+    <section className="lp-highlights" aria-label="macbetter at a glance">
       <ul className="lp-stats lp-reveal">
         {stats(componentCount()).map((stat) => (
           <li key={stat.label} className="lp-stat">

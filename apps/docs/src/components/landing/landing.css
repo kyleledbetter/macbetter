@@ -1,6 +1,6 @@
 /*
  * Landing page. Everything is prefixed lp- and sits in the components layer,
- * above Macbetter's own layer, so a single class can adjust a component.
+ * above macbetter's own layer, so a single class can adjust a component.
  */
 
 @layer components {
@@ -56,26 +56,20 @@
     }
   }
 
+  /* Same side padding as the global header, so the two bars line up. */
   .local-nav-inner {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 24px;
-    width: var(--site-content);
     height: 100%;
-    margin-inline: auto;
+    padding-inline: max(12px, env(safe-area-inset-left)) max(12px, env(safe-area-inset-right));
   }
 
-  .local-nav-title {
-    flex: none;
-    margin-inline-end: auto;
-    border-radius: 6px;
-    color: var(--site-label);
-    font-family: var(--font-display);
-    font-size: 21px;
-    font-weight: 600;
-    line-height: 1;
-    letter-spacing: var(--track-21);
-    text-decoration: none;
+  @media (min-width: 768px) {
+    .local-nav-inner {
+      padding-inline: 22px;
+    }
   }
 
   .local-nav-links {
@@ -116,17 +110,12 @@
     background: var(--site-label);
   }
 
-  :is(.local-nav-title, .local-nav-link):focus-visible {
+  .local-nav-link:focus-visible {
     outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
     outline-offset: 2px;
   }
 
   @media (max-width: 1068px) {
-    .local-nav-title {
-      font-size: 19px;
-      letter-spacing: var(--track-19);
-    }
-
     .local-nav-links {
       gap: 20px;
     }
@@ -139,6 +128,10 @@
 
     .local-nav-links {
       display: none;
+    }
+
+    .local-nav-inner {
+      justify-content: flex-end;
     }
   }
 

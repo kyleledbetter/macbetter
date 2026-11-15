@@ -1,5 +1,5 @@
 /**
- * The Macbetter dragon, as plain strings, for places that can't render React: the favicon,
+ * The macbetter dragon, as plain strings, for places that can't render React: the favicon,
  * app icons and social images drawn with ImageResponse. `logo.tsx` draws the same paths inline.
  */
 const dragonPaths = [

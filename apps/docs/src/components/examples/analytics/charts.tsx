@@ -19,7 +19,7 @@ import { EChartsPieChart } from "@/components/charts/evil/charts/echarts-pie-cha
 
 /*
  * The dashboard's charts. They draw with ECharts (an external library, see
- * /docs/charts/overview): the trend and sparklines through the Macbetter
+ * /docs/charts/overview): the trend and sparklines through the macbetter
  * adapter's EChart, the bars and donut as EvilCharts components themed by it.
  */
 

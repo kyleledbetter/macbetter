@@ -25,7 +25,7 @@ function SiteHeader({ children, scrolls }: { children?: React.ReactNode; scrolls
     <header data-platform="macos" className="docs-header" data-scrolls={scrolls ? "" : undefined}>
       <MobileNav sections={publishedNav()} />
       {children}
-      <Link href="/" aria-label="Macbetter home" className="docs-header-home">
+      <Link href="/" aria-label="macbetter home" className="docs-header-home">
         <MacbetterLogo />
       </Link>
       <div className="hidden md:flex">
@@ -40,7 +40,7 @@ function SiteHeader({ children, scrolls }: { children?: React.ReactNode; scrolls
           href="https://github.com/kyleledbetter/macbetter"
           target="_blank"
           rel="noreferrer"
-          aria-label="Macbetter on GitHub"
+          aria-label="macbetter on GitHub"
           className="mb-button hidden sm:inline-flex"
           data-variant="plain"
           data-tone="neutral"

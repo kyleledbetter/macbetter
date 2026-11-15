@@ -903,7 +903,7 @@ body[data-macbetter] {
   opacity: 0.55;
 }
 
-/* The screen is a Macbetter root, which paints --mb-bg; the canvas behind it is the surface here. */
+/* The screen is a macbetter root, which paints --mb-bg; the canvas behind it is the surface here. */
 .docs-stage-screen {
   background: transparent;
 }

@@ -1,6 +1,6 @@
 /*
  * The site's type, surface and layout system: apple.com's marketing scale
- * (docs/apple-web-typography.md, section 9) mapped onto Macbetter's tokens.
+ * (docs/apple-web-typography.md, section 9) mapped onto macbetter's tokens.
  * Components keep the HIG's in-app text styles (--mb-text-*); this file is for
  * the pages around them.
  *
@@ -444,7 +444,7 @@
     outline-offset: 2px;
   }
 
-  /* ── Pill buttons: Macbetter's Button, capsule, at apple.com's three sizes ── */
+  /* ── Pill buttons: macbetter's Button, capsule, at apple.com's three sizes ── */
 
   .pill.mb-button {
     --mb-button-height: 36px;

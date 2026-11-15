@@ -13,7 +13,7 @@ export const metadata = {
 
 Apple draws almost every rounded rectangle with a continuous corner: app icons, the Dock's tiles, Settings icons, widgets, cards, windows, sheets, alerts and menus. A circular arc meets the straight edge abruptly; a continuous corner starts curving earlier and more gently, so the shape reads as one smooth object. Next to the real thing, a plain `border-radius` looks slightly stamped out.
 
-Macbetter's components already use it wherever Apple does, so you only need `Squircle` for your own surfaces: an app icon, a tile, a widget, a thumbnail.
+macbetter's components already use it wherever Apple does, so you only need `Squircle` for your own surfaces: an app icon, a tile, a widget, a thumbnail.
 
 Don't use it on anything fully rounded. A capsule, a circle, a switch thumb or a badge is round in Apple's designs too, and a continuous corner on a full radius turns a capsule into a lozenge and a circle into a rounded square.
 
@@ -73,7 +73,7 @@ import { SquircleShadow, Squircle } from "macbetter/squircle"
 
 ## In your own CSS
 
-Every Macbetter component uses one convention, and you can use it in yours. Write the plain radius first, then, where the browser supports `corner-shape`, the continuous shape with the radius scaled by `--mb-corner-factor`:
+Every macbetter component uses one convention, and you can use it in yours. Write the plain radius first, then, where the browser supports `corner-shape`, the continuous shape with the radius scaled by `--mb-corner-factor`:
 
 ```css
 .my-tile {
@@ -107,7 +107,7 @@ Set `--mb-corner-shape: round` in a theme, or on any element, to switch continuo
 ### Browser support
 
 - `corner-shape` with `superellipse()`: Chrome and Edge 139 and later. Firefox has it only in Nightly.
-- Safari 27.3 supports the `corner-shape` keywords but not yet `superellipse()`. Macbetter detects this and uses `squircle` at 1.8 times the radius there, its closest keyword match. If you set `--mb-corner-shape` to a `superellipse()` yourself, Safari 27.3 falls back to round corners at the scaled radius, so prefer a keyword in a theme.
+- Safari 27.3 supports the `corner-shape` keywords but not yet `superellipse()`. macbetter detects this and uses `squircle` at 1.8 times the radius there, its closest keyword match. If you set `--mb-corner-shape` to a `superellipse()` yourself, Safari 27.3 falls back to round corners at the scaled radius, so prefer a keyword in a theme.
 - Everywhere else, corners are plain `border-radius`.
 - `exact` uses `clip-path: path()`, which every current browser supports.
 

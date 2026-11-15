@@ -25,7 +25,7 @@ Import the stylesheet once. It sits in the `macbetter` cascade layer, so your ow
 @import "macbetter/styles.css";
 ```
 
-With Tailwind CSS v4, declare `@layer ui-sdk, theme, base, macbetter, components, utilities;` and import `tailwindcss` before Macbetter.
+With Tailwind CSS v4, declare `@layer ui-sdk, theme, base, macbetter, components, utilities;` and import `tailwindcss` before macbetter.
 
 Render `<MacbetterScript />` at the top of `<body>`. It sets `data-platform` on `<html>` before first paint: `macos` for a fine pointer, `ipados` or `ios` for touch.
 

@@ -83,7 +83,7 @@ function ExportPanel({ theme, onReset }: { theme: StudioTheme; onReset: () => vo
         </TabsPanel>
       </Tabs>
       <p className="ts-section-footer">
-        Load the CSS after Macbetter&apos;s stylesheet and set <code>data-theme</code> on any element. Everything else
+        Load the CSS after macbetter&apos;s stylesheet and set <code>data-theme</code> on any element. Everything else
         derives from these seeds.
       </p>
       <div className="ts-actions">

@@ -1,4 +1,5 @@
 import { ButtonLink } from "@/components/button-link"
+import { CopyAgentInstructions } from "@/components/copy-agent-instructions"
 import { MacbetterMark } from "@/components/logo"
 
 function Closing() {
@@ -11,18 +12,14 @@ function Closing() {
             Get started
           </h2>
           <p className="stack-headline type-headline-elevated">
-            Start with one component.
-            <br />
-            Keep&nbsp;going.
+            Extremely easy to&nbsp;implement
           </p>
           <p className="stack-copy type-intro type-two-tone">
             Install the package, import a button, and add the rest as you need them.{" "}
             <strong>Every component has a page with live examples for all three&nbsp;platforms.</strong>
           </p>
           <div className="lp-hero-actions" data-platform="macos">
-            <ButtonLink href="/docs/installation" variant="filled" shape="capsule" className="pill" data-pill="elevated">
-              Install Macbetter
-            </ButtonLink>
+            <CopyAgentInstructions variant="filled" shape="capsule" className="pill" data-pill="elevated" />
             <ButtonLink
               href="/docs/introduction"
               variant="plain"

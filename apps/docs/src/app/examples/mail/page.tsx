@@ -4,7 +4,7 @@ import { socialMetadata } from "@/lib/og/routes"
 import { MailExample } from "@/components/examples/mail/mail"
 
 const description =
-  "A three-column mail client on the Mac and iPad, and the push-navigation Mail app on iPhone, built with Macbetter."
+  "A three-column mail client on the Mac and iPad, and the push-navigation Mail app on iPhone, built with macbetter."
 
 export const metadata: Metadata = {
   title: "Mail example",

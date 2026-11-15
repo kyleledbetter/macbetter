@@ -128,7 +128,7 @@ function Inspector({ theme, presetId, scheme, onSchemeChange, onPreset, onEdit, 
         <h1>Theme Studio</h1>
         <p>
           Pick a starting point, then change any seed.{" "}
-          <strong>The preview is built from real Macbetter components,</strong> so what you see is what&nbsp;ships.
+          <strong>The preview is built from real macbetter components,</strong> so what you see is what&nbsp;ships.
         </p>
       </header>
 

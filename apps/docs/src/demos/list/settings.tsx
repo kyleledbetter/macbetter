@@ -39,7 +39,7 @@ export default function Example() {
             <WifiIcon aria-hidden="true" />
           </ListRowIcon>
           <ListRowTitle>Wi-Fi</ListRowTitle>
-          <ListRowValue>Macbetter HQ</ListRowValue>
+          <ListRowValue>macbetter HQ</ListRowValue>
           <ListRowAccessory type="disclosure" />
         </ListRow>
         <ListRow href="#bluetooth">

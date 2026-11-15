@@ -73,11 +73,11 @@ function Foundation() {
         links={
           <>
             <MoreLink href="/docs/foundations/accessibility">Learn more about accessibility</MoreLink>
-            <MoreLink href="/docs/agents">See how agents use Macbetter</MoreLink>
+            <MoreLink href="/docs/agents">See how agents use macbetter</MoreLink>
           </>
         }
       >
-        Macbetter adds the Apple look and feel. Behavior comes from ui-sdk, shadcn’s headless component library,
+        macbetter adds the Apple look and feel. Behavior comes from ui-sdk, shadcn’s headless component library,
         so <strong>the hard parts of every control are already built and&nbsp;tested.</strong>
       </SectionHeading>
       <div className="lp-foundation lp-reveal">

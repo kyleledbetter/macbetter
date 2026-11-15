@@ -24,7 +24,7 @@ test("Space turns it on and off; Enter doesn't", async () => {
   expect(control.getAttribute("aria-checked")).toBe("false")
 })
 
-test("a custom thumb keeps the Macbetter class beside the caller's", () => {
+test("a custom thumb keeps the macbetter class beside the caller's", () => {
   render(
     <Switch aria-label="Airplane Mode">
       <SwitchThumb className="plane" />

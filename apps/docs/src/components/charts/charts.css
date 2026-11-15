@@ -1,5 +1,5 @@
 /*
- * Macbetter charts.
+ * macbetter charts.
  *
  * Chart colors are named variables, so a theme can retune them without
  * touching chart code. They default to the system palette, which the theme
@@ -205,7 +205,7 @@
 /*
  * EvilCharts reads shadcn's color utilities (text-muted-foreground,
  * text-border, bg-background…) off probe elements and draws its tooltip and
- * legend with them. Inside a Macbetter chart they map onto Macbetter tokens.
+ * legend with them. Inside a macbetter chart they map onto macbetter tokens.
  */
 
 .mb-chart [data-chart] {

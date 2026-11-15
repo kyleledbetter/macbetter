@@ -1,7 +1,7 @@
 import { renderCard } from "@/lib/og/card"
 import { ogCard, ogSize, tagline } from "@/lib/og/routes"
 
-export const alt = `Macbetter — ${tagline}`
+export const alt = `macbetter — ${tagline}`
 export const size = ogSize
 export const contentType = "image/png"
 

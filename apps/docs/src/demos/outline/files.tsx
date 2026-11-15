@@ -22,7 +22,7 @@ const files: Node[] = [
     children: [
       {
         value: "projects/macbetter",
-        name: "Macbetter",
+        name: "macbetter",
         detail: "4 items",
         kind: "folder",
         children: [

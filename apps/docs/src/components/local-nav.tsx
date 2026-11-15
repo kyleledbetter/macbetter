@@ -6,11 +6,11 @@ import { ButtonLink } from "@/components/button-link"
 type Section = { id: string; label: string }
 
 /**
- * apple.com's local nav: the product name, links to the page's sections and a
- * small pill. It sticks to the top once the global nav scrolls away, and marks
+ * A local nav in the manner of apple.com's: links to the page's sections on the
+ * leading side and a small pill on the trailing side. It sticks to the top once the global nav scrolls away, and marks
  * the section in view.
  */
-function LocalNav({ title, sections, cta }: { title: string; sections: Section[]; cta: { href: string; label: string } }) {
+function LocalNav({ sections, cta }: { sections: Section[]; cta: { href: string; label: string } }) {
   const [current, setCurrent] = useState<string | null>(null)
 
   useEffect(() => {
@@ -43,9 +43,6 @@ function LocalNav({ title, sections, cta }: { title: string; sections: Section[]
   return (
     <nav aria-label="Local" className="local-nav" data-platform="macos">
       <div className="local-nav-inner">
-        <a href={`#${sections[0]?.id ?? ""}`} className="local-nav-title">
-          {title}
-        </a>
         <ul className="local-nav-links">
           {sections.map((section) => (
             <li key={section.id}>

@@ -6,7 +6,7 @@ import { CloudIcon, LockIcon, SparklesIcon, ZapIcon } from "lucide-react"
 import { useState } from "react"
 
 const pages = [
-  { icon: SparklesIcon, title: "Welcome to Macbetter", body: "Ask questions about your data in plain words." },
+  { icon: SparklesIcon, title: "Welcome to macbetter", body: "Ask questions about your data in plain words." },
   { icon: ZapIcon, title: "Answers in seconds", body: "Every chart updates as new rows arrive." },
   { icon: LockIcon, title: "Private by design", body: "Your data stays in your own database." },
   { icon: CloudIcon, title: "Works everywhere", body: "Pick up on your Mac right where you left off." },

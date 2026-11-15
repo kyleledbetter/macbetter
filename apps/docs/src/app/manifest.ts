@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next"
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Macbetter",
-    short_name: "Macbetter",
+    name: "macbetter",
+    short_name: "macbetter",
     description: "macOS, iPadOS and iOS. One web framework.",
     start_url: "/",
     display: "standalone",

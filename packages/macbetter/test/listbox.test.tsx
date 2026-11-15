@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event"
 import { expect, test } from "vitest"
 import { Listbox, ListboxItem } from "../src/components/listbox"
 
-test("rows carry Macbetter classes and a checkmark; arrows move the selection", async () => {
+test("rows carry macbetter classes and a checkmark; arrows move the selection", async () => {
   const user = userEvent.setup()
   render(
     <Listbox aria-label="Default web browser" defaultValue="safari">

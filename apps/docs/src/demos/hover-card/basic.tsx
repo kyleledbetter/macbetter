@@ -5,7 +5,7 @@ export default function Example() {
     <div style={{ maxWidth: 420, lineHeight: 1.5 }}>
       The release notes are on the{" "}
       <HoverCard>
-        <HoverCardTrigger href="https://macbetter.dev/docs/introduction">Macbetter site</HoverCardTrigger>
+        <HoverCardTrigger href="https://macbetter.dev/docs/introduction">macbetter site</HoverCardTrigger>
         <HoverCardContent>
           <div
             aria-hidden="true"
@@ -19,7 +19,7 @@ export default function Example() {
             }}
           />
           <div style={{ display: "grid", gap: 2, padding: "10px 14px 12px" }}>
-            <strong style={{ font: "var(--mb-text-headline)" }}>Macbetter — macOS, iPadOS and iOS for the web</strong>
+            <strong style={{ font: "var(--mb-text-headline)" }}>macbetter — macOS, iPadOS and iOS for the web</strong>
             <span style={{ color: "var(--mb-label-secondary)", font: "var(--mb-text-callout)" }}>
               macbetter.dev
             </span>

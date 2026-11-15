@@ -1,4 +1,4 @@
-/* Base: what every Macbetter surface shares. */
+/* Base: what every macbetter surface shares. */
 
 :where(.mb-root, [data-macbetter]) {
   background: var(--mb-bg);

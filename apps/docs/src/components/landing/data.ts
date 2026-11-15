@@ -24,7 +24,7 @@ const TODAY = 14
 const projects: Project[] = [
   {
     id: "launch",
-    name: "Macbetter launch",
+    name: "macbetter launch",
     color: "orange",
     tasks: [
       { id: "l1", title: "Write the theming guide", owner: ME, due: 18, status: "doing" },

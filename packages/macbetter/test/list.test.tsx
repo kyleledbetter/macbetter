@@ -13,7 +13,7 @@ import {
 } from "../src/components/list"
 import { Switch } from "../src/components/switch"
 
-test("lays out a Settings section with Macbetter's classes", () => {
+test("lays out a Settings section with macbetter's classes", () => {
   const { container } = render(
     <List variant="grouped" className="mine">
       <ListSection header="Connectivity" footer="Wi-Fi joins known networks automatically.">
@@ -21,7 +21,7 @@ test("lays out a Settings section with Macbetter's classes", () => {
           <ListRowIcon color="blue">W</ListRowIcon>
           <ListRowTitle>Wi-Fi</ListRowTitle>
           <ListRowSubtitle>Secure network</ListRowSubtitle>
-          <ListRowValue>Macbetter HQ</ListRowValue>
+          <ListRowValue>macbetter HQ</ListRowValue>
           <ListRowAccessory type="disclosure" />
         </ListRow>
       </ListSection>

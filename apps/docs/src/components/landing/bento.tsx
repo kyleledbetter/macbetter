@@ -126,20 +126,14 @@ function StaticMenu() {
   )
 }
 
-function Bento({ count }: { count: number }) {
+function Bento() {
   return (
     <section id="components" className="lp-section" data-surface="alt" aria-labelledby="lp-bento">
       <div className="lp-section-inner">
       <SectionHeading
         id="lp-bento"
         eyebrow="Components"
-        headline={
-          <>
-            {count} components.
-            <br />
-            Each one the real&nbsp;thing.
-          </>
-        }
+        headline={<>Every UI element from the Human Interface Guidelines (and&nbsp;more).</>}
         links={<MoreLink href="/docs/components">Explore all components</MoreLink>}
       >
         Menus, sliders, calendars, alerts and command palettes that look and behave like the native control, at a

@@ -7,7 +7,7 @@ export default function Example() {
     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))", gap: 20, width: "100%" }}>
       {artworkVariants.map((variant, index) => (
         <figure key={variant} style={{ margin: 0 }}>
-          <Artwork seed="Macbetter" variant={variant} palette={palettes[index]} />
+          <Artwork seed="macbetter" variant={variant} palette={palettes[index]} />
           <figcaption className="mb-text-subheadline" style={{ marginTop: 8 }}>
             {variant}
           </figcaption>

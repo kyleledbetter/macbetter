@@ -7,7 +7,7 @@ const messages = [
   { from: "Kofi Mensah", subject: "Q3 metrics are in", time: "8:47" },
   { from: "Wren Takahashi", subject: "Offsite photos", time: "Yesterday" },
   { from: "Hollis Grant", subject: "Contract signed", time: "Yesterday" },
-  { from: "Macbetter", subject: "Your weekly data digest", time: "Monday" },
+  { from: "macbetter", subject: "Your weekly data digest", time: "Monday" },
   { from: "Ana Lima", subject: "Re: onboarding flow", time: "Sunday" },
 ]
 

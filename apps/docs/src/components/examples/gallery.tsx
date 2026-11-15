@@ -32,7 +32,7 @@ const examples = [
     slug: "analytics",
     title: "Analytics",
     description:
-      "A Macbetter dashboard for Supabase data: KPI cards, charts with accessible tables, a sortable dataset table, plan usage gauges and a confirm-before-delete alert.",
+      "A macbetter dashboard for Supabase data: KPI cards, charts with accessible tables, a sortable dataset table, plan usage gauges and a confirm-before-delete alert.",
     platforms: ["macOS", "iOS"],
     App: AnalyticsApp,
     mac: { width: 1240, height: 780 },
@@ -99,10 +99,10 @@ function ExamplesGallery() {
           <h1 className="stack-headline type-headline">
             Four apps.
             <br />
-            Nothing but&nbsp;Macbetter.
+            Nothing but&nbsp;macbetter.
           </h1>
           <p className="stack-copy type-intro type-two-tone">
-            Settings, Mail, Analytics and Music, built only from Macbetter components.{" "}
+            Settings, Mail, Analytics and Music, built only from macbetter components.{" "}
             <strong>Each one runs live, keeps its own state, and changes idiom with the&nbsp;platform.</strong>
           </p>
         </header>

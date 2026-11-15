@@ -56,7 +56,7 @@ When one rounded shape sits inside another, make the corners concentric: the inn
 }
 ```
 
-Macbetter's own components do this. The segmented control's indicator, for example, uses its track's radius minus the 2px inset.
+macbetter's own components do this. The segmented control's indicator, for example, uses its track's radius minus the 2px inset.
 
 ## Control metrics
 
@@ -64,7 +64,7 @@ Control heights, row heights and icon sizes change with the platform. Pick one i
 
 <Demo name="foundations/metrics" hideCode />
 
-Size your own controls and rows with these tokens, and they'll match Macbetter's on every platform:
+Size your own controls and rows with these tokens, and they'll match macbetter's on every platform:
 
 ```css
 .toolbar-field {
@@ -79,7 +79,7 @@ Size your own controls and rows with these tokens, and they'll match Macbetter's
 
 `--mb-hit-target` is the smallest area a control should respond to: 24px on macOS, where a pointer is precise, and 44px on iPadOS and iOS, the HIG's minimum for a finger. The dashed outlines in the preview above show the area each button responds to.
 
-A control can look smaller than its hit target. Macbetter's buttons extend their hit area with a centered, invisible `::after` that's at least `--mb-hit-target` in each direction. Use the same technique for your own small controls:
+A control can look smaller than its hit target. macbetter's buttons extend their hit area with a centered, invisible `::after` that's at least `--mb-hit-target` in each direction. Use the same technique for your own small controls:
 
 ```css
 .close-button {
@@ -100,7 +100,7 @@ Leave enough space between neighbouring controls that their hit areas don't over
 
 ## Safe areas
 
-Macbetter doesn't add safe area padding for you. On devices with a notch, rounded corners or a home indicator, set `viewport-fit=cover` in the viewport meta tag and pad edge-to-edge bars with the browser's `env()` insets:
+macbetter doesn't add safe area padding for you. On devices with a notch, rounded corners or a home indicator, set `viewport-fit=cover` in the viewport meta tag and pad edge-to-edge bars with the browser's `env()` insets:
 
 ```css
 .bottom-bar {

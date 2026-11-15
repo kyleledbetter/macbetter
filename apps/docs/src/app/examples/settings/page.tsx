@@ -4,7 +4,7 @@ import { socialMetadata } from "@/lib/og/routes"
 import { SettingsExample } from "@/components/examples/settings/settings"
 
 const description =
-  "System Settings on the Mac and the Settings app on iPhone and iPad, built with Macbetter."
+  "System Settings on the Mac and the Settings app on iPhone and iPad, built with macbetter."
 
 export const metadata: Metadata = {
   title: "Settings example",

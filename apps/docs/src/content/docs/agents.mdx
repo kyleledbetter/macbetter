@@ -1,15 +1,15 @@
 export const metadata = {
   title: "Built for agents",
-  description: "Macbetter components are ui-sdk components, so agents can read and operate them by name. How it works, and how to ask a coding agent to build with Macbetter.",
+  description: "macbetter components are ui-sdk components, so agents can read and operate them by name. How it works, and how to ask a coding agent to build with macbetter.",
 }
 
 # Built for agents
 
-<Lead>Agents meet Macbetter twice: as users of the interfaces you build, and as the engineers building them. Both depend on the same thing, controls with names.</Lead>
+<Lead>Agents meet macbetter twice: as users of the interfaces you build, and as the engineers building them. Both depend on the same thing, controls with names.</Lead>
 
 ## Agents that use your interface
 
-Every interactive Macbetter component is a ui-sdk component with a class and some data attributes added. Macbetter doesn't replace ui-sdk's behavior, so it doesn't hide anything from ui-sdk's **agent bridge** either.
+Every interactive macbetter component is a ui-sdk component with a class and some data attributes added. macbetter doesn't replace ui-sdk's behavior, so it doesn't hide anything from ui-sdk's **agent bridge** either.
 
 The bridge comes from `@ui-sdk/react/agent`. Create it once, in the browser:
 
@@ -71,9 +71,9 @@ The exact state keys and action names depend on each component. Read them from a
 </Button>
 ```
 
-Macbetter passes every extra prop to the ui-sdk part, so these attributes work on any component.
+macbetter passes every extra prop to the ui-sdk part, so these attributes work on any component.
 
-## Agents that build with Macbetter
+## Agents that build with macbetter
 
 The repository is set up for coding agents. Its `AGENTS.md` is the working agreement every component follows, and its rules are the ones that keep the system consistent:
 
@@ -86,24 +86,24 @@ The repository is set up for coding agents. Its `AGENTS.md` is the working agree
 
 ### A prompt for your agent
 
-Paste this into a coding agent working in an app that uses Macbetter:
+Paste this into a coding agent working in an app that uses macbetter:
 
 ```text
-This app uses Macbetter (macbetter), a design system built on ui-sdk
+This app uses macbetter (macbetter), a design system built on ui-sdk
 that renders macOS, iPadOS and iOS from one set of React components.
 
 Before writing UI:
 1. Read node_modules/@ui-sdk/react/docs/llms.txt for how ui-sdk components behave,
    and follow the ui-sdk skill if it's installed.
-2. Read the Macbetter component you're about to use in
+2. Read the macbetter component you're about to use in
    node_modules/macbetter/src/components/<name>.tsx.
 
 When you write UI:
 - Import components from their own entries, like macbetter/button.
-- Use Macbetter components for anything interactive. Don't hand-write role= for
-  something ui-sdk or Macbetter already ships.
+- Use macbetter components for anything interactive. Don't hand-write role= for
+  something ui-sdk or macbetter already ships.
 - Give every control an accessible name: visible text, a <label>, or aria-label.
-- Style your own layout with Macbetter's tokens (var(--mb-space-*), --mb-label-*,
+- Style your own layout with macbetter's tokens (var(--mb-space-*), --mb-label-*,
   --mb-bg-*, --mb-radius-*), never raw hex colors or pixel font sizes.
 - Size things with platform tokens (--mb-control-height, --mb-row-height,
   --mb-hit-target, --mb-text-*) so the layout adapts to macOS, iPadOS and iOS.

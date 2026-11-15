@@ -31,7 +31,7 @@ function EmptyTrash({ onOpenChange }: { onOpenChange?: (open: boolean, details: 
   )
 }
 
-test("opens a named alert with Macbetter's parts and closes with the agreeing answer", async () => {
+test("opens a named alert with macbetter's parts and closes with the agreeing answer", async () => {
   const user = userEvent.setup()
   const onOpenChange = vi.fn()
   render(<EmptyTrash onOpenChange={onOpenChange} />)
