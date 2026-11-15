@@ -18,4 +18,5 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter macbetter typecheck
       - run: pnpm --filter macbetter test
+      - run: pnpm --filter macbetter build
       - run: pnpm --filter docs build

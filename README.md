@@ -81,7 +81,7 @@ import { Switch } from "macbetter/switch"
 <Switch aria-label="Wi-Fi" defaultChecked />
 ```
 
-React 19 or newer is required. The package ships TypeScript source, so your bundler has to compile it: in Next.js, add `transpilePackages: ["macbetter"]`. The [installation guide](https://macbetter.dev/docs/installation) covers Tailwind CSS v4 layer order and the rest.
+React 19 or newer is required. The package is compiled JavaScript with type declarations, so it needs no bundler configuration. The [installation guide](https://macbetter.dev/docs/installation) covers Tailwind CSS v4 layer order and the rest.
 
 ## Theme it
 
@@ -145,6 +145,7 @@ Run from the repository root with pnpm 10.
 | `pnpm build` | Build the docs site for production |
 | `pnpm typecheck` | Types in the package and the docs site |
 | `pnpm test` | Component tests |
+| `pnpm --filter macbetter build` | Compile the package to `packages/macbetter/dist`, as it is published to npm |
 | `pnpm lint` | ESLint on the docs site |
 | `node scripts/sweep.mjs` | Every route in a real browser, on desktop and phone and by in-app navigation: console errors, failed requests, sideways scrolling. Needs the site running on port 4173 (`pnpm --filter docs exec next dev -p 4173`). |
 | `node scripts/shot.mjs <path> <out.png>` | A screenshot of one page. Flags are listed at the top of the file. |
@@ -158,7 +159,6 @@ To deploy the site, import the repository into Vercel and set the root directory
 macbetter is new and built on a beta of ui-sdk, so expect changes.
 
 - It has been checked in Chromium only. Safari, Firefox, real iOS devices and screen readers are not tested yet.
-- The package ships TypeScript source. There is no compiled build for bundlers that can't compile dependencies.
 - Alerts and sheets follow iOS 18 geometry rather than iOS 26's floating sheets.
 - Pass a `render` element (`render={<Link href="/" />}`) from a client component. One created in a Server Component can reach ui-sdk before React has resolved it, which throws "Element type is invalid". The same goes for components that read their children, like Outline.
 - The Outline page occasionally logs a React hydration warning in development: ui-sdk's Tree (0.1.0-beta.1) can compute a nested item's level one too low on the client. Nothing looks wrong on screen.

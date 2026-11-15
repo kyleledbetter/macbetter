@@ -7,7 +7,7 @@ import {
   createSelection,
   definePrimitive,
 } from "@ui-sdk/core"
-import { createParts } from "@ui-sdk/react/primitive"
+import { createParts, type PartProps } from "@ui-sdk/react/primitive"
 import type * as React from "react"
 import { cx, join } from "../lib/cx"
 
@@ -176,7 +176,9 @@ const parts = createParts(table, {
   sort: "button",
 })
 
-type TableProps = React.ComponentProps<typeof parts.Root> & {
+// Written out, not inferred from the primitive: its inferred type uses ui-sdk types that have no public name,
+// so it can't appear in a declaration file.
+type TableProps = PartProps<"table"> & TableOptions & {
   /** Shades every other row, like Finder's list view. */
   alternating?: boolean
 }
@@ -199,7 +201,7 @@ function TableHeader({ className, children, ...props }: React.ComponentProps<"th
   )
 }
 
-type TableColumnProps = Omit<React.ComponentProps<typeof parts.Column>, "value" | "sortable" | "align" | "children"> & {
+type TableColumnProps = Omit<PartProps<"th">, "align" | "children"> & {
   children?: React.ReactNode
   /** Identifies the column in the table's `sort`. Set it to make the column sortable. */
   value?: string
@@ -235,7 +237,12 @@ function TableBody({ className, ...props }: React.ComponentProps<"tbody">) {
   return <tbody className={join("mb-table-body", className)} {...props} />
 }
 
-function TableRow({ className, ...props }: React.ComponentProps<typeof parts.Row>) {
+type TableRowProps = PartProps<"tr", { selected: boolean }> & {
+  /** Identifies the row in the table's `value`. */
+  value: string
+}
+
+function TableRow({ className, ...props }: TableRowProps) {
   return <parts.Row className={cx("mb-table-row", className)} {...props} />
 }
 
@@ -256,12 +263,13 @@ function TableCell({ align = "start", secondary, className, ...props }: TableCel
   )
 }
 
-export { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, table }
+export { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow }
 export type {
   TableCellProps,
   TableColumnProps,
   TableOptions,
   TableProps,
+  TableRowProps,
   TableSelectionMode,
   TableSort,
   TableSortDirection,

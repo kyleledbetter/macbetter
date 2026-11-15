@@ -28,7 +28,7 @@
     "**/*.css"
   ],
   "files": [
-    "src",
+    "dist",
     "README.md",
     "LICENSE"
   ],
@@ -40,7 +40,34 @@
     "./derive": "./src/lib/derive.ts",
     "./*": "./src/components/*.tsx"
   },
+  "publishConfig": {
+    "access": "public",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./styles.css": "./dist/styles/index.css",
+      "./themes/*.css": "./dist/styles/themes/*.css",
+      "./theme": {
+        "types": "./dist/lib/theme.d.ts",
+        "default": "./dist/lib/theme.js"
+      },
+      "./derive": {
+        "types": "./dist/lib/derive.d.ts",
+        "default": "./dist/lib/derive.js"
+      },
+      "./package.json": "./package.json",
+      "./*": {
+        "types": "./dist/components/*.d.ts",
+        "default": "./dist/components/*.js"
+      }
+    }
+  },
   "scripts": {
+    "build": "node scripts/build.mjs",
+    "prepack": "node scripts/build.mjs",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
   },

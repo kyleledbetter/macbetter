@@ -19,9 +19,8 @@ Once I answer, do this:
    @import "macbetter/styles.css";
    With Tailwind CSS v4 use: @layer ui-sdk, theme, base, macbetter, components, utilities; and import tailwindcss before macbetter.
 4. In the root layout, render <MacbetterScript /> (from "macbetter") first in <body>, put data-macbetter="" on <body>, set data-theme on <html>, and add suppressHydrationWarning to <html>. Pass platform="macos" | "ipados" | "ios" to MacbetterScript if I chose a fixed platform.
-5. In Next.js, add transpilePackages: ["macbetter"] to next.config. The package ships TypeScript source.
-6. If I gave a brand color, generate a theme from it with deriveFromAccent (from "macbetter/derive") and createTheme (from "macbetter/theme"), add the CSS after the macbetter import, and set data-theme to its name. Check text holds 4.5:1 against its background.
-7. Build the first screen I asked for. Import each component from its own entry, like "macbetter/button". Read the component's page at https://macbetter.dev/docs/raw/components/<name> before using it.
+5. If I gave a brand color, generate a theme from it with deriveFromAccent (from "macbetter/derive") and createTheme (from "macbetter/theme"), add the CSS after the macbetter import, and set data-theme to its name. Check text holds 4.5:1 against its background.
+6. Build the first screen I asked for. Import each component from its own entry, like "macbetter/button". Read the component's page at https://macbetter.dev/docs/raw/components/<name> before using it.
 
 Rules while you build:
 - Give every control an accessible name: a visible label, or aria-label when there is none.

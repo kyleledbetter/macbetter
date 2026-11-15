@@ -87,19 +87,7 @@ export function Example() {
 
 ## Next.js
 
-macbetter ships its TypeScript source rather than compiled JavaScript. Next.js needs to compile it, so add it to `transpilePackages`:
-
-```ts title="next.config.ts"
-import type { NextConfig } from "next"
-
-const nextConfig: NextConfig = {
-  transpilePackages: ["macbetter"],
-}
-
-export default nextConfig
-```
-
-With another bundler, make sure it compiles TypeScript and JSX from dependencies too.
+macbetter is published as compiled JavaScript with type declarations, so Next.js needs no extra configuration. Each component is its own file and keeps its `"use client"` directive, so you can import components straight into Server Components.
 
 ### Render elements in client components
 

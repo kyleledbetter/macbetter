@@ -8,13 +8,7 @@ A design system for the web: macOS, iPadOS and iOS from one set of React compone
 pnpm add macbetter @ui-sdk/react @ui-sdk/core
 ```
 
-Requires React 19 or newer. The package ships TypeScript source, so your bundler must compile it. In Next.js:
-
-```ts
-// next.config.ts
-const nextConfig = { transpilePackages: ["macbetter"] }
-export default nextConfig
-```
+Requires React 19 or newer. The package is compiled JavaScript with type declarations, one file per component, so it needs no bundler configuration.
 
 ## Set up
 
