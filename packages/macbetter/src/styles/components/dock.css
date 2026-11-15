@@ -338,6 +338,14 @@
     corner-shape: var(--mb-corner-shape);
     border-radius: calc(var(--mb-squircle-radius-icon) * var(--mb-corner-factor));
   }
+
+  /* corner-shape isn't inherited, so the bevel ring and the light overlay restate it to follow the tile's curve. */
+  .mb-dock::before,
+  .mb-dock-item-icon::before,
+  .mb-dock-item-icon::after {
+    corner-shape: inherit;
+    border-radius: inherit;
+  }
 }
 
 @media (prefers-contrast: more) {
@@ -387,6 +395,7 @@
     background: Canvas;
   }
 
+  .mb-dock::before,
   .mb-dock::before,
   .mb-dock-item-icon::before,
   .mb-dock-item-icon::after {
