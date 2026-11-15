@@ -1,0 +1,395 @@
+/*
+ * Stocks: flat and dense, like the Stocks app. No cards: a watchlist column
+ * against a hairline, then the quote, the chart and the statistics set
+ * straight on the window, divided by rules.
+ */
+
+.ex-stocks {
+  container: ex-stocks / inline-size;
+  display: grid;
+  grid-template-columns: 272px minmax(0, 1fr);
+  height: 100%;
+  min-height: 0;
+}
+
+.ex-stocks-list {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: auto;
+  border-inline-end: var(--mb-hairline) solid var(--mb-separator);
+}
+
+.ex-stocks-list-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 16px 16px 8px;
+}
+
+.ex-stocks-list-head h2 {
+  margin: 0;
+  font: var(--mb-text-title-3);
+  font-weight: 700;
+}
+
+.ex-stocks-list-head span,
+.ex-stocks-empty {
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-footnote);
+}
+
+.ex-stocks-empty {
+  margin: 0;
+  padding: 12px 16px;
+}
+
+/* ── Watchlist ─────────────────────────────────────────────────── */
+
+.ex-watchlist.mb-listbox {
+  min-width: 0;
+  max-height: none;
+  padding: 0 8px 12px;
+  overflow: visible;
+  background: transparent;
+  box-shadow: none;
+}
+
+.ex-watch-row.mb-listbox-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 10px;
+  min-height: 56px;
+  padding-inline: 8px;
+  border-radius: var(--mb-radius-md);
+  white-space: normal;
+}
+
+/* A hairline between rows, inset like a table's, hidden next to the selection. */
+.ex-watch-row.mb-listbox-item:not(:last-of-type)::after {
+  content: "";
+  position: absolute;
+  inset-inline: 8px;
+  bottom: 0;
+  border-bottom: var(--mb-hairline) solid var(--mb-separator);
+}
+
+.ex-watch-row.mb-listbox-item:is([data-selected], :has(+ [data-selected]))::after {
+  display: none;
+}
+
+.ex-watch-row .mb-listbox-item-indicator {
+  display: none;
+}
+
+.ex-watch-name {
+  display: grid;
+  min-width: 0;
+}
+
+.ex-watch-name strong {
+  font: var(--mb-text-headline);
+}
+
+.ex-watch-name span {
+  overflow: hidden;
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-footnote);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ex-watch-price {
+  display: grid;
+  justify-items: end;
+  gap: 3px;
+  font: var(--mb-text-subheadline);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+/* On the accent selection the secondary text keeps its contrast by following the row's color. */
+.ex-watch-row[data-selected] .ex-watch-name span {
+  color: inherit;
+  opacity: 0.78;
+}
+
+.ex-chip {
+  min-width: 62px;
+  padding: 1px 6px;
+  border-radius: 5px;
+  /* Darkened just enough for white text to hold 4.5:1. */
+  background: oklch(from var(--mb-chart-up) min(l, 0.52) c h);
+  color: #fff;
+  font: var(--mb-text-footnote);
+  font-weight: 600;
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+.ex-chip[data-direction="down"] {
+  background: oklch(from var(--mb-chart-down) min(l, 0.55) c h);
+}
+
+/* ── Detail ────────────────────────────────────────────────────── */
+
+.ex-stocks-detail {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  padding: 18px 24px 28px;
+}
+
+.ex-quote {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.ex-quote-name h2 {
+  margin: 0;
+  font: var(--mb-text-large-title);
+  font-weight: 700;
+  letter-spacing: var(--mb-tracking-large-title);
+}
+
+.ex-quote-name p {
+  margin: 0;
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-subheadline);
+}
+
+.ex-quote-price {
+  display: grid;
+  justify-items: end;
+  font-variant-numeric: tabular-nums;
+}
+
+.ex-quote-last {
+  font: var(--mb-text-title-1);
+  font-weight: 600;
+}
+
+.ex-quote-change,
+[data-direction="up"].ex-num,
+.ex-portfolio-total [data-direction] {
+  color: light-dark(oklch(from var(--mb-chart-up) min(l, 0.5) c h), var(--mb-chart-up));
+  font: var(--mb-text-subheadline);
+  font-weight: 600;
+}
+
+.ex-quote-change[data-direction="down"],
+[data-direction="down"].ex-num,
+.ex-portfolio-total [data-direction="down"] {
+  color: var(--mb-destructive-text);
+}
+
+.ex-quote-range {
+  color: var(--mb-label-secondary);
+  font-weight: 500;
+}
+
+.ex-quote-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 2px;
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-footnote);
+}
+
+.ex-quote-bar .mb-segmented-control-item svg {
+  width: 15px;
+  height: 15px;
+}
+
+.ex-price-chart {
+  position: relative;
+}
+
+.ex-price-callout span {
+  color: var(--mb-label-secondary);
+}
+
+.ex-stocks-heading {
+  margin: 0;
+  font: var(--mb-text-title-3);
+  font-weight: 700;
+}
+
+/* ── Key statistics: label left, value right, rules between ───── */
+
+.ex-stats {
+  display: grid;
+  gap: 6px;
+  padding-top: 6px;
+  border-top: var(--mb-hairline) solid var(--mb-separator);
+}
+
+.ex-stats dl {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 28px;
+  margin: 0;
+}
+
+.ex-stats dl > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 7px 0;
+  border-bottom: var(--mb-hairline) solid var(--mb-separator);
+  font: var(--mb-text-body);
+}
+
+.ex-stats dt {
+  color: var(--mb-label-secondary);
+}
+
+.ex-stats dd {
+  margin: 0;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Holdings ──────────────────────────────────────────────────── */
+
+.ex-portfolio {
+  display: grid;
+  gap: 10px;
+  padding-top: 8px;
+}
+
+.ex-portfolio-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ex-portfolio-total {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font: var(--mb-text-headline);
+  font-variant-numeric: tabular-nums;
+}
+
+.ex-portfolio-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 28px;
+}
+
+.ex-holdings.mb-table {
+  width: 100%;
+}
+
+.ex-num {
+  font-variant-numeric: tabular-nums;
+}
+
+.ex-holdings [data-direction].ex-num {
+  font: inherit;
+  font-weight: 500;
+}
+
+.ex-holding-swatch {
+  display: inline-block;
+  flex: none;
+  margin-inline-end: 8px;
+  vertical-align: 1px;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+}
+
+.ex-allocation {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+@container ex-stocks (width < 900px) {
+  .ex-stats dl {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ex-portfolio-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ── iPhone: one column, the watchlist under the chart ─────────── */
+
+.ex-stocks[data-compact] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 22px;
+  height: auto;
+  padding: 0 16px 24px;
+}
+
+.ex-stocks[data-compact] .ex-stocks-detail {
+  gap: 16px;
+  padding: 0;
+  overflow: visible;
+}
+
+.ex-stocks[data-compact] .ex-quote-name h2 {
+  font: var(--mb-text-title-2);
+  font-weight: 700;
+}
+
+.ex-stocks[data-compact] .ex-stats dl {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 18px;
+}
+
+.ex-stocks[data-compact] .ex-stats dl > div {
+  font: var(--mb-text-subheadline);
+}
+
+.ex-stocks-watch {
+  display: grid;
+  gap: 6px;
+}
+
+.ex-stocks[data-compact] .ex-watchlist.mb-listbox {
+  padding: 0;
+  border-radius: 0;
+}
+
+.ex-stocks[data-compact] .ex-watch-row.mb-listbox-item {
+  min-height: 60px;
+  padding-inline: 8px;
+  border-radius: 12px;
+}
+
+/* The symbol the chart shows is a gray fill on iOS, not the Mac's accent. */
+.ex-stocks[data-compact] .ex-watch-row[data-selected] {
+  background: var(--mb-fill-secondary);
+  color: var(--mb-label);
+}
+
+.ex-stocks[data-compact] .ex-watch-row[data-selected] .ex-watch-name span {
+  color: var(--mb-label-secondary);
+  opacity: 1;
+}
+
+.ex-stocks[data-compact] .ex-portfolio-body {
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+}
+
+/* The watchlist draws its own inset rule; iOS's row separator would double it. */
+.ex-watch-row.mb-listbox-item::before {
+  display: none;
+}

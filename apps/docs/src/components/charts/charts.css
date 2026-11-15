@@ -39,7 +39,8 @@
   /* The categorical palette, in order. */
   --mb-chart-1: var(--mb-accent);
   --mb-chart-2: var(--mb-accent-secondary);
-  --mb-chart-3: var(--mb-blue);
+  /* Not blue: the System theme's accent is blue, and two series would share a color. */
+  --mb-chart-3: var(--mb-teal);
   --mb-chart-4: var(--mb-purple);
   --mb-chart-5: var(--mb-yellow);
   --mb-chart-6: var(--mb-pink);

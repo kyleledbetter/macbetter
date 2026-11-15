@@ -1,177 +1,37 @@
-/* Analytics example. */
+/*
+ * Analytics: the frame the four dashboards share. Each dashboard's own look
+ * lives in its stylesheet: stocks.css, health.css, fitness.css, general.css.
+ */
 
-.ex-dash {
+/* Stocks splits the window into two scrolling columns; the others scroll as one page. */
+.ex-analytics-body[data-section="stocks"] {
+  overflow: hidden;
+}
+
+.ex-analytics-body[data-section="health"] {
+  background: var(--mb-bg-grouped);
+}
+
+.ex-section-loading {
   display: grid;
-  gap: 16px;
-  padding: 20px;
+  place-items: center;
+  min-height: 240px;
+  height: 100%;
 }
 
-.ex-kpis {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
+/* iPhone: Health sits on the grouped gray, the others on the plain background. */
+.ex-phone-stack[data-section="health"] {
+  background: var(--mb-bg-grouped);
 }
 
-.ex-kpi.mb-card {
-  gap: 4px;
-  padding: 14px 16px 12px;
+.ex-phone-stack[data-section="health"] .ex-health {
+  min-height: 0;
+  background: transparent;
 }
 
-.ex-kpi-label {
-  color: var(--mb-label-secondary);
-  font: var(--mb-text-callout);
-  font-weight: 500;
-}
+/* ── Donut, shared by Stocks and Reports ───────────────────────── */
 
-.ex-kpi-value {
-  font-family: var(--mb-font-rounded);
-  font-size: 26px;
-  line-height: 32px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  font-variant-numeric: tabular-nums;
-}
-
-.ex-kpi-foot {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.ex-delta {
-  display: inline-flex;
-  align-items: center;
-  padding: 1px 7px;
-  border-radius: 999px;
-  background: color-mix(in oklch, var(--mb-red) 18%, transparent);
-  color: var(--mb-destructive-text);
-  font: 600 11px/16px var(--mb-font-mono);
-  font-variant-numeric: tabular-nums;
-}
-
-.ex-delta[data-good] {
-  background: color-mix(in oklch, var(--mb-accent-secondary) 18%, transparent);
-  color: light-dark(oklch(from var(--mb-accent-secondary) calc(l - 0.12) c h), var(--mb-accent-secondary));
-}
-
-.ex-sparkline {
-  flex: none;
-}
-
-.ex-dash-row {
-  display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr);
-  gap: 12px;
-}
-
-.ex-dash-thirds {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.ex-card-title,
-.ex-chart-title {
-  font: var(--mb-text-headline);
-  color: var(--mb-label);
-}
-
-.ex-card-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.ex-card-sub,
-.ex-chart-description {
-  margin: 2px 0 0;
-  color: var(--mb-label-secondary);
-  font: var(--mb-text-callout);
-}
-
-/* Charts */
-
-.ex-chart {
-  display: grid;
-  gap: 12px;
-  margin: 0;
-  min-width: 0;
-}
-
-.ex-chart-head {
-  display: grid;
-  gap: 2px;
-}
-
-.ex-chart-legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 16px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  color: var(--mb-label-secondary);
-  font: var(--mb-text-callout);
-}
-
-.ex-chart-legend li {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.ex-chart-swatch {
-  flex: none;
-  width: 14px;
-  height: 3px;
-  border-radius: 2px;
-  background: var(--ex-swatch);
-}
-
-.ex-chart-swatch[data-dashed] {
-  background: repeating-linear-gradient(90deg, var(--ex-swatch) 0 4px, transparent 4px 7px);
-}
-
-.ex-donut-legend .ex-chart-swatch {
-  width: 9px;
-  height: 9px;
-  border-radius: 3px;
-}
-
-.ex-chart-drawing {
-  min-width: 0;
-}
-
-/* The trend's readout rides the top of the scrub rule, as in Stocks. */
-.ex-trend {
-  position: relative;
-}
-
-.ex-trend-callout div {
-  display: flex;
-  gap: 10px;
-}
-
-.ex-trend-callout b {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font: var(--mb-text-headline);
-  font-variant-numeric: tabular-nums;
-}
-
-.ex-trend-callout i {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-}
-
-.ex-trend-callout b[data-dashed] {
-  color: var(--mb-label-secondary);
-  font-weight: 500;
-}
-
-.ex-donut {
+.ex-donut.mb-chart {
   display: flex;
   align-items: center;
   gap: 18px;
@@ -192,139 +52,25 @@
 }
 
 .ex-donut-center strong {
-  font: var(--mb-text-title-1);
+  font: var(--mb-text-title-3);
   font-family: var(--mb-font-rounded);
-  line-height: 1;
+  font-weight: 600;
+  line-height: 1.1;
   font-variant-numeric: tabular-nums;
 }
 
 .ex-donut-center span {
   color: var(--mb-label-secondary);
-  font: var(--mb-text-callout);
+  font: var(--mb-text-caption);
 }
 
-.ex-donut-legend {
+.ex-donut-legend.mb-chart-legend {
   display: grid;
   gap: 8px;
-  flex: 1;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  font: var(--mb-text-callout);
+  min-width: 110px;
 }
 
-.ex-donut-legend li {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.ex-donut-label {
-  flex: 1;
-  font-family: var(--mb-font-mono);
-  color: var(--mb-label-secondary);
-}
-
-/* Quota */
-
-.ex-quota.mb-card {
-  gap: 14px;
-}
-
-.ex-quota-body {
-  display: grid;
-  justify-items: center;
-  gap: 18px;
-}
-
-.ex-quota-bars {
-  display: grid;
-  gap: 12px;
-  width: 100%;
-}
-
-/* Table */
-
-.ex-table-card.mb-card {
-  padding: 14px 6px 6px;
-}
-
-.ex-table-card .ex-card-head {
-  padding: 0 10px 6px;
-}
-
-.ex-table.mb-table {
-  width: 100%;
-}
-
-.ex-dataset-name {
-  font-size: 12px;
-}
-
-.ex-menu-destructive {
-  color: var(--mb-destructive-text);
-}
-
-.ex-alert-icon {
-  display: grid;
-  place-items: center;
-  width: 100%;
-  height: 100%;
-  border-radius: 22%;
-  background: linear-gradient(160deg, var(--mb-accent), oklch(from var(--mb-accent) calc(l - 0.12) c h));
-  color: var(--mb-on-accent);
-}
-
-.ex-alert-icon svg {
-  width: 55%;
-  height: 55%;
-}
-
-.ex-dash-list {
-  background: transparent;
-}
-
-.ex-alert-glyph {
-  grid-column: 1;
-  grid-row: 1 / -1;
-  display: grid;
-  margin-inline-end: 12px;
-  color: var(--mb-yellow);
-}
-
-.ex-alert-glyph[data-level="critical"] {
-  color: var(--mb-red);
-}
-
-.ex-alert-glyph svg {
-  width: 18px;
-  height: 18px;
-}
-
-/* iPhone */
-
-.ex-phone-dash {
-  display: grid;
-  gap: 14px;
-  padding: 4px 16px 24px;
-}
-
-.ex-kpis-phone {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-}
-
-.ex-kpis-phone .ex-kpi-value {
-  font-size: 22px;
-  line-height: 28px;
-}
-
-.ex-kpis-phone .ex-sparkline {
-  width: 56px;
-}
-
-@container (width < 1100px) {
-  .ex-dash-thirds {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+.ex-donut-legend .mb-chart-legend-value {
+  margin-inline-start: auto;
+  padding-inline-start: 12px;
 }

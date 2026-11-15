@@ -148,7 +148,7 @@ function readExampleSources(slug: ExampleSlug): ExampleSourceSet {
       }
       const name = packageOf(specifier)
       if (name === "macbetter") {
-        const component = specifier.split("/")[2]
+        const component = specifier.split("/")[1]
         if (component) macbetter.add(component)
       } else if (!name.startsWith("@ui-sdk/") && !PROVIDED_PACKAGES.has(name) && !specifier.startsWith("node:")) {
         packages.add(name)

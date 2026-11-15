@@ -32,7 +32,7 @@ const examples = [
     slug: "analytics",
     title: "Analytics",
     description:
-      "A macbetter dashboard for Supabase data: KPI cards, charts with accessible tables, a sortable dataset table, plan usage gauges and a confirm-before-delete alert.",
+      "Four dashboards, one per chart family: a Stocks watchlist with price and candlestick charts, a Health summary, Fitness rings and workouts, and a business report with a sortable table.",
     platforms: ["macOS", "iOS"],
     App: AnalyticsApp,
     mac: { width: 1240, height: 780 },

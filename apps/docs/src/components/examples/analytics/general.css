@@ -1,0 +1,182 @@
+/*
+ * Reports, the general-purpose set: a conventional business dashboard. A
+ * dense 12-column grid of bordered group boxes with small headings, the way
+ * a Mac app lays out a report.
+ */
+
+.ex-gen {
+  container: ex-gen / inline-size;
+  display: grid;
+  gap: 14px;
+  padding: 16px 20px 24px;
+}
+
+.ex-gen-intro h2 {
+  margin: 0;
+  font: var(--mb-text-title-3);
+  font-weight: 700;
+}
+
+.ex-gen-intro p,
+.ex-gen-sub,
+.ex-gen-empty {
+  margin: 0;
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-footnote);
+}
+
+.ex-gen-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.ex-gen-card[data-span="3"] { grid-column: span 3; }
+.ex-gen-card[data-span="4"] { grid-column: span 4; }
+.ex-gen-card[data-span="5"] { grid-column: span 5; }
+.ex-gen-card[data-span="7"] { grid-column: span 7; }
+.ex-gen-card[data-span="8"] { grid-column: span 8; }
+.ex-gen-card[data-span="12"] { grid-column: 1 / -1; }
+
+.ex-gen-card.mb-card {
+  gap: 10px;
+  padding: 14px 16px;
+}
+
+.ex-gen-chart.mb-chart {
+  gap: 10px;
+}
+
+.ex-gen-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 12px;
+}
+
+.ex-gen-head h3,
+.ex-gen-title {
+  margin: 0;
+  font: var(--mb-text-headline);
+}
+
+.ex-gen-plot {
+  min-width: 0;
+}
+
+/* ── KPI cards ─────────────────────────────────────────────────── */
+
+.ex-kpi.mb-chart {
+  gap: 2px;
+}
+
+.ex-kpi-label {
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-footnote);
+  font-weight: 600;
+}
+
+.ex-kpi-value {
+  font: var(--mb-text-title-1);
+  font-family: var(--mb-font-rounded);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.ex-kpi-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.ex-kpi-delta {
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--mb-red) 18%, transparent);
+  color: var(--mb-destructive-text);
+  font: var(--mb-text-footnote);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.ex-kpi-delta[data-good] {
+  background: color-mix(in oklch, var(--mb-accent-secondary) 18%, transparent);
+  color: light-dark(oklch(from var(--mb-accent-secondary) calc(l - 0.14) c h), var(--mb-accent-secondary));
+}
+
+.ex-kpi-detail {
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-caption);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Donut, goals, table ───────────────────────────────────────── */
+
+.ex-gen-donut {
+  flex: 1;
+  justify-content: center;
+}
+
+.ex-gen-goals-body {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.ex-gen-goal-legend.mb-chart-legend {
+  display: grid;
+  gap: 10px;
+}
+
+.ex-gen-table-card.mb-card {
+  padding: 14px 6px 6px;
+}
+
+.ex-gen-table-card .ex-gen-head,
+.ex-gen-table-card .ex-gen-title {
+  padding-inline: 10px;
+}
+
+.ex-gen-table.mb-table {
+  width: 100%;
+}
+
+.ex-gen-change[data-direction="up"] {
+  color: light-dark(oklch(from var(--mb-chart-up) min(l, 0.5) c h), var(--mb-chart-up));
+}
+
+.ex-gen-change[data-direction="down"] {
+  color: var(--mb-destructive-text);
+}
+
+@container ex-gen (width < 960px) {
+  .ex-gen-card[data-span="3"] { grid-column: span 6; }
+  .ex-gen-card[data-span="4"],
+  .ex-gen-card[data-span="5"],
+  .ex-gen-card[data-span="7"],
+  .ex-gen-card[data-span="8"] { grid-column: 1 / -1; }
+}
+
+/* ── iPhone ────────────────────────────────────────────────────── */
+
+.ex-gen[data-compact] {
+  gap: 12px;
+  padding: 0 16px 24px;
+}
+
+.ex-gen[data-compact] .ex-gen-kpis {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.ex-gen[data-compact] .ex-kpi-value {
+  font: var(--mb-text-title-2);
+  font-family: var(--mb-font-rounded);
+  font-weight: 600;
+}

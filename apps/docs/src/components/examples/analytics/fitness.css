@@ -1,0 +1,468 @@
+/*
+ * Fitness: bold and rounded, like the Fitness app. Tiles without edges on
+ * the window's own background, big rounded numbers in the rings' colors,
+ * and a 12-column grid that pairs each list with what it selects.
+ */
+
+.ex-fit {
+  container: ex-fit / inline-size;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 14px;
+  align-content: start;
+  padding: 18px 22px 28px;
+}
+
+.ex-fit .mb-card {
+  --mb-card-bg: light-dark(var(--mb-fill-quaternary), color-mix(in oklch, var(--mb-ink) 7%, transparent));
+  border-radius: 20px;
+  box-shadow: none;
+}
+
+.ex-fit-hero {
+  grid-column: span 5;
+}
+
+.ex-fit-hours {
+  grid-column: span 7;
+}
+
+.ex-fit-weekcard {
+  grid-column: 1 / -1;
+}
+
+.ex-fit-list {
+  grid-column: span 5;
+}
+
+.ex-fit-detail {
+  grid-column: span 7;
+}
+
+.ex-fit-panel:not(.ex-fit-list) {
+  grid-column: span 5;
+}
+
+.ex-fit-yearcard {
+  grid-column: span 7;
+}
+
+.ex-fit-heading,
+.ex-fit-hero-head h2 {
+  margin: 0;
+  font: var(--mb-text-title-2);
+  font-family: var(--mb-font-rounded);
+  font-weight: 700;
+}
+
+.ex-fit-hero-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.ex-fit-hero-head span,
+.ex-fit-sub,
+.ex-fit-empty,
+.ex-fit-week-note {
+  margin: 0;
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-footnote);
+}
+
+.ex-fit-panel {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  min-width: 0;
+}
+
+/* ── Rings and their totals ────────────────────────────────────── */
+
+.ex-fit-rings.mb-chart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  flex: 1;
+}
+
+.ex-fit-rings dl {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.ex-fit-rings dt {
+  font: var(--mb-text-subheadline);
+  font-weight: 600;
+}
+
+.ex-fit-rings dd {
+  margin: 0;
+  font: var(--mb-text-title-1);
+  font-family: var(--mb-font-rounded);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.ex-fit-rings dd span {
+  font: var(--mb-text-subheadline);
+  font-family: var(--mb-font-rounded);
+  font-weight: 700;
+}
+
+/* ── Hours ─────────────────────────────────────────────────────── */
+
+.ex-fit-strips.mb-chart {
+  gap: 10px;
+}
+
+.ex-fit-strip {
+  display: grid;
+  gap: 3px;
+}
+
+.ex-fit-strip-label {
+  font: var(--mb-text-subheadline);
+  font-weight: 600;
+}
+
+.ex-fit-strip-label span {
+  font-family: var(--mb-font-rounded);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Week: seven days of rings, choose one ─────────────────────── */
+
+.ex-fit-week.mb-chart {
+  gap: 6px;
+}
+
+.ex-fit-days.mb-listbox {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  min-width: 0;
+  padding: 0;
+  overflow: visible;
+  background: transparent;
+  box-shadow: none;
+}
+
+.ex-fit-day.mb-listbox-item {
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  min-height: 0;
+  padding: 8px 0;
+  border-radius: 14px;
+  color: var(--mb-label);
+}
+
+.ex-fit-day .mb-listbox-item-indicator {
+  display: none;
+}
+
+.ex-fit-day-letter {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-footnote);
+  font-weight: 600;
+}
+
+/* The chosen day: a fill behind it and its letter in a solid circle, never color alone. */
+.ex-fit-days.mb-listbox .ex-fit-day[data-selected] {
+  background: var(--mb-fill-tertiary);
+  color: var(--mb-label);
+}
+
+.ex-fit-day[data-selected] .ex-fit-day-letter {
+  background: var(--mb-label);
+  color: var(--mb-bg);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ex-fit-day.mb-listbox-item:hover:not([data-selected]) {
+    background: var(--mb-fill-quaternary);
+  }
+}
+
+/* ── Workouts ──────────────────────────────────────────────────── */
+
+.ex-fit-workouts.mb-listbox {
+  min-width: 0;
+  max-height: none;
+  padding: 0;
+  overflow: visible;
+  background: transparent;
+  box-shadow: none;
+  gap: 6px;
+}
+
+.ex-fit-workout.mb-listbox-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 12px;
+  min-height: 58px;
+  padding: 8px 12px;
+  border-radius: 16px;
+  background: light-dark(var(--mb-fill-quaternary), color-mix(in oklch, var(--mb-ink) 7%, transparent));
+  white-space: normal;
+}
+
+.ex-fit-workout .mb-listbox-item-indicator {
+  display: none;
+}
+
+.ex-fit-workout-icon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: color-mix(in oklch, var(--mb-chart-exercise) 24%, transparent);
+  color: light-dark(oklch(from var(--mb-chart-exercise) 0.45 c h), var(--mb-chart-exercise));
+}
+
+.ex-fit-workout-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.ex-fit-workout-name,
+.ex-fit-workout-meta {
+  display: grid;
+  min-width: 0;
+}
+
+.ex-fit-workout-name strong {
+  font: var(--mb-text-headline);
+}
+
+.ex-fit-workout-name span,
+.ex-fit-workout-meta > span {
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-footnote);
+}
+
+.ex-fit-workout-meta {
+  justify-items: end;
+}
+
+.ex-fit-workout-meta strong {
+  color: var(--mb-chart-move);
+  font: var(--mb-text-title-3);
+  font-family: var(--mb-font-rounded);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.ex-fit-workout-meta strong span {
+  font: var(--mb-text-caption);
+  font-weight: 700;
+}
+
+/* The selected workout is a solid accent row, as a Mac list's selection is. */
+.ex-fit-workouts.mb-listbox .ex-fit-workout[data-selected] {
+  background: var(--mb-accent);
+  color: var(--mb-on-accent);
+}
+
+.ex-fit-workouts .ex-fit-workout[data-selected] :is(.ex-fit-workout-name span, .ex-fit-workout-meta > span, .ex-fit-workout-meta strong) {
+  color: inherit;
+}
+
+.ex-fit-workouts .ex-fit-workout[data-selected] .ex-fit-workout-icon {
+  background: color-mix(in oklch, var(--mb-on-accent) 22%, transparent);
+  color: inherit;
+}
+
+.ex-fit-workouts.mb-listbox:not(:focus-within) .ex-fit-workout[data-selected] {
+  background: var(--mb-fill-secondary);
+  color: var(--mb-label);
+}
+
+.ex-fit-workouts.mb-listbox:not(:focus-within) .ex-fit-workout[data-selected] .ex-fit-workout-meta strong {
+  color: var(--mb-chart-move);
+}
+
+.ex-fit-workouts.mb-listbox:not(:focus-within) .ex-fit-workout[data-selected] :is(.ex-fit-workout-name span, .ex-fit-workout-meta > span) {
+  color: var(--mb-label-secondary);
+}
+
+.ex-fit-workouts.mb-listbox:not(:focus-within) .ex-fit-workout[data-selected] .ex-fit-workout-icon {
+  background: color-mix(in oklch, var(--mb-chart-exercise) 24%, transparent);
+  color: light-dark(oklch(from var(--mb-chart-exercise) 0.45 c h), var(--mb-chart-exercise));
+}
+
+.ex-fit-detail-head {
+  display: grid;
+  gap: 1px;
+}
+
+.ex-fit-detail-head h3 {
+  margin: 0;
+  color: light-dark(oklch(from var(--mb-chart-exercise) 0.45 c h), var(--mb-chart-exercise));
+  font: var(--mb-text-title-3);
+  font-family: var(--mb-font-rounded);
+  font-weight: 700;
+}
+
+.ex-fit-detail-head span {
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-footnote);
+}
+
+.ex-fit-zones-body {
+  display: grid;
+  gap: 10px;
+}
+
+/* The detail stays in view beside the longer workout list, like a Mac inspector. */
+.ex-fit-detail.mb-card {
+  position: sticky;
+  top: 16px;
+  align-self: start;
+}
+
+.ex-fit .mb-chart-value {
+  font: var(--mb-text-title-1);
+  font-family: var(--mb-font-rounded);
+  font-weight: 600;
+}
+
+/* ── Trends ────────────────────────────────────────────────────── */
+
+.ex-fit-trends {
+  display: grid;
+  gap: 12px;
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ex-fit-trends li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ex-fit-arrow {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--ex-trend);
+  color: var(--mb-bg);
+}
+
+.ex-fit-arrow[data-direction="down"] {
+  background: transparent;
+  box-shadow: inset 0 0 0 2px var(--ex-trend);
+  color: var(--ex-trend);
+}
+
+.ex-fit-arrow svg {
+  width: 18px;
+  height: 18px;
+}
+
+.ex-fit-trend-value {
+  display: grid;
+  min-width: 0;
+}
+
+.ex-fit-trend-value > span {
+  color: var(--ex-trend);
+  font: var(--mb-text-subheadline);
+  font-weight: 600;
+}
+
+.ex-fit-trend-value strong {
+  font: var(--mb-text-title-3);
+  font-family: var(--mb-font-rounded);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.ex-fit-trend-value strong span {
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-footnote);
+  font-weight: 600;
+}
+
+.ex-fit-trend-note {
+  margin-inline-start: auto;
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-footnote);
+}
+
+@container ex-fit (width < 960px) {
+  .ex-fit-hero,
+  .ex-fit-list,
+  .ex-fit-panel:not(.ex-fit-list) {
+    grid-column: span 6;
+  }
+
+  .ex-fit-hours,
+  .ex-fit-detail,
+  .ex-fit-yearcard {
+    grid-column: span 6;
+  }
+
+  .ex-fit-rings.mb-chart {
+    gap: 18px;
+  }
+}
+
+/* ── iPhone: one column ────────────────────────────────────────── */
+
+.ex-fit[data-compact] {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+  padding: 0 16px 24px;
+}
+
+.ex-fit[data-compact] > * {
+  grid-column: 1 / -1;
+}
+
+.ex-fit[data-compact] .ex-fit-detail.mb-card {
+  position: static;
+}
+
+.ex-fit[data-compact] .ex-fit-day-letter {
+  width: 22px;
+  height: 22px;
+}
+
+.ex-fit[data-compact] .ex-fit-workouts .ex-fit-workout[data-selected] {
+  background: var(--mb-fill-secondary);
+  color: var(--mb-label);
+}
+
+.ex-fit[data-compact] .ex-fit-workouts .ex-fit-workout[data-selected] .ex-fit-workout-meta strong {
+  color: var(--mb-chart-move);
+}
+
+.ex-fit[data-compact] .ex-fit-workouts .ex-fit-workout[data-selected] :is(.ex-fit-workout-name span, .ex-fit-workout-meta > span) {
+  color: var(--mb-label-secondary);
+}
+
+.ex-fit[data-compact] .ex-fit-workouts .ex-fit-workout[data-selected] .ex-fit-workout-icon {
+  background: color-mix(in oklch, var(--mb-chart-exercise) 24%, transparent);
+  color: light-dark(oklch(from var(--mb-chart-exercise) 0.45 c h), var(--mb-chart-exercise));
+}
+
+/* These lists draw their own spacing; iOS's row separators would only add stray lines. */
+.ex-fit-day.mb-listbox-item::before,
+.ex-fit-workout.mb-listbox-item::before {
+  display: none;
+}
