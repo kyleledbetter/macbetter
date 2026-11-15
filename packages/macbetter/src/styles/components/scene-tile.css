@@ -79,6 +79,51 @@
     0 1px 3px rgb(0 0 0 / 0.12);
 }
 
+/* Art behind the tile. The tile's own fill becomes a veil over it, so the name reads as it does on a plain tile. */
+.mb-scene-tile[data-background] {
+  isolation: isolate;
+  background: none;
+}
+
+.mb-scene-tile-background {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.mb-scene-tile-background > .mb-artwork {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  aspect-ratio: auto;
+  border-radius: 0;
+}
+
+.mb-scene-tile-background > .mb-artwork::after {
+  display: none;
+}
+
+.mb-scene-tile-background::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--mb-scene-tile-veil, var(--mb-scene-tile-bg));
+  transition: background-color var(--mb-duration-base) var(--mb-ease-out);
+}
+
+.mb-scene-tile[data-background]:not([data-active]) {
+  --mb-scene-tile-veil: light-dark(rgb(255 255 255 / 0.32), rgb(0 0 0 / 0.3));
+}
+
+/* On, the art shows as a tint under the bright fill. */
+.mb-scene-tile[data-background][data-active] {
+  --mb-scene-tile-veil: light-dark(rgb(255 255 255 / 0.8), rgb(246 246 248 / 0.84));
+}
+
 .mb-scene-tile-icon {
   display: grid;
   flex: none;
@@ -136,6 +181,12 @@
   }
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .mb-scene-tile[data-background]:not([data-active], [data-disabled]):hover {
+    --mb-scene-tile-veil: light-dark(rgb(255 255 255 / 0.44), rgb(0 0 0 / 0.16));
+  }
+}
+
 @scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
   .mb-scene-tile:not([data-disabled]):active {
     scale: 0.96;
@@ -189,6 +240,10 @@
     corner-shape: var(--mb-corner-shape);
     border-radius: calc(var(--mb-scene-tile-radius) * var(--mb-corner-factor));
   }
+
+  .mb-scene-tile-background {
+    corner-shape: inherit;
+  }
 }
 
 @media (prefers-contrast: more) {
@@ -215,7 +270,21 @@
   }
 }
 
+@media (prefers-contrast: more) {
+  .mb-scene-tile-background {
+    display: none;
+  }
+
+  .mb-scene-tile[data-background] {
+    background: var(--mb-scene-tile-bg);
+  }
+}
+
 @media (forced-colors: active) {
+  .mb-scene-tile-background {
+    display: none;
+  }
+
   .mb-scene-tile {
     border: 1px solid ButtonText;
   }

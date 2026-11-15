@@ -4,7 +4,7 @@ import { hydrateRoot } from "react-dom/client"
 import { renderToStaticMarkup, renderToString } from "react-dom/server"
 import { act } from "react"
 import { expect, test, vi } from "vitest"
-import { Artwork, artworkPalettes, artworkVariants } from "../src/components/artwork"
+import { Artwork, artworkBackgrounds, artworkPalettes, artworkTimes, artworkVariants } from "../src/components/artwork"
 
 test("the same seed draws the same picture, and a different seed a different one", () => {
   for (const variant of artworkVariants) {
@@ -30,6 +30,48 @@ test("every variant draws clean geometry at every aspect", () => {
       }
     }
   }
+})
+
+test("backgrounds draw clean geometry at phone, window and tile sizes, at every time of day", () => {
+  for (const variant of artworkBackgrounds) {
+    for (const aspect of [390 / 844, 1, 1.6, 16 / 9, 1180 / 760]) {
+      for (const time of [undefined, ...artworkTimes]) {
+        for (const seed of ["Maple Street", "Kitchen", 3]) {
+          const html = renderToStaticMarkup(<Artwork seed={seed} variant={variant} aspect={aspect} time={time} dim={0.3} />)
+          expect(html, `${variant} ${seed} ${aspect} ${time}`).not.toMatch(/NaN|undefined|Infinity|null/)
+          const ids = new Set(Array.from(html.matchAll(/ id="([^"]+)"/g), (match) => match[1]))
+          for (const [, ref] of html.matchAll(/url\(#([^)]+)\)/g)) expect(ids.has(ref), `${variant} → ${ref}`).toBe(true)
+          // Light enough to sit behind a whole screen.
+          expect((html.match(/<(path|rect|circle|ellipse)\b/g) ?? []).length, `${variant} node count`).toBeLessThan(24)
+        }
+      }
+    }
+  }
+})
+
+test("backgrounds are flat by default, take a time and a dim, and auto never picks one", () => {
+  const { container } = render(<Artwork seed="Kitchen" variant="wash" time="dusk" dim={0.4} />)
+  const root = container.querySelector(".mb-artwork") as HTMLElement
+  expect(root.dataset).toMatchObject({ variant: "wash", palette: "dusk", finish: "flat", time: "dusk", dim: "" })
+  expect(root.style.getPropertyValue("--mb-artwork-dim")).toBe("0.4")
+  expect(container.querySelector(".mb-artwork-finish")).toBeNull()
+
+  const night = render(<Artwork seed="Bedroom" variant="horizon" time="night" />).container.querySelector(".mb-artwork") as HTMLElement
+  expect(night.dataset.palette).toBe("night")
+  expect(night.dataset.dim).toBeUndefined()
+  // A palette you pass wins over the time's.
+  const amber = render(<Artwork seed="Kitchen" variant="window" palette="amber" time="day" />).container.querySelector(".mb-artwork") as HTMLElement
+  expect(amber.dataset.palette).toBe("amber")
+  const clamped = render(<Artwork seed="x" variant="wash" dim={4} />).container.querySelector(".mb-artwork") as HTMLElement
+  expect(clamped.style.getPropertyValue("--mb-artwork-dim")).toBe("1")
+
+  for (let i = 0; i < 60; i++) {
+    const html = renderToStaticMarkup(<Artwork seed={`auto ${i}`} />)
+    const variant = html.match(/data-variant="([a-z]+)"/)?.[1]
+    expect(artworkBackgrounds).not.toContain(variant)
+  }
+  // Covers keep their gloss.
+  expect(renderToStaticMarkup(<Artwork seed="a" variant="aurora" />)).toContain('data-finish="gloss"')
 })
 
 test("hydrates without a mismatch and renders the same markup on the server and in the browser", async () => {

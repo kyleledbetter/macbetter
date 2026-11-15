@@ -14,7 +14,16 @@ const artworkVariants = [
   "topo",
   "grain",
   "mosaic",
+  "wash",
+  "horizon",
+  "window",
+  "lens",
 ] as const
+
+/** The variants made to sit behind an interface: soft, low in contrast, flat by default. */
+const artworkBackgrounds = ["wash", "horizon", "window", "lens"] as const
+
+const artworkTimes = ["dawn", "day", "dusk", "night"] as const
 
 const artworkPalettes = [
   "accent",
@@ -28,10 +37,17 @@ const artworkPalettes = [
   "glacier",
   "candy",
   "mono",
+  "dawn",
+  "sky",
+  "night",
+  "amber",
+  "water",
+  "slate",
 ] as const
 
 type ArtworkVariant = (typeof artworkVariants)[number]
 type ArtworkPalette = (typeof artworkPalettes)[number]
+type ArtworkTime = (typeof artworkTimes)[number]
 type ArtworkShape = "square" | "rounded" | "circle" | "app"
 type ArtworkFinish = "flat" | "gloss" | "grain"
 
@@ -51,12 +67,16 @@ type ArtworkProps = Omit<React.ComponentProps<"span">, "title"> & {
   aspect?: number
   /** Width, in pixels or any CSS length. Fills its container when left out. */
   size?: number | string
-  /** `gloss` adds a soft top light and vignette; `grain` adds film grain on top. */
+  /** `gloss` adds a soft top light and vignette; `grain` adds film grain on top. Covers default to `gloss`, backgrounds to `flat`. */
   finish?: ArtworkFinish
   /** A slow drift of the shapes. Pauses under Reduce Motion. */
   animated?: boolean
   /** Names the picture and makes it an image. Without it or `aria-label` the art is decorative. */
   title?: string
+  /** The light in a background: where `horizon` puts its sun, and the palette when none is given. */
+  time?: ArtworkTime
+  /** How far the art recedes behind content, from 0 to 1: it's veiled with the page's background color. */
+  dim?: number
 }
 
 /* ── Deterministic math ───────────────────────────────────────── */
@@ -221,6 +241,7 @@ type Ctx = {
   url: (name: string) => string
   /** The palette's hues, in an order the seed shuffles. */
   c: (i: number) => string
+  time?: ArtworkTime
 }
 
 function Linear({ x, name, to, list, user }: { x: Ctx; name: string; to: [number, number, number, number]; list: Stop[]; user?: boolean }) {
@@ -1105,6 +1126,338 @@ function mosaic(x: Ctx) {
   )
 }
 
+/* ── Backgrounds ──────────────────────────────────────────────────
+ * Made to sit behind an interface. They paint with three scheme-aware colors from artwork.css
+ * (pale in light mode, deep in dark mode), so text in the label color reads on them in both:
+ *   base  the main field     deep  shade and distance     haze  soft light
+ * Sizes follow the longer side, so a phone and a wide window both get large, calm shapes.
+ */
+
+const base = "var(--mb-artwork-base)"
+const deep = "var(--mb-artwork-deep)"
+const haze = "var(--mb-artwork-haze)"
+const hues = ["var(--mb-artwork-1)", "var(--mb-artwork-2)", "var(--mb-artwork-3)", "var(--mb-artwork-4)"] as const
+
+/** How much light a time of day lets in: brighter by day, deeper at night. */
+const lift: Record<ArtworkTime, number> = { dawn: 0.2, day: 1, dusk: -0.4, night: -1 }
+
+/** Large soft fields of color drifting between two or three hues, like a blurred wallpaper. */
+function wash(x: Ctx) {
+  const { r, w, h } = x
+  const long = Math.max(w, h)
+  const angle = r.range(0, TAU)
+  const [dx, dy] = [cos(angle), sin(angle)]
+  const span = Math.sqrt(w * w + h * h) / 2
+  const count = r.int(3, 4)
+  const fields = Array.from({ length: count }, (_, i) => {
+    const rx = r.range(0.42, 0.7) * long
+    return {
+      key: `f${i}`,
+      cx: r.range(-0.08, 1.08) * w,
+      cy: r.range(-0.08, 1.08) * h,
+      rx,
+      ry: rx * r.range(0.55, 0.85),
+      rotate: r.range(0, 180),
+      color: mix(x.c(i + 1), base, r.range(46, 66)),
+      opacity: r.range(0.7, 0.92),
+    }
+  })
+  const side = r.range(0, TAU)
+  const light = { cx: x.cx + cos(side) * w * 0.4, cy: x.cy + sin(side) * h * 0.4 }
+  const shade = { cx: x.cx - cos(side) * w * 0.48, cy: x.cy - sin(side) * h * 0.48 }
+  const amount = x.time ? lift[x.time] : 0
+  const half = Math.ceil(count / 2)
+  const field = (f: (typeof fields)[number]) => (
+    <ellipse
+      key={f.key}
+      cx={n(f.cx)}
+      cy={n(f.cy)}
+      rx={n(f.rx)}
+      ry={n(f.ry)}
+      transform={`rotate(${n(f.rotate)} ${n(f.cx)} ${n(f.cy)})`}
+      fill={x.url(f.key)}
+    />
+  )
+  return (
+    <>
+      <defs>
+        <Linear
+          x={x}
+          name="base"
+          user
+          to={[x.cx - dx * span, x.cy - dy * span, x.cx + dx * span, x.cy + dy * span]}
+          list={[
+            [0, mix(x.c(0), base, 40)],
+            [0.5, mix(x.c(1), base, 26)],
+            [1, mix(x.c(2), base, 38)],
+          ]}
+        />
+        {fields.map((f) => (
+          <Radial key={f.key} x={x} name={f.key} list={soft(f.color, f.opacity)} />
+        ))}
+        <Radial x={x} name="shade" at={{ cx: shade.cx, cy: shade.cy, r: long * 0.72 }} list={soft(deep, clamp(0.5 - amount * 0.18))} />
+        <Radial x={x} name="light" at={{ cx: light.cx, cy: light.cy, r: long * 0.6 }} list={soft(haze, clamp(0.34 + amount * 0.12))} />
+      </defs>
+      <rect width={n(w)} height={n(h)} fill={x.url("base")} />
+      <g className="mb-artwork-drift" data-drift="1">
+        {fields.slice(0, half).map(field)}
+      </g>
+      <g className="mb-artwork-drift" data-drift="2">
+        {fields.slice(half).map(field)}
+      </g>
+      <rect width={n(w)} height={n(h)} fill={x.url("shade")} />
+      <rect className="mb-artwork-drift" data-drift="3" width={n(w)} height={n(h)} fill={x.url("light")} />
+    </>
+  )
+}
+
+/** A sky at a time of day: bands of color down to a low glow on the horizon, and two hazy ridges. */
+function horizon(x: Ctx) {
+  const { r, w, h, s } = x
+  const time = x.time ?? r.pick(artworkTimes)
+  const line = r.range(0.58, 0.7) * h
+  const sunX = r.range(0.2, 0.8) * w
+  const [h1, h2, h3, h4] = hues
+  const sky: Record<ArtworkTime, string[]> = {
+    dawn: [mix(h4, deep, 42), mix(h1, base, 50), mix(h3, base, 52), mix(h2, haze, 60)],
+    day: [mix(h1, deep, 50), mix(h1, base, 38), mix(h3, base, 28), mix(haze, h2, 80)],
+    dusk: [mix(h4, deep, 60), mix(h1, deep, 52), mix(h3, base, 56), mix(h2, base, 76)],
+    night: [deep, mix(h4, deep, 34), mix(h1, deep, 40), mix(h1, base, 42)],
+  }
+  const suns: Record<ArtworkTime, { y: number; r: number; glow: number; core: number }> = {
+    dawn: { y: line - 0.015 * h, r: 0.09 * s, glow: 0.62, core: 0.75 },
+    day: { y: r.range(0.16, 0.3) * h, r: 0.075 * s, glow: 0.45, core: 0.85 },
+    dusk: { y: line + 0.025 * h, r: 0.11 * s, glow: 0.58, core: 0.65 },
+    night: { y: r.range(0.16, 0.3) * h, r: 0.04 * s, glow: 0.24, core: 0.6 },
+  }
+  const ramp4 = sky[time] as [string, string, string, string]
+  const sun = suns[time]
+  const glow = time === "night" ? haze : mix(h2, haze, 55)
+  const ridges = [0, 1].map((i) => {
+    const top = line + (i === 0 ? 0.008 : 0.085) * h + r.range(-0.01, 0.01) * h
+    const amplitude = r.range(0.012, 0.028) * h * (1 + i * 0.8)
+    const frequency = (r.range(0.6, 1.3) * TAU) / w
+    const phase = r.range(0, TAU)
+    const points: Point[] = Array.from({ length: 10 }, (_, k) => {
+      const px = -0.05 * w + (k / 9) * 1.1 * w
+      return [px, top + amplitude * sin(frequency * px + phase) + amplitude * 0.35 * sin(frequency * 2.3 * px + phase * 1.7)]
+    })
+    const crest = smooth(points, false)
+    return { key: `r${i}`, top, d: `${crest}L${n(1.05 * w)} ${n(h + 2)}L${n(-0.05 * w)} ${n(h + 2)}Z` }
+  })
+  const [far, near] = ridges as [(typeof ridges)[number], (typeof ridges)[number]]
+
+  return (
+    <>
+      <defs>
+        <Linear
+          x={x}
+          name="sky"
+          user
+          to={[0, 0, 0, line]}
+          list={[
+            [0, ramp4[0]],
+            [0.42, ramp4[1]],
+            [0.78, ramp4[2]],
+            [1, ramp4[3]],
+          ]}
+        />
+        <Radial x={x} name="band" list={soft(glow, sun.glow * 0.55)} />
+        <Radial x={x} name="glow" list={soft(glow, sun.glow)} />
+        <Radial
+          x={x}
+          name="sun"
+          list={[
+            [0, mix(haze, h2, 82), sun.core],
+            [0.72, mix(haze, h2, 70), sun.core],
+            [1, mix(haze, h2, 70), 0],
+          ]}
+        />
+        <Linear x={x} name={far.key} user to={[0, far.top - 0.03 * h, 0, h]} list={[[0, mix(ramp4[2], deep, 48), 0.55], [0.12, mix(ramp4[2], deep, 44)], [1, mix(h4, deep, 40)]]} />
+        <Linear x={x} name={near.key} user to={[0, near.top - 0.03 * h, 0, h]} list={[[0, mix(h4, deep, 42), 0.7], [0.1, mix(h4, deep, 40)], [1, deep]]} />
+      </defs>
+      <rect width={n(w)} height={n(h)} fill={x.url("sky")} />
+      <ellipse cx={n(sunX)} cy={n(line)} rx={n(0.85 * w)} ry={n(0.16 * h)} fill={x.url("band")} />
+      <g className="mb-artwork-drift" data-drift="3">
+        <circle cx={n(sunX)} cy={n(sun.y)} r={n(sun.r * 4.6)} fill={x.url("glow")} />
+        <circle cx={n(sunX)} cy={n(sun.y)} r={n(sun.r)} fill={x.url("sun")} />
+      </g>
+      <path d={far.d} fill={x.url(far.key)} opacity={0.88} />
+      <path d={near.d} fill={x.url(near.key)} />
+    </>
+  )
+}
+
+/** Light from a window falling across a wall: a few panes, stretched and slanted, and a faint beam. */
+function windowLight(x: Ctx) {
+  const { r, w, h, s } = x
+  const long = Math.max(w, h)
+  const fromLeft = r.chance(0.5)
+  const slope = r.range(0.3, 0.62) * (fromLeft ? 1 : -1)
+  // A paned window, a pair of tall doors, or light through blinds.
+  const layout = r.pick(["panes", "panes", "doors", "blinds"] as const)
+  const cols = layout === "blinds" ? 1 : layout === "doors" ? 2 : r.int(2, 3)
+  const rows = layout === "blinds" ? r.int(6, 9) : layout === "doors" ? r.int(1, 3) : r.int(2, 3)
+  const bw = Math.min(r.range(0.32, 0.46) * Math.sqrt(w * h) * (layout === "blinds" ? 1.2 : 1), 0.66 * w)
+  const bh = Math.min(bw * r.range(1.1, 1.6) * (layout === "doors" ? 1.25 : 1), 0.66 * h)
+  const bx = r.range(-0.06, 1.06 - bw / w) * w
+  const by = r.range(0.1, 0.26) * h - (slope < 0 ? slope * bw : 0)
+  const gap = layout === "blinds" ? (bh / rows) * r.range(0.3, 0.45) : 0.02 * s
+  const at = (px: number, py: number): Point => [px, py + (px - bx) * slope]
+  let panes = ""
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+      const x0 = bx + (j * bw) / cols + gap / 2
+      const x1 = bx + ((j + 1) * bw) / cols - gap / 2
+      const y0 = by + (i * bh) / rows + gap / 2
+      const y1 = by + ((i + 1) * bh) / rows - gap / 2
+      panes += polygon([at(x0, y0), at(x1, y0), at(x1, y1), at(x0, y1)])
+    }
+  }
+  const near = at(fromLeft ? bx : bx + bw, by)
+  const far = at(fromLeft ? bx + bw : bx, by + bh)
+  const source: Point = [fromLeft ? -0.25 * w : 1.25 * w, -0.3 * h]
+  const beam = polygon([
+    [source[0] - 0.12 * w, source[1]],
+    [source[0] + 0.12 * w, source[1]],
+    at(fromLeft ? bx + bw : bx, by + bh),
+    at(fromLeft ? bx : bx + bw, by),
+  ])
+  const time = x.time ?? "day"
+  const sunlit = time === "day" ? mix(haze, x.c(1), 82) : mix(x.c(1), haze, time === "night" ? 70 : 48)
+  const strength = time === "night" ? 0.55 : time === "dusk" ? 0.8 : 1
+  const floor = r.chance(0.6) ? r.range(0.8, 0.88) * h : null
+  const [cx, cy] = [bx + bw / 2, by + bh / 2 + (bw / 2) * slope]
+  const wall = lift[time] * 8
+
+  return (
+    <>
+      <defs>
+        <Linear
+          x={x}
+          name="wall"
+          to={[fromLeft ? 0 : 1, 0, fromLeft ? 1 : 0, 1]}
+          list={[
+            [0, mix(x.c(0), base, 36 - wall)],
+            [0.6, mix(x.c(2), base, 28)],
+            [1, mix(x.c(3), deep, 44)],
+          ]}
+        />
+        <Linear
+          x={x}
+          name="panes"
+          user
+          to={[near[0], near[1], far[0], far[1]]}
+          list={[
+            [0, sunlit, 0.5 * strength],
+            [0.55, sunlit, 0.26 * strength],
+            [1, sunlit, 0.06 * strength],
+          ]}
+        />
+        <Linear
+          x={x}
+          name="beam"
+          user
+          to={[source[0], source[1], cx, cy]}
+          list={[
+            [0, sunlit, 0],
+            [0.7, sunlit, 0.12 * strength],
+            [1, sunlit, 0.05 * strength],
+          ]}
+        />
+        <Radial x={x} name="shade" at={{ cx: fromLeft ? w * 1.05 : -0.05 * w, cy: h, r: long * 0.85 }} list={soft(deep, 0.55)} />
+        {floor ? <Linear x={x} name="floor" user to={[0, floor, 0, h]} list={[[0, deep, 0], [0.3, deep, 0.24], [1, deep, 0.5]]} /> : null}
+      </defs>
+      <rect width={n(w)} height={n(h)} fill={x.url("wall")} />
+      <rect width={n(w)} height={n(h)} fill={x.url("shade")} />
+      {floor ? <rect y={n(floor)} width={n(w)} height={n(h - floor)} fill={x.url("floor")} /> : null}
+      <Glow x={x} name="spill" cx={cx} cy={cy} r={long * 0.5} color={sunlit} opacity={0.3 * strength} />
+      <g className="mb-artwork-drift" data-drift="3">
+        <path d={beam} fill={x.url("beam")} />
+        <path d={panes} fill={x.url("panes")} stroke={x.url("panes")} strokeOpacity={0.32} strokeWidth={n(0.03 * s)} strokeLinejoin="round" />
+      </g>
+    </>
+  )
+}
+
+/** A camera's view without the place: a dim field, out-of-focus lights, a faint sensor scan and a vignette. */
+function lens(x: Ctx) {
+  const { r, w, h, s } = x
+  const night = x.time === "night"
+  // Infrared at night: the same picture with the color drained out.
+  const tint = (i: number) => (night ? `oklch(from ${x.c(i)} l 0.012 h)` : x.c(i))
+  const dark = night ? "oklch(from var(--mb-artwork-ground) 0.17 0.006 h)" : ground
+  const glare = night ? "oklch(0.92 0 0)" : light
+  const split = r.range(0.42, 0.62)
+  const lamp = { cx: r.range(0.15, 0.85) * w, cy: r.range(0.14, 0.42) * h }
+  const count = r.int(5, 8)
+  const discs = Array.from({ length: count }, (_, i) => {
+    const angle = r.range(0, TAU)
+    const distance = r.range(0.04, 0.62) * s
+    return {
+      key: i,
+      cx: lamp.cx + cos(angle) * distance * (w / s > 1 ? 1.4 : 1),
+      cy: lamp.cy + sin(angle) * distance * 0.7,
+      r: r.range(0.03, 0.09) * s,
+      tone: i % 3,
+      opacity: n(r.range(0.45, 0.95) * 100) / 100,
+    }
+  })
+  return (
+    <>
+      <defs>
+        <Linear
+          x={x}
+          name="field"
+          user
+          to={[0, 0, 0, h]}
+          list={[
+            [0, mix(tint(0), dark, 30)],
+            [split - 0.08, mix(tint(1), dark, 26)],
+            [split + 0.06, mix(tint(2), dark, 16)],
+            [1, mix(tint(2), dark, 8)],
+          ]}
+        />
+        {[0, 1, 2].map((i) => {
+          const color = mix(tint(i + 1), glare, 42)
+          return (
+            <Radial
+              key={i}
+              x={x}
+              name={`d${i}`}
+              list={[
+                [0, color, 0.1],
+                [0.72, color, 0.16],
+                [0.9, color, 0.34],
+                [1, color, 0],
+              ]}
+            />
+          )
+        })}
+        <pattern id={x.id("scan")} width={n(w)} height={0.8} patternUnits="userSpaceOnUse">
+          <rect width={n(w)} height={0.3} fill="black" fillOpacity={0.1} />
+        </pattern>
+        <radialGradient id={x.id("vignette")} cx="50%" cy="50%" r="75%">
+          {stops([
+            [0.42, "black", 0],
+            [0.78, "black", 0.32],
+            [1, "black", 0.66],
+          ])}
+        </radialGradient>
+      </defs>
+      <rect width={n(w)} height={n(h)} fill={x.url("field")} />
+      <Glow x={x} name="lamp" cx={lamp.cx} cy={lamp.cy} r={0.6 * s} color={mix(glare, tint(3), 55)} opacity={0.3} />
+      <g className="mb-artwork-drift" data-drift="2">
+        {discs.map((d) => (
+          <circle key={d.key} cx={n(d.cx)} cy={n(d.cy)} r={n(d.r)} fill={x.url(`d${d.tone}`)} opacity={d.opacity} />
+        ))}
+      </g>
+      <rect width={n(w)} height={n(h)} fill={x.url("scan")} />
+      <rect width={n(w)} height={n(h)} fill={x.url("vignette")} />
+    </>
+  )
+}
+
 const painters: Record<ArtworkVariant, (x: Ctx) => React.ReactNode> = {
   aurora,
   bloom,
@@ -1118,6 +1471,10 @@ const painters: Record<ArtworkVariant, (x: Ctx) => React.ReactNode> = {
   topo,
   grain: grainVariant,
   mosaic,
+  wash,
+  horizon,
+  window: windowLight,
+  lens,
 }
 
 function Finish({ x, finish, grain, noiseSeed }: { x: Ctx; finish: ArtworkFinish; grain: number; noiseSeed: number }) {
@@ -1154,14 +1511,19 @@ function Finish({ x, finish, grain, noiseSeed }: { x: Ctx; finish: ArtworkFinish
   )
 }
 
-const autoPalettes = artworkPalettes.filter((name) => name !== "mono" && name !== "accent")
+// `auto` picks among the cover variants and palettes only, so adding backgrounds didn't change any seed's picture.
+const coverVariants = artworkVariants.filter((name) => !(artworkBackgrounds as readonly string[]).includes(name))
+const autoPalettes: ArtworkPalette[] = ["sunset", "ocean", "forest", "berry", "citrus", "dusk", "ember", "glacier", "candy"]
+const timePalettes: Record<ArtworkTime, ArtworkPalette> = { dawn: "dawn", day: "sky", dusk: "dusk", night: "night" }
 
 function resolveVariant(seed: string, variant: ArtworkVariant | "auto"): ArtworkVariant {
-  return variant === "auto" ? (artworkVariants[hash(`${seed}#variant`) % artworkVariants.length] as ArtworkVariant) : variant
+  return variant === "auto" ? (coverVariants[hash(`${seed}#variant`) % coverVariants.length] as ArtworkVariant) : variant
 }
 
-function resolvePalette(seed: string, palette: ArtworkPalette | "auto"): ArtworkPalette {
-  return palette === "auto" ? (autoPalettes[hash(`${seed}#palette`) % autoPalettes.length] as ArtworkPalette) : palette
+function resolvePalette(seed: string, palette: ArtworkPalette | "auto", time?: ArtworkTime): ArtworkPalette {
+  if (palette !== "auto") return palette
+  if (time) return timePalettes[time]
+  return autoPalettes[hash(`${seed}#palette`) % autoPalettes.length] as ArtworkPalette
 }
 
 function length(value: number | string) {
@@ -1183,9 +1545,11 @@ function renderArtwork({
   radius,
   aspect = 1,
   size,
-  finish = "gloss",
+  finish: finishProp,
   animated = false,
   title,
+  time,
+  dim,
   id,
   className,
   style,
@@ -1197,7 +1561,10 @@ function renderArtwork({
   const key = String(seed)
   const kind = resolveVariant(key, variant)
   const custom = colors && colors.length > 0 ? colors : undefined
-  const paletteName = custom ? "custom" : resolvePalette(key, palette)
+  const paletteName = custom ? "custom" : resolvePalette(key, palette, time)
+  const background = (artworkBackgrounds as readonly string[]).includes(kind)
+  const finish = finishProp ?? (background ? "flat" : "gloss")
+  const veil = dim !== undefined && Number.isFinite(dim) ? clamp(dim) : 0
   const ratio = Number.isFinite(aspect) && aspect > 0 ? aspect : 1
   const w = ratio >= 1 ? 100 * ratio : 100
   const h = ratio >= 1 ? 100 : 100 / ratio
@@ -1215,11 +1582,13 @@ function renderArtwork({
     id: (name) => `${prefix}-${name}`,
     url: (name) => `url(#${prefix}-${name})`,
     c: (i) => `var(--mb-artwork-${order[((i % 4) + 4) % 4]})`,
+    time,
   }
 
   const vars: Record<string, string> = { "--mb-artwork-aspect": String(Math.round(ratio * 10000) / 10000) }
   if (size !== undefined) vars["--mb-artwork-size"] = length(size)
   if (radius !== undefined) vars["--mb-artwork-radius"] = length(radius)
+  if (veil > 0) vars["--mb-artwork-dim"] = String(Math.round(veil * 1000) / 1000)
   if (custom) {
     for (let i = 0; i < 4; i++) vars[`--mb-artwork-${i + 1}`] = custom[i % Math.min(custom.length, 4)] as string
     if (custom[4]) vars["--mb-artwork-ground"] = custom[4]
@@ -1236,6 +1605,8 @@ function renderArtwork({
       data-palette={paletteName}
       data-shape={radius === undefined ? shape : undefined}
       data-finish={finish}
+      data-time={time}
+      data-dim={veil > 0 ? "" : undefined}
       data-animated={animated ? "" : undefined}
       className={join("mb-artwork", className)}
       style={{ ...(vars as React.CSSProperties), ...style }}
@@ -1256,5 +1627,5 @@ function renderArtwork({
   )
 }
 
-export { Artwork, artworkPalettes, artworkVariants, renderArtwork }
-export type { ArtworkFinish, ArtworkPalette, ArtworkProps, ArtworkShape, ArtworkVariant }
+export { Artwork, artworkBackgrounds, artworkPalettes, artworkTimes, artworkVariants, renderArtwork }
+export type { ArtworkFinish, ArtworkPalette, ArtworkProps, ArtworkShape, ArtworkTime, ArtworkVariant }

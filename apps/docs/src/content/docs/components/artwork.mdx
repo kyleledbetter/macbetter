@@ -1,17 +1,19 @@
 export const metadata = {
   title: "Artwork",
-  description: "Abstract pictures drawn from a seed, for covers, headers and placeholders.",
+  description: "Abstract pictures drawn from a seed, for covers, headers, placeholders and backgrounds.",
 }
 
 # Artwork
 
-<Lead>Draw an abstract picture from a seed, for album covers, card headers and placeholders.</Lead>
+<Lead>Draw an abstract picture from a seed, for album covers, card headers, placeholders and the backgrounds behind a screen.</Lead>
 
 <Demo name="artwork/basic" />
 
 ## When to use it
 
 Use artwork where a picture helps people tell things apart but you don't have one: playlists, albums and podcasts without cover art, a featured story, a workspace or a project. The same seed always draws the same picture, so an item keeps its cover everywhere it appears.
+
+Use the background variants behind an interface, the way the Home app sets a wallpaper for each home and room: soft color that gives a screen its own mood without competing with the tiles and text on it.
 
 - Seed it with something stable, like an id or a title, so the picture doesn't change between visits.
 - Pick one or two variants for a collection and let the seed vary them. A shelf where every cover is a different style looks random.
@@ -27,7 +29,7 @@ Pass a `seed`. The picture is an inline SVG that fills its container's width, at
 
 ### Variants
 
-Twelve styles. Each uses the seed for its composition (where the shapes go, how many, how big) as well as for the order of its colors. Leave `variant` out, or pass `auto`, to let the seed pick one.
+Twelve styles for covers, and four for backgrounds (below). Each uses the seed for its composition (where the shapes go, how many, how big) as well as for the order of its colors. Leave `variant` out, or pass `auto`, to let the seed pick one of the cover styles.
 
 <Demo name="artwork/gallery" />
 
@@ -86,6 +88,43 @@ At small sizes, the `app` shape works as an icon for things that aren't people: 
 
 <Demo name="artwork/tiles" />
 
+### Backgrounds
+
+Four variants are made to sit behind an interface rather than to be looked at. They're soft and low in contrast, they're drawn flat (no gloss) unless you pass a `finish`, and they keep their shapes large at any size, from a 160-point tile to a full window. `artworkBackgrounds` lists them.
+
+<Demo name="artwork/backgrounds" />
+
+| Variant | What it draws |
+| --- | --- |
+| `wash` | Large soft fields of color drifting between two or three hues, like a blurred wallpaper. Use it for a home or most rooms. |
+| `horizon` | A sky at a time of day: bands of color down to a low glow on the horizon, and two hazy ridges. |
+| `window` | Light from a window falling across a wall: a few slanted panes, a pair of tall doors, or light through blinds. |
+| `lens` | A dim, vignetted field with out-of-focus lights and a faint scan. It stands in for a camera's picture without showing a place, and it stays dark in light mode, like video. |
+
+The backgrounds paint with three colors derived from the palette, `--mb-artwork-base`, `--mb-artwork-deep` and `--mb-artwork-haze`. They're pale in light mode and deep in dark mode, so text in the label color reads on them in either scheme.
+
+### Time of day
+
+`time` sets the light: `dawn`, `day`, `dusk` or `night`. `horizon` uses it to place its sun and color its sky; `wash` and `window` get brighter by day and deeper at night; `lens` drains its color at night, like a camera's infrared picture. Without a `palette`, `time` also picks one: `dawn`, `sky`, `dusk` or `night`.
+
+<Demo name="artwork/times" />
+
+### Room palettes
+
+Six palettes are calmer than the cover palettes and suit rooms and times of day: `dawn`, `sky`, `night`, `amber` (a warm kitchen), `water` (a bathroom) and `slate` (a garage or workshop). `dusk` suits a living room and `forest` a garden. Like the others, they're built from system colors, so they follow your theme.
+
+<Demo name="artwork/room-palettes" />
+
+### Text over a background
+
+A background exists to be read over, so keep it quiet. `dim`, from 0 to 1, lays a veil of the page's background color over the art: it pales the art in light mode and deepens it in dark mode, and it's a third stronger in light mode, where gray secondary text sits on pastels. Around `0.35` keeps the art's color and lets titles, secondary text and translucent tiles pass 4.5:1. Raise it rather than reaching for a gray palette: the art should recede, not lose its color.
+
+<Demo name="artwork/background-text" />
+
+- Put text in the label colors (`--mb-label`, `--mb-label-secondary`) directly on the art. Don't use the `children` overlay for this: it's white text on a dark scrim, for covers and card headers.
+- Check contrast over the lightest and the darkest part of your composition, in both schemes.
+- A background that fills a screen should stay still while the content scrolls over it. For a home app, `HomeBackdrop` does this and sets the dim for you.
+
 ### Motion
 
 `animated` makes a few layers drift slowly. Use it for one large picture at a time, like a Now Playing screen; it's off by default because every frame repaints the SVG. The drift stops under Reduce Motion.
@@ -101,6 +140,7 @@ Artwork looks the same on every platform: its size follows the layout, not the p
 - By default artwork is decorative: the SVG is hidden from assistive technology, because the title next to it already names the item.
 - Pass `title` (or `aria-label`) when the picture stands alone. The SVG becomes an image with that name, and `title` also shows as a tooltip.
 - Text you lay over the art is real text, read in order. The scrim behind it keeps white text above 4.5:1 on most compositions; check yours if you use a pale palette like `candy`.
+- A background is decorative too. Text over it needs 4.5:1 and control edges 3:1; raise `dim` until they pass over the lightest and darkest parts of the art.
 - `animated` respects Reduce Motion.
 - Gradient and filter ids are unique to each instance, so any number of pictures can share a page, including ones with the same seed.
 
@@ -111,21 +151,23 @@ Artwork looks the same on every platform: its size follows the layout, not the p
 <PropsTable
   rows={[
     { name: "seed", type: "string | number", description: "Same seed, same picture, on the server and in the browser." },
-    { name: "variant", type: '"aurora" | "bloom" | "orbit" | "strata" | "prism" | "halftone" | "rays" | "glyph" | "ribbon" | "topo" | "grain" | "mosaic" | "auto"', default: '"auto"', description: "The style. `auto` picks one from the seed." },
-    { name: "palette", type: '"accent" | "sunset" | "ocean" | "forest" | "berry" | "citrus" | "dusk" | "ember" | "glacier" | "candy" | "mono" | "auto"', default: '"auto"', description: "System colors to paint with. `auto` picks one from the seed." },
+    { name: "variant", type: '"aurora" | "bloom" | "orbit" | "strata" | "prism" | "halftone" | "rays" | "glyph" | "ribbon" | "topo" | "grain" | "mosaic" | "wash" | "horizon" | "window" | "lens" | "auto"', default: '"auto"', description: "The style. `auto` picks a cover style from the seed, never a background." },
+    { name: "palette", type: '"accent" | "sunset" | "ocean" | "forest" | "berry" | "citrus" | "dusk" | "ember" | "glacier" | "candy" | "mono" | "dawn" | "sky" | "night" | "amber" | "water" | "slate" | "auto"', default: '"auto"', description: "System colors to paint with. `auto` picks the time's palette when `time` is set, or a cover palette from the seed." },
+    { name: "time", type: '"dawn" | "day" | "dusk" | "night"', description: "The light in a background. Picks the palette when none is given." },
+    { name: "dim", type: "number", default: "0", description: "From 0 to 1: how far the art recedes behind content, under a veil of the page's background color." },
     { name: "colors", type: "string[]", description: "Your own CSS colors: up to four hues, then an optional ground. Replaces `palette`." },
     { name: "shape", type: '"square" | "rounded" | "circle" | "app"', default: '"rounded"', description: "The corners." },
     { name: "radius", type: "number | string", description: "A corner radius in pixels or any CSS length. Replaces `shape`." },
     { name: "aspect", type: "number", default: "1", description: "Width over height, like `16 / 9`. The composition is drawn for it." },
     { name: "size", type: "number | string", description: "The width, in pixels or any CSS length. Without it, the art fills its container's width." },
-    { name: "finish", type: '"flat" | "gloss" | "grain"', default: '"gloss"', description: "A top light and vignette, plus film grain with `grain`." },
+    { name: "finish", type: '"flat" | "gloss" | "grain"', default: '"gloss", or "flat" for backgrounds', description: "A top light and vignette, plus film grain with `grain`." },
     { name: "animated", type: "boolean", default: "false", description: "A slow drift of a few layers. Stops under Reduce Motion." },
     { name: "title", type: "string", description: "Names the picture and makes it an image. Without it or `aria-label`, it's decorative." },
     { name: "children", type: "ReactNode", description: "Text laid over the bottom of the picture." },
   ]}
 />
 
-Every other prop goes to the outer `span`. `artworkVariants` and `artworkPalettes` list the names, for building pickers.
+Every other prop goes to the outer `span`. `artworkVariants`, `artworkBackgrounds`, `artworkPalettes` and `artworkTimes` list the names, for building pickers.
 
 ### Data attributes and CSS variables
 
@@ -133,6 +175,9 @@ Every other prop goes to the outer `span`. `artworkVariants` and `artworkPalette
 | --- | --- | --- |
 | `data-variant`, `data-palette`, `data-shape`, `data-finish` | `.mb-artwork` | The resolved props, after `auto`. `data-palette` is `custom` with `colors`. |
 | `data-animated` | `.mb-artwork` | Present when `animated` is on. |
+| `data-time`, `data-dim` | `.mb-artwork` | The time, and present when `dim` is above 0. |
+| `--mb-artwork-dim` | `.mb-artwork` | The veil's strength, from `dim`. |
+| `--mb-artwork-base`, `--mb-artwork-deep`, `--mb-artwork-haze` | `.mb-artwork` | The scheme-aware field, shade and light the background variants paint with. |
 | `--mb-artwork-1` … `--mb-artwork-4` | `.mb-artwork` | The hues. Set them in CSS to make a palette of your own. |
 | `--mb-artwork-ground` | `.mb-artwork` | The deep base most variants are painted on. |
 | `--mb-artwork-light` | `.mb-artwork` | Highlights, glows and suns. |

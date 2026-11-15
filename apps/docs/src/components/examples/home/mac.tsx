@@ -1,6 +1,7 @@
 "use client"
 
 import { Button } from "macbetter/button"
+import { HomeBackdrop } from "macbetter/home-backdrop"
 import { Dialog, DialogBody, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "macbetter/dialog"
 import {
   Menu,
@@ -29,7 +30,7 @@ import { MacFrame } from "../shell"
 import { AutomationEditor, AutomationList } from "./automation"
 import { homes, type RoomId } from "./data"
 import { addAutomation, categories, roomSummary, rooms, setHome, useHome } from "./store"
-import { HomeOverview, OpenerContext, RoomView } from "./views"
+import { HomeOverview, OpenerContext, RoomView, wallpaperFor } from "./views"
 
 const roomIcons: Record<RoomId, React.ReactNode> = {
   kitchen: <CookingPot weight="fill" />,
@@ -148,16 +149,21 @@ function MacHome() {
               </Menu>
             </Toolbar>
           </WindowTitlebar>
-          <WindowBody className="ex-home-mac-body ex-home-wallpaper">
-            {place.kind === "home" ? (
-              <HomeOverview onRoom={(room) => setPlace({ kind: "room", room })} />
-            ) : place.kind === "room" ? (
-              <RoomView room={place.room} />
-            ) : (
-              <div className="ex-home-mac-automation">
-                <AutomationList onOpen={setEditing} />
+          <WindowBody className="ex-home-mac-body">
+            <HomeBackdrop className="ex-home-mac-backdrop" aspect={1.45} {...wallpaperFor(homeId, place.kind === "room" ? place.room : null)}>
+              {/* Keyed by place, so each screen opens at its top. The wallpaper stays put while this scrolls. */}
+              <div key={place.kind === "room" ? place.room : place.kind} className="ex-home-mac-scroll">
+                {place.kind === "home" ? (
+                  <HomeOverview onRoom={(room) => setPlace({ kind: "room", room })} />
+                ) : place.kind === "room" ? (
+                  <RoomView room={place.room} />
+                ) : (
+                  <div className="ex-home-mac-automation">
+                    <AutomationList onOpen={setEditing} />
+                  </div>
+                )}
               </div>
-            )}
+            </HomeBackdrop>
           </WindowBody>
         </Window>
         <Dialog open={editing !== null} onOpenChange={(open) => !open && setEditing(null)}>

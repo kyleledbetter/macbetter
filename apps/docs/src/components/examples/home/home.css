@@ -1,24 +1,10 @@
-/* Home example. The components bring their own look; this lays them out on a room wallpaper. */
+/* Home example. The components bring their own look; this lays them out over each home's and room's wallpaper. */
 
-/* The Home app sets a blurred wallpaper behind everything; translucent tiles read against it. */
-.ex-home-wallpaper,
-.ex-app-root.ex-home-wallpaper {
-  background-color: var(--mb-bg);
-  background-image:
-    radial-gradient(120% 70% at 10% 0%, light-dark(color-mix(in oklch, var(--mb-orange) 34%, transparent), color-mix(in oklch, var(--mb-orange) 30%, transparent)), transparent 70%),
-    radial-gradient(90% 60% at 100% 35%, light-dark(color-mix(in oklch, var(--mb-teal) 26%, transparent), color-mix(in oklch, var(--mb-indigo) 34%, transparent)), transparent 70%),
-    radial-gradient(110% 70% at 30% 100%, light-dark(color-mix(in oklch, var(--mb-pink) 20%, transparent), color-mix(in oklch, var(--mb-purple) 26%, transparent)), transparent 70%),
-    linear-gradient(light-dark(color-mix(in oklch, var(--mb-yellow) 10%, var(--mb-bg)), color-mix(in oklch, black 30%, var(--mb-bg))), light-dark(var(--mb-bg-secondary), var(--mb-bg)));
-  background-attachment: local, local, local, local;
-}
+/* The wallpaper is a HomeBackdrop (Artwork) per home and room; translucent tiles read against it. */
 
 .ex-home-phone .mb-tab-bar,
 .ex-home-phone .mb-tab-bar-panel {
   background-color: transparent;
-}
-
-.ex-app-root.ex-home-phone {
-  background-attachment: scroll;
 }
 
 .ex-home-stack {
@@ -306,6 +292,19 @@
 }
 
 .ex-home-mac-body {
+  overflow: hidden;
+}
+
+.ex-home-mac-backdrop {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.ex-home-mac-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
   overflow-y: auto;
 }
 

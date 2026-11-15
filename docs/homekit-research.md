@@ -209,6 +209,26 @@ Mac layout: a sidebar with Home, rooms, Automation and Discover ("Click Automati
 
 Marketing page (https://www.apple.com/home-app/): "Categories like Lights, Security, and Climate are at the top of the Home tab"; "Rooms and Favorite Accessories are grouped in the Home tab"; Apple HomeView, Apple Home Collection, robot vacuums, Adaptive Temperature, home key.
 
+## 3a. Wallpapers and camera pictures (researched 2026-11-15)
+
+What Apple documents:
+
+- **Room wallpaper, Mac.** "Add rooms to Home on Mac" (https://support.apple.com/guide/home/hmeeae4b952e/mac, Home User Guide for macOS 27): "Name the room and choose a wallpaper or photo to identify the room." "Tip: You can also drag and drop an image, such as a JPG or TIFF file, onto a room as wallpaper." Edit Room: "Change the room name, zone, or wallpaper."
+- **Room wallpaper, iPhone.** The iPhone User Guide's rooms page says you can change a room's name and wallpaper from Room Settings (seen in search-result excerpts of support.apple.com/guide/iphone/iph3c00de6c5; the plain fetch returned only the guide's table of contents).
+- **Cameras.** "Set up security cameras in Home on iPhone" (https://support.apple.com/guide/iphone/iph7bc5df9d9/ios): "By default, up to four cameras are marked as favorites and appear on the Home tab"; tap the camera tile for its options; notifications when a camera "detects activity, changes status, or goes offline." "Intro to Home on iPhone" (https://support.apple.com/guide/iphone/iph22d98bbca/ios): "Video from up to four cameras can appear below Cameras." Apple doesn't describe how a camera tile looks before its video loads or when it's offline.
+
+From third-party coverage (not Apple):
+
+- **Home wallpaper** is set in Home Settings → Home Wallpaper on iPhone and iPad (iDownloadBlog, https://www.idownloadblog.com/?p=779240; MacSurfer, "How to change your Apple Home app wallpaper to match your style"), and on Mac with Edit → Edit Home. You can take a photo, choose one from Photos, or pick one of the built-in gradient wallpapers (iDownloadBlog; iMore, https://www.imore.com/how-change-your-home-wallpaper-home-app). Homepaper, a third-party app, exists to make custom Home wallpapers (MacStories, https://www.macstories.net/reviews/homepaper-a-handy-utility-for-creating-beautiful-home-app-wallpapers/), which suggests the built-in set is small.
+- I found no coverage of iOS 26 or 27 changing the Home app's wallpapers or camera tiles. iOS 26's Liquid Glass coverage (MacRumors, https://www.macrumors.com/guide/ios-26-liquid-glass/) describes translucent controls that take their tint from what's behind them, which matches tiles floating over a wallpaper.
+
+**(inferred)** from familiarity with the app, not documented:
+
+- The built-in wallpapers are soft, blurred, abstract color gradients (warm dawn and dusk tones, deep blues and greens). The Home tab uses the home's wallpaper and a room screen its room's; tiles and category buttons sit on translucent fills over it, and the wallpaper is blurred and dimmed further as content scrolls over it.
+- A camera tile shows the camera's most recent still, darkened while it connects, and a dimmed, blurred picture with a message when the camera isn't available.
+
+What macbetter does with this: abstract wallpapers drawn by Artwork's background variants (`wash`, `horizon`, `window`) in room and time-of-day palettes, one per home and room in the example, dimmed toward the page's background so text in the label colors passes 4.5:1; or the caller's own image. Camera views show the caller's video or still, or an abstract `lens` placeholder that doesn't depict a place. None of Apple's wallpaper images are copied or imitated.
+
 ## 4. Branding and licensed marks
 
 - **Works with Apple Home badge** (https://developer.apple.com/apple-home/works-with-apple-home/): for Matter-certified accessories (and MFi HomeKit accessories) after CSA certification and a request form; use requires agreeing to the "Works with Apple Home Artwork License Agreement". "Don't alter the artwork in any way." Don't place it on the accessory; don't use it for an app on its own; "Don't create graphics, logotypes, or graphic renderings to represent Apple Home."
@@ -222,6 +242,7 @@ Marketing page (https://www.apple.com/home-app/): "Categories like Lights, Secur
 - Status uses words and icons as well as color ("3 on", "Locked", "No Response", "Leak Detected").
 - The lock and garage door components ask for confirmation, reflecting the Controls HIG's "Require authentication for actions that affect security".
 - The camera view draws nothing over the image except small corner badges; the microphone button is optional.
+- Each home and room has its own wallpaper, drawn abstractly or taken from the caller's image, and dimmed so tiles and text stay readable over it.
 - Color temperature is stored and exposed in mireds with kelvin labels; hue 0–360, saturation and brightness 0–100; temperatures in °C with °F display conversion.
 - An energy readout is limited to a grid-forecast bar strip and a usage figure, because Apple says the Home app shows EnergyKit analytics itself.
 

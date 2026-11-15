@@ -20,6 +20,12 @@ They are UI components only. A web page can't talk to HomeKit or to accessories,
 
 macbetter is not made or endorsed by Apple, and it doesn't use HomeKit or Matter.
 
+## Wallpapers and pictures
+
+The Home app sets a wallpaper for each home and each room, chosen from built-in gradients or a person's own photo, and the Home tab and room screens take their mood from it. Tiles and status buttons float over it on translucent fills.
+
+macbetter draws abstract wallpapers with [Artwork](/docs/components/artwork#backgrounds): soft color fields, a sky at a time of day, or window light on a wall, seeded by the home's or room's name. [`HomeBackdrop`](/docs/home/home-section#a-wallpaper-behind-the-home-tab-or-a-room) puts one behind a screen and dims it so text and tiles stay readable, or shows your own image instead. Camera views show your app's video or snapshot; without one they show an abstract placeholder. Nothing on these pages is a real camera feed or a picture of a real home.
+
 ## Apple's vocabulary
 
 The Human Interface Guidelines ask apps to use HomeKit's object model and words, so that people can control the same things by voice. The component names follow the words people see, not the API's.
@@ -51,7 +57,7 @@ The Human Interface Guidelines ask apps to use HomeKit's object model and words,
 | [Accessory Tile](/docs/home/accessory-tile) | One accessory in a grid. The icon turns it on or off; the name opens its controls. | Any user-interactive service | Power state, plus a status summary |
 | [Scene Tile](/docs/home/scene-tile) | Running a scene. | — | `HMActionSet` |
 | [Home Status](/docs/home/home-status) | Category buttons under the home name, like "Lights 3 on". | Grouped by category | Summaries |
-| [Home Section](/docs/home/home-section) | A room or a section heading with a summary. | — | `HMRoom` |
+| [Home Section](/docs/home/home-section) | A room or a section heading with a summary, and `HomeBackdrop` for a home's or room's wallpaper. | — | `HMRoom` |
 | [Level Control](/docs/home/level-control) | Brightness, shade position, fan speed, speaker volume. | Lightbulb, window covering, fan, speaker | Brightness, target position, rotation speed, volume (all 0–100%) |
 | [Light Color Picker](/docs/home/light-color-picker) | Light color and color temperature. | Lightbulb | Hue (0–360°), saturation (%), color temperature (mireds) |
 | [Thermostat Control](/docs/home/thermostat-control) | Target temperature and mode. | Thermostat, heater cooler | Current and target temperature (°C), heating and cooling thresholds, target and current heating cooling state, temperature units |
@@ -84,6 +90,6 @@ A fan is a Level Control with steps and a switch or a segmented control for dire
 
 - **Apple's marks.** The HomeKit icon, the Apple Home app icon and the "Works with Apple Home" badge are Apple's, licensed to accessory makers through the MFi Program and the Works with Apple Home artwork license. Apple asks that nobody draw imitations of them. macbetter doesn't include them, and the setup screens here use a plain code and frame.
 - **Connectivity.** Nothing here discovers, pairs with or controls an accessory.
-- **Video.** Camera View draws a local placeholder scene. Pass your own `<video>` or image when you have a stream.
+- **Video and photos.** Camera View shows an abstract placeholder until you pass your own `<video>` or image. The wallpapers are drawn, not photographs, and none of them copies Apple's.
 
 The research behind this set, with every Apple source and what it said, is in [docs/homekit-research.md](https://github.com/kyleledbetter/macbetter/blob/main/docs/homekit-research.md).

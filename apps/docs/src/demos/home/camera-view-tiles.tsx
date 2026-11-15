@@ -1,14 +1,9 @@
 "use client"
 
-import { CameraScene, CameraTile } from "macbetter/camera-view"
+import { CameraTile } from "macbetter/camera-view"
 import { useState } from "react"
 
-const cameras = [
-  { name: "Front door", variant: "porch" as const },
-  { name: "Driveway", variant: "driveway" as const },
-  { name: "Kitchen", variant: "kitchen" as const },
-  { name: "Backyard", variant: "backyard" as const },
-]
+const cameras = ["Front door", "Driveway", "Kitchen", "Backyard"]
 
 export default function Example() {
   const [open, setOpen] = useState<string | null>(null)
@@ -16,10 +11,8 @@ export default function Example() {
   return (
     <div style={{ display: "grid", gap: 10, width: "min(100%, 560px)" }}>
       <div role="group" aria-label="Cameras" style={{ display: "flex", gap: 10, overflowX: "auto", paddingBlock: 4 }}>
-        {cameras.map((camera) => (
-          <CameraTile key={camera.name} name={camera.name} live onClick={() => setOpen(camera.name)}>
-            <CameraScene variant={camera.variant} />
-          </CameraTile>
+        {cameras.map((name) => (
+          <CameraTile key={name} name={name} live timestamp="9:41 AM" onClick={() => setOpen(name)} />
         ))}
       </div>
       <p style={{ margin: 0, fontSize: 13, opacity: 0.7 }} aria-live="polite">

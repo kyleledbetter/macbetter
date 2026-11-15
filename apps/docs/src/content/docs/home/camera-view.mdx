@@ -18,10 +18,12 @@ The Home app plays live video as soon as a camera opens, offers Live to return f
 ## Usage
 
 ```tsx
-import { CameraScene, CameraTile, CameraView } from "macbetter/camera-view"
+import { CameraTile, CameraView } from "macbetter/camera-view"
 ```
 
-Put the picture inside as `children`: a `<video>` element fed by your app, an `<img>` of the snapshot, or a `CameraScene`. `CameraScene` draws a porch, a driveway, a kitchen or a backyard locally, so a page can show a camera without any video or photos. A web page can't open a HomeKit camera stream; a native app or your own camera service provides the picture.
+Put the picture inside as `children`: a `<video>` element fed by your app, an `<img>` of the latest snapshot, or any other element. A web page can't open a HomeKit camera stream; a native app or your own camera service provides the picture.
+
+Leave `children` out and the view shows a placeholder: Artwork's `lens` variant, a dim, out-of-focus field seeded by the camera's name and room, so each camera keeps the same one. It doesn't depict a place and it isn't a camera feed; nothing on these pages is.
 
 ### States
 
@@ -30,7 +32,7 @@ Put the picture inside as `children`: a `<video>` element fed by your app, an `<
 - `connecting`: the picture dims and a spinner sits in the corner.
 - `offline`: the picture blurs and the view says "Camera not available".
 
-`CameraScene time="night"` draws the gray infrared picture a camera switches to in the dark.
+To show the gray infrared picture a camera switches to in the dark, pass `<Artwork variant="lens" time="night" />` as the picture.
 
 <Demo name="home/camera-view-states" platforms={["ios", "ipados", "macos"]} />
 
@@ -48,7 +50,7 @@ Put the picture inside as `children`: a `<video>` element fed by your app, an `<
 
 ## Accessibility
 
-- The view is a `figure`. Give it an `aria-label` if the picture needs describing; `CameraScene` is decorative and hidden from assistive tech.
+- The view is a `figure`. Give it an `aria-label` if the picture needs describing; the placeholder is decorative and hidden from assistive tech.
 - The Live badge shows the word as well as the red dot.
 - A camera tile is a button named by its camera's name.
 - Every control you put in `controls` needs a name, like "Mute" or "Talk".
@@ -65,23 +67,25 @@ Put the picture inside as `children`: a `<video>` element fed by your app, an `<
     { name: "controls", type: "ReactNode", description: "CameraView only: buttons along the bottom edge." },
     { name: "offlineLabel", type: "string", default: '"Camera not available"', description: "The offline message." },
     { name: "liveLabel", type: "string", default: '"Live"', description: "The badge's word." },
-    { name: "children", type: "ReactNode", description: "The picture. Defaults to a drawn porch." },
+    { name: "children", type: "ReactNode", description: "The picture: a video, an image or any element. Without it, an abstract placeholder seeded by `name`." },
   ]}
 />
 
-### CameraScene
+### CameraScene (deprecated)
+
+`CameraScene` used to draw a porch, a driveway, a kitchen or a backyard. It's kept so existing code still renders, but it now draws the same abstract `lens` placeholder, seeded by its `variant` name. Leave `children` out instead, or pass `<Artwork variant="lens" />` with your own seed.
 
 <PropsTable
   rows={[
-    { name: "variant", type: '"porch" | "driveway" | "kitchen" | "backyard"', default: '"porch"', description: "What the drawing shows." },
-    { name: "time", type: '"day" | "night"', default: '"day"', description: "night is the gray infrared look." },
+    { name: "variant", type: '"porch" | "driveway" | "kitchen" | "backyard"', default: '"porch"', description: "Seeds the placeholder and picks its palette." },
+    { name: "time", type: '"day" | "night"', default: '"day"', description: "night drains the color, like an infrared picture." },
   ]}
 />
 
 | Attribute | On | Values |
 | --- | --- | --- |
 | `data-state` | `.mb-camera-view` | The state |
-| `data-variant`, `data-time` | `.mb-camera-scene` | As the props |
+| `data-variant="lens"` | `.mb-camera-view-placeholder`, `.mb-camera-scene` | The placeholder's Artwork |
 
 | Variable | What it sets |
 | --- | --- |

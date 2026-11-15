@@ -23,6 +23,12 @@ import { SceneRow, SceneTile } from "macbetter/scene-tile"
 
 Put tiles in a `SceneRow` and name the row. `SceneTile` is a button: run the scene from `onClick`.
 
+### Art for a scene's mood
+
+Pass `background` to lay art behind the tile, like a dawn wash for Good Morning or a night sky for Good Night. The tile's own fill becomes a veil over the art, so the name reads as it does on a plain tile, and an active tile stays bright with the art as a faint tint. Use Artwork's `wash` variant at `aspect={3}`: at this size `horizon` and `window` turn into stripes. The Home app's scene tiles are plain, so keep them plain when the row already sits on a busy wallpaper.
+
+<Demo name="home/scene-tile-art" platforms={["ios", "ipados", "macos"]} />
+
 ## Platform behavior
 
 - **iOS.** The row shows two tiles abreast and scrolls sideways, snapping to each tile. Tiles give on press.
@@ -34,6 +40,7 @@ Put tiles in a `SceneRow` and name the row. `SceneTile` is a button: run the sce
 - Each tile is a button named by the scene. An active tile adds "On" to its name for assistive tech.
 - A running tile sets `aria-busy` and shows a spinner in place of its icon.
 - The row is a group; give it `aria-label="Scenes"`.
+- Art passed as `background` is hidden from assistive tech. Under Increase Contrast the tile drops it and shows its plain fill.
 
 ## API
 
@@ -45,6 +52,7 @@ Put tiles in a `SceneRow` and name the row. `SceneTile` is a button: run the sce
     { name: "running", type: "boolean", default: "false", description: "The scene's accessories are still changing." },
     { name: "size", type: '"sm" | "md"', default: '"md"', description: "md is the Home tab's tile; sm is a shorter one for dense lists." },
     { name: "activeLabel", type: "string", default: '"On"', description: "What assistive tech hears for active, in the page's language." },
+    { name: "background", type: "ReactNode", description: "Decorative art behind the tile, usually an Artwork. Hidden under Increase Contrast." },
   ]}
 />
 
@@ -53,7 +61,7 @@ Put tiles in a `SceneRow` and name the row. `SceneTile` is a button: run the sce
 | Attribute | Values |
 | --- | --- |
 | `data-size` | `sm`, `md` |
-| `data-active`, `data-running` | Present when set |
+| `data-active`, `data-running`, `data-background` | Present when set |
 
 | Variable | What it sets |
 | --- | --- |

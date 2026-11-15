@@ -16,6 +16,21 @@
   --mb-artwork-light: color-mix(in oklch, var(--mb-artwork-1) 16%, white);
   --mb-artwork-paper: color-mix(in oklch, var(--mb-artwork-4) 5%, color-mix(in oklch, var(--mb-yellow) 9%, white));
   --mb-artwork-ink: var(--mb-artwork-ground);
+  /* The background variants paint with these three, pale in light mode and deep in dark mode,
+     so text in the label color reads on them in either scheme. */
+  --mb-artwork-base: light-dark(
+    oklch(from var(--mb-artwork-1) 0.93 calc(c * 0.16) h),
+    oklch(from var(--mb-artwork-ground) max(l, 0.2) c h)
+  );
+  --mb-artwork-deep: light-dark(
+    oklch(from var(--mb-artwork-4) 0.82 calc(c * 0.3) h),
+    oklch(from var(--mb-artwork-ground) calc(l * 0.72) c h)
+  );
+  --mb-artwork-haze: light-dark(
+    oklch(from var(--mb-artwork-light) 0.99 c h),
+    color-mix(in oklch, var(--mb-artwork-light) 52%, var(--mb-artwork-ground))
+  );
+  --mb-artwork-dim: 0;
   --mb-artwork-corner: 0%;
   --mb-artwork-min-radius: 0px;
 
@@ -121,6 +136,28 @@
   color: #ffffff;
 }
 
+/* Dim: a veil of the page's background color, so the art recedes behind content in either scheme.
+   It sits under children and under the inner edge. */
+.mb-artwork[data-dim]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  /* A third more in light mode, where gray secondary text sits on pastels. */
+  background: light-dark(
+    color-mix(in oklch, var(--mb-bg) min(100%, calc(var(--mb-artwork-dim) * 135%)), transparent),
+    color-mix(in oklch, var(--mb-bg) min(100%, calc(var(--mb-artwork-dim) * 110%)), transparent)
+  );
+  pointer-events: none;
+}
+
+@supports (corner-shape: squircle) {
+  .mb-artwork:is([data-shape="rounded"], [data-shape="app"])::before {
+    corner-shape: inherit;
+  }
+}
+
 /* Palettes */
 
 .mb-artwork[data-palette="accent"] {
@@ -222,6 +259,65 @@
   --mb-artwork-light: oklch(from var(--mb-tint) 0.98 0.005 h);
   --mb-artwork-paper: oklch(from var(--mb-tint) 0.95 0.008 h);
   --mb-artwork-ink: oklch(from var(--mb-tint) 0.2 0.012 h);
+}
+
+/* Palettes for rooms and times of day. Calmer than the cover palettes: the background variants
+   mix them into --mb-artwork-base, so they come out pastel in light mode and deep in dark mode.
+   Hue 2 is the warm light; hue 4 is the shade. */
+
+.mb-artwork[data-palette="dawn"] {
+  --mb-artwork-1: color-mix(in oklch, var(--mb-pink) 55%, var(--mb-purple));
+  --mb-artwork-2: color-mix(in oklch, var(--mb-orange) 70%, var(--mb-yellow));
+  --mb-artwork-3: color-mix(in oklch, var(--mb-pink) 70%, var(--mb-orange));
+  --mb-artwork-4: color-mix(in oklch, var(--mb-indigo) 70%, var(--mb-purple));
+  --mb-artwork-ground: oklch(from var(--mb-indigo) 0.19 0.06 h);
+  --mb-artwork-light: color-mix(in oklch, var(--mb-yellow) 16%, white);
+}
+
+.mb-artwork[data-palette="sky"] {
+  --mb-artwork-1: var(--mb-blue);
+  --mb-artwork-2: color-mix(in oklch, var(--mb-yellow) 60%, white);
+  --mb-artwork-3: var(--mb-cyan);
+  --mb-artwork-4: var(--mb-indigo);
+  --mb-artwork-ground: oklch(from var(--mb-blue) 0.2 0.07 h);
+  --mb-artwork-light: color-mix(in oklch, var(--mb-cyan) 8%, white);
+}
+
+.mb-artwork[data-palette="night"] {
+  --mb-artwork-1: color-mix(in oklch, var(--mb-indigo) 60%, var(--mb-blue));
+  --mb-artwork-2: color-mix(in oklch, var(--mb-teal) 55%, var(--mb-blue));
+  --mb-artwork-3: color-mix(in oklch, var(--mb-purple) 60%, var(--mb-indigo));
+  --mb-artwork-4: oklch(from var(--mb-indigo) 0.42 0.12 h);
+  --mb-artwork-ground: oklch(from var(--mb-indigo) 0.15 0.05 h);
+  --mb-artwork-light: color-mix(in oklch, var(--mb-cyan) 10%, white);
+}
+
+.mb-artwork[data-palette="amber"] {
+  --mb-artwork-1: var(--mb-orange);
+  --mb-artwork-2: color-mix(in oklch, var(--mb-yellow) 75%, var(--mb-orange));
+  --mb-artwork-3: color-mix(in oklch, var(--mb-red) 50%, var(--mb-brown));
+  --mb-artwork-4: color-mix(in oklch, var(--mb-brown) 70%, var(--mb-purple));
+  --mb-artwork-ground: oklch(from var(--mb-orange) 0.19 0.04 h);
+  --mb-artwork-light: color-mix(in oklch, var(--mb-yellow) 20%, white);
+}
+
+.mb-artwork[data-palette="water"] {
+  --mb-artwork-1: var(--mb-teal);
+  --mb-artwork-2: color-mix(in oklch, var(--mb-mint) 60%, white);
+  --mb-artwork-3: var(--mb-cyan);
+  --mb-artwork-4: var(--mb-blue);
+  --mb-artwork-ground: oklch(from var(--mb-teal) 0.18 0.04 h);
+  --mb-artwork-light: color-mix(in oklch, var(--mb-cyan) 10%, white);
+}
+
+/* Gray with a cool cast, and one warm lamp. */
+.mb-artwork[data-palette="slate"] {
+  --mb-artwork-1: oklch(from var(--mb-blue) 0.62 0.045 h);
+  --mb-artwork-2: oklch(from var(--mb-orange) 0.78 0.07 h);
+  --mb-artwork-3: oklch(from var(--mb-cyan) 0.74 0.03 h);
+  --mb-artwork-4: oklch(from var(--mb-indigo) 0.46 0.04 h);
+  --mb-artwork-ground: oklch(from var(--mb-blue) 0.18 0.02 h);
+  --mb-artwork-light: oklch(from var(--mb-orange) 0.97 0.01 h);
 }
 
 /* Motion: a slow drift of a few layers, only when asked for. */

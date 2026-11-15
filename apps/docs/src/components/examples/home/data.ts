@@ -1,3 +1,5 @@
+import type { ArtworkPalette, ArtworkTime } from "macbetter/artwork"
+
 /*
  * A house on Maple Street whose kitchen has one of everything, down to a
  * leak sensor under the sink. Names follow the HomeKit naming rules: letters,
@@ -59,7 +61,6 @@ type Sensor = AccessoryBase & {
 }
 type Camera = AccessoryBase & {
   kind: "camera"
-  scene: "porch" | "driveway" | "kitchen" | "backyard"
   online: boolean
   microphone: boolean
 }
@@ -103,12 +104,24 @@ type Automation = {
   accessoryIds: string[]
 }
 
-type Home = { id: string; name: string }
+/** A home's or a room's wallpaper, drawn by Artwork. The Home app lets people set one for each. */
+type Wallpaper = { variant: "wash" | "horizon" | "window"; palette: ArtworkPalette; time?: ArtworkTime }
+
+type Home = { id: string; name: string; wallpaper: Wallpaper }
 
 const homes: Home[] = [
-  { id: "maple", name: "Maple Street" },
-  { id: "lake", name: "Lake House" },
+  { id: "maple", name: "Maple Street", wallpaper: { variant: "wash", palette: "dawn" } },
+  { id: "lake", name: "Lake House", wallpaper: { variant: "horizon", palette: "water", time: "dusk" } },
 ]
+
+const roomWallpapers: Record<RoomId, Wallpaper> = {
+  kitchen: { variant: "window", palette: "amber", time: "day" },
+  living: { variant: "wash", palette: "dusk" },
+  entry: { variant: "horizon", palette: "dawn", time: "dawn" },
+  bedroom: { variant: "horizon", palette: "night", time: "night" },
+  garage: { variant: "window", palette: "slate" },
+  backyard: { variant: "horizon", palette: "forest", time: "day" },
+}
 
 const rooms: Room[] = [
   { id: "kitchen", name: "Kitchen", zone: "Downstairs" },
@@ -133,7 +146,7 @@ const accessories: Accessory[] = [
   { id: "back-door", kind: "lock", name: "Back door", room: "kitchen", icon: "lock", state: "secured", target: "secured", battery: 64, favorite: true },
   { id: "smoke", kind: "sensor", sensor: "smoke", name: "Smoke alarm", room: "kitchen", icon: "smoke", detected: false, battery: 91 },
   { id: "air", kind: "sensor", sensor: "air", name: "Air quality monitor", room: "kitchen", icon: "air", detected: false, reading: "Good", battery: 100 },
-  { id: "pantry-cam", kind: "camera", name: "Indoor camera", room: "kitchen", icon: "camera", scene: "kitchen", online: true, microphone: false },
+  { id: "pantry-cam", kind: "camera", name: "Indoor camera", room: "kitchen", icon: "camera", online: true, microphone: false },
 
   // Living Room
   { id: "floor-lamp", kind: "light", name: "Floor lamp", room: "living", icon: "lamp", on: true, brightness: 60, color: { kind: "temperature", mireds: 333 }, colorId: "3000", favorite: true },
@@ -144,7 +157,7 @@ const accessories: Accessory[] = [
   // Entry
   { id: "front-door", kind: "lock", name: "Front door", room: "entry", icon: "lock", state: "secured", target: "secured", battery: 18, favorite: true },
   { id: "porch-light", kind: "light", name: "Porch light", room: "entry", icon: "bulb", on: false, brightness: 100 },
-  { id: "doorbell", kind: "camera", name: "Doorbell", room: "entry", icon: "camera", scene: "porch", online: true, microphone: true },
+  { id: "doorbell", kind: "camera", name: "Doorbell", room: "entry", icon: "camera", online: true, microphone: true },
 
   // Bedroom
   { id: "bedside", kind: "light", name: "Bedside lamps", room: "bedroom", icon: "lamp", on: false, brightness: 30, color: { kind: "temperature", mireds: 454 }, colorId: "2200" },
@@ -154,11 +167,11 @@ const accessories: Accessory[] = [
   // Garage
   { id: "garage-door", kind: "door", name: "Garage door", room: "garage", icon: "garage", state: "closed", obstructed: false, favorite: true },
   { id: "workbench", kind: "outlet", name: "Workbench lights", room: "garage", icon: "plug", on: false, reachable: false },
-  { id: "driveway", kind: "camera", name: "Driveway", room: "garage", icon: "camera", scene: "driveway", online: true, microphone: false },
+  { id: "driveway", kind: "camera", name: "Driveway", room: "garage", icon: "camera", online: true, microphone: false },
 
   // Backyard
   { id: "patio-motion", kind: "sensor", sensor: "motion", name: "Patio motion sensor", room: "backyard", icon: "motion", detected: false, battery: 40 },
-  { id: "backyard-cam", kind: "camera", name: "Backyard", room: "backyard", icon: "camera", scene: "backyard", online: false, microphone: false },
+  { id: "backyard-cam", kind: "camera", name: "Backyard", room: "backyard", icon: "camera", online: false, microphone: false },
 ]
 
 const scenes: Scene[] = [
@@ -271,7 +284,7 @@ const forecast = ["12 PM", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM", "6 PM", "7 PM
   (label, index) => ({ label, cleaner: index >= 4 && index <= 9 })
 )
 
-export { accessories, automations, forecast, homes, rooms, scenes }
+export { accessories, automations, forecast, homes, roomWallpapers, rooms, scenes }
 export type {
   Accessory,
   Automation,
@@ -280,6 +293,7 @@ export type {
   Fan,
   Faucet,
   Home,
+  Wallpaper,
   IconName,
   Light,
   LightColor,

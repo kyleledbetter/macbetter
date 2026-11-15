@@ -1,6 +1,7 @@
 "use client"
 
 import { Button } from "macbetter/button"
+import { HomeBackdrop } from "macbetter/home-backdrop"
 import { Menu, MenuContent, MenuItem, MenuItemIcon, MenuSeparator, MenuTrigger } from "macbetter/menu"
 import {
   NavigationBar,
@@ -20,7 +21,7 @@ import { AccessoryControls, ConfirmContext, ControlsHeader, type Confirm } from 
 import { homes, type RoomId } from "./data"
 import { SetupFlow } from "./setup"
 import { addAutomation, roomName, setHome, useHome } from "./store"
-import { HomeOverview, OpenerContext, RoomView } from "./views"
+import { HomeOverview, OpenerContext, RoomView, wallpaperFor } from "./views"
 
 type Pending = { title: string; action: string; run: () => void } | null
 
@@ -146,7 +147,7 @@ function PhoneHome() {
 
   return (
     <OpenerContext.Provider value={opener}>
-      <div className="ex-app-root ex-home-phone ex-home-wallpaper">
+      <HomeBackdrop className="ex-app-root ex-home-phone" aspect={390 / 844} {...wallpaperFor(homeId, tab === "home" ? room : null)}>
         <TabBar value={tab} onValueChange={(value) => setTab(String(value))} className="ex-home-tabs">
           <TabBarPanel value="home">
             {/* Keyed by screen, so a room opens at its top rather than at the Home tab's scroll position. */}
@@ -239,7 +240,7 @@ function PhoneHome() {
         <ScreenSheet open={adding} onOpenChange={setAdding} title="Add Accessory" className="ex-home-sheet">
           {adding ? <SetupFlow onClose={() => setAdding(false)} /> : null}
         </ScreenSheet>
-      </div>
+      </HomeBackdrop>
     </OpenerContext.Provider>
   )
 }

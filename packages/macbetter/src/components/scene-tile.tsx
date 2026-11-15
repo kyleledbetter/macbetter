@@ -14,6 +14,8 @@ type SceneTileProps = React.ComponentProps<typeof ButtonPrimitive> & {
   size?: "sm" | "md"
   /** What assistive tech hears for `active`, in the page's language. */
   activeLabel?: string
+  /** Art behind the tile for the scene's mood, like `<Artwork variant="horizon" time="dawn" />`. Decorative. */
+  background?: React.ReactNode
 }
 
 /** Runs a scene: a group of actions, like Good Morning or Movie Time. */
@@ -24,6 +26,7 @@ function SceneTile({
   running,
   size = "md",
   activeLabel = "On",
+  background,
   className,
   children,
   ...props
@@ -33,10 +36,16 @@ function SceneTile({
       data-size={size}
       data-active={active ? "" : undefined}
       data-running={running ? "" : undefined}
+      data-background={background ? "" : undefined}
       aria-busy={running ? true : undefined}
       className={cx("mb-scene-tile", className)}
       {...props}
     >
+      {background ? (
+        <span className="mb-scene-tile-background" aria-hidden="true">
+          {background}
+        </span>
+      ) : null}
       <span className="mb-scene-tile-icon" aria-hidden="true">
         {running ? <ActivityIndicator size="sm" aria-hidden="true" className="mb-scene-tile-spinner" /> : icon}
       </span>

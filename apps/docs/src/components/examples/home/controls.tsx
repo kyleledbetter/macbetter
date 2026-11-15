@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "macbetter/button"
-import { CameraScene, CameraView } from "macbetter/camera-view"
+import { CameraView } from "macbetter/camera-view"
 import { DoorControl } from "macbetter/door-control"
 import { LevelControl } from "macbetter/level-control"
 import { defaultLightSwatches, LightColorPicker, type LightSwatch } from "macbetter/light-color-picker"
@@ -296,9 +296,7 @@ function CameraControls({ camera }: { camera: Camera }) {
             </>
           ) : null
         }
-      >
-        <CameraScene variant={camera.scene} />
-      </CameraView>
+      />
       <p className="ex-home-controls-caption">
         {camera.online ? "Streaming. Recording when motion is detected." : "Check that the camera is plugged in and on Wi-Fi."}
       </p>

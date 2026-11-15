@@ -63,7 +63,10 @@ function palette(hues: [string, string, string, string], ground: string, light?:
 const s = system
 const white = "#ffffff"
 
-const palettes: Record<Exclude<ArtworkPalette, "accent" | "mono">, Resolved> = {
+/** The cover palettes. The room and time-of-day palettes are for backgrounds, which social cards don't use. */
+type CoverPalette = Exclude<ArtworkPalette, "accent" | "mono" | "dawn" | "sky" | "night" | "amber" | "water" | "slate">
+
+const palettes: Record<CoverPalette, Resolved> = {
   sunset: palette([s.orange, s.pink, s.yellow, s.purple], relative(s.purple, 0.2, 0.08), mixOklch(s.yellow, white, 18)),
   ocean: palette([s.blue, s.cyan, s.teal, s.indigo], relative(s.blue, 0.18, 0.07), mixOklch(s.cyan, white, 14)),
   forest: palette([s.green, s.mint, s.yellow, s.teal], relative(s.green, 0.19, 0.045), mixOklch(s.yellow, white, 14)),

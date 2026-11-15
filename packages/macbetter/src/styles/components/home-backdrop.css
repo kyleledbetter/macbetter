@@ -1,0 +1,81 @@
+/* Home backdrop — a home's or a room's wallpaper behind the Home tab or a room. It never moves: the content
+   in front of it scrolls. A veil of the page's background color keeps labels and tile edges readable. */
+
+.mb-home-backdrop {
+  --mb-home-backdrop-dim: 0.35;
+  /* Increase Contrast raises the veil to at least this. */
+  --mb-home-backdrop-dim-min: 0;
+
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+  min-height: 0;
+}
+
+.mb-home-backdrop-layer {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  overflow: hidden;
+  background: var(--mb-bg);
+  pointer-events: none;
+}
+
+.mb-home-backdrop-layer > .mb-artwork {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  aspect-ratio: auto;
+  border-radius: 0;
+}
+
+.mb-home-backdrop-layer > .mb-artwork::after {
+  display: none;
+}
+
+/* A photo is blurred like the Home app's wallpapers, and scaled so the blur doesn't show its edges. */
+.mb-home-backdrop-image {
+  position: absolute;
+  inset: 0;
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  filter: blur(24px) saturate(1.1);
+  scale: 1.12;
+}
+
+/* Light mode veils a third more: secondary labels there are gray on pastel, which needs more help than
+   white text on a deep color does. */
+.mb-home-backdrop-layer::after {
+  --mb-home-backdrop-veil: max(var(--mb-home-backdrop-dim), var(--mb-home-backdrop-dim-min));
+
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: light-dark(
+    color-mix(in oklch, var(--mb-bg) min(100%, calc(var(--mb-home-backdrop-veil) * 135%)), transparent),
+    color-mix(in oklch, var(--mb-bg) min(100%, calc(var(--mb-home-backdrop-veil) * 110%)), transparent)
+  );
+}
+
+@media (prefers-contrast: more) {
+  .mb-home-backdrop {
+    --mb-home-backdrop-dim-min: 0.6;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :where(:root:not([data-transparency="full"])) {
+    .mb-home-backdrop {
+      --mb-home-backdrop-dim-min: 0.45;
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .mb-home-backdrop-layer {
+    display: none;
+  }
+}

@@ -1,4 +1,5 @@
-/* Camera view — a camera's picture with its name and state in the corners. The HIG says not to block camera images,
+/* Camera view — a camera's picture with its name and state in the corners. Without a picture it shows an
+   abstract placeholder (Artwork's lens variant), never a drawn place. The HIG says not to block camera images,
    so the badges stay small and at the edges, and the controls sit on a soft scrim along the bottom. */
 
 :where(:root, [data-platform="macos"]) {
@@ -56,8 +57,18 @@
   filter: brightness(0.7);
 }
 
-.mb-camera-scene[data-time="night"] {
-  filter: grayscale(1) brightness(0.62) contrast(1.35);
+/* The placeholder, or any Artwork you pass, fills the frame whatever its aspect. */
+.mb-camera-view-frame > .mb-artwork {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  aspect-ratio: auto;
+  border-radius: 0;
+}
+
+.mb-camera-view-frame > .mb-artwork::after {
+  display: none;
 }
 
 /* Name and room, top leading, on a gradient that fades into the picture. */

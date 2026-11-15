@@ -21,6 +21,28 @@ import { HomeSection, HomeSectionHeader, HomeSectionSummary, HomeSectionTitle } 
 
 Give `HomeSectionTitle` an `href`, `onClick` or a router link as `render` and it shows a chevron. Name the section with `aria-labelledby` pointing at the title.
 
+### A wallpaper behind the Home tab or a room
+
+The Home app lets people set a wallpaper for each home and each room, and the Home tab and room screens are drawn over it. `HomeBackdrop` paints one behind its children: an abstract Artwork background seeded by the home's or room's name, or a photo from `src`. The wallpaper stays still; make a child the scrolling element so the sections move over it.
+
+```tsx
+import { HomeBackdrop } from "macbetter/home-backdrop"
+
+<HomeBackdrop seed="Living Room" variant="wash" palette="dusk" aspect={390 / 844}>
+  <NavigationStack>…</NavigationStack>
+</HomeBackdrop>
+```
+
+<Demo name="home/home-backdrop-room" platforms={["ios", "ipados", "macos"]} />
+
+- Give each home and room its own seed and palette, so switching homes or opening a room changes the mood: `amber` for a kitchen, `dusk` for a living room, `night` for a bedroom, `water` for a bathroom, `slate` for a garage, `forest` for a garden. The [Artwork page](/docs/components/artwork#room-palettes) shows them all.
+- `dim` sets how far the wallpaper recedes, from 0 to 1. The default, `0.35`, keeps titles, summaries and translucent tiles above 4.5:1 on the built-in palettes in both schemes. Raise it for a photo or a bright palette. Increase Contrast raises it to at least `0.6`.
+- Pass the screen's `aspect`, width over height, so the art is composed for it rather than cropped from a square.
+
+For a room's card or thumbnail, use Artwork directly with the same seed and palette as the room's wallpaper.
+
+<Demo name="home/home-backdrop-rooms" />
+
 ## Platform behavior
 
 - **iOS and iPadOS.** 20-point bold titles and 15-point summaries.
@@ -44,6 +66,27 @@ Give `HomeSectionTitle` an `href`, `onClick` or a router link as `render` and it
 />
 
 `HomeSection` is a `section`, `HomeSectionHeader` a `div` and `HomeSectionSummary` a `p`.
+
+### HomeBackdrop
+
+<PropsTable
+  rows={[
+    { name: "seed", type: "string", description: "The home's or room's name. The same name draws the same wallpaper." },
+    { name: "variant", type: '"wash" | "horizon" | "window" | …', default: '"wash"', description: "Any Artwork variant; the background ones suit this." },
+    { name: "palette", type: "ArtworkPalette", description: "The colors. Without it, the time's palette or one picked from the seed." },
+    { name: "time", type: '"dawn" | "day" | "dusk" | "night"', description: "The light in the wallpaper." },
+    { name: "aspect", type: "number", default: "1", description: "Width over height of the area it fills." },
+    { name: "dim", type: "number", default: "0.35", description: "From 0 to 1: how far the wallpaper recedes behind content." },
+    { name: "src", type: "string", description: "A photo to show instead of drawn art. It's blurred and dimmed the same way." },
+  ]}
+/>
+
+`HomeBackdrop` is a `div`; the wallpaper is a decorative layer behind its children.
+
+| Variable | What it sets |
+| --- | --- |
+| `--mb-home-backdrop-dim` | The veil's strength, from `dim` |
+| `--mb-home-backdrop-dim-min` | The least veil allowed; Increase Contrast sets `0.6` and Reduce Transparency `0.45` |
 
 | Variable | What it sets |
 | --- | --- |

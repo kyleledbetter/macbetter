@@ -10,7 +10,8 @@ import {
   AccessoryTileStatus,
   AccessoryTileToggle,
 } from "macbetter/accessory-tile"
-import { CameraScene, CameraTile } from "macbetter/camera-view"
+import { Artwork, type ArtworkProps } from "macbetter/artwork"
+import { CameraTile } from "macbetter/camera-view"
 import { EnergyReadout } from "macbetter/energy-readout"
 import { HomeSection, HomeSectionHeader, HomeSectionSummary, HomeSectionTitle } from "macbetter/home-section"
 import { HomeStatus, HomeStatusItem } from "macbetter/home-status"
@@ -18,7 +19,7 @@ import { Popover, PopoverContent, PopoverTitle, PopoverTrigger } from "macbetter
 import { SceneRow, SceneTile } from "macbetter/scene-tile"
 import * as React from "react"
 import { AccessoryControls, ControlsHeader } from "./controls"
-import { forecast, scenes, type Accessory, type RoomId } from "./data"
+import { forecast, homes, roomWallpapers, scenes, type Accessory, type RoomId } from "./data"
 import { AccessoryGlyph, CategoryGlyph, SceneGlyph, tintOf } from "./icons"
 import {
   categories,
@@ -34,6 +35,12 @@ import {
   useHome,
   type CategoryId,
 } from "./store"
+
+/** The wallpaper behind the Home tab or a room: each home and each room has its own, as in the Home app. */
+function wallpaperFor(homeId: string, room: RoomId | null) {
+  const home = homes.find((h) => h.id === homeId) ?? homes[0]
+  return room ? { seed: `${home.name} ${roomName(room)}`, ...roomWallpapers[room] } : { seed: home.name, ...home.wallpaper }
+}
 
 /** How a tile's name opens the controls: a sheet on iPhone, a popover on the Mac. */
 type Opener = { kind: "sheet"; open: (id: string) => void } | { kind: "popover" }
@@ -166,9 +173,7 @@ function Cameras() {
                 state={camera.online ? "streaming" : "offline"}
                 timestamp="9:41 AM"
                 onClick={() => opener.open(camera.id)}
-              >
-                <CameraScene variant={camera.scene} />
-              </CameraTile>
+              />
             ) : (
               <Popover key={camera.id}>
                 <PopoverTrigger
@@ -179,9 +184,7 @@ function Cameras() {
                       live={camera.online}
                       state={camera.online ? "streaming" : "offline"}
                       timestamp="9:41 AM"
-                    >
-                      <CameraScene variant={camera.scene} />
-                    </CameraTile>
+                    />
                   }
                 />
                 <PopoverContent className="ex-home-popover ex-home-popover-camera" side="bottom">
@@ -195,6 +198,15 @@ function Cameras() {
       </div>
     </HomeSection>
   )
+}
+
+/** Each scene's mood, drawn faintly behind its tile. */
+const sceneArt: Record<string, Pick<ArtworkProps, "palette" | "time">> = {
+  morning: { palette: "dawn", time: "dawn" },
+  cooking: { palette: "amber", time: "day" },
+  dinner: { palette: "dusk", time: "dusk" },
+  leave: { palette: "slate" },
+  night: { palette: "night", time: "night" },
 }
 
 function Scenes({ only }: { only?: string[] }) {
@@ -213,6 +225,7 @@ function Scenes({ only }: { only?: string[] }) {
             name={scene.name}
             active={sceneActive(scene.id, accessories)}
             running={running === scene.id}
+            background={sceneArt[scene.id] ? <Artwork seed={scene.name} variant="wash" aspect={3} {...sceneArt[scene.id]} /> : undefined}
             onClick={() => runScene(scene.id)}
           />
         ))}
@@ -311,5 +324,5 @@ function RoomView({ room }: { room: RoomId }) {
   )
 }
 
-export { HomeOverview, OpenerContext, RoomView, Tile }
+export { HomeOverview, OpenerContext, RoomView, Tile, wallpaperFor }
 export type { Opener }
