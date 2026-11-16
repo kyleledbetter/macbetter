@@ -3,9 +3,11 @@ import { LocalNav } from "@/components/local-nav"
 import { SiteFooter } from "@/components/site-footer"
 import { SiteHeader } from "@/components/site-header"
 import { Bento } from "@/components/landing/bento"
+import { ChartsBento } from "@/components/landing/charts-bento"
 import { Closing } from "@/components/landing/closing"
 import { Foundation } from "@/components/landing/foundation"
 import { Hero } from "@/components/landing/hero"
+import { HomeBento } from "@/components/landing/home-bento"
 import { Highlights } from "@/components/landing/highlights"
 import { Materials } from "@/components/landing/materials"
 import { Reveal } from "@/components/landing/reveal"
@@ -28,7 +30,9 @@ const sections = [
   { id: "platforms", label: "Platforms" },
   { id: "themes", label: "Themes" },
   { id: "components", label: "Components" },
-  { id: "materials", label: "Materials" },
+  { id: "home", label: "Home" },
+  { id: "charts", label: "Charts" },
+  { id: "materials", label: "Guidelines" },
 ]
 
 export default function Home() {
@@ -42,6 +46,8 @@ export default function Home() {
         <Platforms />
         <Themes />
         <Bento />
+        <HomeBento />
+        <ChartsBento />
         <Materials />
         <Foundation />
         <Closing />

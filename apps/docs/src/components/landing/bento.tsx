@@ -39,30 +39,8 @@ import {
 import { MoreLink } from "@/components/more-link"
 import { SearchTile } from "./search-tile"
 import { SectionHeading } from "./section-heading"
+import { Tile } from "./tile"
 import { Wallpaper } from "./wallpaper"
-
-function Tile({
-  area,
-  name,
-  slug,
-  children,
-  className,
-}: {
-  area: string
-  name: string
-  slug: string
-  children: React.ReactNode
-  className?: string
-}) {
-  return (
-    <div className={`lp-tile ${className ?? ""}`} style={{ gridArea: area }}>
-      <div className="lp-tile-stage">{children}</div>
-      <MoreLink href={`/docs/components/${slug}`} className="lp-tile-name" aria-label={`${name}, learn more`}>
-        {name}
-      </MoreLink>
-    </div>
-  )
-}
 
 const menuItems = [
   { label: "Rename", icon: PencilIcon, shortcut: "⌘R" },
@@ -140,11 +118,11 @@ function Bento() {
         <strong>Every tile below is a working&nbsp;component.</strong>
       </SectionHeading>
       <div className="lp-bento lp-reveal" data-platform="macos">
-        <Tile area="menu" name="Menu" slug="menu" className="lp-tile-menu">
+        <Tile area="menu" name="Menu" href="/docs/components/menu" className="lp-tile-menu">
           <StaticMenu />
         </Tile>
 
-        <Tile area="slider" name="Slider" slug="slider">
+        <Tile area="slider" name="Slider" href="/docs/components/slider">
           <div className="lp-tile-sliders">
             <span className="lp-tile-slider-row">
               <SunDimIcon aria-hidden="true" />
@@ -159,11 +137,11 @@ function Bento() {
           </div>
         </Tile>
 
-        <Tile area="cal" name="Calendar" slug="calendar">
+        <Tile area="cal" name="Calendar" href="/docs/components/calendar">
           <Calendar size="sm" aria-label="Pick a date" defaultValue="2026-11-18" />
         </Tile>
 
-        <Tile area="switch" name="Switch" slug="switch">
+        <Tile area="switch" name="Switch" href="/docs/components/switch">
           <div className="lp-tile-switches">
             <label>
               <WifiIcon aria-hidden="true" />
@@ -183,7 +161,7 @@ function Bento() {
           </div>
         </Tile>
 
-        <Tile area="seg" name="Segmented control" slug="segmented-control">
+        <Tile area="seg" name="Segmented control" href="/docs/components/segmented-control">
           <div className="lp-tile-stack">
             <SegmentedControl aria-label="Calendar view" defaultValue="week">
               <SegmentedControlItem value="day">Day</SegmentedControlItem>
@@ -198,7 +176,7 @@ function Bento() {
           </div>
         </Tile>
 
-        <Tile area="glass" name="Glass" slug="glass" className="lp-tile-glass">
+        <Tile area="glass" name="Glass" href="/docs/components/glass" className="lp-tile-glass">
           <Wallpaper id="bento" className="lp-tile-wallpaper" />
           <GlassGroup aria-label="Photo actions" className="lp-tile-glass-group">
             <Button variant="plain" tone="neutral" shape="circle" aria-label="Share">
@@ -222,7 +200,7 @@ function Bento() {
           </Glass>
         </Tile>
 
-        <Tile area="gauge" name="Gauge" slug="gauge">
+        <Tile area="gauge" name="Gauge" href="/docs/components/gauge">
           <div className="lp-tile-row">
             <Gauge variant="circular" value={72} low={20} high={50} optimum={100}>
               <GaugeValue />
@@ -235,18 +213,18 @@ function Bento() {
           </div>
         </Tile>
 
-        <Tile area="spin" name="Activity indicator" slug="activity-indicator">
+        <Tile area="spin" name="Activity indicator" href="/docs/components/activity-indicator">
           <div className="lp-tile-spinner">
             <ActivityIndicator size="lg" aria-label="Syncing" />
             <span>Syncing 24 files…</span>
           </div>
         </Tile>
 
-        <Tile area="search" name="Command palette" slug="command-palette">
+        <Tile area="search" name="Command palette" href="/docs/components/command-palette">
           <SearchTile />
         </Tile>
 
-        <Tile area="alert" name="Alert" slug="alert">
+        <Tile area="alert" name="Alert" href="/docs/components/alert">
           <Alert>
             <AlertTrigger render={<Button tone="destructive" />}>Delete project…</AlertTrigger>
             <AlertContent>

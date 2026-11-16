@@ -13,16 +13,20 @@ function PageNavigation({ href }: { href: string }) {
   return (
     <nav aria-label="Pagination" className="not-prose mt-8 grid gap-6 border-t border-(--site-hairline) pt-6 sm:grid-cols-2">
       {previous ? (
-        <Link href={previous.href} className="docs-pager" data-direction="back">
-          <span className="docs-pager-hint">Previous</span>
+        <Link href={previous.href} className="docs-pager" data-direction="back" aria-keyshortcuts="ArrowLeft">
+          <span className="docs-pager-hint">
+            Previous <kbd aria-hidden="true">←</kbd>
+          </span>
           <span className="docs-pager-title">{previous.title}</span>
         </Link>
       ) : (
         <span className="hidden sm:block" />
       )}
       {next ? (
-        <Link href={next.href} className="docs-pager items-end text-end">
-          <span className="docs-pager-hint">Next</span>
+        <Link href={next.href} className="docs-pager items-end text-end" aria-keyshortcuts="ArrowRight">
+          <span className="docs-pager-hint">
+            Next <kbd aria-hidden="true">→</kbd>
+          </span>
           <span className="docs-pager-title">{next.title}</span>
         </Link>
       ) : null}

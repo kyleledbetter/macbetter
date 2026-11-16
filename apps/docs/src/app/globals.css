@@ -771,6 +771,27 @@ body[data-macbetter] {
   letter-spacing: var(--type-caption-track);
 }
 
+/* The arrow keys turn pages; the hint shows only where there's a keyboard. */
+.docs-pager-hint kbd {
+  display: none;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  margin-inline-start: 4px;
+  padding-inline: 4px;
+  border-radius: 5px;
+  background: var(--mb-fill-secondary);
+  color: var(--site-label-secondary);
+  font: 500 11px/1 var(--mb-font);
+  vertical-align: 1px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .docs-pager-hint kbd {
+    display: inline-grid;
+  }
+}
+
 .docs-pager-title {
   color: var(--site-link);
   font-size: var(--type-body);
