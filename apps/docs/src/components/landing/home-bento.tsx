@@ -79,8 +79,8 @@ function HomeBento() {
       <div className="lp-section-inner">
         <SectionHeading
           id="lp-home"
-          eyebrow="Home"
-          headline={<>Controls for lights, locks and thermostats, modeled on Apple’s Home&nbsp;app.</>}
+          eyebrow="HomeKit Components"
+          headline={<>Controls for lights, locks and thermostats, modeled from Apple&nbsp;HomeKit.</>}
           links={
             <>
               <MoreLink href="/examples/home">See the Home example</MoreLink>

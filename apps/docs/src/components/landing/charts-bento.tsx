@@ -50,8 +50,8 @@ function ChartsBento() {
       <div className="lp-section-inner">
         <SectionHeading
           id="lp-charts"
-          eyebrow="Charts"
-          headline={<>Charts that look like the ones in Stocks, Health and&nbsp;Fitness.</>}
+          eyebrow="Apple Style Visualizations"
+          headline={<>Charts in the style of the Apple&nbsp;ecosystem.</>}
           links={
             <>
               <MoreLink href="/examples/analytics">See the analytics example</MoreLink>
