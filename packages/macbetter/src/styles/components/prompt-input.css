@@ -1,0 +1,503 @@
+/*
+ * Prompt Input — the composer: a rounded box holding attachments, a field
+ * that grows and a toolbar, with an optional strip attached under it. A solid
+ * raised surface on macOS; Liquid Glass floating over the thread on iOS and iPadOS.
+ */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-prompt-input-radius: 18px;
+  --mb-prompt-input-radius-lg: 22px;
+  --mb-prompt-input-padding: 8px;
+  --mb-prompt-input-padding-lg: 12px;
+  --mb-prompt-input-field-font: 400 13px/18px var(--mb-font);
+  --mb-prompt-input-field-line: 18px;
+  --mb-prompt-input-field-padding: 6px 8px;
+  --mb-prompt-input-field-padding-lg: 6px 8px 10px;
+  --mb-prompt-input-min-rows: 1;
+  --mb-prompt-input-min-rows-lg: 3;
+  --mb-prompt-input-max-rows: 10;
+  --mb-prompt-input-control: 28px;
+  --mb-prompt-input-icon: 16px;
+  --mb-prompt-input-submit: 28px;
+  --mb-prompt-input-accessory-font: 400 12px/15px var(--mb-font);
+  --mb-prompt-input-accessory-padding: 6px 10px;
+  --mb-prompt-input-glow-width: 1.5px;
+  --mb-prompt-input-glow-blur: 14px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-prompt-input-radius: 24px;
+  --mb-prompt-input-radius-lg: 28px;
+  --mb-prompt-input-padding: 6px;
+  --mb-prompt-input-padding-lg: 10px;
+  --mb-prompt-input-field-font: 400 17px/22px var(--mb-font);
+  --mb-prompt-input-field-line: 22px;
+  --mb-prompt-input-field-padding: 9px 10px 4px;
+  --mb-prompt-input-field-padding-lg: 10px 10px 12px;
+  --mb-prompt-input-min-rows: 1;
+  --mb-prompt-input-min-rows-lg: 3;
+  --mb-prompt-input-max-rows: 6;
+  --mb-prompt-input-control: 36px;
+  --mb-prompt-input-icon: 20px;
+  --mb-prompt-input-submit: 34px;
+  --mb-prompt-input-accessory-font: 400 15px/20px var(--mb-font);
+  --mb-prompt-input-accessory-padding: 8px 14px;
+  --mb-prompt-input-glow-width: 2px;
+  --mb-prompt-input-glow-blur: 18px;
+}
+
+@property --mb-prompt-input-glow-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.mb-prompt-input {
+  --mb-prompt-input-current-radius: var(--mb-prompt-input-radius);
+  --mb-prompt-input-current-padding: var(--mb-prompt-input-padding);
+  --mb-prompt-input-current-rows: var(--mb-prompt-input-min-rows);
+  --mb-prompt-input-bg: var(--mb-bg-elevated);
+  --mb-prompt-input-edge: 0 0 0 var(--mb-hairline) var(--mb-separator-strong);
+  --mb-prompt-input-shadow: var(--mb-shadow-2);
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+}
+
+.mb-prompt-input[data-size="lg"] {
+  --mb-prompt-input-current-radius: var(--mb-prompt-input-radius-lg);
+  --mb-prompt-input-current-padding: var(--mb-prompt-input-padding-lg);
+  --mb-prompt-input-current-rows: var(--mb-prompt-input-min-rows-lg);
+}
+
+/* Holds the box, and the glow's halo behind it. */
+.mb-prompt-input-files {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* ── The box ─────────────────────────────────────────────────── */
+
+.mb-prompt-input-box {
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  box-sizing: border-box;
+  min-width: 0;
+  padding: var(--mb-prompt-input-current-padding);
+  border-radius: var(--mb-prompt-input-current-radius);
+  background: var(--mb-prompt-input-bg);
+  box-shadow: var(--mb-prompt-input-edge), var(--mb-prompt-input-shadow);
+  color: var(--mb-label);
+  cursor: text;
+  outline: var(--mb-focus-ring-width) solid transparent;
+  outline-offset: 0;
+  transition:
+    outline-color var(--mb-duration-fast) var(--mb-ease-out),
+    box-shadow var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+@supports (corner-shape: squircle) {
+  .mb-prompt-input-box {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-prompt-input-current-radius) * var(--mb-corner-factor));
+  }
+
+  .mb-prompt-input-box::before {
+    corner-shape: inherit;
+  }
+}
+
+/* A text field shows the focus halo whenever it's focused, as on macOS. */
+.mb-prompt-input-box:has(.mb-prompt-input-field:focus) {
+  outline-color: var(--mb-focus-ring);
+}
+
+.mb-prompt-input-box[data-dragging] {
+  outline-color: var(--mb-focus-ring);
+  outline-style: dashed;
+}
+
+.mb-prompt-input-box[data-drag-reject] {
+  outline-color: var(--mb-destructive);
+}
+
+.mb-prompt-input[data-disabled] .mb-prompt-input-box {
+  cursor: default;
+  opacity: 0.6;
+}
+
+/* ── Field ───────────────────────────────────────────────────── */
+
+.mb-prompt-input-field {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: calc(
+    var(--mb-prompt-input-current-rows) * var(--mb-prompt-input-field-line) + var(--mb-prompt-input-field-pad-y, 12px)
+  );
+  max-height: calc(var(--mb-prompt-input-max-rows) * var(--mb-prompt-input-field-line) + 12px);
+  margin: 0;
+  padding: var(--mb-prompt-input-field-padding);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--mb-label);
+  font: var(--mb-prompt-input-field-font);
+  line-height: var(--mb-prompt-input-field-line);
+  letter-spacing: var(--mb-tracking-body);
+  caret-color: var(--mb-accent);
+  resize: none;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  appearance: none;
+  outline: none;
+}
+
+.mb-prompt-input[data-size="lg"] .mb-prompt-input-field {
+  padding: var(--mb-prompt-input-field-padding-lg);
+  --mb-prompt-input-field-pad-y: 16px;
+}
+
+.mb-prompt-input-field::placeholder {
+  color: var(--mb-placeholder);
+  opacity: 1;
+}
+
+.mb-prompt-input-field:focus-visible {
+  outline: none;
+}
+
+/* ── Attachments ─────────────────────────────────────────────── */
+
+.mb-prompt-input-attachments {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: var(--mb-attachment-gap, 8px);
+  min-width: 0;
+  margin: 0;
+  padding: 2px 2px 6px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  cursor: default;
+}
+
+.mb-prompt-input-attachment {
+  display: flex;
+  flex: none;
+  min-width: 0;
+  border-radius: var(--mb-attachment-radius, 8px);
+  outline: none;
+}
+
+.mb-prompt-input-attachment:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: 1px;
+}
+
+/* ── Toolbar ─────────────────────────────────────────────────── */
+
+.mb-prompt-input-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+  cursor: default;
+}
+
+.mb-prompt-input-tools {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+}
+
+.mb-prompt-input-tools:last-child:not(:first-child) {
+  margin-inline-start: auto;
+}
+
+.mb-prompt-input-button.mb-button {
+  --mb-button-height: var(--mb-prompt-input-control);
+  --mb-button-fg: var(--mb-label-secondary);
+}
+
+.mb-prompt-input-button.mb-button :where(svg) {
+  width: var(--mb-prompt-input-icon);
+  height: var(--mb-prompt-input-icon);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-prompt-input-button.mb-button:hover {
+    --mb-button-fg: var(--mb-label);
+  }
+}
+
+.mb-prompt-input-button.mb-button[data-open] {
+  --mb-button-bg: var(--mb-fill-secondary);
+  --mb-button-fg: var(--mb-label);
+}
+
+.mb-prompt-input-tools > .mb-model-picker.mb-button {
+  --mb-button-height: var(--mb-prompt-input-control);
+  --mb-button-fg: var(--mb-label-secondary);
+}
+
+.mb-prompt-input-submit.mb-button {
+  --mb-button-height: var(--mb-prompt-input-submit);
+  margin-inline-start: 4px;
+}
+
+.mb-prompt-input-submit.mb-button :where(svg) {
+  width: calc(var(--mb-prompt-input-submit) * 0.52);
+  height: calc(var(--mb-prompt-input-submit) * 0.52);
+}
+
+/* Disabled, the send button keeps its shape as a quiet gray circle rather than fading the accent. */
+.mb-prompt-input-submit.mb-button:is([data-disabled], :disabled) {
+  --mb-button-bg: var(--mb-fill-secondary);
+  --mb-button-fg: var(--mb-label-tertiary);
+  box-shadow: none;
+  opacity: 1;
+}
+
+/* ── Suggestions at the caret ────────────────────────────────── */
+
+.mb-prompt-input-suggestions {
+  min-width: 220px;
+  max-width: min(360px, calc(100vw - 16px));
+}
+
+.mb-prompt-input-suggestions :where([data-slot="trigger-menu-item"]) {
+  display: flex;
+  align-items: center;
+  gap: var(--mb-menu-icon-gap);
+  min-height: var(--mb-menu-item-height);
+  padding-block: var(--mb-menu-row-padding-block);
+  padding-inline: var(--mb-menu-row-padding);
+  border-radius: var(--mb-menu-row-radius);
+  color: var(--mb-label);
+  white-space: nowrap;
+  cursor: default;
+}
+
+.mb-prompt-input-suggestions :where([data-slot="trigger-menu-item"])[data-highlighted]:not([data-disabled]) {
+  background: var(--mb-menu-highlight);
+  color: var(--mb-menu-on-highlight);
+}
+
+.mb-prompt-input-suggestions :where([data-slot="trigger-menu-item"])[data-disabled] {
+  color: var(--mb-label-tertiary);
+}
+
+.mb-prompt-input-suggestions :where([data-slot="trigger-menu-group-label"]) {
+  padding: var(--mb-menu-label-padding);
+  color: var(--mb-label-secondary);
+  font: var(--mb-menu-label-font);
+}
+
+.mb-prompt-input-suggestions :where([data-slot="trigger-menu-separator"]) {
+  height: var(--mb-hairline);
+  margin: 5px 10px;
+  background: var(--mb-separator);
+}
+
+.mb-prompt-input-suggestions-empty {
+  padding: 4px var(--mb-menu-row-padding);
+  color: var(--mb-label-secondary);
+}
+
+/* ── Accessory strip ─────────────────────────────────────────── */
+
+.mb-prompt-input-accessory {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  box-sizing: border-box;
+  margin-block-start: calc(var(--mb-prompt-input-current-radius) * -1);
+  margin-inline: 1px;
+  padding: var(--mb-prompt-input-accessory-padding);
+  padding-block-start: calc(var(--mb-prompt-input-current-radius) + 6px);
+  border-radius: 0 0 var(--mb-prompt-input-current-radius) var(--mb-prompt-input-current-radius);
+  background: var(--mb-fill-quaternary);
+  box-shadow: inset 0 0 0 var(--mb-hairline) var(--mb-separator);
+  color: var(--mb-label-secondary);
+  font: var(--mb-prompt-input-accessory-font);
+  letter-spacing: var(--mb-tracking-caption);
+}
+
+@supports (corner-shape: squircle) {
+  .mb-prompt-input-accessory {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: 0 0 calc(var(--mb-prompt-input-current-radius) * var(--mb-corner-factor))
+      calc(var(--mb-prompt-input-current-radius) * var(--mb-corner-factor));
+  }
+}
+
+.mb-prompt-input-accessory > :last-child:not(:first-child) {
+  margin-inline-start: auto;
+}
+
+/* ── Intelligence glow ───────────────────────────────────────── */
+
+/*
+ * A thin ring of the accent and the system colors turns around the box, with a
+ * soft blurred copy behind it. Drawn from theme tokens, so every theme glows in its own colors.
+ */
+.mb-prompt-input[data-glow] .mb-prompt-input-box {
+  --mb-prompt-input-glow: conic-gradient(
+    from var(--mb-prompt-input-glow-angle),
+    var(--mb-accent),
+    var(--mb-pink),
+    var(--mb-purple),
+    var(--mb-indigo),
+    var(--mb-cyan),
+    var(--mb-mint),
+    var(--mb-yellow),
+    var(--mb-accent)
+  );
+}
+
+.mb-prompt-input[data-glow] .mb-prompt-input-box::before,
+.mb-prompt-input[data-glow] .mb-prompt-input-files::before {
+  content: "";
+  position: absolute;
+  inset: calc(var(--mb-prompt-input-glow-width) * -1);
+  border-radius: inherit;
+  background: var(--mb-prompt-input-glow);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--mb-duration-slow) var(--mb-ease-out);
+  animation: mb-prompt-input-glow-turn 5s linear infinite;
+  animation-play-state: paused;
+}
+
+/* The ring: the gradient masked down to its border. */
+.mb-prompt-input[data-glow] .mb-prompt-input-box::before {
+  z-index: 1;
+  padding: var(--mb-prompt-input-glow-width);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+}
+
+/* The halo, behind the box. */
+.mb-prompt-input[data-glow] .mb-prompt-input-files::before {
+  z-index: 0;
+  inset: 2px;
+  border-radius: var(--mb-prompt-input-current-radius);
+  filter: blur(var(--mb-prompt-input-glow-blur));
+}
+
+.mb-prompt-input[data-glowing] .mb-prompt-input-box::before {
+  opacity: 1;
+  animation-play-state: running;
+}
+
+.mb-prompt-input[data-glowing] .mb-prompt-input-files::before {
+  opacity: 0.5;
+  animation-play-state: running;
+}
+
+@keyframes mb-prompt-input-glow-turn {
+  to {
+    --mb-prompt-input-glow-angle: 360deg;
+  }
+}
+
+/* While it glows, the gradient is the edge: the focus halo steps aside. */
+.mb-prompt-input[data-glowing] .mb-prompt-input-box {
+  outline-color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(:root:not([data-motion="full"])) {
+    .mb-prompt-input[data-glow] .mb-prompt-input-box::before,
+    .mb-prompt-input[data-glow] .mb-prompt-input-files::before {
+      animation: none;
+    }
+  }
+}
+
+/* ── Floating ────────────────────────────────────────────────── */
+
+.mb-prompt-input[data-floating] {
+  position: absolute;
+  z-index: var(--mb-z-floating);
+  inset-inline: max(var(--mb-chat-padding-inline, 16px), calc((100% - var(--mb-chat-max-width, 720px)) / 2));
+  inset-block-end: calc(var(--mb-safe-bottom) + 10px);
+  width: auto;
+}
+
+/* ── iOS and iPadOS: Liquid Glass over the thread ────────────── */
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .mb-prompt-input {
+    --mb-prompt-input-bg: var(--mb-material-thin);
+    --mb-prompt-input-edge: inset 0 1px 0 0 var(--mb-glass-edge), inset 0 0 0 var(--mb-hairline) var(--mb-glass-edge-soft),
+      0 0 0 var(--mb-hairline) var(--mb-glass-border);
+    --mb-prompt-input-shadow: var(--mb-shadow-3);
+  }
+
+  .mb-prompt-input-box {
+    -webkit-backdrop-filter: var(--mb-material-filter);
+    backdrop-filter: var(--mb-material-filter);
+  }
+
+  /* iOS text views show the caret, not a ring. */
+  .mb-prompt-input-box:has(.mb-prompt-input-field:focus) {
+    outline-color: transparent;
+  }
+
+  .mb-prompt-input-button.mb-button:active {
+    --mb-button-bg: transparent;
+    opacity: 0.45;
+  }
+
+  .mb-prompt-input-accessory {
+    background: var(--mb-fill-tertiary);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :where(:root:not([data-transparency="full"])) {
+    .mb-prompt-input-box {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+}
+
+@media (prefers-contrast: more) {
+  .mb-prompt-input {
+    --mb-prompt-input-edge: 0 0 0 1px var(--mb-control-border);
+  }
+}
+
+@media (forced-colors: active) {
+  .mb-prompt-input-box {
+    border: 1px solid CanvasText;
+  }
+
+  .mb-prompt-input[data-glow] .mb-prompt-input-box::before,
+  .mb-prompt-input[data-glow] .mb-prompt-input-files::before {
+    display: none;
+  }
+}

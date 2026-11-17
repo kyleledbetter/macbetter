@@ -1,0 +1,116 @@
+export const metadata = {
+  title: "Tool Call",
+  description: "List the steps an agent took, with each step's status and its request and response.",
+}
+
+# Tool Call
+
+<Lead>List the steps an agent took, with each step's status and its request and response.</Lead>
+
+<Demo name="ai/tool-call-basic" />
+
+## When to use it
+
+Use a tool activity list when an agent reads files, runs queries or calls other services on its way to an answer. A one-line summary ("Used Dataroom, read a file · 29s") keeps the reply readable, and the steps are there for anyone who wants to check the agent's work.
+
+- Write each step as a verb and its object: "Read data-workflows.md", "Loaded skill dataroom-query".
+- Use a step without a verb for a note about what the agent is doing, like "Searching the catalog for usage tables."
+- Give a step detail only when there's something to check: the request it sent and the response it got.
+
+## Usage
+
+```tsx
+import {
+  ToolActivity,
+  ToolActivityContent,
+  ToolActivitySummary,
+  ToolCall,
+  ToolCallDetail,
+  ToolCallIcon,
+  ToolCallSection,
+  ToolCallTitle,
+} from "macbetter/tool-call"
+```
+
+`ToolActivity` is a collapsible: `ToolActivitySummary` is its line, and `ToolActivityContent` the rounded group of steps. Each `ToolCall` holds a `ToolCallTitle` and, optionally, a `ToolCallDetail`. A step with detail becomes a button that opens it; a step without is plain text.
+
+<Callout type="note" title="Compose it in a client component">
+`ToolCall` reads its children to find the `ToolCallDetail`, so write the steps in a file that starts with `"use client"`. From a Server Component the detail can arrive unresolved and render inside the row.
+</Callout>
+
+Put one or more `ToolCallSection`s in the detail, each with a `title` such as "Request" or "Response", and a [Description List](/docs/components/description-list) (stacked for a request, rows for a response) or a [Code Block](/docs/components/code-block) inside.
+
+### Status
+
+Set `status` on each step. `running` shimmers the title and shows a small spinner, `error` shows a red badge and the word "Failed", `pending` dims the object, and `approval` says "Needs approval" for a step waiting on a [Confirmation](/docs/ai/confirmation). Set `active` on the summary to shimmer it while the agent works.
+
+<Demo name="ai/tool-call-status" />
+
+## Platform behavior
+
+- **macOS.** 32-point rows with 13-point text, a hover fill on rows that open, and a 12-point corner radius on the group.
+- **iOS and iPadOS.** 44-point rows with 15-point text, and the group takes the grouped-list corner radius.
+- Chevrons point to the trailing side and turn down when open, mirrored in right-to-left layouts.
+- Rows use plain fills, never a material, since a long list of blurred rows is slow and hard to read.
+
+## Accessibility
+
+- The steps are a list named "Steps". Pass `aria-label` to `ToolActivityContent` to change it.
+- Each step with detail is one tab stop, a button that says whether it's expanded. Enter or Space opens it. Several can be open at once.
+- Every status except `done` is said in words: "In progress" and "Pending" are read to assistive technology, and "Failed" and "Needs approval" are shown. A running step is marked busy.
+- Each detail section is a region named by its title.
+
+## API
+
+### ToolActivity and ToolActivitySummary
+
+`ToolActivity` takes ui-sdk `Collapsible` props (`open`, `defaultOpen`, `onOpenChange`).
+
+<PropsTable
+  rows={[
+    { name: "icon", type: "ReactNode", description: "A small glyph before the summary text." },
+    { name: "active", type: "boolean", default: "false", description: "Shimmers the text while the agent works." },
+    { name: "...props", type: "CollapsibleTrigger props", description: "Passed to the button." },
+  ]}
+/>
+
+`ToolActivityContent` takes `CollapsiblePanel` props and an `aria-label` (default `"Steps"`).
+
+### ToolCall
+
+<PropsTable
+  rows={[
+    { name: "status", type: '"pending" | "running" | "done" | "error" | "approval"', default: '"done"', description: "Where the step stands." },
+    { name: "open, defaultOpen, onOpenChange", type: "Collapsible props", description: "Control the step's detail. Ignored without a ToolCallDetail." },
+  ]}
+/>
+
+### ToolCallTitle, ToolCallIcon, ToolCallSection
+
+<PropsTable
+  rows={[
+    { name: "verb", type: "ReactNode", description: "ToolCallTitle: what the agent did, in secondary text. Without it the title is a note." },
+    { name: "title", type: "ReactNode", description: "ToolCallSection: the section's heading, like Request." },
+  ]}
+/>
+
+`ToolCallIcon` is a decorative `span` for a leading glyph. `ToolCallDetail` is a `div`. `ToolCallStatus` is drawn by `ToolCall` for you.
+
+### Data attributes
+
+| Attribute | Part | Values |
+| --- | --- | --- |
+| `data-status` | `ToolCall` | `pending`, `running`, `done`, `error`, `approval` |
+| `data-note` | `ToolCallTitle` | Present without a verb |
+| `data-active` | `ToolCallTitle`, summary label | Present while shimmering |
+| `data-open`, `data-closed` | collapsible parts | From ui-sdk Collapsible |
+
+### CSS variables
+
+| Variable | macOS | iOS | What it sets |
+| --- | --- | --- | --- |
+| `--mb-tool-call-row-height` | `32px` | `44px` | A step's minimum height |
+| `--mb-tool-call-padding-inline` | `12px` | `14px` | Step and detail padding |
+| `--mb-tool-call-font` | body (13pt) | subheadline (15pt) | Step text |
+| `--mb-tool-activity-radius` | `12px` | grouped radius | The group's corners |
+| `--mb-tool-call-section-radius`, `-section-padding` | `8px`, `10px 12px` | `12px`, `12px 14px` | A detail section |

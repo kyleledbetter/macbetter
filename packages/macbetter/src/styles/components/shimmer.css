@@ -1,0 +1,60 @@
+/* Shimmer — secondary text with a brighter band sweeping along it while work is in progress. */
+
+.mb-shimmer {
+  --mb-shimmer-duration: 2s;
+  /* The band only moves toward the label color, so every frame holds the secondary label's 4.5:1. */
+  --mb-shimmer-base: var(--mb-label-secondary);
+  --mb-shimmer-highlight: var(--mb-label);
+
+  color: var(--mb-shimmer-base);
+}
+
+.mb-shimmer[data-active] {
+  background-image: linear-gradient(
+    90deg,
+    var(--mb-shimmer-base) 0% 38%,
+    var(--mb-shimmer-highlight) 50%,
+    var(--mb-shimmer-base) 62% 100%
+  );
+  background-size: 300% 100%;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: mb-shimmer var(--mb-shimmer-duration) linear infinite;
+}
+
+:where([dir="rtl"]) .mb-shimmer[data-active] {
+  animation-direction: reverse;
+}
+
+@keyframes mb-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0% 0;
+  }
+}
+
+/* Reduce Motion: the band stops and the text is plain secondary text, not a frozen gradient. */
+@media (prefers-reduced-motion: reduce) {
+  :where(:root:not([data-motion="full"])) {
+    .mb-shimmer[data-active] {
+      animation: none;
+      background-image: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--mb-shimmer-base);
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .mb-shimmer[data-active] {
+    animation: none;
+    background-image: none;
+    -webkit-text-fill-color: currentColor;
+    color: CanvasText;
+  }
+}

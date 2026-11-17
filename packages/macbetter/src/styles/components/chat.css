@@ -1,0 +1,197 @@
+/* Chat — the thread: a log that follows the reply, a centered column of turns, and a jump-to-latest button. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-chat-max-width: 720px;
+  --mb-chat-padding-inline: 24px;
+  --mb-chat-padding-block: 24px;
+  --mb-chat-gap: 28px;
+  --mb-chat-scroll-button-size: 32px;
+  --mb-chat-scroll-button-icon: 14px;
+  --mb-chat-greeting-icon-size: 40px;
+  --mb-chat-greeting-gap: 24px;
+}
+
+:where([data-platform="ipados"]) {
+  --mb-chat-max-width: 760px;
+  --mb-chat-padding-inline: 24px;
+  --mb-chat-padding-block: 20px;
+  --mb-chat-gap: 28px;
+  --mb-chat-scroll-button-size: 40px;
+  --mb-chat-scroll-button-icon: 18px;
+  --mb-chat-greeting-icon-size: 52px;
+  --mb-chat-greeting-gap: 28px;
+}
+
+:where([data-platform="ios"]) {
+  --mb-chat-max-width: 100%;
+  --mb-chat-padding-inline: 16px;
+  --mb-chat-padding-block: 16px;
+  --mb-chat-gap: 24px;
+  --mb-chat-scroll-button-size: 40px;
+  --mb-chat-scroll-button-icon: 18px;
+  --mb-chat-greeting-icon-size: 52px;
+  --mb-chat-greeting-gap: 24px;
+}
+
+.mb-chat {
+  /* Room under the last turn for a composer that floats over the thread. */
+  --mb-chat-inset-bottom: 0px;
+
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.mb-chat-viewport {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  scrollbar-width: none;
+  overscroll-behavior: contain;
+}
+
+.mb-chat-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.mb-chat-viewport:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: calc(var(--mb-focus-ring-width) * -1);
+}
+
+.mb-chat-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mb-chat-gap);
+  box-sizing: border-box;
+  width: 100%;
+  max-width: calc(var(--mb-chat-max-width) + var(--mb-chat-padding-inline) * 2);
+  margin-inline: auto;
+  padding-block: var(--mb-chat-padding-block) calc(var(--mb-chat-padding-block) + var(--mb-chat-inset-bottom));
+  padding-inline: var(--mb-chat-padding-inline);
+}
+
+/* ── Jump to latest ──────────────────────────────────────────── */
+
+.mb-chat-scroll-button {
+  /* Text scrolls right under it, so the glass is thicker than a toolbar's. */
+  --mb-glass-fill: var(--mb-material-thick);
+
+  position: absolute;
+  z-index: 2;
+  inset-block-end: calc(var(--mb-chat-inset-bottom) + 12px);
+  inset-inline-start: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--mb-chat-scroll-button-size);
+  height: var(--mb-chat-scroll-button-size);
+  margin: 0;
+  padding: 0;
+  color: var(--mb-label);
+  cursor: default;
+  translate: -50% 0;
+  touch-action: manipulation;
+  opacity: 0;
+  scale: 0.85;
+  pointer-events: none;
+  transition:
+    opacity var(--mb-duration-fast) var(--mb-ease-out),
+    scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy),
+    background-color var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+:where([dir="rtl"]) .mb-chat-scroll-button {
+  translate: 50% 0;
+}
+
+.mb-chat-scroll-button[data-visible] {
+  opacity: 1;
+  scale: 1;
+  pointer-events: auto;
+}
+
+.mb-chat-scroll-button :where(svg) {
+  width: var(--mb-chat-scroll-button-icon);
+  height: var(--mb-chat-scroll-button-icon);
+}
+
+/* A touch target never drops below the platform minimum. */
+.mb-chat-scroll-button::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: max(100%, var(--mb-hit-target));
+  height: max(100%, var(--mb-hit-target));
+  translate: -50% -50%;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-chat-scroll-button:hover {
+    --mb-glass-fill: var(--mb-bg-elevated);
+  }
+}
+
+.mb-chat-scroll-button:active {
+  scale: 0.94;
+  transition-duration: var(--mb-duration-instant);
+}
+
+/* ── Greeting ────────────────────────────────────────────────── */
+
+.mb-chat-greeting {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: calc(var(--mb-chat-max-width) + var(--mb-chat-padding-inline) * 2);
+  margin-inline: auto;
+  padding-inline: var(--mb-chat-padding-inline);
+  text-align: center;
+}
+
+.mb-chat-greeting-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--mb-chat-greeting-icon-size);
+  height: var(--mb-chat-greeting-icon-size);
+  margin-block-end: 8px;
+  color: var(--mb-accent-text);
+}
+
+.mb-chat-greeting-icon :where(svg, img) {
+  width: 100%;
+  height: 100%;
+}
+
+.mb-chat-greeting-title {
+  margin: 0;
+  color: var(--mb-label);
+  font: var(--mb-text-large-title);
+  letter-spacing: var(--mb-tracking-large-title);
+  text-wrap: balance;
+}
+
+.mb-chat-greeting-description {
+  margin: 0;
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-body);
+  text-wrap: pretty;
+}
+
+.mb-chat-greeting-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-self: stretch;
+  margin-block-start: calc(var(--mb-chat-greeting-gap) - 8px);
+  text-align: start;
+}

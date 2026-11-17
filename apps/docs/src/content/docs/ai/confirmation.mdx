@@ -1,0 +1,82 @@
+export const metadata = {
+  title: "Confirmation",
+  description: "Ask before an agent runs a tool, in the thread, then show the answer in one line.",
+}
+
+# Confirmation
+
+<Lead>Ask before an agent runs a tool, in the thread, then show the answer in one line.</Lead>
+
+<Demo name="ai/confirmation-basic" />
+
+## When to use it
+
+Use a confirmation when an agent wants to do something on someone's behalf that they should approve first: create an event, send a message, change a file. It sits in the conversation where the request came up, so people can read the thread around it before they answer, and nothing else on the screen is blocked.
+
+- Ask a question that names the tool and the action: "Allow Calendar to create an event?"
+- Show exactly what will be sent in the details, as label and value pairs.
+- Offer Deny, Allow once and, when it's safe, Always allow. Make Allow once the default.
+
+Use a modal [Alert](/docs/components/alert) instead when the action is destructive or can't be undone, like deleting files or sending money, or when the app can't go on until the person answers.
+
+## Usage
+
+```tsx
+import {
+  Confirmation,
+  ConfirmationActions,
+  ConfirmationDescription,
+  ConfirmationDetails,
+  ConfirmationIcon,
+  ConfirmationTitle,
+} from "macbetter/confirmation"
+```
+
+Lay out the card with a `ConfirmationIcon`, `ConfirmationTitle`, `ConfirmationDescription`, `ConfirmationDetails` (a [Description List](/docs/components/description-list) fits) and `ConfirmationActions` holding macbetter `Button`s. Put the default action last.
+
+### Once answered
+
+Set `state` to `allowed` or `denied` and the card folds to a single quiet line, with `outcome` as its text ("Allowed once", "Always allowed for Calendar"). Without `outcome` it says "Allowed" or "Denied".
+
+<Demo name="ai/confirmation-answered" />
+
+## Platform behavior
+
+- **macOS.** The buttons sit in a row at the trailing edge, the default one last, as in a Mac dialog. The card is at most 480 points wide.
+- **iOS and iPadOS.** The buttons stack full width with the default on top and Deny at the bottom, as in a system permission alert. The card fills the column.
+- Corners are continuous where the browser supports `corner-shape`.
+
+## Accessibility
+
+- The card is a group named by its title. Once answered, it's named by the outcome line.
+- Answering removes the buttons, so focus moves to the card itself rather than being lost; a screen reader then reads the outcome.
+- The icon is decorative. Say what the tool is in the title.
+
+## API
+
+### Confirmation
+
+<PropsTable
+  rows={[
+    { name: "state", type: '"pending" | "allowed" | "denied"', default: '"pending"', description: "Pending asks; the others fold the card to one line." },
+    { name: "outcome", type: "ReactNode", description: 'The line once answered. Defaults to "Allowed" or "Denied".' },
+    { name: "...props", type: 'ComponentProps<"div">', description: "Passed to the group." },
+  ]}
+/>
+
+`ConfirmationIcon` renders a decorative `span`, `ConfirmationTitle` and `ConfirmationDescription` render `p`, and `ConfirmationDetails` and `ConfirmationActions` render `div`.
+
+### Data attributes
+
+| Attribute | Part | Values |
+| --- | --- | --- |
+| `data-state` | `Confirmation` | `pending`, `allowed`, `denied` |
+
+### CSS variables
+
+| Variable | macOS | iOS | What it sets |
+| --- | --- | --- | --- |
+| `--mb-confirmation-padding` | `14px` | `16px` | Inside the card |
+| `--mb-confirmation-radius` | `12px` | grouped radius | The card's corners |
+| `--mb-confirmation-icon-size`, `-icon-radius` | `28px`, `7px` | `36px`, `9px` | The icon tile |
+| `--mb-confirmation-max-width` | `480px` | `none` | The card's width |

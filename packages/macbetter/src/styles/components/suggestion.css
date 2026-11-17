@@ -1,0 +1,203 @@
+/* Suggestion — prompt starters, as rows with hairlines between them or as a row of capsules. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-suggestion-row-height: 34px;
+  --mb-suggestion-row-padding: 10px;
+  --mb-suggestion-icon-size: 15px;
+  --mb-suggestion-icon-gap: 10px;
+  --mb-suggestion-font: var(--mb-text-body);
+  --mb-suggestion-chip-height: var(--mb-control-height);
+  --mb-suggestion-chip-padding: 12px;
+  --mb-suggestion-chip-font: 400 13px/16px var(--mb-font);
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-suggestion-row-height: 48px;
+  --mb-suggestion-row-padding: 16px;
+  --mb-suggestion-icon-size: 20px;
+  --mb-suggestion-icon-gap: 14px;
+  --mb-suggestion-font: var(--mb-text-body);
+  --mb-suggestion-chip-height: 36px;
+  --mb-suggestion-chip-padding: 15px;
+  --mb-suggestion-chip-font: 400 15px/20px var(--mb-font);
+}
+
+.mb-suggestions {
+  display: flex;
+  min-width: 0;
+}
+
+.mb-suggestions[data-layout="list"] {
+  flex-direction: column;
+}
+
+.mb-suggestions[data-layout="chips"] {
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mb-suggestions[data-layout="chips"][data-overflow="scroll"] {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  /* Room for the focus ring, which would otherwise be clipped by the scroller. */
+  margin: calc(var(--mb-focus-ring-width) * -1 - 1px);
+  padding: calc(var(--mb-focus-ring-width) + 1px);
+}
+
+.mb-suggestions[data-overflow="scroll"]::-webkit-scrollbar {
+  display: none;
+}
+
+.mb-suggestion {
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--mb-suggestion-icon-gap);
+  margin: 0;
+  border: 0;
+  background: transparent;
+  color: var(--mb-label);
+  text-align: start;
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  transition:
+    background-color var(--mb-duration-fast) var(--mb-ease-out),
+    opacity var(--mb-duration-fast) var(--mb-ease-out),
+    scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+.mb-suggestion-icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--mb-suggestion-icon-size);
+  height: var(--mb-suggestion-icon-size);
+  color: var(--mb-label-secondary);
+}
+
+.mb-suggestion-icon :where(svg, img) {
+  width: 100%;
+  height: 100%;
+}
+
+.mb-suggestion-label {
+  min-width: 0;
+}
+
+/* ── List ────────────────────────────────────────────────────── */
+
+.mb-suggestions[data-layout="list"] > .mb-suggestion {
+  width: 100%;
+  min-height: var(--mb-suggestion-row-height);
+  padding: 6px var(--mb-suggestion-row-padding);
+  border-radius: var(--mb-row-radius);
+  font: var(--mb-suggestion-font);
+  letter-spacing: var(--mb-tracking-body);
+}
+
+.mb-suggestions[data-layout="list"] .mb-suggestion-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* An inset hairline between rows, starting where the text does. */
+.mb-suggestions[data-layout="list"] > .mb-suggestion + .mb-suggestion::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: var(--mb-suggestion-row-padding);
+  height: var(--mb-hairline);
+  background: var(--mb-separator);
+  transition: opacity var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+/* ── Chips ───────────────────────────────────────────────────── */
+
+.mb-suggestions[data-layout="chips"] > .mb-suggestion {
+  gap: 6px;
+  height: var(--mb-suggestion-chip-height);
+  padding-inline: var(--mb-suggestion-chip-padding);
+  border-radius: var(--mb-radius-full);
+  background: var(--mb-fill-quaternary);
+  box-shadow: inset 0 0 0 var(--mb-hairline) var(--mb-separator-strong);
+  font: var(--mb-suggestion-chip-font);
+  letter-spacing: var(--mb-tracking-body);
+  white-space: nowrap;
+}
+
+.mb-suggestions[data-layout="chips"] > .mb-suggestion .mb-suggestion-icon {
+  width: calc(var(--mb-suggestion-icon-size) - 1px);
+  height: calc(var(--mb-suggestion-icon-size) - 1px);
+}
+
+/* A touch target never drops below the platform minimum. */
+.mb-suggestions[data-layout="chips"] > .mb-suggestion::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: max(100%, var(--mb-hit-target));
+  height: max(100%, var(--mb-hit-target));
+  translate: -50% -50%;
+}
+
+/* ── States ──────────────────────────────────────────────────── */
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-suggestions[data-layout="list"] > .mb-suggestion:hover {
+    background: var(--mb-fill-tertiary);
+  }
+
+  .mb-suggestions[data-layout="list"] > .mb-suggestion:hover::before,
+  .mb-suggestions[data-layout="list"] > .mb-suggestion:hover + .mb-suggestion::before {
+    opacity: 0;
+  }
+
+  .mb-suggestions[data-layout="chips"] > .mb-suggestion:hover {
+    background: var(--mb-fill-secondary);
+  }
+}
+
+.mb-suggestion:active {
+  transition-duration: 0ms;
+}
+
+.mb-suggestions[data-layout="list"] > .mb-suggestion:active {
+  background: var(--mb-fill-secondary);
+}
+
+.mb-suggestions[data-layout="chips"] > .mb-suggestion:active {
+  background: var(--mb-fill);
+}
+
+.mb-suggestion:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: 0;
+}
+
+.mb-suggestion:is([data-disabled], :disabled) {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .mb-suggestions[data-layout="chips"] > .mb-suggestion:active {
+    scale: 0.96;
+  }
+
+  .mb-suggestions[data-layout="list"] > .mb-suggestion:active {
+    border-radius: var(--mb-row-radius);
+  }
+}
+
+@media (prefers-contrast: more) {
+  .mb-suggestions[data-layout="chips"] > .mb-suggestion {
+    box-shadow: inset 0 0 0 1px var(--mb-control-border);
+  }
+}

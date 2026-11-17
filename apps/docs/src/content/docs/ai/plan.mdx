@@ -1,0 +1,84 @@
+export const metadata = {
+  title: "Plan",
+  description: "Show the steps of multi-step work and where each one stands.",
+}
+
+# Plan
+
+<Lead>Show the steps of multi-step work and where each one stands.</Lead>
+
+<Demo name="ai/plan-basic" />
+
+## When to use it
+
+Use a plan when an agent lays out work before doing it, or works through a known list: a migration, a report with several sections, a set of edits. People can see what's done, what's happening now and what's left.
+
+- Name steps by their outcome, like "Copy invoices to the new table", and keep each to one line.
+- Use the detail line for what a step found or why it was skipped.
+- Only one step is active at a time.
+
+## Usage
+
+```tsx
+import { Plan, PlanStep, PlanTitle } from "macbetter/plan"
+```
+
+Put an optional `PlanTitle` first, then a `PlanStep` for each step. The title names the list, and the header counts finished steps ("2 of 5"); set `progress={false}` to hide the count. Without a title, give `Plan` an `aria-label`.
+
+<Callout type="note" title="Compose it in a client component">
+`Plan` reads its children to find the title and the steps, so write it in a file that starts with `"use client"`.
+</Callout>
+
+Each step's `status` is `pending` (an empty circle), `active` (a turning accent ring), `done` (a filled check) or `skipped` (a dash, with the title struck through). `detail` adds a line under the title.
+
+## Platform behavior
+
+- **macOS.** 16-point markers beside 13-point titles, with 12-point detail lines.
+- **iOS and iPadOS.** 22-point markers beside 17-point titles, with more space between steps.
+- A line joins the markers, and turns accent below finished steps.
+- The active ring keeps turning under Reduce Motion, slower, because it tells people work is happening.
+
+## Accessibility
+
+- The steps are a list built on ui-sdk Timeline, named by the title. Tab lands on the active step; the arrow keys, Home and End move between steps.
+- Each step's status is read after its title: "Back up the database, Done". Markers are only drawn.
+- The active step is the current step to assistive technology.
+
+## API
+
+### Plan
+
+<PropsTable
+  rows={[
+    { name: "progress", type: "boolean", default: "true", description: "Shows the count of finished steps beside the title." },
+    { name: "...props", type: "Timeline props", description: "Passed to the ui-sdk Timeline, like aria-label and loop." },
+  ]}
+/>
+
+### PlanStep
+
+<PropsTable
+  rows={[
+    { name: "status", type: '"pending" | "active" | "done" | "skipped"', default: '"pending"', description: "Where the step stands." },
+    { name: "detail", type: "ReactNode", description: "One line under the title." },
+    { name: "...props", type: "TimelineItem props", description: "Passed to the item, like value." },
+  ]}
+/>
+
+`PlanTitle` renders a `span`.
+
+### Data attributes
+
+| Attribute | Part | Values |
+| --- | --- | --- |
+| `data-status` | `PlanStep`, its marker | `pending`, `active`, `done`, `skipped` |
+| `data-complete`, `data-current`, `data-upcoming` | step parts | From ui-sdk Timeline |
+
+### CSS variables
+
+| Variable | macOS | iOS | What it sets |
+| --- | --- | --- | --- |
+| `--mb-plan-marker-size` | `16px` | `22px` | A marker |
+| `--mb-plan-gap` | `10px` | `12px` | Marker to title |
+| `--mb-plan-step-padding` | `5px` | `8px` | Space above and below a step |
+| `--mb-plan-font`, `-detail-font` | 13pt, 12pt | 17pt, 15pt | Titles and detail lines |

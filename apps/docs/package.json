@@ -26,7 +26,8 @@
     "react-dom": "19.3.0",
     "rehype-slug": "^6.0.0",
     "remark-gfm": "^4.0.1",
-    "shiki": "latest"
+    "shiki": "latest",
+    "streamdown": "^2.8.0"
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "4.3.3",

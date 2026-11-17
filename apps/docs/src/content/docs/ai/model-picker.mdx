@@ -1,0 +1,116 @@
+export const metadata = { title: "Model Picker", description: "Choose a model and an effort level from one compact control." }
+
+# Model Picker
+
+<Lead>Choose a model and how hard it works from one compact control. It shows the model's name with the effort in secondary text, and opens a menu of both.</Lead>
+
+<Demo name="ai/model-picker-basic" />
+
+## When to use it
+
+Use a model picker in the composer's toolbar when people can choose between models. Leave it out when there's only one.
+
+- Describe each model in one line about when to pick it: "Fastest for everyday questions", not a version history.
+- Offer effort levels only for models that have them, and name them plainly: Low, Medium, High.
+- Remember the last choice for the next chat.
+
+## Usage
+
+```tsx
+import { ModelPicker } from "macbetter/model-picker"
+```
+
+Pass the models, and the effort levels if there are any, as data. The picker is uncontrolled with `defaultValue` and `defaultEffort`, or controlled with `value` and `effort`.
+
+```tsx
+<ModelPicker
+  models={[
+    { value: "atlas-4", label: "Atlas 4", description: "Best for complex, multi-step work" },
+    { value: "atlas-4-mini", label: "Atlas 4 Mini", description: "Fastest for everyday questions" },
+  ]}
+  efforts={[
+    { value: "low", label: "Low" },
+    { value: "high", label: "High" },
+  ]}
+  value={model}
+  onValueChange={setModel}
+  effort={effort}
+  onEffortChange={setEffort}
+/>
+```
+
+Choosing a model closes the menu. Choosing an effort level leaves it open, so you can see both choices before you go back to typing.
+
+### A layout of your own
+
+Pass children to replace the menu's body, built from the picker's parts. `ModelPickerGroup` holds the models, `ModelPickerEffort` lists the effort levels, and `ModelPickerSeparator` divides them. You can add other menu items, like a submenu of older models.
+
+```tsx
+<ModelPicker models={models} efforts={efforts}>
+  <ModelPickerGroup label="Recommended">
+    <ModelPickerItem value="atlas-4" description="Best for complex, multi-step work">Atlas 4</ModelPickerItem>
+  </ModelPickerGroup>
+  <ModelPickerSeparator />
+  <ModelPickerEffort />
+</ModelPicker>
+```
+
+The trigger still reads its labels from `models` and `efforts`, so list every model there.
+
+## Platform behavior
+
+- **macOS.** A plain pull-down button with a chevron, opening a compact menu with the accent highlight.
+- **iOS.** The menu opens as a sheet from the bottom of the screen on a phone.
+- **iPadOS.** The menu opens as a popover from the button.
+
+## Accessibility
+
+- The trigger is named by what it shows, like "Atlas 4, High". Pass `aria-label` to say more, like "Model: Atlas 4, high effort".
+- Models and effort levels are two radio groups in the menu, named by their headings, and each choice reports whether it's checked.
+- Arrow keys move through the menu, typing a name jumps to it, and Escape closes it and returns focus to the button.
+
+## API
+
+### ModelPicker
+
+<PropsTable
+  rows={[
+    { name: "models", type: "{ value, label, description?, disabled? }[]", description: "Required. The models to choose from." },
+    { name: "efforts", type: "{ value, label, description? }[]", default: "[]", description: "The effort levels, listed as a second group." },
+    { name: "value, defaultValue", type: "string", default: "the first model", description: "The chosen model." },
+    { name: "onValueChange", type: "(value: string) => void", description: "Runs when a model is chosen." },
+    { name: "effort, defaultEffort", type: "string", default: "the first level", description: "The chosen effort level." },
+    { name: "onEffortChange", type: "(effort: string) => void", description: "Runs when an effort level is chosen." },
+    { name: "modelsLabel, effortLabel", type: "string", default: '"Model", "Effort"', description: "The headings over each group." },
+    { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "The trigger's size." },
+    { name: "presentation", type: '"popover" | "sheet" | "auto"', default: '"auto"', description: "A sheet on small touch screens, a popover elsewhere." },
+    { name: "children", type: "ReactNode", description: "Replaces the menu's generated body." },
+  ]}
+/>
+
+It takes the rest of ui-sdk `Menu`'s props, and `className`, `disabled` and `aria-label` for the trigger.
+
+### Parts
+
+<PropsTable
+  rows={[
+    { name: "ModelPickerGroup label", type: "ReactNode | null", default: "modelsLabel", description: "The models' radio group. Put ModelPickerItems inside." },
+    { name: "ModelPickerItem value", type: "string", description: "Required. A model, or an effort level." },
+    { name: "ModelPickerItem description", type: "ReactNode", description: "A line under its name." },
+    { name: "ModelPickerItem closeOnSelect", type: "boolean", default: "true", description: "Closes the menu when chosen." },
+    { name: "ModelPickerEffort label", type: "ReactNode | null", default: "effortLabel", description: "The effort levels' radio group, from the picker's efforts." },
+  ]}
+/>
+
+`ModelPickerSeparator` is `MenuSeparator`.
+
+| Class | What it is |
+| --- | --- |
+| `.mb-model-picker` | The trigger, a plain `MenuTrigger` |
+| `.mb-model-picker-name`, `.mb-model-picker-effort` | The model's name and the effort in the trigger |
+| `.mb-model-picker-item-description` | An item's description |
+
+| Variable | What it sets |
+| --- | --- |
+| `--mb-model-picker-content-width` | The menu's narrowest width |
+| `--mb-model-picker-description-font` | Descriptions in the menu |

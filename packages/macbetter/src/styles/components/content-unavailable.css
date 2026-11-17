@@ -1,0 +1,105 @@
+/* Content unavailable — SwiftUI's ContentUnavailableView: an empty, offline or no-results state. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-content-unavailable-icon-sm: 28px;
+  --mb-content-unavailable-icon: 40px;
+  --mb-content-unavailable-icon-lg: 56px;
+  --mb-content-unavailable-title-sm: var(--mb-text-headline);
+  --mb-content-unavailable-title: var(--mb-text-title-3);
+  --mb-content-unavailable-title-lg: var(--mb-text-title-1);
+  --mb-content-unavailable-description-sm: var(--mb-text-callout);
+  --mb-content-unavailable-description: var(--mb-text-body);
+  --mb-content-unavailable-description-lg: 400 15px/20px var(--mb-font);
+  --mb-content-unavailable-max-width: 340px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-content-unavailable-icon-sm: 34px;
+  --mb-content-unavailable-icon: 48px;
+  --mb-content-unavailable-icon-lg: 64px;
+  --mb-content-unavailable-title-sm: var(--mb-text-headline);
+  --mb-content-unavailable-title: var(--mb-text-title-2);
+  --mb-content-unavailable-title-lg: var(--mb-text-title-1);
+  --mb-content-unavailable-description-sm: var(--mb-text-subheadline);
+  --mb-content-unavailable-description: var(--mb-text-subheadline);
+  --mb-content-unavailable-description-lg: var(--mb-text-body);
+  --mb-content-unavailable-max-width: 320px;
+}
+
+.mb-content-unavailable {
+  --mb-content-unavailable-icon-size: var(--mb-content-unavailable-icon);
+  --mb-content-unavailable-title-font: var(--mb-content-unavailable-title);
+  --mb-content-unavailable-description-font: var(--mb-content-unavailable-description);
+  --mb-content-unavailable-gap: var(--mb-space-3);
+
+  box-sizing: border-box;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  gap: var(--mb-content-unavailable-gap);
+  min-width: 0;
+  padding: var(--mb-space-8) var(--mb-space-7);
+  color: var(--mb-label);
+  text-align: center;
+}
+
+.mb-content-unavailable[data-size="sm"] {
+  --mb-content-unavailable-icon-size: var(--mb-content-unavailable-icon-sm);
+  --mb-content-unavailable-title-font: var(--mb-content-unavailable-title-sm);
+  --mb-content-unavailable-description-font: var(--mb-content-unavailable-description-sm);
+  --mb-content-unavailable-gap: var(--mb-space-2);
+  padding: var(--mb-space-6) var(--mb-space-5);
+}
+
+.mb-content-unavailable[data-size="lg"] {
+  --mb-content-unavailable-icon-size: var(--mb-content-unavailable-icon-lg);
+  --mb-content-unavailable-title-font: var(--mb-content-unavailable-title-lg);
+  --mb-content-unavailable-description-font: var(--mb-content-unavailable-description-lg);
+  --mb-content-unavailable-gap: var(--mb-space-4);
+  padding: var(--mb-space-10) var(--mb-space-8);
+}
+
+.mb-content-unavailable-icon {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: var(--mb-content-unavailable-icon-size);
+  height: var(--mb-content-unavailable-icon-size);
+  margin-block-end: var(--mb-space-2);
+  color: var(--mb-label-secondary);
+}
+
+.mb-content-unavailable-icon > :where(svg, img) {
+  width: 100%;
+  height: 100%;
+}
+
+.mb-content-unavailable-title {
+  max-width: var(--mb-content-unavailable-max-width);
+  margin: 0;
+  color: var(--mb-label);
+  font: var(--mb-content-unavailable-title-font);
+  letter-spacing: var(--mb-tracking-title);
+  text-wrap: balance;
+}
+
+.mb-content-unavailable-description {
+  max-width: var(--mb-content-unavailable-max-width);
+  margin: 0;
+  color: var(--mb-label-secondary);
+  font: var(--mb-content-unavailable-description-font);
+  letter-spacing: var(--mb-tracking-body);
+  text-wrap: pretty;
+}
+
+.mb-content-unavailable-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--mb-space-4);
+  margin-block-start: var(--mb-space-4);
+}

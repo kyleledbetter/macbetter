@@ -1,0 +1,127 @@
+export const metadata = {
+  title: "Code Block",
+  description: "Show code with a title bar, a language label and a copy button.",
+}
+
+# Code Block
+
+<Lead>Show code with a title bar, a language label and a copy button.</Lead>
+
+<Demo name="code-block/basic" />
+
+## When to use it
+
+Use a code block for code someone will read or copy: a snippet in an assistant's reply, a command to run, a file a tool wrote.
+
+- Give it a title bar with the file name when the code belongs to a file, and a language label when the language isn't obvious.
+- Keep the copy button. Copying is the most common thing people do with a code block.
+- Use a [Code Field](/docs/components/code-field) for a one-time code, and a [Text Area](/docs/components/text-area) for code someone edits.
+
+## Usage
+
+```tsx
+import {
+  CodeBlock,
+  CodeBlockContent,
+  CodeBlockCopy,
+  CodeBlockHeader,
+  CodeBlockTitle,
+} from "macbetter/code-block"
+```
+
+Pass plain text as the child of `CodeBlockContent`. Each line gets its own element, so line numbers work. `CodeBlockCopy` copies the text the block shows, and swaps its icon for a check mark for two seconds. Pass `value` to copy something else, like a command without its prompt.
+
+### Highlighted code
+
+macbetter adds no highlighter. Highlight on the server or in your build with any library, and pass the markup to `html`. A whole `<pre><code>` block, which most highlighters return, has its wrapper dropped and its lines kept. Choose a highlighter theme that writes colors with `light-dark()` or CSS variables, so the code follows the appearance.
+
+<Demo name="code-block/highlighted" />
+
+<Callout type="warning" title="Only pass markup you trust">
+  The `html` prop is inserted as is. Pass the output of your highlighter, never text from people or a model that
+  hasn't been through one.
+</Callout>
+
+### Without a title bar, wrapping and line numbers
+
+Put `CodeBlockCopy` straight inside `CodeBlock` and it sits in the top trailing corner. `wrap` wraps long lines instead of scrolling sideways. `lineNumbers` numbers each line; with highlighted markup, each line must be an element with the class `line`, as most highlighters write it. `maxHeight` scrolls the code past a height.
+
+<Demo name="code-block/options" />
+
+## Platform behavior
+
+- **macOS.** 12-point monospaced code, a 34-point title bar and a 12-point corner radius, with a small copy button that shows a hover fill.
+- **iOS and iPadOS.** 14-point code with more padding, a 44-point title bar and a 44-point hit area around the copy button.
+- Code scrolls sideways inside the block and never widens the page. Corners are continuous where the browser supports `corner-shape`.
+
+## Accessibility
+
+- The code is a `<pre><code>` that takes focus, so people using a keyboard can scroll it with the arrow keys. Give it an `aria-label` when there's no title bar.
+- The copy button is named "Copy code", and "Copied" after it copies. If the clipboard isn't available it does nothing and keeps its label.
+- Line numbers are drawn with CSS counters, so they aren't read aloud, selected or copied.
+
+## API
+
+### CodeBlock
+
+<PropsTable
+  rows={[
+    { name: "wrap", type: "boolean", default: "false", description: "Wraps long lines instead of scrolling sideways." },
+    { name: "lineNumbers", type: "boolean", default: "false", description: "Numbers each line in the gutter." },
+    { name: "maxHeight", type: "number | string", description: "Scrolls the code past this height, in pixels or any CSS length." },
+    { name: "...props", type: 'ComponentProps<"div">', description: "Passed to the element." },
+  ]}
+/>
+
+### CodeBlockTitle
+
+<PropsTable
+  rows={[
+    { name: "children", type: "ReactNode", description: "The file name." },
+    { name: "language", type: "ReactNode", description: "A language label after the file name." },
+  ]}
+/>
+
+### CodeBlockContent
+
+<PropsTable
+  rows={[
+    { name: "children", type: "ReactNode", description: "The code as plain text. A string is split into lines." },
+    { name: "html", type: "string", description: "Highlighted markup, used in place of children." },
+    { name: "tabIndex", type: "number", default: "0", description: "The code takes focus so it can be scrolled from the keyboard." },
+    { name: "...props", type: 'ComponentProps<"pre">', description: "Passed to the pre." },
+  ]}
+/>
+
+### CodeBlockCopy
+
+<PropsTable
+  rows={[
+    { name: "value", type: "string", description: "The text to copy. Defaults to the text the block shows." },
+    { name: "resetAfter", type: "number", default: "2000", description: "Milliseconds the check mark stays." },
+    { name: "aria-label", type: "string", default: '"Copy code"', description: "The button's name before it copies." },
+    { name: "...props", type: "ButtonProps", description: "A plain, small, circular Button." },
+  ]}
+/>
+
+`CodeBlockHeader` renders a `div`.
+
+### Data attributes
+
+| Attribute | Part | Values |
+| --- | --- | --- |
+| `data-wrap` | `CodeBlock` | Present when lines wrap |
+| `data-line-numbers` | `CodeBlock` | Present when lines are numbered |
+| `data-copied` | `CodeBlockCopy` | Present while the check mark shows |
+
+### CSS variables
+
+| Variable | macOS | iOS | What it sets |
+| --- | --- | --- | --- |
+| `--mb-code-block-font` | `12px/18px` mono | `14px/21px` mono | The code |
+| `--mb-code-block-padding-block`, `-padding-inline` | `10px`, `14px` | `14px`, `16px` | Padding around the code |
+| `--mb-code-block-header-height` | `34px` | `44px` | The title bar |
+| `--mb-code-block-radius` | `12px` | `16px` | The corner radius |
+| `--mb-code-block-bg`, `--mb-code-block-edge` | `--mb-bg-secondary`, `--mb-separator` | same | The fill and its hairline |
+| `--mb-code-block-gutter` | `--mb-label-tertiary` | same | Line number color |
+| `--mb-code-block-max-height` | `none` | `none` | Set by `maxHeight` |

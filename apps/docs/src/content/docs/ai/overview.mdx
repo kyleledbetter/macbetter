@@ -1,0 +1,151 @@
+export const metadata = {
+  title: "AI and chat",
+  description: "Components for building an assistant: the thread, messages, the composer, suggestions, a model picker and reply typography.",
+}
+
+# AI and chat
+
+<Lead>Components for building an assistant on macOS, iPadOS and iOS: the thread, the turns in it, the composer, prompt suggestions, a model picker, and typography for replies, with more for showing the agent's work.</Lead>
+
+<Demo name="ai/overview-chat" height={640} />
+
+Choose a suggestion or type a message. The reply is a canned one revealed a little at a time, so the demo needs no API key.
+
+## What this set is for
+
+Use these components to build the screens of an assistant: a new chat with a greeting and a composer, a conversation that follows a streaming reply, and the activity of an agent that reads files and calls tools.
+
+They are UI only. They take messages and status as props and report what the person does, and they never call a model. Feed them from the [AI SDK](https://ai-sdk.dev), another client, your own server, or scripted data, as these pages do.
+
+## Components
+
+### The conversation
+
+| Component | What it does |
+| --- | --- |
+| [Chat](/docs/ai/chat) | The thread. Follows the reply while you're at the end, stops when you scroll up, and offers a button back to the latest turn. |
+| [Message](/docs/ai/message) | One turn. The person's is a bubble on the trailing side; the assistant's is plain text with actions under it. |
+| [Prompt Input](/docs/ai/prompt-input) | The composer. Return sends; the send button turns into Stop while a reply streams. Takes attachments and `@` and `/` suggestions. |
+| [Suggestion](/docs/ai/suggestion) | Prompt starters, as a list or a row of chips. |
+| [Model Picker](/docs/ai/model-picker) | Choose a model and an effort level from one compact control. |
+| [Response](/docs/ai/response) | Typography for the reply: headings, lists, tables, links and code, with a caret while it streams. |
+
+### The agent's work
+
+| Component | What it does |
+| --- | --- |
+| [Reasoning](/docs/ai/reasoning) | "Thinking…" while it runs, "Worked for 2m 1s" after, and the steps when you expand it. |
+| [Tool Call](/docs/ai/tool-call) | The steps an agent took, each with its status, expandable to its request and response. |
+| [Plan](/docs/ai/plan) | A task list with pending, active and done steps. |
+| [Confirmation](/docs/ai/confirmation) | Asks before a tool runs: allow once, always allow, or deny. |
+| [Sources](/docs/ai/sources) | What a reply drew on, and inline citations that preview their source. |
+| [Artifact Card](/docs/ai/artifact-card) | A file or document the assistant made, which opens it. |
+| [Generated Image](/docs/ai/generated-image) | Generated images with a large view, thumbnails and actions, and a placeholder while one is made. |
+
+They build on core components: [Attachment](/docs/components/attachment) for files, [Code Block](/docs/components/code-block) for code, [Description List](/docs/components/description-list) for a tool's request and response, [Inspector](/docs/components/inspector) for a panel of outputs and sources, [Content Unavailable](/docs/components/content-unavailable) for empty states and [Shimmer](/docs/components/shimmer) for text that's in progress.
+
+## Connect a streaming client
+
+The [AI SDK](https://ai-sdk.dev)'s `useChat` hook keeps the messages and the status of a conversation, and streams replies from a route in your app. Its `status` uses the same words as `PromptInput`: `submitted`, `streaming`, `ready` and `error`. Install it in your app; macbetter doesn't depend on it.
+
+```bash
+pnpm add ai @ai-sdk/react
+```
+
+```tsx
+"use client"
+
+import { useChat } from "@ai-sdk/react"
+import { Chat, ChatContent, ChatScrollButton, ChatViewport } from "macbetter/chat"
+import { Message, MessageActionCopy, MessageActions, MessageBubble, MessageContent } from "macbetter/message"
+import {
+  PromptInput,
+  PromptInputAdd,
+  PromptInputAttachments,
+  PromptInputField,
+  PromptInputSubmit,
+  PromptInputToolbar,
+  PromptInputTools,
+} from "macbetter/prompt-input"
+import { Markdown } from "@/components/ai/markdown"
+
+function textOf(message: { parts: Array<{ type: string; text?: string }> }) {
+  return message.parts.map((part) => (part.type === "text" ? part.text : "")).join("")
+}
+
+// sendMessage takes a FileList; PromptInput gives you an array of File.
+function toFileList(files: File[]) {
+  const transfer = new DataTransfer()
+  for (const file of files) transfer.items.add(file)
+  return transfer.files
+}
+
+export function Assistant() {
+  const { messages, sendMessage, status, stop } = useChat()
+  const busy = status === "submitted" || status === "streaming"
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", height: "100dvh" }}>
+      <Chat busy={busy}>
+        <ChatViewport aria-label="Conversation">
+          <ChatContent>
+            {messages.map((message, index) => {
+              const text = textOf(message)
+              const last = index === messages.length - 1
+              return message.role === "user" ? (
+                <Message key={message.id} from="user">
+                  <MessageContent>
+                    <MessageBubble>{text}</MessageBubble>
+                  </MessageContent>
+                </Message>
+              ) : (
+                <Message key={message.id} from="assistant">
+                  <MessageContent>
+                    <Markdown streaming={last && status === "streaming"}>{text}</Markdown>
+                  </MessageContent>
+                  {last && busy ? null : (
+                    <MessageActions>
+                      <MessageActionCopy text={text} />
+                    </MessageActions>
+                  )}
+                </Message>
+              )
+            })}
+          </ChatContent>
+        </ChatViewport>
+        <ChatScrollButton />
+      </Chat>
+      <PromptInput status={status} glow onStop={stop} onSubmit={({ text, files }) => sendMessage({ text, files: toFileList(files) })}>
+        <PromptInputAttachments />
+        <PromptInputField placeholder="Ask anything" />
+        <PromptInputToolbar>
+          <PromptInputTools>
+            <PromptInputAdd />
+          </PromptInputTools>
+          <PromptInputTools>
+            <PromptInputSubmit />
+          </PromptInputTools>
+        </PromptInputToolbar>
+      </PromptInput>
+    </div>
+  )
+}
+```
+
+A few things to get right:
+
+- **Announce the reply once.** Pass `busy` to `Chat` while the status is `submitted` or `streaming`. Screen readers then read the finished reply instead of every word.
+- **Stop means stop.** Pass the client's `stop` to `onStop`. The submit button shows Stop for both `submitted` and `streaming`, so the person can cancel before the first word arrives.
+- **Show actions when the reply is done.** Leave copy and retry off the reply that's still streaming; they act on the whole text.
+- **Files.** `onSubmit` gives you an array of `File`. `sendMessage` takes a `FileList`, so convert it as above, or upload the files first and send their URLs.
+- **Errors.** When the status is `error`, show what went wrong in the thread and offer a retry. The composer keeps working, so the person can also try again by sending.
+
+## Platform behavior
+
+- **macOS.** The composer sits at the bottom of the window's content on a raised surface, 13-point text throughout, actions revealed under the pointer.
+- **iOS and iPadOS.** The composer floats over the thread on Liquid Glass, text is 17 points, person bubbles follow Messages, and actions under replies always show.
+- **Only the composer and the scroll button use a material.** Messages and steps repeat down the thread, so they use plain fills, never blur.
+
+## Names and marks
+
+The examples on these pages use invented assistants and models, like "Atlas 4". macbetter ships no assistant, model vendor or integration logos, and isn't made or endorsed by Apple or by any company whose assistant these screens resemble.

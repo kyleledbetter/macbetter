@@ -1,0 +1,102 @@
+export const metadata = {
+  title: "Description List",
+  description: "Show labels and their values, side by side or stacked.",
+}
+
+# Description List
+
+<Lead>Show labels and their values, side by side or stacked.</Lead>
+
+<Demo name="description-list/rows" />
+
+## When to use it
+
+Use a description list for read-only facts about one thing: a file's kind and size, a tool call's id and result, a skill's author and version. It's the label and value layout of a Get Info window or an inspector.
+
+- Keep labels short nouns, and write them in sentence case.
+- Use rows when there's room beside the values and the labels are short. Use stacked when the panel is narrow or the values are long.
+- Use a [List](/docs/components/list) when the rows are settings someone changes, or a [Table](/docs/components/table) for many items with the same fields.
+
+## Usage
+
+```tsx
+import {
+  DescriptionDetails,
+  DescriptionItem,
+  DescriptionList,
+  DescriptionTerm,
+} from "macbetter/description-list"
+```
+
+It renders a real `<dl>`. Each `DescriptionItem` is the `div` around one `<dt>` and its `<dd>`, which is the one wrapper HTML allows inside a description list. An item can hold more than one `DescriptionDetails` for a label with several values.
+
+### Rows
+
+`layout="rows"`, the default, puts the labels in a column as wide as the widest label, up to 40% of the list, and lines every value up beside it. Long values wrap inside their column. Set `--mb-description-list-term-width` to any grid track size, like `120px`, to fix the column.
+
+Pass `mono` to `DescriptionDetails` for ids, hashes and paths. Mono values break anywhere, since an id has no spaces to break at.
+
+### Stacked
+
+`layout="stacked"` puts each label above its value, like the request of a tool call.
+
+<Demo name="description-list/stacked" />
+
+### Sizes
+
+`size="sm"` is the dense size for inspectors and popovers; `md` is the default.
+
+<Demo name="description-list/sizes" />
+
+## Platform behavior
+
+- **macOS.** 13-point values with secondary labels, 6 points between rows; 12 points at `sm`. Mono values are 12 points, a step smaller so they look the same size as the text beside them.
+- **iOS and iPadOS.** 17-point values and 10 points between rows; 15 points at `sm`. Stacked labels are 15 points.
+- Labels sit on the leading side and follow the reading direction in right-to-left layouts.
+
+## Accessibility
+
+- A `<dl>` tells screen readers which text is a label and which is its value, and how many pairs there are.
+- Labels use the secondary label color, which holds 4.5:1 in light and dark.
+- Don't use a description list for layout alone; if the text isn't label and value, use paragraphs.
+
+## API
+
+### DescriptionList
+
+<PropsTable
+  rows={[
+    { name: "layout", type: '"rows" | "stacked"', default: '"rows"', description: "Labels in a column beside the values, or above them." },
+    { name: "size", type: '"sm" | "md"', default: '"md"', description: "The text size and row spacing." },
+    { name: "...props", type: 'ComponentProps<"dl">', description: "Passed to the list." },
+  ]}
+/>
+
+### DescriptionDetails
+
+<PropsTable
+  rows={[
+    { name: "mono", type: "boolean", default: "false", description: "Sets the value in the monospaced font and lets it break anywhere." },
+    { name: "...props", type: 'ComponentProps<"dd">', description: "Passed to the element." },
+  ]}
+/>
+
+`DescriptionItem` renders a `div` and `DescriptionTerm` a `dt`.
+
+### Data attributes
+
+| Attribute | Part | Values |
+| --- | --- | --- |
+| `data-layout` | `DescriptionList` | `rows`, `stacked` |
+| `data-size` | `DescriptionList` | `sm`, `md` |
+| `data-mono` | `DescriptionDetails` | Present for mono values |
+
+### CSS variables
+
+| Variable | macOS | iOS | What it sets |
+| --- | --- | --- | --- |
+| `--mb-description-list-term-width` | `fit-content(40%)` | `fit-content(40%)` | The label column, as a grid track |
+| `--mb-description-list-font`, `-font-sm` | body, callout | body, subheadline | The text at each size |
+| `--mb-description-list-mono-font`, `-mono-font-sm` | `12px`, `11px` mono | `15px`, `13px` mono | Mono values at each size |
+| `--mb-description-list-row-gap`, `-row-gap-sm` | `6px`, `4px` | `10px`, `8px` | Space between rows |
+| `--mb-description-list-column-gap` | `16px` | `16px` | Space between the label and value columns |

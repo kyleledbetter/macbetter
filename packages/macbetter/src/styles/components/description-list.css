@@ -1,0 +1,92 @@
+/* Description list — label and value pairs, in a label column or stacked. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-description-list-font: var(--mb-text-body);
+  --mb-description-list-font-sm: var(--mb-text-callout);
+  --mb-description-list-mono-font: 400 12px/16px var(--mb-font-mono);
+  --mb-description-list-mono-font-sm: 400 11px/15px var(--mb-font-mono);
+  --mb-description-list-row-gap: 6px;
+  --mb-description-list-row-gap-sm: 4px;
+  --mb-description-list-column-gap: 16px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-description-list-font: var(--mb-text-body);
+  --mb-description-list-font-sm: var(--mb-text-subheadline);
+  --mb-description-list-mono-font: 400 15px/22px var(--mb-font-mono);
+  --mb-description-list-mono-font-sm: 400 13px/20px var(--mb-font-mono);
+  --mb-description-list-row-gap: 10px;
+  --mb-description-list-row-gap-sm: 8px;
+  --mb-description-list-column-gap: 16px;
+}
+
+.mb-description-list {
+  /* The label column: as wide as the widest label, up to 40% of the list. Any track size works. */
+  --mb-description-list-term-width: fit-content(40%);
+  --mb-description-list-current-font: var(--mb-description-list-font);
+  --mb-description-list-current-mono: var(--mb-description-list-mono-font);
+  --mb-description-list-gap: var(--mb-description-list-row-gap);
+
+  display: grid;
+  grid-template-columns: var(--mb-description-list-term-width) minmax(0, 1fr);
+  column-gap: var(--mb-description-list-column-gap);
+  row-gap: var(--mb-description-list-gap);
+  min-width: 0;
+  margin: 0;
+  color: var(--mb-label);
+  font: var(--mb-description-list-current-font);
+  letter-spacing: var(--mb-tracking-body);
+}
+
+.mb-description-list[data-size="sm"] {
+  --mb-description-list-current-font: var(--mb-description-list-font-sm);
+  --mb-description-list-current-mono: var(--mb-description-list-mono-font-sm);
+  --mb-description-list-gap: var(--mb-description-list-row-gap-sm);
+}
+
+/* Each item spans both columns and shares them, so every label lines up with the others. */
+.mb-description-item {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  align-items: baseline;
+  min-width: 0;
+}
+
+.mb-description-term {
+  grid-column: 1;
+  min-width: 0;
+  color: var(--mb-label-secondary);
+  overflow-wrap: break-word;
+}
+
+.mb-description-details {
+  grid-column: 2;
+  min-width: 0;
+  margin: 0;
+  color: var(--mb-label);
+  overflow-wrap: break-word;
+}
+
+.mb-description-details[data-mono] {
+  font: var(--mb-description-list-current-mono);
+  /* Ids and hashes have no break points of their own. */
+  overflow-wrap: anywhere;
+}
+
+/* Stacked: one column, each label above its value. */
+.mb-description-list[data-layout="stacked"] {
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: calc(var(--mb-description-list-gap) * 2);
+}
+
+.mb-description-list[data-layout="stacked"] .mb-description-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mb-space-1);
+}
+
+.mb-description-list[data-layout="stacked"] .mb-description-term {
+  font: var(--mb-text-subheadline);
+  font-weight: 500;
+}

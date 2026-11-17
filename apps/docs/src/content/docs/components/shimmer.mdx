@@ -1,0 +1,71 @@
+export const metadata = {
+  title: "Shimmer",
+  description: "Show that work is in progress with text that a brighter band sweeps across.",
+}
+
+# Shimmer
+
+<Lead>Show that work is in progress with text that a brighter band sweeps across.</Lead>
+
+<Demo name="shimmer/basic" />
+
+## When to use it
+
+Use a shimmer for a short status line while something works and you can't say how long it will take: "Thinking…", "Searching the web…", "Reading 4 files…". The words say what's happening; the shimmer says it's still happening.
+
+- Keep the text short and specific. Name the work, not the wait.
+- Stop the shimmer when the work ends, and change the text to say what happened, like "Worked for 2m 1s".
+- Use a [Progress](/docs/components/progress) bar when you know how far along the work is, and an [Activity Indicator](/docs/components/activity-indicator) where there's no room for words.
+
+## Usage
+
+```tsx
+import { Shimmer } from "macbetter/shimmer"
+```
+
+`Shimmer` renders a `span`, so it sits inside a sentence or a row. Pass `render={<p />}` for another element. `duration` sets the seconds one sweep takes; the default is 2.
+
+### Turning it off
+
+Set `active={false}` when the work is done. The text stays, as plain secondary text, so the line doesn't jump.
+
+<Demo name="shimmer/status" />
+
+## Platform behavior
+
+The shimmer is the same on macOS, iPadOS and iOS. It takes its size and weight from the text around it, so it follows each platform's type ramp.
+
+- The band only ever moves toward the label color: in dark appearance it brightens, in light appearance it darkens. The rest of the text stays at the secondary label color, so it holds 4.5:1 at every frame.
+- Under Reduce Motion the band stops and the text is plain secondary text. Nothing is left frozen mid-sweep.
+- In right-to-left layouts the band sweeps from right to left.
+
+## Accessibility
+
+- It's ordinary text: screen readers read it once, and the animation is invisible to them.
+- When the status changes while someone waits, put the shimmer inside an element with `role="status"` so the new text is announced, as the second demo does.
+- In forced color modes the text is drawn in the system text color with no sweep.
+
+## API
+
+<PropsTable
+  rows={[
+    { name: "active", type: "boolean", default: "true", description: "Whether the band sweeps. False leaves plain secondary text." },
+    { name: "duration", type: "number | string", default: "2", description: "Seconds for one sweep, or any CSS time like \"1500ms\"." },
+    { name: "render", type: "RenderProp", description: "Renders a different element with the shimmer's props." },
+    { name: "...props", type: 'ComponentProps<"span">', description: "Passed to the element." },
+  ]}
+/>
+
+### Data attributes
+
+| Attribute | Values |
+| --- | --- |
+| `data-active` | Present while the band sweeps |
+
+### CSS variables
+
+| Variable | Default | What it sets |
+| --- | --- | --- |
+| `--mb-shimmer-duration` | `2s` | One sweep. The `duration` prop sets it. |
+| `--mb-shimmer-base` | `--mb-label-secondary` | The text color, and the color when inactive |
+| `--mb-shimmer-highlight` | `--mb-label` | The band's color |

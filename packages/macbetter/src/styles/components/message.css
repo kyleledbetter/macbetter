@@ -1,0 +1,236 @@
+/* Message — one turn: the person's trailing bubble, the assistant's plain reply, and the actions under it. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-message-gap: 6px;
+  --mb-message-bubble-max-width: 75%;
+  --mb-message-bubble-font: 400 13px/18px var(--mb-font);
+  --mb-message-bubble-padding: 7px 12px;
+  --mb-message-bubble-radius: 16px;
+  --mb-message-action-size: 24px;
+  --mb-message-action-icon: 15px;
+  --mb-message-action-radius: var(--mb-radius-sm);
+  --mb-message-meta-font: var(--mb-text-subheadline);
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-message-gap: 6px;
+  --mb-message-bubble-max-width: 75%;
+  --mb-message-bubble-font: 400 17px/22px var(--mb-font);
+  --mb-message-bubble-padding: 8px 14px;
+  --mb-message-bubble-radius: 18px;
+  --mb-message-action-size: 34px;
+  --mb-message-action-icon: 19px;
+  --mb-message-action-radius: var(--mb-radius-full);
+  --mb-message-meta-font: var(--mb-text-footnote);
+}
+
+.mb-message {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--mb-message-gap);
+  min-width: 0;
+  margin: 0;
+}
+
+.mb-message[data-from="user"] {
+  align-items: flex-end;
+}
+
+.mb-message-content {
+  min-width: 0;
+  color: var(--mb-label);
+}
+
+.mb-message[data-from="user"] > .mb-message-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  max-width: var(--mb-message-bubble-max-width);
+}
+
+/* ── Bubble ──────────────────────────────────────────────────── */
+
+.mb-message-bubble {
+  --mb-message-bubble-bg: var(--mb-accent);
+  --mb-message-bubble-fg: var(--mb-on-accent);
+
+  box-sizing: border-box;
+  max-width: 100%;
+  padding: var(--mb-message-bubble-padding);
+  border-radius: var(--mb-message-bubble-radius);
+  background: var(--mb-message-bubble-bg);
+  color: var(--mb-message-bubble-fg);
+  font: var(--mb-message-bubble-font);
+  letter-spacing: var(--mb-tracking-body);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  text-align: start;
+}
+
+.mb-message-bubble[data-variant="neutral"] {
+  --mb-message-bubble-bg: light-dark(
+    color-mix(in oklch, var(--mb-tint) 14%, var(--mb-bg)),
+    color-mix(in oklch, var(--mb-tint) 30%, var(--mb-bg))
+  );
+  --mb-message-bubble-fg: var(--mb-label);
+}
+
+.mb-message-bubble :where(p) {
+  margin: 0;
+}
+
+.mb-message-bubble :where(p + p) {
+  margin-block-start: 0.5em;
+}
+
+.mb-message-bubble :where(a) {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.mb-message-bubble ::selection {
+  background: color-mix(in oklch, var(--mb-message-bubble-fg) 28%, transparent);
+}
+
+@media (prefers-contrast: more) {
+  .mb-message-bubble[data-variant="neutral"] {
+    box-shadow: inset 0 0 0 1px var(--mb-control-border);
+  }
+}
+
+@media (forced-colors: active) {
+  .mb-message-bubble {
+    border: 1px solid CanvasText;
+  }
+}
+
+/* ── Attachments and meta ────────────────────────────────────── */
+
+.mb-message-attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+}
+
+.mb-message[data-from="user"] > .mb-message-attachments,
+.mb-message[data-from="user"] > .mb-message-content > .mb-message-attachments {
+  justify-content: flex-end;
+}
+
+.mb-message-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  color: var(--mb-label-secondary);
+  font: var(--mb-message-meta-font);
+  letter-spacing: var(--mb-tracking-caption);
+  font-variant-numeric: tabular-nums;
+}
+
+.mb-message[data-from="user"] > .mb-message-meta {
+  justify-content: flex-end;
+  padding-inline-end: 4px;
+}
+
+/* ── Actions ─────────────────────────────────────────────────── */
+
+.mb-message-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px;
+  min-height: var(--mb-message-action-size);
+  /* Pulls the first glyph into line with the text above it. */
+  margin-inline-start: calc((var(--mb-message-action-size) - var(--mb-message-action-icon)) / -2);
+  transition: opacity var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-message[data-from="user"] > .mb-message-actions {
+  margin-inline: 0 calc((var(--mb-message-action-size) - var(--mb-message-action-icon)) / -2);
+}
+
+.mb-message-action {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--mb-message-action-size);
+  height: var(--mb-message-action-size);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--mb-message-action-radius);
+  background: transparent;
+  color: var(--mb-label-secondary);
+  cursor: default;
+  touch-action: manipulation;
+  transition:
+    background-color var(--mb-duration-fast) var(--mb-ease-out),
+    color var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-message-action::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: max(100%, var(--mb-hit-target));
+  height: max(100%, var(--mb-hit-target));
+  translate: -50% -50%;
+}
+
+.mb-message-action :where(svg) {
+  flex: none;
+  width: var(--mb-message-action-icon);
+  height: var(--mb-message-action-icon);
+}
+
+.mb-message-action:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-message-action:hover {
+    background: var(--mb-fill-tertiary);
+    color: var(--mb-label);
+  }
+
+  /* Older turns keep their actions out of the way until you point at or move into them. */
+  .mb-message:not([data-latest], :nth-last-child(1 of .mb-message), :hover, :focus-within, :has([data-open]))
+    > .mb-message-actions {
+    opacity: 0;
+  }
+}
+
+.mb-message-action:active {
+  background: var(--mb-fill-secondary);
+  color: var(--mb-label);
+  transition-duration: 0ms;
+}
+
+.mb-message-action[data-pressed] {
+  background: var(--mb-accent-soft);
+  color: var(--mb-accent-text);
+}
+
+.mb-message-action[data-copied] {
+  color: var(--mb-label);
+}
+
+.mb-message-action:is([data-disabled], :disabled) {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .mb-message-action:active {
+    background: transparent;
+    opacity: 0.45;
+  }
+}

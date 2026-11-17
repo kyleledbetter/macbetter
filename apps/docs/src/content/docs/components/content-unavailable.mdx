@@ -1,0 +1,92 @@
+export const metadata = {
+  title: "Content Unavailable",
+  description: "Explain why a view is empty and what someone can do about it.",
+}
+
+# Content Unavailable
+
+<Lead>Explain why a view is empty and what someone can do about it.</Lead>
+
+<Demo name="content-unavailable/search" />
+
+## When to use it
+
+Show a content unavailable view when a list, a search or a pane has nothing to show: no results, nothing created yet, or no connection. It's SwiftUI's `ContentUnavailableView`.
+
+- Say what happened in the title, in a few words: "No Results for “lantern budget”", "No Chats Yet", "You’re Offline".
+- Use the description for the next step, in one sentence.
+- Offer an action only when there's an obvious one, like New Chat or Try Again. One filled button at most.
+- Use a symbol that matches the cause. It's decorative, so the title must make sense without it.
+
+## Usage
+
+```tsx
+import {
+  ContentUnavailable,
+  ContentUnavailableActions,
+  ContentUnavailableDescription,
+  ContentUnavailableIcon,
+  ContentUnavailableTitle,
+} from "macbetter/content-unavailable"
+```
+
+`ContentUnavailable` centers its parts in whatever space it fills. Put it where the content would be: in a window's body, a sidebar or a sheet. The title is an `h2`; pass `render={<h3 />}` to fit your page's outline.
+
+### An empty list with an action
+
+<Demo name="content-unavailable/empty" />
+
+### Sizes
+
+`size` is `sm`, `md` (the default) or `lg`. Use `sm` in a sidebar or popover, `md` in a pane, and `lg` for an empty window.
+
+<Demo name="content-unavailable/offline" />
+
+## Platform behavior
+
+- **macOS.** A 40-point symbol, a 15-point semibold title and 13-point text, sized for a window pane.
+- **iOS and iPadOS.** A 48-point symbol, a 22-point bold title and 15-point text, as the system view draws them. The actions use the platform's capsule buttons.
+- The symbol is drawn in the secondary label color in every theme, so it stays quiet next to the title.
+
+## Accessibility
+
+- The title is a heading, so people using screen readers can find the empty state from the heading list.
+- The icon is hidden from assistive technology. Put everything that matters in the title and description.
+- When the view appears in response to a search, the search field should announce the result count; the view itself doesn't take focus.
+
+## API
+
+### ContentUnavailable
+
+<PropsTable
+  rows={[
+    { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "The scale of the icon, title and description." },
+    { name: "...props", type: 'ComponentProps<"div">', description: "Passed to the element." },
+  ]}
+/>
+
+### ContentUnavailableTitle
+
+<PropsTable
+  rows={[
+    { name: "render", type: "RenderProp", description: "Renders a different heading level, such as <h3 />." },
+    { name: "...props", type: 'ComponentProps<"h2">', description: "Passed to the heading." },
+  ]}
+/>
+
+`ContentUnavailableIcon` renders a `span` with `aria-hidden="true"` and sizes the SVG or image inside it. `ContentUnavailableDescription` renders a `p` and `ContentUnavailableActions` a `div`.
+
+### Data attributes
+
+| Attribute | Values |
+| --- | --- |
+| `data-size` | `sm`, `md`, `lg` |
+
+### CSS variables
+
+| Variable | macOS | iOS | What it sets |
+| --- | --- | --- | --- |
+| `--mb-content-unavailable-icon-sm`, `-icon`, `-icon-lg` | `28px`, `40px`, `56px` | `34px`, `48px`, `64px` | The symbol size at each size |
+| `--mb-content-unavailable-title-sm`, `-title`, `-title-lg` | headline, title 3, title 1 | headline, title 2, title 1 | The title font |
+| `--mb-content-unavailable-description-sm`, `-description`, `-description-lg` | callout, body, 15px | subheadline, subheadline, body | The description font |
+| `--mb-content-unavailable-max-width` | `340px` | `320px` | The longest line of the title and description |

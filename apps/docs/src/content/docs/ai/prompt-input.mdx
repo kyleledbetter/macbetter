@@ -1,0 +1,180 @@
+export const metadata = { title: "Prompt Input", description: "The composer: a field that grows, with attachments, tools and a send button that turns into Stop." }
+
+# Prompt Input
+
+<Lead>The composer. A field that grows as you type, attachments above it, and a row of tools under it, with a send button that turns into Stop while a reply is on its way.</Lead>
+
+<Demo name="ai/prompt-input-basic" />
+
+## When to use it
+
+Use a prompt input wherever someone writes to an assistant: at the bottom of a [Chat](/docs/ai/chat), or larger in the middle of a new chat under a [greeting](/docs/ai/chat#a-new-chat).
+
+- Return sends and Shift-Return starts a new line, as in Messages.
+- Keep the toolbar short. An add button on the leading side; the model, dictation and send on the trailing side.
+- Show Stop in place of Send while the reply is on its way, so there's always one obvious thing to press.
+
+## Usage
+
+```tsx
+import {
+  PromptInput,
+  PromptInputAccessory,
+  PromptInputAdd,
+  PromptInputAttachments,
+  PromptInputButton,
+  PromptInputField,
+  PromptInputSubmit,
+  PromptInputToolbar,
+  PromptInputTools,
+} from "macbetter/prompt-input"
+```
+
+`PromptInput` is a form. It calls `onSubmit({ text, files })` when the person sends, then clears the field and the files. Pass the client's `status` so the submit button can become Stop, and `onStop` to end the reply.
+
+```tsx
+<PromptInput status={status} onSubmit={({ text, files }) => send(text, files)} onStop={stop}>
+  <PromptInputAttachments />
+  <PromptInputField placeholder="Ask anything" />
+  <PromptInputToolbar>
+    <PromptInputTools>
+      <PromptInputAdd />
+    </PromptInputTools>
+    <PromptInputTools>
+      <ModelPicker models={models} />
+      <PromptInputButton aria-label="Dictate">
+        <MicIcon aria-hidden="true" />
+      </PromptInputButton>
+      <PromptInputSubmit />
+    </PromptInputTools>
+  </PromptInputToolbar>
+</PromptInput>
+```
+
+An empty field doesn't send, and the send button stays disabled until there's text or a file. Text typed through an input method, like Japanese or Chinese, isn't sent while it's still being composed.
+
+### Status and the glow
+
+| `status` | The submit button | Return |
+| --- | --- | --- |
+| `ready` | Send | Sends |
+| `submitted`, `streaming` | Stop, which calls `onStop` | Does nothing |
+| `error` | Send, to try again | Sends |
+
+Set `glow` to show a soft ring of color moving around the composer while the status is `submitted` or `streaming`. It's drawn from the theme's accent and system colors, so each theme glows in its own colors. Under Reduce Motion it holds still.
+
+### A new chat
+
+`size="lg"` is the tall composer of a new chat, three lines high before you type. Put a `PromptInputAccessory` inside the prompt input for a strip attached under it, with context like a project or files on the leading side and an action on the trailing side.
+
+<Demo name="ai/prompt-input-new-chat" />
+
+### Attachments
+
+Files come in three ways: from the add button's "Add photos and files", by dropping them on the composer, or by pasting them into the field. `PromptInputAttachments` shows them as chips above the field. Limit them with `accept`, `maxFiles` and `maxSize`.
+
+Add your own items to the add button's menu as children, like "Take a photo" or "Add from a project". Handle them with the menu's `onAction`.
+
+### Mentions and commands
+
+Pass `triggers` to the field to suggest things at the caret: files or people after `@`, commands after `/`. Each trigger is a character and its items, as data or a function that loads them.
+
+<Demo name="ai/prompt-input-mentions" />
+
+```tsx
+const triggers: PromptInputTrigger[] = [
+  { char: "@", items: files.map((file) => ({ value: file.id, label: file.name })) },
+  { char: "/", boundary: "start", items: ["summarize", "translate", "table"] },
+  { char: "#", items: (query, { signal }) => searchProjects(query, signal) },
+]
+```
+
+While the list is open, Return chooses the highlighted suggestion instead of sending, and Escape closes the list. The suggestions are ui-sdk's [Trigger Menu](https://ui-sdk.dev/docs/components/trigger-menu), so a trigger can also ask for arguments, like `/translate <language>`.
+
+### On iPhone
+
+On iOS and iPadOS the composer is Liquid Glass. Set `floating` to float it over the bottom of a chat, above the home indicator.
+
+<Demo name="ai/chat-ios" platforms={["ios"]} />
+
+## Platform behavior
+
+- **macOS.** A raised surface with 13-point text and 28-point tools. It shows the accent focus ring while the field has focus, like other text fields.
+- **iOS and iPadOS.** Liquid Glass with 17-point text and 36-point tools inside 44-point hit areas. No focus ring: the caret shows where you are. The add menu and the model picker open as sheets on a phone.
+- **Every platform.** Corners are continuous, about 18 points (22 for `lg`) on macOS and 24 on touch.
+
+## Accessibility
+
+- The field is named "Message" unless you pass `aria-label`. Use a placeholder as a hint, not as the name.
+- The submit button is named "Send" or "Stop", and every icon-only tool needs an `aria-label`.
+- Attached files are a list with one Tab stop. Arrow keys move between them and Delete removes one. Each remove button is named for its file, and adding or removing a file is announced.
+- With `triggers`, the field becomes a combobox, and a status region announces how many suggestions there are.
+- The glow is decorative. Status reaches assistive tech through the Stop button and the chat's busy state.
+
+## API
+
+### PromptInput
+
+<PropsTable
+  rows={[
+    { name: "onSubmit", type: "({ text, files }) => void", description: "Runs when the person sends. The field and files clear after." },
+    { name: "status", type: '"ready" | "submitted" | "streaming" | "error"', default: '"ready"', description: "Where the reply is. submitted and streaming show Stop." },
+    { name: "onStop", type: "() => void", description: "Runs when Stop is pressed." },
+    { name: "size", type: '"md" | "lg"', default: '"md"', description: "md starts at one line; lg is the tall new-chat composer." },
+    { name: "glow", type: "boolean", default: "false", description: "A moving ring of color while the reply is on its way." },
+    { name: "floating", type: "boolean", default: "false", description: "Floats over the bottom of a Chat." },
+    { name: "value, defaultValue, onValueChange", type: "string", description: "The text, controlled or not." },
+    { name: "files, defaultFiles, onFilesChange", type: "File[]", description: "The attached files, controlled or not." },
+    { name: "accept", type: "string", description: "The files it takes, like the accept attribute." },
+    { name: "maxFiles, maxSize", type: "number", description: "How many files, and the largest in bytes." },
+    { name: "disabled", type: "boolean", default: "false", description: "Turns off the field and its tools." },
+  ]}
+/>
+
+`PromptInput` is a `form` and takes its other props. `PromptInputAccessory` children are placed under the box; everything else goes inside it.
+
+### PromptInputField
+
+<PropsTable
+  rows={[
+    { name: "aria-label", type: "string", default: '"Message"', description: "Names the field." },
+    { name: "triggers", type: "PromptInputTrigger[]", description: "Suggestions at the caret: { char, items, boundary? } for each trigger character." },
+    { name: "triggerEmpty", type: "ReactNode", description: "Shown when nothing matches. Without it the list closes instead." },
+    { name: "maxRows", type: "number", default: "10 (6 on touch)", description: "How many lines it grows to before it scrolls." },
+    { name: "rows", type: "number", default: "1", description: "The starting height, in lines, for md." },
+  ]}
+/>
+
+It takes the rest of ui-sdk `Textarea`'s props, except the value, which comes from `PromptInput`.
+
+### Toolbar parts
+
+<PropsTable
+  rows={[
+    { name: "PromptInputAdd label", type: "string", default: '"Add"', description: "Names the add button. Takes ui-sdk Menu's props, like onAction." },
+    { name: "PromptInputAdd filesLabel", type: "string", default: '"Add photos and files"', description: "The menu item that opens the file picker." },
+    { name: "PromptInputAdd hideFiles", type: "boolean", default: "false", description: "Leaves the files item out." },
+    { name: "PromptInputAdd children", type: "ReactNode", description: "More menu items after the files item." },
+    { name: "PromptInputSubmit sendLabel, stopLabel", type: "string", default: '"Send", "Stop"', description: "The button's name in each state. Takes Button's props." },
+    { name: "PromptInputButton aria-label", type: "string", description: "Required. A plain round icon button, like Dictate. Takes Button's props." },
+  ]}
+/>
+
+`PromptInputToolbar`, `PromptInputTools` and `PromptInputAccessory` are `div`s. The first `PromptInputTools` sits at the leading edge and the last at the trailing edge. `PromptInputAttachments` is ui-sdk's `FileInputList`, named "Attachments", and renders nothing while there are no files.
+
+| Attribute | On | Values |
+| --- | --- | --- |
+| `data-size` | `PromptInput` | `md`, `lg` |
+| `data-status` | `PromptInput`, `PromptInputSubmit` | `ready`, `submitted`, `streaming`, `error` |
+| `data-glow`, `data-glowing` | `PromptInput` | With `glow`; `data-glowing` while the reply is on its way |
+| `data-floating`, `data-disabled` | `PromptInput` | Present when set |
+| `data-dragging`, `data-drag-reject` | the box | While files are dragged over it |
+
+| Variable | What it sets |
+| --- | --- |
+| `--mb-prompt-input-radius`, `--mb-prompt-input-radius-lg` | The corners, for each size |
+| `--mb-prompt-input-padding`, `--mb-prompt-input-padding-lg` | The space inside the box |
+| `--mb-prompt-input-field-font` | The field's text |
+| `--mb-prompt-input-max-rows` | How tall the field grows |
+| `--mb-prompt-input-control`, `--mb-prompt-input-submit` | The tools and the submit button |
+| `--mb-prompt-input-glow-width`, `--mb-prompt-input-glow-blur` | The glow's ring and halo |

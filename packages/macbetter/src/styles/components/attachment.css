@@ -1,0 +1,540 @@
+/* Attachment — a file or image as a chip, a tile, a thumbnail or a row, with upload and error states. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-attachment-chip-height: 40px;
+  --mb-attachment-chip-preview: 28px;
+  --mb-attachment-chip-max-width: 240px;
+  --mb-attachment-row-preview: 32px;
+  --mb-attachment-row-padding: 6px;
+  --mb-attachment-tile-width: 136px;
+  --mb-attachment-tile-preview-height: 84px;
+  --mb-attachment-thumbnail-size: 64px;
+  --mb-attachment-radius: var(--mb-radius-md);
+  --mb-attachment-preview-radius: var(--mb-radius-xs);
+  --mb-attachment-name-font: 500 12px/15px var(--mb-font);
+  --mb-attachment-meta-font: 400 11px/14px var(--mb-font);
+  --mb-attachment-remove-size: 18px;
+  --mb-attachment-gap: var(--mb-space-4);
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-attachment-chip-height: 52px;
+  --mb-attachment-chip-preview: 36px;
+  --mb-attachment-chip-max-width: 260px;
+  --mb-attachment-row-preview: 40px;
+  --mb-attachment-row-padding: 8px;
+  --mb-attachment-tile-width: 156px;
+  --mb-attachment-tile-preview-height: 100px;
+  --mb-attachment-thumbnail-size: 80px;
+  --mb-attachment-radius: var(--mb-radius-lg);
+  --mb-attachment-preview-radius: var(--mb-radius-sm);
+  --mb-attachment-name-font: 500 15px/20px var(--mb-font);
+  --mb-attachment-meta-font: 400 13px/18px var(--mb-font);
+  --mb-attachment-remove-size: 24px;
+  --mb-attachment-gap: var(--mb-space-5);
+}
+
+/* The list */
+.mb-attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--mb-attachment-gap);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mb-attachments[data-layout="scroll"] {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  /* Room for the corner remove buttons, which sit just outside a tile. */
+  padding-block: var(--mb-space-3);
+  padding-inline: var(--mb-space-1);
+}
+
+.mb-attachments[data-layout="column"] {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 0;
+}
+
+.mb-attachments-item {
+  display: flex;
+  flex: none;
+  min-width: 0;
+}
+
+.mb-attachments[data-layout="column"] > .mb-attachments-item > .mb-attachment {
+  flex: 1 1 auto;
+}
+
+/* One attachment */
+.mb-attachment {
+  --mb-attachment-bg: var(--mb-fill-quaternary);
+  --mb-attachment-edge: var(--mb-separator);
+  --mb-attachment-preview-size: var(--mb-attachment-chip-preview);
+  --mb-attachment-tint: var(--mb-accent-text);
+
+  position: relative;
+  box-sizing: border-box;
+  display: inline-grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-rows: auto auto;
+  align-items: center;
+  column-gap: var(--mb-space-4);
+  min-width: 0;
+  margin: 0;
+  border: 0;
+  border-radius: var(--mb-attachment-radius);
+  background: var(--mb-attachment-bg);
+  color: var(--mb-label);
+  box-shadow: inset 0 0 0 var(--mb-hairline) var(--mb-attachment-edge);
+  font: var(--mb-attachment-name-font);
+  letter-spacing: var(--mb-tracking-caption);
+  text-align: start;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+@supports (corner-shape: squircle) {
+  .mb-attachment,
+  .mb-attachment-preview {
+    corner-shape: var(--mb-corner-shape);
+  }
+
+  .mb-attachment {
+    border-radius: calc(var(--mb-attachment-radius) * var(--mb-corner-factor));
+  }
+
+  .mb-attachment-preview {
+    border-radius: calc(var(--mb-attachment-preview-radius) * var(--mb-corner-factor));
+  }
+}
+
+.mb-attachment[data-variant="chip"] {
+  min-height: var(--mb-attachment-chip-height);
+  max-width: var(--mb-attachment-chip-max-width);
+  padding: var(--mb-space-3);
+  padding-inline-end: var(--mb-space-5);
+}
+
+.mb-attachment[data-variant="chip"]:has(> .mb-attachment-remove) {
+  padding-inline-end: var(--mb-space-3);
+}
+
+.mb-attachment[data-variant="row"] {
+  --mb-attachment-bg: transparent;
+  --mb-attachment-edge: transparent;
+  --mb-attachment-preview-size: var(--mb-attachment-row-preview);
+  display: grid;
+  width: 100%;
+  padding: var(--mb-attachment-row-padding);
+  border-radius: var(--mb-row-radius);
+}
+
+.mb-attachment-preview {
+  position: relative;
+  container-type: size;
+  display: grid;
+  grid-row: 1 / span 2;
+  grid-column: 1;
+  place-items: center;
+  width: var(--mb-attachment-preview-size);
+  height: var(--mb-attachment-preview-size);
+  overflow: hidden;
+  border-radius: var(--mb-attachment-preview-radius);
+  color: var(--mb-attachment-tint);
+}
+
+.mb-attachment-preview > * {
+  grid-area: 1 / 1;
+}
+
+.mb-attachment-preview[data-image],
+.mb-attachment-preview:has(> :not(.mb-attachment-document, .mb-attachment-progress, .mb-attachment-error)) {
+  background: var(--mb-fill-tertiary);
+  box-shadow: inset 0 0 0 var(--mb-hairline) var(--mb-separator);
+}
+
+.mb-attachment-image,
+.mb-attachment-preview > :where(img, svg:not(.mb-attachment-error), .mb-artwork) {
+  place-self: stretch;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* The document glyph: a page with a folded corner, its type printed low on the page. */
+.mb-attachment-document {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 86cqh;
+  aspect-ratio: 32 / 40;
+}
+
+.mb-attachment-document > * {
+  grid-area: 1 / 1;
+}
+
+.mb-attachment-glyph {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.mb-attachment-glyph-page {
+  /* Paper stays light in dark appearance, as document icons do on the Mac. */
+  fill: light-dark(white, color-mix(in oklch, var(--mb-ink) 86%, var(--mb-bg)));
+  stroke: var(--mb-separator-strong);
+  stroke-width: 1.25;
+}
+
+.mb-attachment-glyph-fold {
+  fill: light-dark(color-mix(in oklch, var(--mb-ink) 8%, white), color-mix(in oklch, var(--mb-ink) 66%, var(--mb-bg)));
+  stroke: var(--mb-separator-strong);
+  stroke-width: 1.25;
+  stroke-linejoin: round;
+}
+
+.mb-attachment-glyph-lines {
+  fill: none;
+  stroke: var(--mb-attachment-tint);
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  opacity: 0.85;
+}
+
+.mb-attachment-extension {
+  align-self: end;
+  max-width: 88%;
+  margin-block-end: 22%;
+  overflow: hidden;
+  color: var(--mb-attachment-tint);
+  font: 700 max(7px, 17cqh) / 1 var(--mb-font);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Too small to read the type: lines of text stand in, and the meta line carries the type. */
+@container (height < 40px) {
+  .mb-attachment-extension {
+    display: none;
+  }
+}
+
+@container (height >= 40px) {
+  .mb-attachment-document:has(> .mb-attachment-extension) .mb-attachment-glyph-lines {
+    display: none;
+  }
+}
+
+/* Uploading: the preview veils and a ring fills over it. */
+.mb-attachment-progress {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-self: stretch;
+  place-items: center;
+  background: color-mix(in oklch, var(--mb-bg) 62%, transparent);
+}
+
+.mb-attachment-progress-ring {
+  --mb-progress-track-color: var(--mb-fill);
+}
+
+.mb-attachment[data-state="uploading"] :is(.mb-attachment-name, .mb-attachment-meta) {
+  color: var(--mb-label-secondary);
+}
+
+/* Error: a red alert badge on the preview, a red edge and red meta text. */
+.mb-attachment[data-state="error"] {
+  --mb-attachment-edge: color-mix(in oklch, var(--mb-destructive) 70%, transparent);
+}
+
+.mb-attachment[data-state="error"] .mb-attachment-meta {
+  color: var(--mb-destructive-text);
+}
+
+.mb-attachment-error {
+  position: relative;
+  z-index: 1;
+  align-self: end;
+  justify-self: end;
+  width: min(16px, 46cqh);
+  height: min(16px, 46cqh);
+  margin: 2px;
+  fill: none;
+  stroke: var(--mb-on-destructive);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+
+.mb-attachment-error > circle:first-child {
+  fill: var(--mb-destructive-fill);
+  stroke: var(--mb-bg);
+  stroke-width: 1.25;
+}
+
+.mb-attachment-error > circle:last-child {
+  fill: var(--mb-on-destructive);
+  stroke-width: 0.8;
+  stroke: var(--mb-on-destructive);
+}
+
+/* Text */
+.mb-attachment-name {
+  grid-row: 1;
+  grid-column: 2;
+  align-self: end;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--mb-label);
+  font: var(--mb-attachment-name-font);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-decoration: none;
+}
+
+.mb-attachment-meta {
+  grid-row: 2;
+  grid-column: 2;
+  align-self: start;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--mb-label-secondary);
+  font: var(--mb-attachment-meta-font);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.mb-attachment:not(:has(> .mb-attachment-meta)) > .mb-attachment-name {
+  grid-row: 1 / span 2;
+  align-self: center;
+}
+
+/* A name that's a link or button stretches its hit area over the whole attachment. */
+:is(a, button).mb-attachment-name {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: start;
+  cursor: default;
+}
+
+:is(a, button).mb-attachment-name::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.mb-attachment:has(> :is(a, button).mb-attachment-name) .mb-attachment-name::after {
+  border-radius: var(--mb-attachment-radius);
+}
+
+:is(a, button).mb-attachment-name:focus-visible {
+  outline: none;
+}
+
+:is(a, button).mb-attachment-name:focus-visible::after,
+.mb-attachment[data-interactive]:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: var(--mb-focus-ring-offset);
+}
+
+/* Remove */
+.mb-attachment-remove {
+  position: relative;
+  z-index: 1;
+  display: inline-grid;
+  grid-row: 1 / span 2;
+  grid-column: 3;
+  place-items: center;
+  width: var(--mb-attachment-remove-size);
+  height: var(--mb-attachment-remove-size);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--mb-label-secondary);
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--mb-duration-fast) var(--mb-ease-out),
+    color var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-attachment-remove::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: max(100%, var(--mb-hit-target));
+  height: max(100%, var(--mb-hit-target));
+  translate: -50% -50%;
+}
+
+.mb-attachment-remove > svg {
+  width: 62%;
+  height: 62%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+}
+
+.mb-attachment-remove:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: var(--mb-focus-ring-offset);
+}
+
+.mb-attachment-remove:active {
+  background: var(--mb-fill);
+  color: var(--mb-label);
+  transition-duration: 0ms;
+}
+
+/* Tile: preview on top, name and meta below, remove in the corner. */
+.mb-attachment[data-variant="tile"] {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto auto auto;
+  row-gap: var(--mb-space-1);
+  width: var(--mb-attachment-tile-width);
+  padding: var(--mb-space-3);
+  padding-block-end: var(--mb-space-4);
+}
+
+.mb-attachment[data-variant="tile"] > .mb-attachment-preview {
+  grid-row: 1;
+  grid-column: 1;
+  width: 100%;
+  height: var(--mb-attachment-tile-preview-height);
+  margin-block-end: var(--mb-space-3);
+  background: var(--mb-fill-quaternary);
+}
+
+.mb-attachment[data-variant="tile"] > .mb-attachment-name {
+  grid-row: 2;
+  grid-column: 1;
+  padding-inline: var(--mb-space-2);
+}
+
+.mb-attachment[data-variant="tile"] > .mb-attachment-meta {
+  grid-row: 3;
+  grid-column: 1;
+  padding-inline: var(--mb-space-2);
+}
+
+.mb-attachment[data-variant="tile"]:not(:has(> .mb-attachment-meta)) > .mb-attachment-name {
+  grid-row: 2 / span 2;
+}
+
+/* Thumbnail: the picture alone. The name stays for assistive technology. */
+.mb-attachment[data-variant="thumbnail"] {
+  --mb-attachment-preview-size: var(--mb-attachment-thumbnail-size);
+  display: inline-grid;
+  grid-template-columns: auto;
+  grid-template-rows: auto;
+  width: var(--mb-attachment-thumbnail-size);
+  height: var(--mb-attachment-thumbnail-size);
+  padding: 0;
+  background: transparent;
+}
+
+.mb-attachment[data-variant="thumbnail"] > .mb-attachment-preview {
+  grid-row: 1;
+  border-radius: var(--mb-attachment-radius);
+  background: var(--mb-fill-tertiary);
+}
+
+@supports (corner-shape: squircle) {
+  .mb-attachment[data-variant="thumbnail"] > .mb-attachment-preview {
+    border-radius: calc(var(--mb-attachment-radius) * var(--mb-corner-factor));
+  }
+}
+
+.mb-attachment[data-variant="thumbnail"] > :is(.mb-attachment-name, .mb-attachment-meta) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.mb-attachment[data-variant="thumbnail"] {
+  box-shadow: none;
+}
+
+.mb-attachment[data-variant="thumbnail"] > .mb-attachment-preview {
+  box-shadow: inset 0 0 0 var(--mb-hairline) var(--mb-attachment-edge);
+}
+
+/* The corner remove button of tiles and thumbnails: a filled circle over the edge, as in Messages. */
+.mb-attachment:is([data-variant="tile"], [data-variant="thumbnail"]) > .mb-attachment-remove {
+  position: absolute;
+  inset-block-start: calc(var(--mb-attachment-remove-size) / -3);
+  inset-inline-end: calc(var(--mb-attachment-remove-size) / -3);
+  background: var(--mb-label-secondary);
+  color: var(--mb-bg);
+  box-shadow: 0 0 0 1.5px var(--mb-bg);
+}
+
+.mb-attachment:is([data-variant="tile"], [data-variant="thumbnail"]) > .mb-attachment-remove > svg {
+  stroke-width: 2;
+}
+
+.mb-attachment:is([data-variant="tile"], [data-variant="thumbnail"]) > .mb-attachment-remove:active {
+  background: var(--mb-label);
+  color: var(--mb-bg);
+}
+
+/* Interactive: a whole attachment that's a link or button, or one whose name is. */
+:is(a, button).mb-attachment {
+  font: var(--mb-attachment-name-font);
+  cursor: default;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-attachment-remove:hover {
+    background: var(--mb-fill-secondary);
+    color: var(--mb-label);
+  }
+
+  .mb-attachment:is([data-variant="tile"], [data-variant="thumbnail"]) > .mb-attachment-remove:hover {
+    background: var(--mb-label);
+    color: var(--mb-bg);
+  }
+
+  .mb-attachment[data-interactive]:hover,
+  .mb-attachment:has(> :is(a, button).mb-attachment-name:hover) {
+    --mb-attachment-bg: var(--mb-fill-tertiary);
+  }
+
+  .mb-attachment[data-variant="row"][data-interactive]:hover,
+  .mb-attachment[data-variant="row"]:has(> :is(a, button).mb-attachment-name:hover) {
+    --mb-attachment-bg: var(--mb-fill-quaternary);
+  }
+}
+
+.mb-attachment[data-interactive]:active,
+.mb-attachment:has(> :is(a, button).mb-attachment-name:active) {
+  --mb-attachment-bg: var(--mb-fill-secondary);
+  transition-duration: 0ms;
+}
+
+.mb-attachment[data-variant="thumbnail"]:is([data-interactive]:active, :has(> :is(a, button).mb-attachment-name:active)) > .mb-attachment-preview {
+  filter: brightness(0.85);
+}
+
+.mb-attachment:is([data-variant="tile"], [data-variant="thumbnail"]) .mb-attachment-progress-ring {
+  --mb-progress-circle-size-sm: var(--mb-progress-circle-size);
+}

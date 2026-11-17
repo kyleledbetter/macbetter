@@ -1,0 +1,97 @@
+export const metadata = {
+  title: "Sources",
+  description: "List the pages a reply drew on, and cite them inline with chips that preview the source.",
+}
+
+# Sources
+
+<Lead>List the pages a reply drew on, and cite them inline with chips that preview the source.</Lead>
+
+<Demo name="ai/sources-basic" />
+
+## When to use it
+
+Use sources when a reply draws on pages or documents people may want to check. A collapsed "Used 4 sources" line under the reply keeps it short, and inline citations put each source next to the sentence it supports.
+
+- Cite the sentence a source supports, not the whole paragraph.
+- Use numbers for citations in long replies, and a short site name when there are only one or two.
+- Every citation also appears in the sources list, so people on touch screens can reach it without hover.
+
+## Usage
+
+```tsx
+import { Citation, Source, SourceIcon, Sources, SourcesContent, SourcesTrigger } from "macbetter/sources"
+```
+
+`Sources` is a collapsible. `SourcesTrigger` says "Used 4 sources" from its `count`, or your own children. `SourcesContent` is the list, and each `Source` is a link with the site's favicon, the title (children) and the site's name. Links open in a new tab with `rel="noreferrer"`.
+
+Without an `icon`, the favicon slot draws the site's first letter on a tile tinted from the site's name, so each site keeps its color. Pass `icon` for a real favicon.
+
+### Inline citations
+
+`Citation` is a small capsule in the reply's text that links to the source. Resting the pointer on it, or tabbing to it, previews the title, site and a line of description in a hover card. Several can sit side by side.
+
+<Demo name="ai/sources-citations" />
+
+## Platform behavior
+
+- **macOS.** 28-point rows, 16-point favicons and 16-point citation chips, with hover fills. The preview opens after the pointer rests for 600 milliseconds.
+- **iOS and iPadOS.** 44-point rows, 20-point favicons and 20-point chips. There's no hover, so tapping a citation opens the link.
+- The preview card uses the thick material and opens from the chip.
+
+## Accessibility
+
+- The sources are a list named "Sources"; pass `aria-label` to `SourcesContent` to change it.
+- Each source link says it opens in a new tab.
+- A citation is a link named by its label and the source's title, like "1, Ferry timetable", so a lone number is never all a screen reader hears.
+- Keyboard focus opens the preview after the same delay as the pointer, and Escape closes it.
+
+## API
+
+### SourcesTrigger
+
+<PropsTable
+  rows={[
+    { name: "count", type: "number", description: 'Writes the label "Used 4 sources".' },
+    { name: "children", type: "ReactNode", description: "Your own label in place of the count." },
+  ]}
+/>
+
+`Sources` takes ui-sdk `Collapsible` props. `SourcesContent` takes `CollapsiblePanel` props and an `aria-label` (default `"Sources"`).
+
+### Source
+
+<PropsTable
+  rows={[
+    { name: "href", type: "string", description: "The source's address." },
+    { name: "site", type: "string", description: "The site's name, like example.com." },
+    { name: "icon", type: "ReactNode", description: "A favicon in place of the drawn letter." },
+    { name: "children", type: "ReactNode", description: "The page's title." },
+    { name: "target, rel", type: "string", default: '"_blank", "noreferrer"', description: "Passed to the link." },
+  ]}
+/>
+
+### Citation
+
+<PropsTable
+  rows={[
+    { name: "href", type: "string", description: "The source's address." },
+    { name: "title", type: "string", description: "The source's title, in the preview and the link's name." },
+    { name: "site", type: "string", description: "The site's name. It's the chip's label without children." },
+    { name: "description", type: "ReactNode", description: "A line about the source in the preview." },
+    { name: "icon", type: "ReactNode", description: "A favicon in place of the drawn letter." },
+    { name: "children", type: "ReactNode", description: "The chip's label: a number or a short name." },
+    { name: "hoverCardProps", type: "HoverCard props", description: "Passed to the ui-sdk Hover Card root, like delay." },
+  ]}
+/>
+
+`SourceIcon` takes `site` and optional children, and renders the decorative favicon tile.
+
+### CSS variables
+
+| Variable | macOS | iOS | What it sets |
+| --- | --- | --- | --- |
+| `--mb-source-row-height` | `28px` | `44px` | A source row |
+| `--mb-source-icon-size`, `-icon-radius` | `16px`, `4px` | `20px`, `5px` | The favicon tile |
+| `--mb-source-tint` | from the site | same | The letter tile's color |
+| `--mb-citation-height`, `-font` | `16px`, 11pt | `20px`, 13pt | A citation chip |
