@@ -12,7 +12,7 @@ function AssistantApp() {
 
 function AssistantExample() {
   return (
-    <ExampleShell title="Assistant" platforms={["macos", "ios"]}>
+    <ExampleShell title="AI Assistant" platforms={["macos", "ios"]}>
       <AssistantApp />
     </ExampleShell>
   )

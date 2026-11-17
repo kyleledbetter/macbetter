@@ -191,4 +191,12 @@
     border-radius: calc(var(--mb-device-screen-radius) * var(--mb-corner-factor));
     clip-path: none;
   }
+
+  /* A backdrop filter isn't clipped to the screen's corner shape, so a bar's material at the top of the
+     screen takes the same corners itself. */
+  .mb-device-frame-screen .mb-navigation-bar::before {
+    corner-shape: var(--mb-corner-shape);
+    border-start-start-radius: calc(var(--mb-device-screen-radius) * var(--mb-corner-factor));
+    border-start-end-radius: calc(var(--mb-device-screen-radius) * var(--mb-corner-factor));
+  }
 }

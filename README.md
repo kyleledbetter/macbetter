@@ -113,7 +113,7 @@ The [Theme Studio](https://macbetter.dev/themes) does this in the browser, check
 
 ## Examples
 
-Six full apps, each with a Mac and an iPhone version and a code view you can copy from: [Settings](https://macbetter.dev/examples/settings), [Mail](https://macbetter.dev/examples/mail), [Analytics](https://macbetter.dev/examples/analytics), [Music](https://macbetter.dev/examples/music), [Home](https://macbetter.dev/examples/home) and [Assistant](https://macbetter.dev/examples/assistant).
+Six full apps, each with a Mac and an iPhone version and a code view you can copy from: [Settings](https://macbetter.dev/examples/settings), [Mail](https://macbetter.dev/examples/mail), [Analytics](https://macbetter.dev/examples/analytics), [Music](https://macbetter.dev/examples/music), [Home](https://macbetter.dev/examples/home) and [AI Assistant](https://macbetter.dev/examples/assistant).
 
 <p align="center">
   <img src=".github/assets/examples.png" alt="The Music example: a library of generated album covers" width="100%" />

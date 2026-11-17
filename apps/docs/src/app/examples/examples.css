@@ -390,7 +390,7 @@
 .ex-card-mac {
   position: absolute;
   top: 32px;
-  left: 28px;
+  left: var(--ex-card-pad, 32px);
   display: flex;
 }
 
@@ -400,7 +400,7 @@
 
 .ex-card-phone {
   position: absolute;
-  right: 18px;
+  right: var(--ex-card-pad, 32px);
   top: 70px;
   display: flex;
 }

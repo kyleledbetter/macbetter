@@ -44,7 +44,7 @@ function ogCard(path: string): OgCard | null {
     return { title: "Theme Studio", eyebrow: "Themes", description: "Your brand’s colors on macOS, iPadOS and iOS." }
   }
   if (path === "examples") {
-    return { title: "Built with macbetter", eyebrow: "Examples", description: "Settings, Mail, Analytics, Music, Home and Assistant." }
+    return { title: "Built with macbetter", eyebrow: "Examples", description: "Settings, Mail, Analytics, Music, Home and AI Assistant." }
   }
   if (path.startsWith("examples/")) {
     const example = examples().find((entry) => `examples/${entry.slug}` === path)

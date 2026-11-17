@@ -261,7 +261,7 @@ function AiBento() {
           headline={<>Everything you need to build a chat assistant that feels&nbsp;native.</>}
           links={
             <>
-              <MoreLink href="/examples/assistant">See the Assistant example</MoreLink>
+              <MoreLink href="/examples/assistant">See the AI Assistant example</MoreLink>
               <MoreLink href="/docs/ai/overview">Learn more about AI and chat components</MoreLink>
             </>
           }

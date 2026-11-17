@@ -7,10 +7,10 @@ const description =
   "An assistant app with chat history, a new chat screen, a conversation that streams a scripted reply with reasoning, tool calls and a permission request, an inspector, and plugin and skill directories, built with macbetter."
 
 export const metadata: Metadata = {
-  title: "Assistant example",
+  title: "AI Assistant example",
   description,
   alternates: { canonical: "/examples/assistant" },
-  ...socialMetadata({ path: "examples/assistant", title: "Assistant example", description }),
+  ...socialMetadata({ path: "examples/assistant", title: "AI Assistant example", description }),
 }
 
 export default function Page() {
