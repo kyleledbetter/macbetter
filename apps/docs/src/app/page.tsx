@@ -31,10 +31,10 @@ const sections = [
   { id: "platforms", label: "Platforms" },
   { id: "themes", label: "Themes" },
   { id: "components", label: "Components" },
-  { id: "home", label: "Home" },
+  { id: "home", label: "HomeKit" },
   { id: "charts", label: "Charts" },
   { id: "ai", label: "AI" },
-  { id: "materials", label: "Guidelines" },
+  { id: "materials", label: "HIG" },
 ]
 
 export default function Home() {
