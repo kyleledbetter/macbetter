@@ -5,6 +5,7 @@ import {
   List,
   ListRow,
   ListRowAccessory,
+  ListRowContent,
   ListRowIcon,
   ListRowSubtitle,
   ListRowTitle,
@@ -98,4 +99,21 @@ test("a disabled button row ignores presses", async () => {
   )
   await user.click(screen.getByRole("button", { name: "Erase iPhone" }))
   expect(onClick).not.toHaveBeenCalled()
+})
+
+test("gives a row a slot that spans every column", () => {
+  render(
+    <List aria-label="Account">
+      <ListSection>
+        <ListRow>
+          <ListRowContent>
+            <input aria-label="Display name" />
+          </ListRowContent>
+        </ListRow>
+      </ListSection>
+    </List>
+  )
+  const field = screen.getByRole("textbox", { name: "Display name" })
+  expect(field.parentElement?.className).toBe("mb-list-row-content")
+  expect(field.parentElement?.parentElement?.className).toBe("mb-list-row")
 })

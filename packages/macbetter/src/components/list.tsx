@@ -89,6 +89,11 @@ function ListRowSubtitle({ className, ...props }: React.ComponentProps<"span">) 
 }
 
 /** The secondary text at the trailing edge, like the network a Wi-Fi row is joined to. */
+/** Content that takes the whole row: a text field, a small form, or anything that isn't icon, title and value. */
+function ListRowContent({ className, ...props }: React.ComponentProps<"div">) {
+  return <div className={join("mb-list-row-content", className)} {...props} />
+}
+
 function ListRowValue({ className, ...props }: React.ComponentProps<"span">) {
   return <span className={join("mb-list-row-value", className)} {...props} />
 }
@@ -126,5 +131,5 @@ function ListRowAccessory({ type, className, children, ...props }: ListRowAccess
   )
 }
 
-export { List, ListRow, ListRowAccessory, ListRowIcon, ListRowSubtitle, ListRowTitle, ListRowValue, ListSection }
+export { List, ListRow, ListRowAccessory, ListRowContent, ListRowIcon, ListRowSubtitle, ListRowTitle, ListRowValue, ListSection }
 export type { ListProps, ListRowAccessoryProps, ListRowIconProps, ListRowProps, ListSectionProps, ListVariant }

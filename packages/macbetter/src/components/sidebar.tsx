@@ -80,6 +80,8 @@ type SidebarItemProps = Omit<React.ComponentProps<"a">, "ref" | "onClick"> & {
   current?: boolean
   /** Tints this row's icon, like a colored tag or a folder. */
   tint?: string
+  /** Renders the row as your router's link: `render={<Link to="/inbox" />}`. Create the element in a client component. */
+  render?: React.ComponentProps<typeof ButtonPrimitive>["render"]
 }
 
 function SidebarItem({
@@ -88,6 +90,7 @@ function SidebarItem({
   current,
   tint,
   href,
+  render,
   onClick,
   className,
   children,
@@ -114,7 +117,11 @@ function SidebarItem({
 
   return (
     <li className="mb-sidebar-list-item">
-      {href ? (
+      {render ? (
+        <ButtonPrimitive {...(props as React.HTMLAttributes<HTMLElement>)} {...shared} render={render} onClick={onClick}>
+          {content}
+        </ButtonPrimitive>
+      ) : href ? (
         <a href={href} onClick={onClick} {...shared} {...props}>
           {content}
         </a>

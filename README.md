@@ -167,6 +167,10 @@ macbetter is new and built on a beta of ui-sdk, so expect changes.
 - ui-sdk writes shortcut modifiers as ⌘⇧P where macOS writes ⇧⌘P.
 - Changing `dir` after the page has loaded leaves sliding indicators where they were until the next resize.
 
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for what changed in each release.
+
 ## Contributing
 
 Issues and pull requests are welcome. Read [AGENTS.md](AGENTS.md) first: it has the component, CSS and docs conventions, and it works as a brief for a coding agent too.

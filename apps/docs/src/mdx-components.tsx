@@ -4,6 +4,7 @@ import { isValidElement } from "react"
 import { CodeBlock } from "@/components/code-block"
 import { Demo } from "@/components/demo"
 import { Callout, Lead, PropsTable, Steps } from "@/components/prose"
+import { StyleDependencies } from "@/components/style-dependencies"
 
 function textOf(node: React.ReactNode): string {
   if (typeof node === "string") return node
@@ -71,6 +72,7 @@ const components: MDXComponents = {
   Lead,
   PropsTable,
   Steps,
+  StyleDependencies,
 }
 
 export function useMDXComponents(): MDXComponents {
