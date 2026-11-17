@@ -575,7 +575,6 @@
 }
 
 .ex-ai-phone-thread.mb-chat {
-  --mb-chat-inset-bottom: 112px;
   padding-top: calc(var(--mb-safe-top, 0px) + var(--mb-navigation-bar-row));
 }
 

@@ -14,7 +14,6 @@ import {
 } from "macbetter/prompt-input"
 import { Response } from "macbetter/response"
 import { MicIcon } from "lucide-react"
-import type { CSSProperties } from "react"
 
 const turns = [
   { id: 1, from: "user", text: "How long do I boil eggs for jammy yolks?" },
@@ -40,7 +39,7 @@ const turns = [
 export default function Example() {
   return (
     <DeviceFrame scale={0.78} role="group" aria-label="A conversation on iPhone">
-      <Chat style={{ "--mb-chat-inset-bottom": "120px", paddingTop: "var(--mb-safe-top)" } as CSSProperties}>
+      <Chat style={{ paddingTop: "var(--mb-safe-top)" }}>
         <ChatViewport aria-label="Cooking">
           <ChatContent>
             {turns.map((turn) => (

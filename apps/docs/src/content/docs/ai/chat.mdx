@@ -50,7 +50,7 @@ The icon is decorative and hidden from assistive tech. The title is a heading; s
 
 ### On iPhone
 
-On iOS the composer floats over the bottom of the thread on Liquid Glass. Put a `PromptInput` with `floating` inside the `Chat`, and set `--mb-chat-inset-bottom` on the chat to the composer's height so the last turn and the scroll button clear it.
+On iOS the composer floats over the bottom of the thread on Liquid Glass. Put a `PromptInput` with `floating` inside the `Chat`. The composer measures itself and sets `--mb-chat-inset-bottom` on the chat, so the last turn and the scroll button clear it as the field grows, and the thread fades out underneath it.
 
 <Demo name="ai/chat-ios" platforms={["ios"]} />
 
@@ -111,5 +111,6 @@ On iOS the composer floats over the bottom of the thread on Liquid Glass. Put a 
 | `--mb-chat-max-width` | The width of the column of turns |
 | `--mb-chat-gap` | The space between turns |
 | `--mb-chat-padding-inline`, `--mb-chat-padding-block` | The space around the column |
-| `--mb-chat-inset-bottom` | Room under the last turn for a floating composer |
+| `--mb-chat-inset-bottom` | Room under the last turn for a floating composer. A floating `PromptInput` sets it for you |
+| `--mb-chat-fade` | The color the thread fades into under a floating composer. Defaults to the background |
 | `--mb-chat-scroll-button-size` | The jump button's diameter |

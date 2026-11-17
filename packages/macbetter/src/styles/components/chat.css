@@ -75,6 +75,18 @@
   padding-inline: var(--mb-chat-padding-inline);
 }
 
+/* Under a floating composer the thread fades into the background, so text never shows below it. */
+.mb-chat:has(> .mb-prompt-input[data-floating])::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset-inline: 0;
+  inset-block-end: 0;
+  height: calc(var(--mb-chat-inset-bottom) + 12px);
+  background: linear-gradient(to bottom, transparent, var(--mb-chat-fade, var(--mb-bg)) 42%);
+  pointer-events: none;
+}
+
 /* ── Jump to latest ──────────────────────────────────────────── */
 
 .mb-chat-scroll-button {

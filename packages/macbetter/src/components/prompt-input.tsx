@@ -112,6 +112,27 @@ function PromptInput({
   const files = filesProp ?? ownFiles
   const [controller] = React.useState(createFileInputController)
   const fieldRef = React.useRef<HTMLTextAreaElement | null>(null)
+  const formRef = React.useRef<HTMLFormElement | null>(null)
+
+  // A floating composer tells its Chat how much room it covers, so the last turn and the
+  // jump button clear it however many lines the field has grown to.
+  React.useEffect(() => {
+    const form = formRef.current
+    const chat = floating ? form?.closest<HTMLElement>(".mb-chat") : null
+    if (!form || !chat || typeof ResizeObserver === "undefined") return
+    const measure = () => {
+      const room = chat.getBoundingClientRect().bottom - form.getBoundingClientRect().top
+      chat.style.setProperty("--mb-chat-inset-bottom", `${Math.max(0, Math.round(room))}px`)
+    }
+    measure()
+    const observer = new ResizeObserver(measure)
+    observer.observe(form)
+    observer.observe(chat)
+    return () => {
+      observer.disconnect()
+      chat.style.removeProperty("--mb-chat-inset-bottom")
+    }
+  }, [floating])
 
   const setText = React.useCallback(
     (next: string) => {
@@ -161,6 +182,7 @@ function PromptInput({
         data-disabled={disabled ? "" : undefined}
         className={join("mb-prompt-input", className)}
         {...props}
+        ref={formRef}
         onSubmit={(event) => {
           event.preventDefault()
           if (busy || empty || disabled) return
