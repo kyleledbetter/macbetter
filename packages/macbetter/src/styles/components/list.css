@@ -332,6 +332,14 @@
   letter-spacing: var(--mb-tracking-caption);
 }
 
+/* Spans every column, for a field or a small form that doesn't fit the icon, title and value slots. */
+.mb-list-row-content {
+  grid-column: 1 / -1;
+  grid-row: 1 / -1;
+  justify-self: stretch;
+  min-width: 0;
+}
+
 .mb-list-row-value {
   grid-column: 3;
   grid-row: 1 / -1;

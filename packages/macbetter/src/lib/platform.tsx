@@ -1,3 +1,5 @@
+import { PlatformSync } from "./platform-sync"
+
 type Platform = "macos" | "ipados" | "ios"
 type PlatformChoice = Platform | "auto"
 
@@ -17,15 +19,31 @@ type MacbetterScriptProps = {
 }
 
 /**
- * Sets `data-platform` on <html> before first paint, so the page never
- * flashes macOS metrics on a phone. Render it in <head> or first in <body>.
+ * The script as a string, for a page React doesn't render on the server: paste it into a
+ * `<script>` in `index.html`, before your app's bundle, so the platform is set before first paint.
  */
-function MacbetterScript({ platform = "auto", storageKey, nonce }: MacbetterScriptProps) {
-  const code = `(function(){try{var d=document.documentElement,p=${JSON.stringify(platform)},k=${JSON.stringify(
+function platformScript({ platform = "auto", storageKey }: Pick<MacbetterScriptProps, "platform" | "storageKey"> = {}) {
+  return `(function(){try{var d=document.documentElement,p=${JSON.stringify(platform)},k=${JSON.stringify(
     storageKey ?? null
   )};if(k){var s=localStorage.getItem(k);if(s==="macos"||s==="ipados"||s==="ios"||s==="auto")p=s}if(p==="auto"){p=matchMedia("(pointer: coarse)").matches?(matchMedia("(min-width: 744px)").matches?"ipados":"ios"):"macos"}d.setAttribute("data-platform",p)}catch(e){}})()`
-  return <script nonce={nonce} dangerouslySetInnerHTML={{ __html: code }} />
 }
 
-export { resolvePlatform, MacbetterScript }
+/**
+ * Sets `data-platform` on <html> before first paint, so the page never
+ * flashes macOS metrics on a phone. Render it in <head> or first in <body>.
+ *
+ * A browser doesn't run a script React inserts on the client, so in a client-rendered
+ * app the same choice is applied when this mounts. To set it before first paint there,
+ * put `platformScript()` in `index.html`.
+ */
+function MacbetterScript({ platform = "auto", storageKey, nonce }: MacbetterScriptProps) {
+  return (
+    <>
+      <script nonce={nonce} dangerouslySetInnerHTML={{ __html: platformScript({ platform, storageKey }) }} />
+      <PlatformSync platform={platform} storageKey={storageKey} />
+    </>
+  )
+}
+
+export { resolvePlatform, platformScript, MacbetterScript }
 export type { Platform, PlatformChoice, MacbetterScriptProps }

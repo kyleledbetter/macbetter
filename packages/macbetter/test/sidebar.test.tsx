@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
+import type * as React from "react"
 import { expect, test, vi } from "vitest"
 import { Sidebar, SidebarItem, SidebarSection } from "../src/components/sidebar"
 
@@ -68,4 +69,27 @@ test("a collapsible section hides its rows from its header", async () => {
   await user.keyboard("{Enter}")
   expect(header.getAttribute("aria-expanded")).toBe("false")
   expect(screen.queryByRole("link", { name: "Red" })).toBeNull()
+})
+
+test("renders a row as a router's link", async () => {
+  const user = userEvent.setup()
+  const onClick = vi.fn((event: React.MouseEvent) => event.preventDefault())
+  render(
+    <Sidebar aria-label="Mailboxes">
+      <SidebarSection title="Favorites">
+        <SidebarItem render={<a href="/inbox" data-router="" />} onClick={onClick} current>
+          Inbox
+        </SidebarItem>
+      </SidebarSection>
+    </Sidebar>
+  )
+
+  const inbox = screen.getByRole("link", { name: "Inbox" })
+  expect(inbox.tagName).toBe("A")
+  expect(inbox.getAttribute("href")).toBe("/inbox")
+  expect(inbox.hasAttribute("data-router")).toBe(true)
+  expect(inbox.className).toBe("mb-sidebar-item")
+  expect(inbox.getAttribute("aria-current")).toBe("page")
+  await user.click(inbox)
+  expect(onClick).toHaveBeenCalledTimes(1)
 })

@@ -52,6 +52,22 @@ A checkmark marks the chosen row in a short list of options. Mark the chosen row
 
 <Demo name="list/choices" platforms={["ios", "macos", "ipados"]} fill />
 
+### How a row lays out its parts
+
+A row is a grid of four columns: the icon, the title with its subtitle, the value, and the accessory. Each part places itself in its column, so the order you write them in doesn't matter.
+
+| Part | Column | What it holds |
+| --- | --- | --- |
+| `ListRowIcon` | 1 | The colored icon tile |
+| `ListRowTitle`, `ListRowSubtitle` | 2 | The label, and a second line under it |
+| `ListRowValue` | 3 | The current value, in secondary text |
+| `ListRowAccessory` | 4 | A chevron, a checkmark or a control like a switch |
+| `ListRowContent` | All four | Anything else |
+
+An element that isn't one of these parts lands in the first free cell and can stretch the row. Put a text field, a small form or any other content in `ListRowContent`, which spans the whole row.
+
+<Demo name="list/content" platforms={["ios", "macos", "ipados"]} fill />
+
 ### Styles
 
 `inset-grouped`, the default, floats rounded groups inside the margins. `grouped` runs the groups edge to edge between hairlines. `plain` drops the groups and pins each section header to the top while its rows scroll, like Contacts. Inside a [navigation stack](/docs/components/navigation-bar) the headers pin just below the bar, using the `--mb-content-inset-top` the stack sets.
@@ -112,7 +128,7 @@ A checkmark marks the chosen row in a short list of options. Mark the chosen row
   ]}
 />
 
-`ListRowTitle`, `ListRowSubtitle` and `ListRowValue` take the props of a `span`.
+`ListRowTitle`, `ListRowSubtitle` and `ListRowValue` take the props of a `span`. `ListRowContent` takes the props of a `div`.
 
 ### Data attributes and CSS variables
 

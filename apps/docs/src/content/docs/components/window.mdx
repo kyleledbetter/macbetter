@@ -113,6 +113,10 @@ To draw a Mac app, put the traffic lights at the top of the sidebar, where macOS
 
 When the window gets narrow, the toolbar's search field folds into a magnifying glass before anything else gives way, and below 540 points the sidebar hides, as a Mac window does when you drag it small.
 
+<Callout type="note" title="Narrow windows need their own navigation">
+Once the sidebar hides, nothing replaces it: the window doesn't add a menu button or a drawer. If your app has to work at that width, give it another way to move around. The examples switch to the iOS layout on small screens, with a [navigation stack](/docs/components/navigation-bar) that lists the sidebar's rows and pushes each screen, or a [tab bar](/docs/components/tab-bar). Choose by the width of your own container, for example with `matchMedia("(max-width: 700px)")`, and render that layout in place of the `Window`.
+</Callout>
+
 <Demo name="window/finder" platforms={["macos"]} wallpaper height={560} />
 
 ### Sidebar style

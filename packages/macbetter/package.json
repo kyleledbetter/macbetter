@@ -1,6 +1,6 @@
 {
   "name": "macbetter",
-  "version": "0.1.0-beta.2",
+  "version": "0.1.0-beta.3",
   "description": "Apple-style components for React: macOS, iPadOS and iOS in one themeable framework, built on ui-sdk.",
   "keywords": [
     "react",
@@ -36,6 +36,7 @@
     ".": "./src/index.ts",
     "./styles.css": "./src/styles/index.css",
     "./themes/*.css": "./src/styles/themes/*.css",
+    "./styles/*": "./src/styles/*",
     "./theme": "./src/lib/theme.ts",
     "./derive": "./src/lib/derive.ts",
     "./*": "./src/components/*.tsx"
@@ -50,6 +51,7 @@
       },
       "./styles.css": "./dist/styles/index.css",
       "./themes/*.css": "./dist/styles/themes/*.css",
+      "./styles/*": "./dist/styles/*",
       "./theme": {
         "types": "./dist/lib/theme.d.ts",
         "default": "./dist/lib/theme.js"

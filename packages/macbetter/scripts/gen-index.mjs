@@ -38,3 +38,5 @@ writeFileSync(
 )
 
 console.log(`${components.length} components, ${styles.length} stylesheets`)
+
+await import("./style-deps.mjs")

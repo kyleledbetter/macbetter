@@ -37,6 +37,21 @@ The selected row fills with the accent color and its text and icon switch to the
 
 Add `collapsible` to a section and its header becomes a disclosure button. On the Mac the chevron appears when the pointer is over the section; on iPad it's always there, in the accent color.
 
+### Router links
+
+Pass your router's link through `render` and the row keeps its look, its `current` state and its badge. Create the element in a client component.
+
+```tsx
+"use client"
+
+import { SidebarItem } from "macbetter/sidebar"
+import { Link } from "@tanstack/react-router"
+
+<SidebarItem render={<Link to="/inbox" />} current={pathname === "/inbox"} badge={12}>
+  Inbox
+</SidebarItem>
+```
+
 ### Icon colors
 
 Row icons take the accent color. Pass `tint` to color one row's icon, like a tag or a smart folder.
@@ -82,6 +97,7 @@ Row icons take the accent color. Pass `tint` to color one row's icon, like a tag
 <PropsTable
   rows={[
     { name: "href", type: "string", description: "Renders the row as a link. Without it, the row is a button." },
+    { name: "render", type: "ReactElement | function", description: "Renders the row as another element, like a router's link." },
     { name: "current", type: "boolean", default: "false", description: "Marks the place on screen. Sets aria-current." },
     { name: "icon", type: "ReactNode", description: "A leading symbol, hidden from assistive technology." },
     { name: "badge", type: "ReactNode", description: "A trailing count or status." },

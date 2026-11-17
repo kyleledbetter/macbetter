@@ -1,0 +1,106 @@
+{
+  "accessory-tile": [
+    "activity-indicator"
+  ],
+  "artifact-card": [
+    "button",
+    "progress",
+    "shimmer"
+  ],
+  "attachment": [
+    "progress"
+  ],
+  "automation-row": [
+    "list",
+    "switch"
+  ],
+  "camera-view": [
+    "activity-indicator",
+    "artwork"
+  ],
+  "chat": [
+    "glass",
+    "scroll-view"
+  ],
+  "code-block": [
+    "button"
+  ],
+  "combo-box": [
+    "button",
+    "menu"
+  ],
+  "context-menu": [
+    "button",
+    "menu"
+  ],
+  "date-picker": [
+    "calendar"
+  ],
+  "door-control": [
+    "alert"
+  ],
+  "generated-image": [
+    "shimmer"
+  ],
+  "home-backdrop": [
+    "artwork"
+  ],
+  "home-status": [
+    "accessory-tile",
+    "activity-indicator"
+  ],
+  "inspector": [
+    "button"
+  ],
+  "lock-control": [
+    "alert"
+  ],
+  "menu": [
+    "button"
+  ],
+  "menu-bar": [
+    "button",
+    "menu"
+  ],
+  "message": [
+    "button",
+    "menu",
+    "tooltip"
+  ],
+  "model-picker": [
+    "button",
+    "menu"
+  ],
+  "prompt-input": [
+    "attachment",
+    "button",
+    "menu",
+    "progress"
+  ],
+  "reasoning": [
+    "shimmer"
+  ],
+  "scene-tile": [
+    "activity-indicator"
+  ],
+  "select": [
+    "button",
+    "menu"
+  ],
+  "setup-code": [
+    "code-field"
+  ],
+  "sources": [
+    "hover-card"
+  ],
+  "tab-bar": [
+    "glass"
+  ],
+  "thermostat-control": [
+    "segmented-control"
+  ],
+  "tool-call": [
+    "activity-indicator",
+    "shimmer"
+  ]
+}

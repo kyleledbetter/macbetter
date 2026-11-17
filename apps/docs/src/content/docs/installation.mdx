@@ -106,14 +106,74 @@ export function DocsLink() {
 
 An element created in a Server Component can reach the browser before React has resolved it. ui-sdk reads it straight away, so it throws "Element type is invalid". It depends on timing, which makes it easy to miss in development.
 
+## Vite and other client-rendered apps
+
+In an app that React renders in the browser, like a Vite app, the browser doesn't run a script that React inserts. `MacbetterScript` still works there: it sets `data-platform` when it mounts. That is one frame later than a server-rendered page, so a phone can paint with Mac metrics for a moment.
+
+To set the platform before first paint, put the same script in `index.html`, above your bundle. `platformScript()` returns it as a string, with the same `platform` and `storageKey` options:
+
+```html title="index.html"
+<script>
+  ;(() => {
+    const coarse = matchMedia("(pointer: coarse)").matches
+    document.documentElement.dataset.platform = coarse
+      ? matchMedia("(min-width: 744px)").matches ? "ipados" : "ios"
+      : "macos"
+  })()
+</script>
+```
+
+```ts title="vite.config.ts"
+import { platformScript } from "macbetter"
+import { defineConfig } from "vite"
+
+export default defineConfig({
+  plugins: [
+    {
+      name: "macbetter-platform",
+      transformIndexHtml: () => [{ tag: "script", children: platformScript(), injectTo: "head-prepend" }],
+    },
+  ],
+})
+```
+
+Use either one. With a client-side router, pass its link to components through `render`, for example `<SidebarItem render={<Link to="/inbox" />}>`.
+
+## Import only the styles you use
+
+`macbetter/styles.css` holds every component. To ship less CSS, import the foundation and then one stylesheet per component, in the same layers the full stylesheet uses:
+
+```css title="globals.css"
+@layer ui-sdk, macbetter;
+
+@import "macbetter/styles/tokens.css" layer(macbetter.tokens);
+@import "macbetter/styles/platforms.css" layer(macbetter.tokens);
+@import "macbetter/styles/themes/ember.css" layer(macbetter.themes);
+@import "macbetter/styles/base.css" layer(macbetter.base);
+@import "macbetter/styles/materials.css" layer(macbetter.base);
+
+@import "macbetter/styles/components/button.css" layer(macbetter.components);
+@import "macbetter/styles/components/menu.css" layer(macbetter.components);
+@import "macbetter/styles/components/select.css" layer(macbetter.components);
+```
+
+Keep that order: tokens, themes, base, then components. The order among component files doesn't matter.
+
+A component's stylesheet has the same name as its entry: `macbetter/select` needs `select.css`. Some components are drawn with another component's classes, so they need its stylesheet too. Select's popup uses `menu.css`, for example. These are the ones that do:
+
+<StyleDependencies />
+
+The same list ships in the package as `macbetter/styles/components/dependencies.json`, if you want to generate your imports.
+
 ## Imports
 
 | Import | What it gives you |
 | --- | --- |
 | `macbetter/<component>` | One component and its parts, like `macbetter/segmented-control` |
-| `macbetter` | Every component, plus `MacbetterScript`, `resolvePlatform`, `cx` and the theme helpers |
+| `macbetter` | Every component, plus `MacbetterScript`, `platformScript`, `resolvePlatform`, `cx` and the theme helpers |
 | `macbetter/styles.css` | The whole stylesheet: tokens, platforms, themes, base, materials and components |
 | `macbetter/themes/<name>.css` | One built-in theme's stylesheet on its own |
+| `macbetter/styles/<path>` | One file of the stylesheet, like `macbetter/styles/components/button.css` |
 | `macbetter/theme` | `createTheme`, `themeVariables`, `contrastRatio` and their types |
 
 Prefer the per-component entries in app code: they make it obvious what a file uses.
