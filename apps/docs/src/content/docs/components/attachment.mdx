@@ -1,0 +1,139 @@
+export const metadata = {
+  title: "Attachment",
+  description: "Show a file or image as a chip, a tile, a thumbnail or a row, with upload progress and errors.",
+}
+
+# Attachment
+
+<Lead>Show a file or image as a chip, a tile, a thumbnail or a row, with upload progress and errors.</Lead>
+
+<Demo name="attachment/chips" />
+
+## When to use it
+
+Use attachments for files someone added to a message or a form, and for files a view refers to, like the sources of a reply.
+
+- Show the name and, below it, the kind and size, so people can tell two files apart.
+- Give every attachment someone added a remove button.
+- Say what went wrong in the meta line when an upload fails: "Too large to upload", not just "Error".
+
+## Usage
+
+```tsx
+import {
+  Attachment,
+  AttachmentMeta,
+  AttachmentName,
+  AttachmentPreview,
+  AttachmentRemove,
+  Attachments,
+} from "macbetter/attachment"
+```
+
+`Attachments` is a list; each `Attachment` in it becomes a list item. Inside an attachment, `AttachmentPreview` shows an image (`src`), your own content (children), or a document glyph with the file's type printed on it (`extension`). Give the glyph a `color` from the system palette to tell types apart. The type label hides when the preview is too small to read it, so put the kind in `AttachmentMeta` too.
+
+### Uploading and errors
+
+`state="uploading"` veils the preview and fills a progress ring over it. Pass `progress` from 0 to 100, or leave it out when the size isn't known and the ring spins. `state="error"` adds an alert badge to the preview and turns the edge and the meta line red.
+
+### Variants
+
+- `chip`, the default: a compact rounded rectangle for a composer or a form.
+- `tile`: a larger preview above the name, for a grid of files.
+- `thumbnail`: the image alone, like photos in a message. The name is still there for assistive technology.
+- `row`: a full-width row with no fill, for a list in an inspector or a sidebar.
+
+<Demo name="attachment/tiles" />
+
+<Demo name="attachment/thumbnails" />
+
+`layout` on `Attachments` is `wrap` (the default), `scroll` for one line that scrolls sideways, or `column` for rows.
+
+### Opening an attachment
+
+Pass `render={<a href="…" />}` (or a button) to make the whole attachment a link. When it also has a remove button, pass `render` to `AttachmentName` instead: the name becomes the link, and its hit area stretches over the attachment while the remove button stays separate.
+
+<Demo name="attachment/link" />
+
+## Platform behavior
+
+- **macOS.** 40-point chips with a 28-point preview, 12-point names and 11-point meta, and a remove button with a hover fill.
+- **iOS and iPadOS.** 52-point chips with a 36-point preview, 15-point names, and a 44-point hit area around every remove button.
+- Tiles and thumbnails put a filled remove button over their top trailing corner, as Messages does. It moves to the other corner in right-to-left layouts.
+- Corners are continuous where the browser supports `corner-shape`.
+
+## Accessibility
+
+- The remove button is named "Remove" followed by the file's name, like "Remove Festival brief.pdf". Pass `aria-label` to change the first word, like "Cancel upload of".
+- While uploading, the attachment is marked busy and its ring is a progress bar named "Uploading" with the current value.
+- The preview is decorative: an image gets an empty `alt` unless you pass one, since the name is right beside it.
+- The error badge is drawn, not read. Put what went wrong in `AttachmentMeta`.
+
+## API
+
+### Attachments
+
+<PropsTable
+  rows={[
+    { name: "layout", type: '"wrap" | "scroll" | "column"', default: '"wrap"', description: "How the attachments flow." },
+    { name: "...props", type: 'ComponentProps<"ul">', description: "Passed to the list. Give it an aria-label." },
+  ]}
+/>
+
+### Attachment
+
+<PropsTable
+  rows={[
+    { name: "variant", type: '"chip" | "tile" | "thumbnail" | "row"', default: '"chip"', description: "The layout of the preview, name and meta." },
+    { name: "state", type: '"uploading" | "ready" | "error"', default: '"ready"', description: "Shows upload progress or an error." },
+    { name: "progress", type: "number", description: "Upload progress from 0 to 100. Leave it out when unknown." },
+    { name: "render", type: "RenderProp", description: "Renders the attachment as a link or button. Use it only without AttachmentRemove." },
+    { name: "...props", type: 'ComponentProps<"div">', description: "Passed to the element." },
+  ]}
+/>
+
+### AttachmentPreview
+
+<PropsTable
+  rows={[
+    { name: "src", type: "string", description: "An image to show." },
+    { name: "alt", type: "string", default: '""', description: "The image's description. Empty, since the name is shown." },
+    { name: "extension", type: "string", description: "A type label printed on the document glyph, like pdf." },
+    { name: "color", type: "SystemColor | \"gray\" | \"accent\"", default: "accent text", description: "The glyph's color." },
+    { name: "children", type: "ReactNode", description: "Your own preview, like an Artwork or an icon, in place of the image or glyph." },
+  ]}
+/>
+
+### AttachmentName
+
+<PropsTable
+  rows={[
+    { name: "render", type: "RenderProp", description: "Makes the name a link or button whose hit area covers the attachment." },
+    { name: "...props", type: 'ComponentProps<"span">', description: "Passed to the element." },
+  ]}
+/>
+
+`AttachmentMeta` renders a `span`. `AttachmentRemove` takes ui-sdk's `Button` props and draws an × unless you pass children; you handle `onClick`.
+
+### Data attributes
+
+| Attribute | Part | Values |
+| --- | --- | --- |
+| `data-variant` | `Attachment` | `chip`, `tile`, `thumbnail`, `row` |
+| `data-state` | `Attachment` | `uploading`, `ready`, `error` |
+| `data-interactive` | `Attachment`, `AttachmentName` | Present when rendered as a link or button |
+| `data-layout` | `Attachments` | `wrap`, `scroll`, `column` |
+| `data-image` | `AttachmentPreview` | Present when it shows `src` |
+
+### CSS variables
+
+| Variable | macOS | iOS | What it sets |
+| --- | --- | --- | --- |
+| `--mb-attachment-chip-height`, `-chip-preview` | `40px`, `28px` | `52px`, `36px` | A chip and its preview |
+| `--mb-attachment-chip-max-width` | `240px` | `260px` | Where a chip's name truncates |
+| `--mb-attachment-tile-width`, `-tile-preview-height` | `136px`, `84px` | `156px`, `100px` | A tile and its preview |
+| `--mb-attachment-thumbnail-size` | `64px` | `80px` | A thumbnail |
+| `--mb-attachment-row-preview`, `-row-padding` | `32px`, `6px` | `40px`, `8px` | A row and its preview |
+| `--mb-attachment-radius`, `-preview-radius` | `8px`, `4px` | `12px`, `6px` | Corner radii |
+| `--mb-attachment-remove-size` | `18px` | `24px` | The remove button |
+| `--mb-attachment-tint` | `--mb-accent-text` | same | The glyph color, set by `color` |

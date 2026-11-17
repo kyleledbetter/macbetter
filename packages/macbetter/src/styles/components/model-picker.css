@@ -1,0 +1,64 @@
+/* Model Picker — a plain pull-down showing the model and effort, opening a menu of both. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-model-picker-item-padding-block: 4px;
+  --mb-model-picker-description-font: 400 11px/14px var(--mb-font);
+  --mb-model-picker-content-width: 260px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-model-picker-item-padding-block: 10px;
+  --mb-model-picker-description-font: 400 15px/20px var(--mb-font);
+  --mb-model-picker-content-width: 300px;
+}
+
+.mb-model-picker {
+  gap: 4px;
+  padding-inline: 8px 6px;
+  min-width: 0;
+}
+
+.mb-model-picker-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mb-model-picker-dot,
+.mb-model-picker-effort {
+  color: var(--mb-label-secondary);
+  font-weight: 400;
+}
+
+.mb-model-picker-content {
+  width: max-content;
+  min-width: min(var(--mb-model-picker-content-width), calc(100vw - 16px));
+  max-width: min(340px, calc(100vw - 16px));
+}
+
+.mb-model-picker-item {
+  padding-block: var(--mb-model-picker-item-padding-block);
+  white-space: normal;
+}
+
+.mb-model-picker-item-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.mb-model-picker-item-description {
+  color: var(--mb-label-secondary);
+  font: var(--mb-model-picker-description-font);
+  letter-spacing: var(--mb-tracking-caption);
+}
+
+/* On macOS the highlight is a solid accent fill; the description goes with the label onto it. */
+.mb-model-picker-item[data-highlighted] .mb-model-picker-item-description {
+  color: inherit;
+  opacity: 0.82;
+}
+
+.mb-model-picker-item[data-disabled] .mb-model-picker-item-description {
+  color: inherit;
+}

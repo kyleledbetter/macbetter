@@ -43,7 +43,8 @@
   top: 0;
   isolation: isolate;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  /* The sides keep room for their buttons; the title takes what is left and truncates. */
+  grid-template-columns: minmax(min-content, 1fr) minmax(0, auto) minmax(min-content, 1fr);
   align-items: center;
   column-gap: var(--mb-space-4);
   height: calc(var(--mb-safe-top, 0px) + var(--mb-navigation-bar-row));

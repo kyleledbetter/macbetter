@@ -1,0 +1,391 @@
+/* Tool call — the steps an agent took: a summary line that opens a bordered group of rows. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-tool-activity-font: var(--mb-text-body);
+  --mb-tool-activity-summary-height: 22px;
+  --mb-tool-activity-icon-size: 14px;
+  --mb-tool-activity-gap: 6px;
+  --mb-tool-activity-radius: var(--mb-radius-lg);
+  --mb-tool-call-font: var(--mb-text-body);
+  --mb-tool-call-row-height: 32px;
+  --mb-tool-call-padding-inline: 12px;
+  --mb-tool-call-gap: 8px;
+  --mb-tool-call-icon-size: 14px;
+  --mb-tool-call-chevron-width: 5px;
+  --mb-tool-call-chevron-height: 9px;
+  --mb-tool-call-chevron-stroke: 1.8;
+  --mb-tool-call-section-radius: var(--mb-radius-md);
+  --mb-tool-call-section-padding: 10px 12px;
+  --mb-tool-call-section-title-font: 600 11px/14px var(--mb-font);
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-tool-activity-font: var(--mb-text-subheadline);
+  --mb-tool-activity-summary-height: 28px;
+  --mb-tool-activity-icon-size: 16px;
+  --mb-tool-activity-gap: 6px;
+  --mb-tool-activity-radius: var(--mb-group-radius);
+  --mb-tool-call-font: var(--mb-text-subheadline);
+  --mb-tool-call-row-height: 44px;
+  --mb-tool-call-padding-inline: 14px;
+  --mb-tool-call-gap: 10px;
+  --mb-tool-call-icon-size: 17px;
+  --mb-tool-call-chevron-width: 6px;
+  --mb-tool-call-chevron-height: 11px;
+  --mb-tool-call-chevron-stroke: 2;
+  --mb-tool-call-section-radius: var(--mb-radius-lg);
+  --mb-tool-call-section-padding: 12px 14px;
+  --mb-tool-call-section-title-font: 600 13px/18px var(--mb-font);
+}
+
+/* ── The summary line ───────────────────────────────────────── */
+
+.mb-tool-activity {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  color: var(--mb-label-secondary);
+  font: var(--mb-tool-activity-font);
+  letter-spacing: var(--mb-tracking-body);
+}
+
+.mb-tool-activity-summary {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mb-tool-activity-gap);
+  max-width: 100%;
+  min-height: var(--mb-tool-activity-summary-height);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--mb-radius-xs);
+  background: transparent;
+  color: var(--mb-label-secondary);
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: start;
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: color var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-tool-activity-summary::after {
+  content: "";
+  position: absolute;
+  inset: 50% -4px auto;
+  height: max(100%, var(--mb-hit-target));
+  translate: 0 -50%;
+}
+
+.mb-tool-activity-summary:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: var(--mb-focus-ring-offset);
+}
+
+.mb-tool-activity-icon {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: var(--mb-tool-activity-icon-size);
+  height: var(--mb-tool-activity-icon-size);
+}
+
+.mb-tool-activity-icon > svg {
+  width: 100%;
+  height: 100%;
+}
+
+.mb-tool-activity-label {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.mb-tool-activity-chevron,
+.mb-tool-call-chevron {
+  flex: none;
+  box-sizing: content-box;
+  width: var(--mb-tool-call-chevron-width);
+  height: var(--mb-tool-call-chevron-height);
+  padding-inline: calc((var(--mb-tool-call-chevron-height) - var(--mb-tool-call-chevron-width)) / 2);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--mb-tool-call-chevron-stroke);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: rotate var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+.mb-tool-activity-summary[data-open] .mb-tool-activity-chevron,
+.mb-tool-call-row[data-open] .mb-tool-call-chevron {
+  rotate: 90deg;
+}
+
+:where([dir="rtl"]) :is(.mb-tool-activity-chevron, .mb-tool-call-chevron) {
+  scale: -1 1;
+}
+
+:where([dir="rtl"]) :is(.mb-tool-activity-summary, .mb-tool-call-row)[data-open] :is(.mb-tool-activity-chevron, .mb-tool-call-chevron) {
+  rotate: -90deg;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-tool-activity-summary:hover,
+  .mb-tool-activity-summary:hover .mb-tool-activity-label:not([data-active]) {
+    color: var(--mb-label);
+  }
+}
+
+.mb-tool-activity-summary:active,
+.mb-tool-activity-summary:active .mb-tool-activity-label:not([data-active]) {
+  color: var(--mb-label);
+  transition-duration: 0ms;
+}
+
+/* ── Panels open by height ───────────────────────────────────── */
+
+.mb-tool-activity-panel,
+.mb-tool-call-panel {
+  align-self: stretch;
+  height: var(--collapsible-panel-height, auto);
+  overflow: hidden;
+  transition: height var(--mb-spring-smooth-duration) var(--mb-spring-smooth);
+}
+
+.mb-tool-activity-panel:is([data-starting-style], [data-ending-style]),
+.mb-tool-call-panel:is([data-starting-style], [data-ending-style]) {
+  height: 0;
+}
+
+.mb-tool-activity-panel[data-ending-style],
+.mb-tool-call-panel[data-ending-style] {
+  transition-duration: var(--mb-duration-slow);
+  transition-timing-function: var(--mb-ease-out);
+}
+
+/* ── The group of steps ──────────────────────────────────────── */
+
+.mb-tool-activity-list {
+  display: flex;
+  flex-direction: column;
+  margin: var(--mb-space-4) 0 var(--mb-space-1);
+  padding: 0;
+  overflow: hidden;
+  border-radius: var(--mb-tool-activity-radius);
+  box-shadow: inset 0 0 0 1px var(--mb-separator);
+  list-style: none;
+}
+
+@supports (corner-shape: squircle) {
+  .mb-tool-activity-list {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-tool-activity-radius) * var(--mb-corner-factor));
+  }
+}
+
+.mb-tool-activity-item {
+  position: relative;
+  display: block;
+  min-width: 0;
+}
+
+.mb-tool-activity-item + .mb-tool-activity-item::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset-block-start: 0;
+  inset-inline: 0;
+  height: 1px;
+  background: var(--mb-separator);
+  pointer-events: none;
+}
+
+/* ── One step ────────────────────────────────────────────────── */
+
+.mb-tool-call {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  color: var(--mb-label);
+  font: var(--mb-tool-call-font);
+  letter-spacing: var(--mb-tracking-body);
+}
+
+.mb-tool-call-row {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--mb-tool-call-gap);
+  width: 100%;
+  min-height: var(--mb-tool-call-row-height);
+  margin: 0;
+  padding: var(--mb-space-3) var(--mb-tool-call-padding-inline);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: start;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: background-color var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+button.mb-tool-call-row {
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+button.mb-tool-call-row:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: calc(var(--mb-focus-ring-width) * -1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  button.mb-tool-call-row:hover {
+    background: var(--mb-fill-quaternary);
+  }
+}
+
+button.mb-tool-call-row:active {
+  background: var(--mb-fill-tertiary);
+  transition-duration: 0ms;
+}
+
+.mb-tool-call-icon {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: var(--mb-tool-call-icon-size);
+  height: var(--mb-tool-call-icon-size);
+  color: var(--mb-label-secondary);
+}
+
+.mb-tool-call-icon > svg {
+  width: 100%;
+  height: 100%;
+}
+
+.mb-tool-call-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.mb-tool-call-verb {
+  color: var(--mb-label-secondary);
+}
+
+.mb-tool-call-object {
+  color: var(--mb-label);
+}
+
+/* A row without a verb is a note: what the agent is doing, in secondary text. */
+.mb-tool-call-title[data-note] .mb-tool-call-object,
+.mb-tool-call[data-status="pending"] .mb-tool-call-object {
+  color: var(--mb-label-secondary);
+}
+
+/* Shimmer paints the whole line while it runs. */
+.mb-tool-call-title[data-active] :is(.mb-tool-call-verb, .mb-tool-call-object) {
+  color: inherit;
+}
+
+.mb-tool-call-chevron {
+  color: var(--mb-label-tertiary);
+}
+
+.mb-tool-call-status {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--mb-space-2);
+  color: var(--mb-label-secondary);
+  font: var(--mb-tool-call-font);
+}
+
+.mb-tool-call-status[data-status="error"] {
+  color: var(--mb-destructive-text);
+}
+
+.mb-tool-call-status[data-status="approval"] {
+  color: var(--mb-accent-text);
+}
+
+.mb-tool-call-spinner {
+  color: var(--mb-label-secondary);
+}
+
+.mb-tool-call-alert {
+  width: var(--mb-tool-call-icon-size);
+  height: var(--mb-tool-call-icon-size);
+  fill: none;
+  stroke: var(--mb-on-destructive);
+  stroke-width: 1.7;
+  stroke-linecap: round;
+}
+
+.mb-tool-call-alert > [data-fill] {
+  fill: var(--mb-destructive-fill);
+  stroke: none;
+}
+
+.mb-tool-call-alert > [data-dot] {
+  fill: var(--mb-on-destructive);
+  stroke-width: 0.9;
+}
+
+/* ── Detail ──────────────────────────────────────────────────── */
+
+.mb-tool-call-detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mb-space-4);
+  padding: 0 var(--mb-tool-call-padding-inline) var(--mb-tool-call-padding-inline);
+}
+
+.mb-tool-call-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mb-space-3);
+  min-width: 0;
+  padding: var(--mb-tool-call-section-padding);
+  border-radius: var(--mb-tool-call-section-radius);
+  background: var(--mb-fill-quaternary);
+  box-shadow: inset 0 0 0 var(--mb-hairline) var(--mb-separator);
+}
+
+@supports (corner-shape: squircle) {
+  .mb-tool-call-section {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-tool-call-section-radius) * var(--mb-corner-factor));
+  }
+}
+
+.mb-tool-call-section-title {
+  color: var(--mb-label-secondary);
+  font: var(--mb-tool-call-section-title-font);
+  letter-spacing: var(--mb-tracking-caption);
+}
+
+.mb-tool-call-section-body {
+  min-width: 0;
+}
+
+@media (forced-colors: active) {
+  .mb-tool-activity-list,
+  .mb-tool-call-section {
+    border: 1px solid CanvasText;
+  }
+}

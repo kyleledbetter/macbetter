@@ -5,6 +5,7 @@ import { Badge } from "macbetter/badge"
 import { Button } from "macbetter/button"
 import { Checkbox } from "macbetter/checkbox"
 import { Gauge, GaugeValue } from "macbetter/gauge"
+import { Shimmer } from "macbetter/shimmer"
 import { Progress } from "macbetter/progress"
 import { Rating } from "macbetter/rating"
 import { SearchField } from "macbetter/search-field"
@@ -55,6 +56,11 @@ import {
   InfoIcon,
   ListCollapseIcon,
   FormInputIcon,
+  PanelRightIcon,
+  RowsIcon,
+  CodeXmlIcon,
+  PaperclipIcon,
+  InboxIcon,
 } from "lucide-react"
 
 /** Small, still previews of the controls that read at a glance. Everything else gets a glyph. */
@@ -129,6 +135,7 @@ const previews: Record<string, () => React.ReactNode> = {
     </div>
   ),
   "activity-indicator": () => <ActivityIndicator aria-label="Loading" />,
+  shimmer: () => <Shimmer>Thinking…</Shimmer>,
   gauge: () => (
     <Gauge variant="circular" size="sm" value={72} aria-label="Battery">
       <GaugeValue />
@@ -179,6 +186,11 @@ const glyphs: Record<string, LucideIcon> = {
   "scroll-view": ScrollTextIcon,
   carousel: GalleryHorizontalIcon,
   glass: GlassWaterIcon,
+  inspector: PanelRightIcon,
+  "description-list": RowsIcon,
+  "code-block": CodeXmlIcon,
+  attachment: PaperclipIcon,
+  "content-unavailable": InboxIcon,
 }
 
 function ComponentPreview({ slug }: { slug: string }) {

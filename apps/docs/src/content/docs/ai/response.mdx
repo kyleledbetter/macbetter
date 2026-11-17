@@ -1,0 +1,141 @@
+import { SourceFile } from "@/components/ai/source-file"
+
+export const metadata = { title: "Response", description: "Reading typography for the assistant's reply, with a caret while it streams." }
+
+# Response
+
+<Lead>Reading typography for the assistant's reply: paragraphs, headings, lists, tables, links and code, sized for each platform, with a caret at the end while the reply streams in.</Lead>
+
+<Demo name="ai/response-basic" />
+
+## When to use it
+
+Put the assistant's reply in a `Response`, inside a [Message](/docs/ai/message). Replies are usually Markdown, so render them with a Markdown renderer and let `Response` style what comes out.
+
+- `Response` styles the output; a Markdown renderer parses it. The recommended renderer is [Streamdown](https://streamdown.ai), shown below.
+- Keep replies in the platform's body text: 13 points on macOS and 17 on iOS, with a little more line spacing than controls use.
+
+## Usage
+
+```tsx
+import { Response, ResponseCaret } from "macbetter/response"
+```
+
+`Response` styles the elements you put in it. It doesn't parse Markdown, and the package has no dependencies.
+
+```tsx
+<Response>
+  <h2>Three days in Porto</h2>
+  <p>Porto is small enough to walk.</p>
+</Response>
+```
+
+Its styles stop at any macbetter component inside it, so a [Code Block](/docs/components/code-block) or a card in a reply keeps its own look.
+
+## Render Markdown with Streamdown
+
+[Streamdown](https://streamdown.ai) renders Markdown as it streams in. It completes unfinished syntax, like a bold word or a table that's still arriving, so the reply never flashes raw asterisks. The `Markdown` component below puts it inside `Response`: every element comes out as plain HTML for `Response` to style, and fenced code becomes a macbetter `CodeBlock` with a language label and a copy button.
+
+<Demo name="ai/response-streaming" />
+
+Press **Stream the reply**. The demo reveals a canned reply a few characters at a time, the way tokens arrive from a model, with no API key.
+
+<Steps>
+
+### Install Streamdown
+
+The code highlighting uses [Shiki](https://shiki.style), loaded only when a reply has code in it.
+
+```bash
+pnpm add streamdown shiki
+```
+
+### Add the Markdown component
+
+Copy this file into your app. It's the one these pages use.
+
+<SourceFile path="components/ai/markdown.tsx" />
+
+### Render each reply with it
+
+```tsx
+<Message from="assistant">
+  <MessageContent>
+    <Markdown streaming={status === "streaming"}>{text}</Markdown>
+  </MessageContent>
+</Message>
+```
+
+</Steps>
+
+A few notes on the component:
+
+- It replaces every element Streamdown renders, so none of Streamdown's own Tailwind classes are relied on. You don't need to add Streamdown's package to Tailwind's sources.
+- It turns off Streamdown's link confirmation dialog, which uses its own styles. Turn it back on with `linkSafety` if your app shows replies from sources you don't trust, and style its dialog.
+- While a code fence is still arriving, the code shows as plain text; it's highlighted once the fence closes.
+
+Streamdown is Apache 2.0 licensed. macbetter doesn't depend on it: it lives in your app, beside `Response`.
+
+## The caret
+
+Set `streaming` while the reply arrives, and the last paragraph, heading or list item gets a blinking caret at its end. To place the caret yourself, put a `ResponseCaret` where it should go; the automatic one steps aside.
+
+```tsx
+<Response streaming>
+  <p>
+    {textSoFar}
+    <ResponseCaret />
+  </p>
+</Response>
+```
+
+The caret blinks like a text cursor. Under Reduce Motion it holds still.
+
+## Platform behavior
+
+- **macOS.** 13-point body text on 20-point lines, 12-point monospaced code, headings from the macOS title styles.
+- **iOS and iPadOS.** 17-point body text on 25-point lines, 15-point code, and roomier table cells.
+- **Every platform.** Tables wider than the column scroll sideways on their own instead of widening the thread.
+
+## Accessibility
+
+- Use real elements: headings for headings, lists for lists, tables with header cells. `Response` styles them; it doesn't add structure.
+- Links are underlined as well as colored, so they don't rely on color alone.
+- While `streaming` is set, the response is marked `aria-busy`. The caret is hidden from assistive tech.
+- A table that scrolls sideways becomes a block for scrolling. Some screen readers on Safari read such a table as plain rows; keep wide tables rare in replies, or wrap them yourself in a focusable region.
+
+## API
+
+### Response
+
+<PropsTable
+  rows={[
+    { name: "streaming", type: "boolean", default: "false", description: "The reply is still arriving. Shows the caret at the end and marks it busy." },
+  ]}
+/>
+
+`Response` is a `div` and takes its props. `ResponseCaret` is a `span`.
+
+### Markdown
+
+<PropsTable
+  rows={[
+    { name: "children", type: "string", description: "Required. The reply as Markdown. It can stop mid-word while it streams." },
+    { name: "streaming", type: "boolean", default: "false", description: "The reply is still arriving: completes unfinished syntax, shows the caret and holds back highlighting an unfinished code fence." },
+  ]}
+/>
+
+`Markdown` takes the rest of `Response`'s props.
+
+| Attribute | On | Values |
+| --- | --- | --- |
+| `data-streaming` | `Response` | Present while `streaming` |
+
+| Variable | What it sets |
+| --- | --- |
+| `--mb-response-leading` | The line height of body text |
+| `--mb-response-space` | The space between paragraphs, lists and tables |
+| `--mb-response-heading-space` | The space above a heading |
+| `--mb-response-code-font` | Code blocks |
+| `--mb-response-cell-padding` | Table cells |
+| `--mb-response-caret-height` | The caret |

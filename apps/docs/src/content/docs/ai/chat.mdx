@@ -1,0 +1,116 @@
+export const metadata = { title: "Chat", description: "The thread of a conversation, which follows the reply as it streams in." }
+
+# Chat
+
+<Lead>The thread of a conversation. It follows the reply while you're reading at the end, stops when you scroll up, and offers a button to jump back to the latest turn.</Lead>
+
+<Demo name="ai/chat-basic" />
+
+## When to use it
+
+Use a chat for a conversation with an assistant: a column of turns that grows at the bottom while a reply streams in. Put one in the content area of a window on macOS, or fill the screen with it on iOS.
+
+- Keep the reader in control. While they're at the end, the thread follows the reply. Once they scroll up to reread something, it stays put, and a button offers the way back.
+- Keep the column readable. Long lines are hard to follow, so the turns sit in a centered column about 720 points wide on macOS.
+- Start a new chat with a greeting and the composer, not an empty thread.
+
+## Usage
+
+```tsx
+import { Chat, ChatContent, ChatGreeting, ChatScrollButton, ChatViewport } from "macbetter/chat"
+```
+
+`Chat` is the scrolling region. Put the turns in a `ChatContent` inside a `ChatViewport`, and a `ChatScrollButton` beside the viewport. Give the chat a height, usually by making it the flexible child of a column with the composer under it.
+
+```tsx
+<div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+  <Chat busy={status === "streaming"}>
+    <ChatViewport aria-label="Weekend in Porto">
+      <ChatContent>
+        {messages.map((message) => (
+          <Message key={message.id} from={message.role}>…</Message>
+        ))}
+      </ChatContent>
+    </ChatViewport>
+    <ChatScrollButton />
+  </Chat>
+  <PromptInput>…</PromptInput>
+</div>
+```
+
+Press **Stream the reply** in the demo above, then scroll up while it streams. The thread stops following, and the round button appears at the bottom. Press it to jump back and follow again.
+
+### A new chat
+
+`ChatGreeting` is the empty state of a new chat: an optional icon, a large title and whatever you put under it, usually the tall composer and a few suggestions. Swap it for the thread once the first message is sent.
+
+<Demo name="ai/chat-greeting" />
+
+The icon is decorative and hidden from assistive tech. The title is a heading; set `level` to fit your page's outline.
+
+### On iPhone
+
+On iOS the composer floats over the bottom of the thread on Liquid Glass. Put a `PromptInput` with `floating` inside the `Chat`. The composer measures itself and sets `--mb-chat-inset-bottom` on the chat, so the last turn and the scroll button clear it as the field grows, and the thread fades out underneath it.
+
+<Demo name="ai/chat-ios" platforms={["ios"]} />
+
+## Platform behavior
+
+- **macOS.** The column is up to 720 points wide with 24 points of margin. The overlay scrollbar shows while you scroll or point at the thread.
+- **iPadOS.** The column is a little wider, at 760 points, with touch-sized spacing.
+- **iOS.** The column fills the screen with 16-point margins. The scroll button is 40 points, inside a 44-point hit area.
+- **Every platform.** The jump button is a Liquid Glass circle, the only translucent part of the thread: messages use plain fills.
+
+## Accessibility
+
+- `ChatViewport` is a `log` with polite announcements, named "Conversation" unless you pass `aria-label`. Name it after the conversation when you can.
+- Pass `busy` while a reply streams. The log is marked `aria-busy`, so screen readers wait and read the finished reply once, instead of each word as it arrives. Set it back to `false` when the reply ends.
+- If you need a shorter announcement than the whole reply, keep `busy` on and put a sentence such as "Reply finished" in a visually hidden polite status region of your own when the stream ends.
+- The scroll button is named "Scroll to latest". While the view is at the end it's inert, so Tab skips it. Pressing it from the keyboard moves focus into the thread.
+- The viewport scrolls with the arrow keys, Page Up, Page Down, Home and End once focus is inside it. Page Up stops the thread following, like scrolling up does.
+
+## API
+
+### Chat
+
+<PropsTable
+  rows={[
+    { name: "busy", type: "boolean", default: "false", description: "A reply is streaming. Marks the log busy so screen readers read the finished reply." },
+    { name: "stickToEnd", type: "boolean", default: "true", description: "Follows the end as content grows, until the reader scrolls up." },
+    { name: "type", type: '"hover" | "scroll" | "auto" | "always"', default: '"hover"', description: "When the scrollbar shows." },
+    { name: "controller", type: "ScrollAreaController", description: "From createScrollAreaController(): scroll to the end or start from anywhere, and read where the view is." },
+  ]}
+/>
+
+`Chat` takes the rest of ui-sdk `ScrollArea`'s props and renders its scrollbar for you.
+
+### ChatViewport, ChatContent, ChatScrollButton
+
+`ChatViewport` is ui-sdk's `ScrollAreaViewport` with `role="log"`, `aria-live="polite"` and `aria-label` defaulting to "Conversation". `ChatContent` is `ScrollAreaContent`. `ChatScrollButton` is `ScrollAreaScrollToEnd`; its `aria-label` defaults to "Scroll to latest" and its children default to a down arrow.
+
+### ChatGreeting
+
+<PropsTable
+  rows={[
+    { name: "title", type: "ReactNode", description: "The greeting, like “Good morning, Maya”." },
+    { name: "icon", type: "ReactNode", description: "A decorative mark above the title." },
+    { name: "description", type: "ReactNode", description: "A line under the title." },
+    { name: "level", type: "1 | 2 | 3", default: "1", description: "The title's heading level." },
+    { name: "children", type: "ReactNode", description: "What goes under the title: the composer and suggestions." },
+  ]}
+/>
+
+| Attribute | On | Values |
+| --- | --- | --- |
+| `data-busy` | `Chat` | Present while `busy` |
+| `data-sticking`, `data-at-end`, `data-at-start`, `data-scrolling` | `Chat`, `ChatViewport` | From ui-sdk's Scroll Area |
+| `data-visible` | `ChatScrollButton` | Present while the view is away from the end |
+
+| Variable | What it sets |
+| --- | --- |
+| `--mb-chat-max-width` | The width of the column of turns |
+| `--mb-chat-gap` | The space between turns |
+| `--mb-chat-padding-inline`, `--mb-chat-padding-block` | The space around the column |
+| `--mb-chat-inset-bottom` | Room under the last turn for a floating composer. A floating `PromptInput` sets it for you |
+| `--mb-chat-fade` | The color the thread fades into under a floating composer. Defaults to the background |
+| `--mb-chat-scroll-button-size` | The jump button's diameter |

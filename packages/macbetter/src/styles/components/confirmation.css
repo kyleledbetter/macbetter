@@ -1,0 +1,189 @@
+/* Confirmation — an inline card that asks before a tool runs, then folds to one line with the answer. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-confirmation-padding: 14px;
+  --mb-confirmation-gap: 10px;
+  --mb-confirmation-radius: var(--mb-radius-lg);
+  --mb-confirmation-icon-size: 28px;
+  --mb-confirmation-icon-radius: 7px;
+  --mb-confirmation-icon-glyph: 16px;
+  --mb-confirmation-title-font: var(--mb-text-headline);
+  --mb-confirmation-description-font: var(--mb-text-body);
+  --mb-confirmation-outcome-font: var(--mb-text-body);
+  --mb-confirmation-actions-space: 14px;
+  --mb-confirmation-max-width: 480px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-confirmation-padding: 16px;
+  --mb-confirmation-gap: 12px;
+  --mb-confirmation-radius: var(--mb-group-radius);
+  --mb-confirmation-icon-size: 36px;
+  --mb-confirmation-icon-radius: 9px;
+  --mb-confirmation-icon-glyph: 20px;
+  --mb-confirmation-title-font: var(--mb-text-headline);
+  --mb-confirmation-description-font: var(--mb-text-subheadline);
+  --mb-confirmation-outcome-font: var(--mb-text-subheadline);
+  --mb-confirmation-actions-space: 16px;
+  --mb-confirmation-max-width: none;
+}
+
+.mb-confirmation {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: var(--mb-confirmation-gap);
+  align-items: start;
+  width: 100%;
+  max-width: var(--mb-confirmation-max-width);
+  min-width: 0;
+  padding: var(--mb-confirmation-padding);
+  border-radius: var(--mb-confirmation-radius);
+  background: var(--mb-fill-quaternary);
+  box-shadow: inset 0 0 0 var(--mb-hairline) var(--mb-separator-strong);
+  color: var(--mb-label);
+  letter-spacing: var(--mb-tracking-body);
+  outline: none;
+}
+
+@supports (corner-shape: squircle) {
+  .mb-confirmation,
+  .mb-confirmation-icon {
+    corner-shape: var(--mb-corner-shape);
+  }
+
+  .mb-confirmation {
+    border-radius: calc(var(--mb-confirmation-radius) * var(--mb-corner-factor));
+  }
+
+  .mb-confirmation-icon {
+    border-radius: calc(var(--mb-confirmation-icon-radius) * var(--mb-corner-factor));
+  }
+}
+
+.mb-confirmation:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: var(--mb-focus-ring-offset);
+}
+
+/* Everything without a place of its own spans the card, under the icon and title. */
+.mb-confirmation > * {
+  grid-column: 1 / -1;
+}
+
+.mb-confirmation:has(> .mb-confirmation-icon) > :is(.mb-confirmation-title, .mb-confirmation-description) {
+  grid-column: 2;
+}
+
+.mb-confirmation-icon {
+  display: grid;
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  place-items: center;
+  width: var(--mb-confirmation-icon-size);
+  height: var(--mb-confirmation-icon-size);
+  border-radius: var(--mb-confirmation-icon-radius);
+  background: var(--mb-accent);
+  color: var(--mb-on-accent);
+}
+
+.mb-confirmation-icon > :where(svg) {
+  width: var(--mb-confirmation-icon-glyph);
+  height: var(--mb-confirmation-icon-glyph);
+}
+
+.mb-confirmation-icon > :where(.mb-artwork, img) {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.mb-confirmation-title {
+  grid-row: 1;
+  align-self: center;
+  margin: 0;
+  color: var(--mb-label);
+  font: var(--mb-confirmation-title-font);
+  text-wrap: balance;
+}
+
+.mb-confirmation-description {
+  grid-row: 2;
+  margin: 2px 0 0;
+  color: var(--mb-label-secondary);
+  font: var(--mb-confirmation-description-font);
+  text-wrap: pretty;
+}
+
+/* With a description beside the icon, the title sits at the top instead of centered. */
+.mb-confirmation:has(> .mb-confirmation-description) > .mb-confirmation-title {
+  align-self: end;
+}
+
+.mb-confirmation-details {
+  margin-block-start: var(--mb-confirmation-gap);
+  padding-block-start: var(--mb-confirmation-gap);
+  border-block-start: 1px solid var(--mb-separator);
+  min-width: 0;
+}
+
+.mb-confirmation-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--mb-space-4);
+  margin-block-start: var(--mb-confirmation-actions-space);
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  /* As in a permission alert: full-width buttons, the last one (the default) on top. */
+  .mb-confirmation-actions {
+    flex-direction: column-reverse;
+    flex-wrap: nowrap;
+    gap: var(--mb-space-4);
+  }
+
+  .mb-confirmation-actions > * {
+    width: 100%;
+  }
+}
+
+/* ── Answered ────────────────────────────────────────────────── */
+
+.mb-confirmation:not([data-state="pending"]) {
+  display: block;
+  width: auto;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+}
+
+.mb-confirmation-outcome {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mb-space-3);
+  margin: 0;
+  color: var(--mb-label-secondary);
+  font: var(--mb-confirmation-outcome-font);
+}
+
+.mb-confirmation-outcome-glyph {
+  flex: none;
+  width: 1.15em;
+  height: 1.15em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.mb-confirmation[data-state="allowed"] .mb-confirmation-outcome-glyph {
+  color: var(--mb-success);
+}
+
+@media (forced-colors: active) {
+  .mb-confirmation[data-state="pending"] {
+    border: 1px solid CanvasText;
+  }
+}

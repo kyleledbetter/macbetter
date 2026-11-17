@@ -1,0 +1,125 @@
+export const metadata = { title: "Message", description: "One turn in a conversation: the person's bubble or the assistant's reply, with actions under it." }
+
+# Message
+
+<Lead>One turn in a conversation. The person's turn is a bubble on the trailing side; the assistant's reply is plain text across the column, with a row of actions under it.</Lead>
+
+<Demo name="ai/message-basic" />
+
+## When to use it
+
+Use a message for each turn in a [Chat](/docs/ai/chat).
+
+- Only the person's turn gets a bubble. A reply can run to several screens with headings, lists and code, and it reads better as plain text across the column.
+- Keep the actions under a reply few and familiar: copy, read aloud, good and bad response, try again, and a menu for the rest.
+- Show small details, like the time or the model, in `MessageMeta`, not in the reply itself.
+
+## Usage
+
+```tsx
+import {
+  Message,
+  MessageAction,
+  MessageActionCopy,
+  MessageActionMenu,
+  MessageActions,
+  MessageActionToggle,
+  MessageAttachments,
+  MessageBubble,
+  MessageContent,
+  MessageMeta,
+} from "macbetter/message"
+```
+
+Set `from` to `"user"` or `"assistant"`. Put a `MessageBubble` in the person's `MessageContent`, and a [Response](/docs/ai/response) in the assistant's.
+
+```tsx
+<Message from="assistant">
+  <MessageContent>
+    <Markdown>{text}</Markdown>
+  </MessageContent>
+  <MessageActions>
+    <MessageActionCopy text={text} />
+  </MessageActions>
+</Message>
+```
+
+### Bubble colors and attachments
+
+`MessageBubble` fills with the accent by default. Use `variant="neutral"` for a quiet gray bubble. Put files the person sent in `MessageAttachments`, above the bubble, using [Attachment](/docs/components/attachment).
+
+<Demo name="ai/message-neutral" />
+
+### Actions
+
+`MessageActions` is a toolbar: one Tab stop, with the arrow keys moving between its buttons.
+
+- `MessageAction` is an icon button. Its `label` names it and shows as its tooltip.
+- `MessageActionToggle` stays pressed, for Good response and Bad response.
+- `MessageActionCopy` copies the text you give it and shows a check for two seconds.
+- `MessageActionMenu` opens a menu of more actions. Down Arrow opens it from the toolbar.
+
+<Demo name="ai/message-more" />
+
+The last message in a thread always shows its actions. On a Mac, older messages show theirs while you point at the message or move focus into it. Pass `latest` to keep them in view on any message.
+
+## Platform behavior
+
+- **macOS.** Bubbles use 13-point text with 16-point corners. Action buttons are 24 points, with a fill under the pointer, and older messages hide their actions until you point at them.
+- **iOS and iPadOS.** Bubbles follow Messages: 17-point text, 18-point corners and roomier padding. Action buttons are 34 points with 44-point hit areas, dim on press, and always show, since there's no pointer to reveal them.
+- **Every platform.** A bubble is at most 75% of the column wide.
+
+## Accessibility
+
+- Each message is an `article`, so screen reader users can move from turn to turn.
+- Every action is named by its `label`, which is also its tooltip. Write labels as verbs or states: "Copy", "Read aloud", "Good response".
+- `MessageActionCopy`'s name changes to "Copied" for two seconds after it copies.
+- Toggles report their pressed state, so "Good response" is announced as pressed or not, not by color.
+- Hidden actions on older messages are only transparent, so the keyboard still reaches them, and they appear as soon as focus arrives.
+
+## API
+
+### Message
+
+<PropsTable
+  rows={[
+    { name: "from", type: '"user" | "assistant"', default: '"assistant"', description: "Who wrote the turn." },
+    { name: "latest", type: "boolean", default: "false", description: "Keeps the actions in view. The last message in a thread does this on its own." },
+  ]}
+/>
+
+`Message` is an `article`. `MessageContent`, `MessageAttachments` and `MessageMeta` are `div`s.
+
+### MessageBubble
+
+<PropsTable rows={[{ name: "variant", type: '"accent" | "neutral"', default: '"accent"', description: "An accent fill, or a quiet gray fill." }]} />
+
+### MessageActions and its actions
+
+<PropsTable
+  rows={[
+    { name: "MessageActions aria-label", type: "string", default: '"Message actions"', description: "Names the toolbar. Takes the rest of ui-sdk Toolbar's props." },
+    { name: "MessageAction label", type: "string", description: "Required. Names the button and shows as its tooltip. Takes ui-sdk ToolbarButton's props." },
+    { name: "MessageActionToggle label", type: "string", description: "Required. Takes ui-sdk Toggle's props: pressed, defaultPressed, onPressedChange." },
+    { name: "MessageActionCopy text", type: "string | (() => string)", description: "Required. What's copied." },
+    { name: "MessageActionCopy label, copiedLabel", type: "string", default: '"Copy", "Copied"', description: "The button's name before and after a copy." },
+    { name: "MessageActionCopy onCopy", type: "(text: string) => void", description: "Runs after a copy." },
+    { name: "MessageActionMenu label", type: "string", default: '"More"', description: "Names the button. Takes ui-sdk Menu's props, like onAction." },
+    { name: "MessageActionMenu icon", type: "ReactNode", default: "an ellipsis", description: "The button's glyph." },
+    { name: "MessageActionMenu children", type: "ReactNode", description: "The menu's items: MenuItem from macbetter/menu." },
+  ]}
+/>
+
+| Attribute | On | Values |
+| --- | --- | --- |
+| `data-from` | `Message` | `user`, `assistant` |
+| `data-latest` | `Message` | Present with `latest` |
+| `data-variant` | `MessageBubble` | `accent`, `neutral` |
+| `data-pressed` | `MessageActionToggle` | Present while pressed |
+| `data-copied` | `MessageActionCopy` | Present for two seconds after a copy |
+
+| Variable | What it sets |
+| --- | --- |
+| `--mb-message-bubble-max-width` | How wide a bubble can get, as a share of the column |
+| `--mb-message-bubble-font`, `--mb-message-bubble-padding`, `--mb-message-bubble-radius` | The bubble's text and shape |
+| `--mb-message-action-size`, `--mb-message-action-icon` | The action buttons and their glyphs |

@@ -4,7 +4,7 @@ import { MacbetterMark } from "@/components/logo"
 
 function Closing() {
   return (
-    <section className="lp-section lp-cta" aria-labelledby="lp-cta">
+    <section className="lp-section lp-cta" data-surface="alt" aria-labelledby="lp-cta">
       <div className="lp-section-inner">
         <div className="lp-cta-inner stack lp-reveal" data-align="center">
           <MacbetterMark size={64} tone="ember" className="lp-cta-mark" />

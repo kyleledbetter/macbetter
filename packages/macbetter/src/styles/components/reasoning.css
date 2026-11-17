@@ -1,0 +1,214 @@
+/* Reasoning — a quiet line that says what the model is doing, and opens to show how it got there. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-reasoning-font: var(--mb-text-body);
+  --mb-reasoning-content-font: var(--mb-text-body);
+  --mb-reasoning-content-leading: 18px;
+  --mb-reasoning-min-height: 22px;
+  --mb-reasoning-gap: 4px;
+  --mb-reasoning-chevron-width: 5px;
+  --mb-reasoning-chevron-height: 9px;
+  --mb-reasoning-chevron-stroke: 1.8;
+  --mb-reasoning-content-indent: 12px;
+  --mb-reasoning-content-space: 6px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-reasoning-font: var(--mb-text-subheadline);
+  --mb-reasoning-content-font: var(--mb-text-subheadline);
+  --mb-reasoning-content-leading: 21px;
+  --mb-reasoning-min-height: 28px;
+  --mb-reasoning-gap: 5px;
+  --mb-reasoning-chevron-width: 6px;
+  --mb-reasoning-chevron-height: 11px;
+  --mb-reasoning-chevron-stroke: 2;
+  --mb-reasoning-content-indent: 14px;
+  --mb-reasoning-content-space: 8px;
+}
+
+.mb-reasoning {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  color: var(--mb-label-secondary);
+  font: var(--mb-reasoning-font);
+  letter-spacing: var(--mb-tracking-body);
+}
+
+.mb-reasoning-trigger {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mb-reasoning-gap);
+  max-width: 100%;
+  min-height: var(--mb-reasoning-min-height);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--mb-radius-xs);
+  background: transparent;
+  color: var(--mb-label-secondary);
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: start;
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: color var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+/* The line is short; its hit area still meets the platform minimum. */
+.mb-reasoning-trigger::after {
+  content: "";
+  position: absolute;
+  inset: 50% -4px auto;
+  height: max(100%, var(--mb-hit-target));
+  translate: 0 -50%;
+}
+
+.mb-reasoning-trigger:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: var(--mb-focus-ring-offset);
+}
+
+.mb-reasoning-label {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.mb-reasoning-chevron {
+  flex: none;
+  box-sizing: content-box;
+  width: var(--mb-reasoning-chevron-width);
+  height: var(--mb-reasoning-chevron-height);
+  /* A square box, so the turn pivots on the chevron's center. */
+  padding-inline: calc((var(--mb-reasoning-chevron-height) - var(--mb-reasoning-chevron-width)) / 2);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--mb-reasoning-chevron-stroke);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: rotate var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+.mb-reasoning-trigger[data-open] .mb-reasoning-chevron {
+  rotate: 90deg;
+}
+
+:where([dir="rtl"]) .mb-reasoning-chevron {
+  scale: -1 1;
+}
+
+:where([dir="rtl"]) .mb-reasoning-trigger[data-open] .mb-reasoning-chevron {
+  rotate: -90deg;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-reasoning-trigger:hover {
+    color: var(--mb-label);
+  }
+
+  .mb-reasoning-trigger:hover .mb-reasoning-label:not([data-active]) {
+    color: var(--mb-label);
+  }
+}
+
+.mb-reasoning-trigger:active {
+  color: var(--mb-label);
+  transition-duration: 0ms;
+}
+
+.mb-reasoning-trigger:active .mb-reasoning-label:not([data-active]) {
+  color: var(--mb-label);
+}
+
+.mb-reasoning-panel {
+  align-self: stretch;
+  height: var(--collapsible-panel-height, auto);
+  overflow: hidden;
+  transition: height var(--mb-spring-smooth-duration) var(--mb-spring-smooth);
+}
+
+.mb-reasoning-panel:is([data-starting-style], [data-ending-style]) {
+  height: 0;
+}
+
+.mb-reasoning-panel[data-ending-style] {
+  transition-duration: var(--mb-duration-slow);
+  transition-timing-function: var(--mb-ease-out);
+}
+
+.mb-reasoning-content {
+  margin-block: var(--mb-reasoning-content-space) var(--mb-space-2);
+  padding-inline-start: var(--mb-reasoning-content-indent);
+  border-inline-start: 1px solid var(--mb-separator-strong);
+  color: var(--mb-label-secondary);
+  font: var(--mb-reasoning-content-font);
+  line-height: var(--mb-reasoning-content-leading);
+  text-wrap: pretty;
+  overflow-wrap: break-word;
+}
+
+.mb-reasoning-content > :where(p, ul, ol) {
+  margin: 0;
+}
+
+.mb-reasoning-content > :where(p, ul, ol) + :where(p, ul, ol) {
+  margin-block-start: var(--mb-reasoning-content-space);
+}
+
+.mb-reasoning-content :where(ul, ol) {
+  padding-inline-start: 1.25em;
+}
+
+/* Glow: a soft wash of the theme's colors drifting behind the line while the model works. */
+.mb-reasoning[data-glow][data-state="running"]::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset-block-start: calc(var(--mb-reasoning-min-height) / 2 - 18px);
+  inset-inline-start: -18px;
+  width: min(260px, calc(100% + 36px));
+  height: 36px;
+  border-radius: var(--mb-radius-full);
+  background:
+    radial-gradient(closest-side at 20% 50%, color-mix(in oklch, var(--mb-accent) 55%, transparent), transparent),
+    radial-gradient(closest-side at 55% 50%, color-mix(in oklch, var(--mb-purple) 45%, transparent), transparent),
+    radial-gradient(closest-side at 85% 50%, color-mix(in oklch, var(--mb-pink) 40%, transparent), transparent);
+  background-size: 200% 100%;
+  filter: blur(14px);
+  opacity: 0.38;
+  pointer-events: none;
+  animation: mb-reasoning-glow 5s var(--mb-ease-in-out) infinite alternate;
+}
+
+@keyframes mb-reasoning-glow {
+  from {
+    background-position: 0% 50%;
+  }
+  to {
+    background-position: 100% 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(:root:not([data-motion="full"])) {
+    .mb-reasoning[data-glow][data-state="running"]::before {
+      animation: none;
+      background-position: 50% 50%;
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .mb-reasoning[data-glow]::before {
+    display: none;
+  }
+}

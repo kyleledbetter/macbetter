@@ -1356,6 +1356,80 @@
     min-height: 200px;
   }
 
+  /* ── AI bento ─────────────────────────────────────────────── */
+
+  .lp-bento.lp-ai-bento {
+    grid-template-areas:
+      "prompt   prompt   prompt  model"
+      "chat     chat     tool    tool"
+      "reason   reason   tool    tool"
+      "image    image    sources sources"
+      "image    image    suggest suggest"
+      "plan     plan     artifact artifact";
+  }
+
+  .lp-ai-bento .lp-tile-stage > * {
+    min-width: 0;
+  }
+
+  /* Text-heavy parts fill the tile's width instead of shrinking to their content. */
+  .lp-ai-fill .lp-tile-stage {
+    place-items: center stretch;
+  }
+
+  .lp-ai-composer {
+    display: grid;
+    gap: 10px;
+    width: min(100%, 620px);
+  }
+
+  .lp-ai-hint {
+    color: var(--mb-label-secondary);
+    font-size: var(--type-caption);
+    line-height: var(--leading-tight);
+  }
+
+  .lp-ai-reasoning,
+  .lp-ai-suggestions,
+  .lp-ai-sources {
+    display: grid;
+    justify-items: start;
+    gap: 14px;
+  }
+
+  .lp-ai-reasoning > .mb-reasoning,
+  .lp-ai-sources > * {
+    justify-self: stretch;
+  }
+
+  .lp-ai-cited {
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .lp-ai-tools {
+    width: 100%;
+  }
+
+  .lp-ai-model {
+    display: grid;
+    justify-items: center;
+    gap: 12px;
+  }
+
+  .lp-ai-model .lp-ai-hint {
+    text-align: center;
+  }
+
+  /* The cards keep their own width; center them in the tile. */
+  .lp-ai-artifact .lp-tile-stage > div {
+    align-items: center;
+  }
+
+  .lp-ai-image {
+    width: min(100%, 400px);
+  }
+
   /* ── Foundation ───────────────────────────────────────────── */
 
   .lp-foundation {
@@ -1594,6 +1668,17 @@
         "heat  heat"
         "stacked stacked";
     }
+
+    .lp-bento.lp-ai-bento {
+      grid-template-areas:
+        "prompt  prompt"
+        "model   reason"
+        "chat    chat"
+        "tool    tool"
+        "image   image"
+        "sources suggest"
+        "plan    artifact";
+    }
   }
 
   @media (max-width: 1180px) {
@@ -1720,6 +1805,10 @@
 
     .lp-bento.lp-charts-bento {
       grid-template-areas: "stock" "watch" "heart" "sleep" "rings" "week" "donut" "stacked";
+    }
+
+    .lp-bento.lp-ai-bento {
+      grid-template-areas: "prompt" "model" "chat" "reason" "tool" "image" "sources" "suggest" "plan" "artifact";
     }
 
     /* A year of days is too small to read at phone width. */

@@ -1,0 +1,236 @@
+/* Inspector — a trailing panel with details about the selected content, as SwiftUI's .inspector draws it. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-inspector-width: 264px;
+  --mb-inspector-padding: 16px;
+  --mb-inspector-header-height: 44px;
+  --mb-inspector-title-font: var(--mb-text-headline);
+  --mb-inspector-section-title-font: var(--mb-text-headline);
+  --mb-inspector-section-gap: var(--mb-space-4);
+  --mb-inspector-section-padding-block: 12px;
+  --mb-inspector-floating-inset: 8px;
+}
+
+:where([data-platform="ipados"]) {
+  --mb-inspector-width: 320px;
+}
+
+:where([data-platform="ios"]) {
+  /* On iPhone the inspector is a sheet's content, so it takes the sheet's width. */
+  --mb-inspector-width: 100%;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-inspector-padding: 20px;
+  --mb-inspector-header-height: 56px;
+  --mb-inspector-title-font: var(--mb-text-title-3);
+  --mb-inspector-section-title-font: var(--mb-text-title-3);
+  --mb-inspector-section-gap: var(--mb-space-4);
+  --mb-inspector-section-padding-block: 16px;
+  --mb-inspector-floating-inset: 10px;
+}
+
+.mb-inspector {
+  --mb-inspector-bg: var(--mb-bg);
+
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: var(--mb-inspector-width);
+  max-width: 100%;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--mb-inspector-bg);
+  color: var(--mb-label);
+  font: var(--mb-text-body);
+  letter-spacing: var(--mb-tracking-body);
+  text-align: start;
+}
+
+.mb-window > .mb-inspector[data-variant="edge"] {
+  box-shadow: inset var(--mb-hairline) 0 0 var(--mb-separator);
+}
+
+:where([dir="rtl"]) .mb-window > .mb-inspector[data-variant="edge"] {
+  box-shadow: inset calc(-1 * var(--mb-hairline)) 0 0 var(--mb-separator);
+}
+
+/* Floating: a pane of material over the content, inset from the window's edges. */
+.mb-inspector[data-variant="floating"] {
+  --mb-inspector-radius: calc(var(--mb-radius-xl) - var(--mb-inspector-floating-inset) / 2);
+  --mb-inspector-bg: var(--mb-material-regular);
+  border-radius: var(--mb-inspector-radius);
+  -webkit-backdrop-filter: var(--mb-material-filter);
+  backdrop-filter: var(--mb-material-filter);
+  box-shadow:
+    var(--mb-glass-rim),
+    0 0 0 var(--mb-hairline) var(--mb-glass-border),
+    var(--mb-shadow-3);
+}
+
+@supports (corner-shape: squircle) {
+  .mb-inspector[data-variant="floating"] {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-inspector-radius) * var(--mb-corner-factor));
+  }
+}
+
+/*
+ * Inside a Window. Edge: a third column beside the body, below the title bar, which runs over it
+ * as a unified toolbar does. Floating: the body keeps the full width and the pane sits over it.
+ * The extra attribute outweighs window.css, which places every non-sidebar child in column 2.
+ */
+.mb-window:has(> .mb-inspector[data-variant="edge"]) {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.mb-window:has(> .mb-window-sidebar):has(> .mb-inspector[data-variant="edge"]) {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+}
+
+.mb-window:has(> .mb-inspector[data-variant="edge"]) > .mb-window-titlebar {
+  grid-column: 1 / -1;
+}
+
+.mb-window:has(> .mb-window-sidebar):has(> .mb-inspector[data-variant="edge"]) > .mb-window-titlebar {
+  grid-column: 2 / -1;
+}
+
+.mb-window:has(> .mb-inspector) > .mb-window-body {
+  grid-row: 2;
+}
+
+.mb-window:has(> .mb-inspector[data-variant="edge"]) > .mb-window-body {
+  grid-column: 1;
+}
+
+/* Floating: the body and the pane share the last column, the pane on top. */
+.mb-window:has(> .mb-window-sidebar):has(> .mb-inspector[data-variant="edge"]) > .mb-window-body {
+  grid-column: 2;
+}
+
+.mb-window:has(> .mb-inspector[data-variant="floating"]) > .mb-window-body {
+  grid-column: -2 / -1;
+}
+
+.mb-window:has(> .mb-inspector) > .mb-inspector[data-variant] {
+  grid-row: 2;
+  grid-column: -2 / -1;
+}
+
+.mb-window > .mb-inspector[data-variant="floating"] {
+  z-index: 2;
+  justify-self: end;
+  margin: var(--mb-inspector-floating-inset);
+  margin-block-start: calc(var(--mb-inspector-floating-inset) / 2);
+}
+
+/* Header */
+.mb-inspector-header {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--mb-space-4);
+  min-width: 0;
+  min-height: var(--mb-inspector-header-height);
+  padding-inline: var(--mb-inspector-padding) calc(var(--mb-inspector-padding) - var(--mb-space-3));
+}
+
+.mb-inspector-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  color: var(--mb-label);
+  font: var(--mb-inspector-title-font);
+  letter-spacing: var(--mb-tracking-title);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.mb-inspector-header > .mb-inspector-close {
+  margin-inline-start: auto;
+}
+
+/* Body */
+.mb-inspector-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-block-end: var(--mb-space-4);
+}
+
+.mb-inspector:not(:has(> .mb-inspector-header)) > .mb-inspector-body {
+  padding-block-start: var(--mb-space-2);
+}
+
+/* Sections: a title row, then their content, with a hairline between them. */
+.mb-inspector-section {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--mb-inspector-section-gap);
+  min-width: 0;
+  padding: var(--mb-inspector-section-padding-block) var(--mb-inspector-padding);
+}
+
+/* The divider is inset to the content, as AppKit draws it between inspector sections. */
+.mb-inspector-section + .mb-inspector-section::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: var(--mb-inspector-padding);
+  border-block-start: var(--mb-hairline) solid var(--mb-separator);
+}
+
+.mb-inspector-section-header {
+  display: flex;
+  align-items: center;
+  gap: var(--mb-space-4);
+  min-width: 0;
+  min-height: var(--mb-control-height-sm);
+}
+
+.mb-inspector-section-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  color: var(--mb-label);
+  font: var(--mb-inspector-section-title-font);
+  letter-spacing: var(--mb-tracking-body);
+}
+
+.mb-inspector-section-action {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--mb-space-2);
+  margin-inline-end: calc(-1 * var(--mb-space-3));
+}
+
+/* Rows and plain buttons bleed into the padding, so their text lines up with the section title. */
+.mb-inspector-section > .mb-attachments[data-layout="column"],
+.mb-inspector-section > .mb-attachment[data-variant="row"] {
+  margin-inline: calc(-1 * var(--mb-attachment-row-padding));
+}
+
+.mb-inspector-section > .mb-button[data-variant="plain"] {
+  align-self: flex-start;
+  margin-inline-start: calc(-1 * var(--mb-button-padding));
+}
+
+/* Touch: the inspector is a sheet's content, so it drops its own fill and lets the sheet's show. */
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  /* Outside a window it's a sheet's content: the sheet already pads it. */
+  .mb-inspector[data-variant="edge"] {
+    --mb-inspector-bg: transparent;
+    --mb-inspector-padding: 0px;
+  }
+
+  .mb-window > .mb-inspector[data-variant="edge"] {
+    --mb-inspector-bg: var(--mb-bg);
+    --mb-inspector-padding: 20px;
+  }
+}

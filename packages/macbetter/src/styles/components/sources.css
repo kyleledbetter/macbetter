@@ -1,0 +1,349 @@
+/* Sources — what a reply drew on: a collapsible list of links, and inline citation chips that preview them. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-sources-font: var(--mb-text-body);
+  --mb-sources-min-height: 22px;
+  --mb-sources-chevron-width: 5px;
+  --mb-sources-chevron-height: 9px;
+  --mb-sources-chevron-stroke: 1.8;
+  --mb-source-row-height: 28px;
+  --mb-source-padding-inline: 8px;
+  --mb-source-font: var(--mb-text-body);
+  --mb-source-site-font: var(--mb-text-callout);
+  --mb-source-icon-size: 16px;
+  --mb-source-icon-radius: 4px;
+  --mb-source-icon-font: 700 9.5px/1 var(--mb-font-rounded);
+  --mb-citation-height: 16px;
+  --mb-citation-padding: 6px;
+  --mb-citation-font: 500 11px/14px var(--mb-font);
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-sources-font: var(--mb-text-subheadline);
+  --mb-sources-min-height: 28px;
+  --mb-sources-chevron-width: 6px;
+  --mb-sources-chevron-height: 11px;
+  --mb-sources-chevron-stroke: 2;
+  --mb-source-row-height: 44px;
+  --mb-source-padding-inline: 10px;
+  --mb-source-font: var(--mb-text-subheadline);
+  --mb-source-site-font: var(--mb-text-footnote);
+  --mb-source-icon-size: 20px;
+  --mb-source-icon-radius: 5px;
+  --mb-source-icon-font: 700 12px/1 var(--mb-font-rounded);
+  --mb-citation-height: 20px;
+  --mb-citation-padding: 7px;
+  --mb-citation-font: 500 13px/18px var(--mb-font);
+}
+
+/* ── The line ────────────────────────────────────────────────── */
+
+.mb-sources {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  color: var(--mb-label-secondary);
+  font: var(--mb-sources-font);
+  letter-spacing: var(--mb-tracking-body);
+}
+
+.mb-sources-trigger {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 100%;
+  min-height: var(--mb-sources-min-height);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--mb-radius-xs);
+  background: transparent;
+  color: var(--mb-label-secondary);
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: start;
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: color var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-sources-trigger::after {
+  content: "";
+  position: absolute;
+  inset: 50% -4px auto;
+  height: max(100%, var(--mb-hit-target));
+  translate: 0 -50%;
+}
+
+.mb-sources-trigger:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: var(--mb-focus-ring-offset);
+}
+
+.mb-sources-label {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.mb-sources-chevron {
+  flex: none;
+  box-sizing: content-box;
+  width: var(--mb-sources-chevron-width);
+  height: var(--mb-sources-chevron-height);
+  padding-inline: calc((var(--mb-sources-chevron-height) - var(--mb-sources-chevron-width)) / 2);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--mb-sources-chevron-stroke);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: rotate var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+.mb-sources-trigger[data-open] .mb-sources-chevron {
+  rotate: 90deg;
+}
+
+:where([dir="rtl"]) .mb-sources-chevron {
+  scale: -1 1;
+}
+
+:where([dir="rtl"]) .mb-sources-trigger[data-open] .mb-sources-chevron {
+  rotate: -90deg;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-sources-trigger:hover {
+    color: var(--mb-label);
+  }
+}
+
+.mb-sources-trigger:active {
+  color: var(--mb-label);
+  transition-duration: 0ms;
+}
+
+.mb-sources-panel {
+  align-self: stretch;
+  height: var(--collapsible-panel-height, auto);
+  overflow: hidden;
+  transition: height var(--mb-spring-smooth-duration) var(--mb-spring-smooth);
+}
+
+.mb-sources-panel:is([data-starting-style], [data-ending-style]) {
+  height: 0;
+}
+
+.mb-sources-panel[data-ending-style] {
+  transition-duration: var(--mb-duration-slow);
+  transition-timing-function: var(--mb-ease-out);
+}
+
+/* ── The list ────────────────────────────────────────────────── */
+
+.mb-sources-list {
+  display: flex;
+  flex-direction: column;
+  margin: var(--mb-space-3) 0 0;
+  /* Rows' fills reach past the text, so the text lines up with the line above. */
+  margin-inline: calc(var(--mb-source-padding-inline) * -1);
+  padding: 0;
+  list-style: none;
+}
+
+.mb-sources-item {
+  display: block;
+  min-width: 0;
+}
+
+.mb-source {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--mb-space-4);
+  min-width: 0;
+  min-height: var(--mb-source-row-height);
+  padding: var(--mb-space-2) var(--mb-source-padding-inline);
+  border-radius: var(--mb-row-radius);
+  color: var(--mb-label);
+  font: var(--mb-source-font);
+  text-decoration: none;
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-source:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: calc(var(--mb-focus-ring-width) * -1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-source:hover {
+    background: var(--mb-fill-quaternary);
+  }
+}
+
+.mb-source:active {
+  background: var(--mb-fill-tertiary);
+  transition-duration: 0ms;
+}
+
+.mb-source-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.mb-source-site {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 40%;
+  overflow: hidden;
+  color: var(--mb-label-secondary);
+  font: var(--mb-source-site-font);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* ── Favicon slot ────────────────────────────────────────────── */
+
+.mb-source-icon {
+  --mb-source-tint: var(--mb-accent);
+
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: var(--mb-source-icon-size);
+  height: var(--mb-source-icon-size);
+  overflow: hidden;
+  border-radius: var(--mb-source-icon-radius);
+  background: var(--mb-fill-tertiary);
+  color: var(--mb-label-secondary);
+}
+
+.mb-source-icon[data-letter] {
+  /* Deep enough that the white letter reads on every system color. */
+  background: oklch(from var(--mb-source-tint) min(l, 0.58) c h);
+  color: white;
+  font: var(--mb-source-icon-font);
+}
+
+.mb-source-icon > :where(svg, img, .mb-artwork) {
+  width: 100%;
+  height: 100%;
+}
+
+@supports (corner-shape: squircle) {
+  .mb-source-icon {
+    corner-shape: var(--mb-corner-shape);
+    border-radius: calc(var(--mb-source-icon-radius) * var(--mb-corner-factor));
+  }
+}
+
+/* ── Citation chip ───────────────────────────────────────────── */
+
+.mb-citation {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: var(--mb-citation-height);
+  height: var(--mb-citation-height);
+  margin-inline: 2px;
+  padding-inline: var(--mb-citation-padding);
+  border-radius: var(--mb-radius-full);
+  background: var(--mb-fill-secondary);
+  color: var(--mb-label-secondary);
+  font: var(--mb-citation-font);
+  letter-spacing: var(--mb-tracking-caption);
+  white-space: nowrap;
+  text-decoration: none;
+  /* Sits on the text's x-height rather than hanging below the baseline. */
+  vertical-align: 0.08em;
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--mb-duration-fast) var(--mb-ease-out),
+    color var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-citation + .mb-citation {
+  margin-inline-start: 0;
+}
+
+.mb-citation:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: 1px;
+}
+
+.mb-citation[data-open] {
+  background: var(--mb-fill);
+  color: var(--mb-label);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-citation:hover {
+    background: var(--mb-fill);
+    color: var(--mb-label);
+  }
+}
+
+.mb-citation:active {
+  background: var(--mb-label-secondary);
+  color: var(--mb-bg);
+  transition-duration: 0ms;
+}
+
+.mb-citation-label {
+  max-width: 12em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Preview card ────────────────────────────────────────────── */
+
+.mb-citation-card {
+  gap: var(--mb-space-2);
+  width: min(300px, var(--available-width, 100vw));
+  padding: var(--mb-space-5) var(--mb-space-6) var(--mb-space-6);
+}
+
+.mb-citation-card-site {
+  display: flex;
+  align-items: center;
+  gap: var(--mb-space-3);
+  margin-block-end: var(--mb-space-1);
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-subheadline);
+}
+
+.mb-citation-card-title {
+  color: var(--mb-label);
+  font: var(--mb-text-headline);
+  text-wrap: balance;
+}
+
+.mb-citation-card-description {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-callout);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+}
+
+@media (forced-colors: active) {
+  .mb-citation {
+    border: 1px solid LinkText;
+  }
+}

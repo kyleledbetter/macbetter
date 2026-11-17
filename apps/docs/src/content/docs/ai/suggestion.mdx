@@ -1,0 +1,86 @@
+export const metadata = { title: "Suggestion", description: "Prompt starters, as a list of rows or a row of chips." }
+
+# Suggestion
+
+<Lead>Prompt starters. A list of rows under a new chat's composer, or a row of chips for follow-ups under a reply.</Lead>
+
+<Demo name="ai/suggestion-list" />
+
+## When to use it
+
+Suggest a few things the assistant does well when a chat is empty, and a few follow-ups after a reply.
+
+- Show three to five. More than that turns a shortcut into a menu to read.
+- Write them as the prompt they send, in the person's voice: "Plan a long weekend in Porto", not "Travel planning".
+- Use the list under a new chat's composer, and chips for short follow-ups.
+
+## Usage
+
+```tsx
+import { Suggestion, Suggestions } from "macbetter/suggestion"
+```
+
+Each `Suggestion` is a button. Choosing one calls the group's `onSelect` with its text. Send it straight away, or put it in the composer for the person to edit.
+
+```tsx
+<Suggestions aria-label="Suggestions" onSelect={(text) => send(text)}>
+  <Suggestion icon={<CalendarDaysIcon />}>Plan a long weekend in Porto</Suggestion>
+  <Suggestion value="Summarize the attached notes in five bullet points">Summarize my notes</Suggestion>
+</Suggestions>
+```
+
+Set `value` when the prompt it sends is longer than what it shows.
+
+### Chips
+
+`layout="chips"` is a row of capsules that wraps onto more lines. Add `overflow="scroll"` to keep them on one line that scrolls sideways, as under a reply on a phone.
+
+<Demo name="ai/suggestion-chips" />
+
+## Platform behavior
+
+- **macOS.** Rows are 34 points with 13-point text and a fill under the pointer. Chips are 28 points.
+- **iOS and iPadOS.** Rows are 48 points with 17-point text. Chips are 36 points with 44-point hit areas, and give slightly on press.
+- **Every platform.** Rows have an inset hairline between them that starts where the text does.
+
+## Accessibility
+
+- The group is a `group`; name it with `aria-label`, like "Suggestions".
+- Each suggestion is a button named by its text. Icons are decorative and hidden.
+- If a suggestion sends a different prompt than it shows, make sure what it shows describes it.
+
+## API
+
+### Suggestions
+
+<PropsTable
+  rows={[
+    { name: "onSelect", type: "(text: string) => void", description: "Runs with the chosen suggestion's text, or its value." },
+    { name: "layout", type: '"list" | "chips"', default: '"list"', description: "Rows with hairlines, or capsules." },
+    { name: "overflow", type: '"wrap" | "scroll"', default: '"wrap"', description: "For chips: wrap onto more lines, or scroll sideways." },
+  ]}
+/>
+
+`Suggestions` is a `div` and takes its props.
+
+### Suggestion
+
+<PropsTable
+  rows={[
+    { name: "icon", type: "ReactNode", description: "A decorative leading glyph." },
+    { name: "value", type: "string", description: "The prompt it sends, when it differs from its text." },
+  ]}
+/>
+
+`Suggestion` takes the rest of ui-sdk `Button`'s props. An `onClick` that calls `event.preventDefault()` stops the group's `onSelect`.
+
+| Attribute | On | Values |
+| --- | --- | --- |
+| `data-layout` | `Suggestions` | `list`, `chips` |
+| `data-overflow` | `Suggestions` | `wrap`, `scroll` (chips only) |
+
+| Variable | What it sets |
+| --- | --- |
+| `--mb-suggestion-row-height`, `--mb-suggestion-row-padding` | A row's height and side padding |
+| `--mb-suggestion-chip-height`, `--mb-suggestion-chip-padding` | A chip's height and side padding |
+| `--mb-suggestion-icon-size` | The leading glyph |

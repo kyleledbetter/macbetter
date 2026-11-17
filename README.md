@@ -27,12 +27,13 @@ It is a personal open-source project by [Kyle Ledbetter](https://github.com/kyle
 
 ## What's in it
 
-- **74 components.** Buttons and controls, text fields, menus and pickers, alerts, sheets and popovers, app chrome (window, sidebar, toolbar, navigation bar, tab bar, dock, iPhone and iPad frames), lists and tables, status indicators, glass materials, generated artwork and a squircle primitive.
+- **93 components.** Buttons and controls, text fields, menus and pickers, alerts, sheets and popovers, app chrome (window, sidebar, toolbar, navigation bar, tab bar, dock, iPhone and iPad frames), lists and tables, status indicators, glass materials, generated artwork and a squircle primitive.
 - **Three platforms.** `data-platform="macos" | "ipados" | "ios"` switches text sizes, control heights, hit targets and idioms: hover states and compact menus on the Mac; 44pt targets, capsule controls and bottom sheets on touch. It can be nested, so an iPhone preview can live inside a Mac page.
 - **Themes from a few seeds.** Set an accent, an ink color, backgrounds, a tint gray, a radius scale and fonts. Labels, fills, separators, materials, shadows and every component state derive from them. Four themes are built in: Ember (the default), System, Nebula and Graphite.
 - **Continuous corners.** Cards, windows, sheets, menus, app icons and the Dock use Apple's squircle curve through CSS `corner-shape`, measured against the real shape. Browsers without it get normal rounded corners.
 - **Materials and motion.** Translucent materials and Liquid Glass with `backdrop-filter`, and spring curves as CSS `linear()` tokens. Both follow Reduce Transparency, Reduce Motion and Increase Contrast.
 - **Home.** Fifteen components for home apps, modeled on Apple's Home app and the HomeKit guidelines: accessory and scene tiles, the tall level slider, a thermostat dial, lock and door controls, camera views, sensor readouts and a setup-code flow. They are UI only; a web page can't talk to HomeKit, and Apple's licensed HomeKit marks aren't included.
+- **AI and chat.** Thirteen components for assistants: a thread that follows a streaming reply, messages, a prompt field with attachments and a model picker, reasoning, tool calls, plans, confirmations, sources and citations, artifact cards and generated images. They are UI only and take messages and state as props. In the docs, replies render Markdown with [Streamdown](https://streamdown.ai) in `apps/docs/src/components/ai/markdown.tsx`; the package itself has no Markdown or highlighter dependency.
 - **Charts.** Stocks, Health and Fitness style charts on ECharts and [EvilCharts](https://evilcharts.com), themed from the same tokens. These live in the docs app and use those libraries; the package itself has no chart dependency.
 
 <p align="center">
@@ -112,7 +113,7 @@ The [Theme Studio](https://macbetter.dev/themes) does this in the browser, check
 
 ## Examples
 
-Five full apps, each with a Mac and an iPhone version and a code view you can copy from: [Settings](https://macbetter.dev/examples/settings), [Mail](https://macbetter.dev/examples/mail), [Analytics](https://macbetter.dev/examples/analytics), [Music](https://macbetter.dev/examples/music) and [Home](https://macbetter.dev/examples/home).
+Six full apps, each with a Mac and an iPhone version and a code view you can copy from: [Settings](https://macbetter.dev/examples/settings), [Mail](https://macbetter.dev/examples/mail), [Analytics](https://macbetter.dev/examples/analytics), [Music](https://macbetter.dev/examples/music), [Home](https://macbetter.dev/examples/home) and [AI Assistant](https://macbetter.dev/examples/assistant).
 
 <p align="center">
   <img src=".github/assets/examples.png" alt="The Music example: a library of generated album covers" width="100%" />
@@ -130,6 +131,7 @@ apps/docs/                 macbetter.dev (Next.js 16, MDX, Tailwind CSS v4)
   src/content/docs/        pages; the route is the file path
   src/demos/               live examples shown on the pages
   src/components/charts/   the chart kit (ECharts, EvilCharts)
+  src/components/ai/       the Markdown renderer for assistant replies (Streamdown)
 scripts/                   real-browser screenshot and route checks
 AGENTS.md                  the working agreement for people and coding agents
 ```

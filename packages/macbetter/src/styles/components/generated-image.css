@@ -1,0 +1,248 @@
+/* Generated image — a large image on a dark stage, glass actions over it, and a strip of thumbnails. */
+
+:where(:root, [data-platform="macos"]) {
+  --mb-generated-image-max-width: 520px;
+  --mb-generated-image-radius: var(--mb-radius-xl);
+  --mb-generated-image-gap: 8px;
+  --mb-generated-image-thumbnail-size: 56px;
+  --mb-generated-image-thumbnail-radius: var(--mb-radius-md);
+  --mb-generated-image-actions-inset: 10px;
+  --mb-generated-image-status-font: var(--mb-text-body);
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-generated-image-max-width: none;
+  --mb-generated-image-radius: var(--mb-radius-2xl);
+  --mb-generated-image-gap: 10px;
+  --mb-generated-image-thumbnail-size: 60px;
+  --mb-generated-image-thumbnail-radius: var(--mb-radius-lg);
+  --mb-generated-image-actions-inset: 12px;
+  --mb-generated-image-status-font: var(--mb-text-subheadline);
+}
+
+.mb-generated-image {
+  --mb-generated-image-aspect: 1;
+  /* Opaque, so nothing behind the reply shows through the stage or the placeholder. */
+  --mb-generated-image-stage-bg: var(--mb-bg-secondary);
+  --mb-generated-image-strip-direction: column;
+
+  display: grid;
+  grid-template-areas: "stage";
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--mb-generated-image-gap);
+  width: 100%;
+  max-width: var(--mb-generated-image-max-width);
+  min-width: 0;
+}
+
+/* With thumbnails: a strip on the trailing side on macOS, a row below on iOS. */
+.mb-generated-image:has(> .mb-generated-image-thumbnails) {
+  grid-template-areas: "stage strip";
+  grid-template-columns: minmax(0, 1fr) var(--mb-generated-image-thumbnail-size);
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .mb-generated-image:has(> .mb-generated-image-thumbnails) {
+    --mb-generated-image-strip-direction: row;
+    grid-template-areas: "stage" "strip";
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ── Stage ───────────────────────────────────────────────────── */
+
+.mb-generated-image-stage {
+  position: relative;
+  display: grid;
+  grid-area: stage;
+  place-items: center;
+  aspect-ratio: var(--mb-generated-image-aspect);
+  min-width: 0;
+  overflow: hidden;
+  border-radius: var(--mb-generated-image-radius);
+  background: var(--mb-generated-image-stage-bg);
+  box-shadow: inset 0 0 0 var(--mb-hairline) var(--mb-separator);
+}
+
+.mb-generated-image-stage > * {
+  grid-area: 1 / 1;
+}
+
+.mb-generated-image-stage > :where(img, video, svg, .mb-artwork) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+@supports (corner-shape: squircle) {
+  .mb-generated-image-stage,
+  .mb-generated-image-thumbnail {
+    corner-shape: var(--mb-corner-shape);
+  }
+
+  .mb-generated-image-stage {
+    border-radius: calc(var(--mb-generated-image-radius) * var(--mb-corner-factor));
+  }
+
+  .mb-generated-image-thumbnail {
+    border-radius: calc(var(--mb-generated-image-thumbnail-radius) * var(--mb-corner-factor));
+  }
+}
+
+/* Generating: a slow drift of the theme's colors, with the status in the middle. */
+.mb-generated-image-placeholder {
+  display: grid;
+  place-self: stretch;
+  place-items: center;
+  background:
+    radial-gradient(60% 60% at 30% 35%, color-mix(in oklch, var(--mb-accent) 34%, transparent), transparent),
+    radial-gradient(55% 55% at 70% 65%, color-mix(in oklch, var(--mb-purple) 30%, transparent), transparent),
+    radial-gradient(50% 50% at 75% 25%, color-mix(in oklch, var(--mb-pink) 24%, transparent), transparent),
+    var(--mb-generated-image-stage-bg);
+  background-size: 180% 180%, 180% 180%, 180% 180%, 100% 100%;
+  animation: mb-generated-image-drift 9s var(--mb-ease-in-out) infinite alternate;
+}
+
+@keyframes mb-generated-image-drift {
+  0% {
+    background-position: 0% 0%, 100% 100%, 100% 0%, 0 0;
+  }
+  50% {
+    background-position: 60% 40%, 30% 60%, 40% 80%, 0 0;
+  }
+  100% {
+    background-position: 100% 100%, 0% 0%, 0% 60%, 0 0;
+  }
+}
+
+.mb-generated-image-status {
+  font: var(--mb-generated-image-status-font);
+  letter-spacing: var(--mb-tracking-body);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(:root:not([data-motion="full"])) {
+    .mb-generated-image-placeholder {
+      animation: none;
+      background-position: 30% 30%, 70% 70%, 60% 30%, 0 0;
+    }
+  }
+}
+
+/* ── Actions over the stage ─────────────────────────────────── */
+
+.mb-generated-image-actions {
+  z-index: 1;
+  display: flex;
+  grid-area: stage;
+  align-self: end;
+  align-items: center;
+  gap: var(--mb-space-4);
+  min-width: 0;
+  padding: var(--mb-generated-image-actions-inset);
+  pointer-events: none;
+}
+
+.mb-generated-image-actions > * {
+  pointer-events: auto;
+}
+
+.mb-generated-image-actions > :first-child {
+  margin-inline-end: auto;
+}
+
+.mb-generated-image[data-state="generating"] > .mb-generated-image-actions {
+  visibility: hidden;
+}
+
+/* ── Thumbnails ──────────────────────────────────────────────── */
+
+.mb-generated-image-thumbnails {
+  display: flex;
+  flex-direction: var(--mb-generated-image-strip-direction);
+  grid-area: strip;
+  gap: var(--mb-generated-image-gap);
+  /* The strip never sets the stage's height: it scrolls inside it instead. */
+  height: 0;
+  min-height: 100%;
+  min-width: 0;
+  /* Room for the selection ring, which sits outside each thumbnail. */
+  margin: -4px;
+  padding: 4px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .mb-generated-image-thumbnails {
+    height: auto;
+    min-height: 0;
+  }
+}
+
+.mb-generated-image-thumbnail {
+  position: relative;
+  box-sizing: border-box;
+  display: grid;
+  flex: none;
+  place-items: stretch;
+  width: var(--mb-generated-image-thumbnail-size);
+  height: var(--mb-generated-image-thumbnail-size);
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--mb-generated-image-thumbnail-radius);
+  background: var(--mb-generated-image-stage-bg);
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    box-shadow var(--mb-duration-fast) var(--mb-ease-out),
+    filter var(--mb-duration-fast) var(--mb-ease-out);
+}
+
+.mb-generated-image-thumbnail > :where(img, svg, .mb-artwork) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mb-generated-image-thumbnail[data-checked] {
+  box-shadow:
+    0 0 0 2px var(--mb-bg),
+    0 0 0 4px var(--mb-accent);
+}
+
+.mb-generated-image-thumbnail:focus-visible {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: 4px;
+}
+
+.mb-generated-image-thumbnail[data-checked]:focus-visible {
+  outline-offset: 5px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mb-generated-image-thumbnail:not([data-checked]):hover {
+    filter: brightness(1.08);
+  }
+}
+
+.mb-generated-image-thumbnail:active {
+  filter: brightness(0.85);
+  transition-duration: 0ms;
+}
+
+.mb-generated-image-thumbnail[data-disabled] {
+  opacity: 0.4;
+}
+
+@media (forced-colors: active) {
+  .mb-generated-image-thumbnail[data-checked] {
+    outline: 3px solid Highlight;
+    outline-offset: 2px;
+  }
+}

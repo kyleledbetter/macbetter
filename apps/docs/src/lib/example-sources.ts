@@ -165,9 +165,9 @@ function readExampleSources(slug: ExampleSlug): ExampleSourceSet {
   const components = [...macbetter]
     .sort()
     .flatMap((name) => {
-      const href = `/docs/components/${name}`
-      const title = pages.get(href)
-      return title ? [{ name, title, href }] : []
+      // Most components live under /docs/components; the AI and chat ones under /docs/ai.
+      const href = [`/docs/components/${name}`, `/docs/ai/${name}`].find((candidate) => pages.has(candidate))
+      return href ? [{ name, title: pages.get(href)!, href }] : []
     })
 
   return {

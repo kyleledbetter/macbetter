@@ -1,0 +1,93 @@
+export const metadata = {
+  title: "Artifact Card",
+  description: "Show a file or document the assistant made, as a card that opens it.",
+}
+
+# Artifact Card
+
+<Lead>Show a file or document the assistant made, as a card that opens it.</Lead>
+
+<Demo name="ai/artifact-card-basic" />
+
+## When to use it
+
+Use an artifact card in a reply when the assistant made something that lives outside the conversation: a deck, a spreadsheet, a document, a file to download. The card names it, says what kind it is and who can see it, and opens it.
+
+- Title the card with the document's own name, not "Your file".
+- Use the meta line for the kind and the sharing state: "Slides · Only you".
+- Keep trailing actions to one or two, like Download and Open in a new window.
+
+## Usage
+
+```tsx
+import {
+  ArtifactCard,
+  ArtifactCardAction,
+  ArtifactCardActions,
+  ArtifactCardIcon,
+  ArtifactCardMeta,
+  ArtifactCardTitle,
+} from "macbetter/artifact-card"
+```
+
+The card is one control. When it has no actions, pass `render={<a href="…" />}` (or a button) to `ArtifactCard` and the whole card is the link. When it has actions, pass `render` to `ArtifactCardTitle` instead: the title becomes the link, its hit area stretches over the card, and the actions sit beside it rather than inside it.
+
+`ArtifactCardIcon` is a tile with continuous corners in the system color you pass as `color`. `ArtifactCardAction` is an icon button named by its `label` and the card's title, like "Download Quarterly review deck".
+
+### Generating
+
+`state="generating"` shimmers the meta line, veils the icon and turns a progress ring over it. Pass `progress` from 0 to 100 when you know it.
+
+<Demo name="ai/artifact-card-generating" />
+
+## Platform behavior
+
+- **macOS.** A 36-point icon tile, 13-point title and 11-point meta line, at most 420 points wide, with a hover fill.
+- **iOS and iPadOS.** A 44-point tile, 15-point title and 13-point meta line, full width.
+- Corners are continuous where the browser supports `corner-shape`.
+
+## Accessibility
+
+- The link or button is named by the title. The meta line is ordinary text after it.
+- Each action is named by its label and the card's title, so a list of cards doesn't read "Download, Download, Download".
+- While generating, the card is marked busy and the ring is a progress bar named "Generating".
+
+## API
+
+### ArtifactCard
+
+<PropsTable
+  rows={[
+    { name: "state", type: '"generating" | "ready"', default: '"ready"', description: "Generating shimmers the meta line and shows the ring." },
+    { name: "progress", type: "number", description: "Progress from 0 to 100 while generating. Leave it out when unknown." },
+    { name: "render", type: "RenderProp", description: "Makes the whole card a link or button. Use it only without actions." },
+  ]}
+/>
+
+### ArtifactCardIcon, ArtifactCardTitle, ArtifactCardAction
+
+<PropsTable
+  rows={[
+    { name: "color", type: 'SystemColor | "gray" | "accent"', default: '"accent"', description: "ArtifactCardIcon: the tile's color." },
+    { name: "render", type: "RenderProp", description: "ArtifactCardTitle: makes the title the card's link, stretched over the card." },
+    { name: "label", type: "string", description: "ArtifactCardAction: the action's name. The card's title is read after it." },
+  ]}
+/>
+
+`ArtifactCardMeta` renders a `span`; `ArtifactCardActions` renders a `div`. `ArtifactCardAction` takes macbetter `Button` props.
+
+### Data attributes
+
+| Attribute | Part | Values |
+| --- | --- | --- |
+| `data-state` | `ArtifactCard` | `generating`, `ready` |
+| `data-interactive` | `ArtifactCard`, `ArtifactCardTitle` | Present when rendered as a link or button |
+
+### CSS variables
+
+| Variable | macOS | iOS | What it sets |
+| --- | --- | --- | --- |
+| `--mb-artifact-card-max-width` | `420px` | `none` | The card's width |
+| `--mb-artifact-card-icon-size`, `-icon-radius` | `36px`, `8px` | `44px`, `10px` | The icon tile |
+| `--mb-artifact-card-padding` | `10px` | `12px` | Inside the card |
+| `--mb-artifact-card-tint` | `--mb-accent` | same | The tile's color, set by `color` |

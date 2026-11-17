@@ -1,0 +1,101 @@
+export const metadata = {
+  title: "Generated Image",
+  description: "Show one or more generated images on a stage, with thumbnails and actions over the image.",
+}
+
+# Generated Image
+
+<Lead>Show one or more generated images on a stage, with thumbnails and actions over the image.</Lead>
+
+<Demo name="ai/generated-image-basic" />
+
+## When to use it
+
+Use a generated image in a reply when the assistant made pictures. A large stage shows one image at a time, the strip of thumbnails lets people compare a set, and the actions over the image let them edit or share the one they like.
+
+- Put the main action, like Edit, at the leading corner and share or save at the trailing corner.
+- Name each thumbnail for what it shows when you know it, or "Image 2" when you don't.
+- While the image is being made, show the placeholder so the space doesn't jump when it arrives.
+
+## Usage
+
+```tsx
+import {
+  GeneratedImage,
+  GeneratedImageActions,
+  GeneratedImageStage,
+  GeneratedImageThumbnail,
+  GeneratedImageThumbnails,
+} from "macbetter/generated-image"
+```
+
+`GeneratedImage` holds which image is chosen (`value`, `defaultValue`, `onValueChange`). `GeneratedImageStage` takes any child, like an `<img>`, or a function of the chosen value that returns one. `GeneratedImageThumbnails` holds a `GeneratedImageThumbnail` for each image, with a `value` and an `aria-label`. `GeneratedImageActions` floats its buttons over the stage's bottom corners; use macbetter `Button`s with `variant="glass"`. `aspectRatio` sets the stage's shape.
+
+### One image
+
+Leave out the thumbnails and the stage takes the full width.
+
+<Demo name="ai/generated-image-single" />
+
+### Generating
+
+`state="generating"` shows a slow drift of the theme's colors on the stage, with "Creating image…" shimmering in the middle, and hides the actions. Change the words with `generatingLabel`.
+
+<Demo name="ai/generated-image-generating" />
+
+## Platform behavior
+
+- **macOS.** The thumbnails are a vertical strip on the trailing side of the stage, 56 points square, and scroll when there are more than fit.
+- **iOS and iPadOS.** The thumbnails are a row under the stage, 60 points square, and scroll sideways. The image fills the column.
+- The chosen thumbnail has an accent ring. The actions are glass buttons, the only blurred surfaces here.
+- Under Reduce Motion the placeholder and its shimmer hold still. Under Reduce Transparency the glass buttons turn opaque.
+
+## Accessibility
+
+- The thumbnails are a radio group named "Images", with one tab stop. The arrow keys choose the next or previous image and the stage follows.
+- The stage's image needs its own description: give an `<img>` its `alt`, or an Artwork its `title`.
+- While generating, the image is marked busy.
+
+## API
+
+### GeneratedImage
+
+<PropsTable
+  rows={[
+    { name: "state", type: '"generating" | "ready"', default: '"ready"', description: "Generating shows the placeholder on the stage." },
+    { name: "value", type: "string | null", description: "The chosen image, to control it." },
+    { name: "defaultValue", type: "string | null", default: "null", description: "The image chosen at first." },
+    { name: "onValueChange", type: "(value: string | null) => void", description: "Runs when a thumbnail is chosen." },
+    { name: "aspectRatio", type: "number | string", default: "1", description: "The stage's width over height." },
+    { name: "generatingLabel", type: "ReactNode", default: '"Creating image…"', description: "What the stage says while generating." },
+  ]}
+/>
+
+### GeneratedImageStage
+
+<PropsTable
+  rows={[
+    { name: "children", type: "ReactNode | ((value: string | null) => ReactNode)", description: "The image, or a function of the chosen value." },
+  ]}
+/>
+
+### GeneratedImageThumbnails and GeneratedImageThumbnail
+
+`GeneratedImageThumbnails` takes ui-sdk `RadioGroup` props except the value ones, and an `aria-label` (default `"Images"`). `GeneratedImageThumbnail` takes ui-sdk `Radio` props: a `value` and a required `aria-label`. `GeneratedImageActions` renders a `div`.
+
+### Data attributes
+
+| Attribute | Part | Values |
+| --- | --- | --- |
+| `data-state` | `GeneratedImage` | `generating`, `ready` |
+| `data-checked` | `GeneratedImageThumbnail` | Present on the chosen image |
+
+### CSS variables
+
+| Variable | macOS | iOS | What it sets |
+| --- | --- | --- | --- |
+| `--mb-generated-image-max-width` | `520px` | `none` | Stage and strip together |
+| `--mb-generated-image-radius` | `16px` | `22px` | The stage's corners |
+| `--mb-generated-image-thumbnail-size`, `-thumbnail-radius` | `56px`, `8px` | `60px`, `12px` | A thumbnail |
+| `--mb-generated-image-aspect` | set by `aspectRatio` | same | The stage's shape |
+| `--mb-generated-image-stage-bg` | fill in light, near black in dark | same | Behind the image |

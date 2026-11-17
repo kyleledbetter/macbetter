@@ -41,7 +41,7 @@ function EffectsNotice() {
   const settings = [reduced.motion && "Reduce Motion", reduced.transparency && "Reduce Transparency"]
     .filter(Boolean)
     .join(" and ")
-  const hidden = [reduced.transparency && "glass and materials", reduced.motion && "animation"]
+  const hidden = [reduced.transparency && "glass and materials", reduced.motion && "animations"]
     .filter(Boolean)
     .join(" and ")
 

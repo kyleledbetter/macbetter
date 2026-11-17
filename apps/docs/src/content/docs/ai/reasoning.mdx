@@ -1,0 +1,93 @@
+export const metadata = {
+  title: "Reasoning",
+  description: "Show that the model is thinking, then how long it took, with the reasoning a press away.",
+}
+
+# Reasoning
+
+<Lead>Show that the model is thinking, then how long it took, with the reasoning a press away.</Lead>
+
+<Demo name="ai/reasoning-basic" />
+
+## When to use it
+
+Use Reasoning at the top of an assistant's turn when the model thinks or works before it answers. While it runs, the line says "Thinking…" with a shimmer, so people know the app hasn't stalled. When it finishes, the line says how long it took, and the reasoning stays one press away for anyone who wants to check it.
+
+- Keep the line short and plain: "Thinking…", "Thought for 12s", "Worked for 2m 1s".
+- Collapse it by default once the answer arrives. The answer is what most people came for.
+- Put steps the agent took with tools in a [Tool Call](/docs/ai/tool-call) list, not in the reasoning text.
+
+## Usage
+
+```tsx
+import { Reasoning, ReasoningContent, ReasoningTrigger, formatDuration } from "macbetter/reasoning"
+```
+
+`ReasoningTrigger` writes its own label from the root's `state` and `duration`: "Thinking…" while running, then "Thought for 12s". Pass children to say something else, like "Worked for 2m 1s". `formatDuration(seconds)` is the formatter it uses, exported for your own labels.
+
+### While it runs
+
+`state="running"` shimmers the label and marks the turn busy. `autoCollapse` opens the reasoning while it runs and closes it when `state` turns `done`, so people can watch it stream and then get it out of the way. `glow` adds a soft drift of the theme's colors behind the line.
+
+<Demo name="ai/reasoning-running" />
+
+### Steps instead of text
+
+The content takes anything. A [Plan](/docs/ai/plan) works well for reasoning that came as a list of steps.
+
+<Demo name="ai/reasoning-steps" />
+
+## Platform behavior
+
+- **macOS.** 13-point secondary text on one line, with a 9-point chevron. The label turns primary on hover.
+- **iOS and iPadOS.** 15-point text, and the line's hit area grows to 44 points.
+- The chevron points to the trailing side when closed and turns down when open. In right-to-left layouts it points left and turns the other way.
+- The content opens by height with the system's smooth spring. Under Reduce Motion it opens without the slide, and the glow and shimmer hold still.
+
+## Accessibility
+
+- The line is a button that says whether it's expanded. Enter or Space opens and closes it.
+- While running, the root is marked busy, and the button's name is "Thinking…".
+- The shimmer only ever brightens secondary text, so the label keeps its contrast at every frame.
+
+## API
+
+### Reasoning
+
+<PropsTable
+  rows={[
+    { name: "state", type: '"running" | "done"', default: '"done"', description: "Running shimmers the label and marks the root busy." },
+    { name: "duration", type: "number", description: "How long the model worked, in seconds." },
+    { name: "autoCollapse", type: "boolean", default: "false", description: "Opens while running and closes when done. Uncontrolled only." },
+    { name: "glow", type: "boolean", default: "false", description: "A soft moving glow behind the line while running." },
+    { name: "open, defaultOpen, onOpenChange", type: "Collapsible props", description: "Control the panel like a ui-sdk Collapsible." },
+  ]}
+/>
+
+### ReasoningTrigger
+
+<PropsTable
+  rows={[
+    { name: "children", type: "ReactNode", description: "Replaces the label. It still shimmers while running." },
+    { name: "...props", type: "CollapsibleTrigger props", description: "Passed to the button." },
+  ]}
+/>
+
+`ReasoningContent` takes `CollapsiblePanel` props and wraps its children in the ruled, secondary-text column.
+
+### Data attributes
+
+| Attribute | Part | Values |
+| --- | --- | --- |
+| `data-state` | `Reasoning` | `running`, `done` |
+| `data-glow` | `Reasoning` | Present with `glow` |
+| `data-open`, `data-closed` | all parts | From ui-sdk Collapsible |
+
+### CSS variables
+
+| Variable | macOS | iOS | What it sets |
+| --- | --- | --- | --- |
+| `--mb-reasoning-font` | body (13pt) | subheadline (15pt) | The line |
+| `--mb-reasoning-content-font`, `-content-leading` | 13pt, `18px` | 15pt, `21px` | The reasoning text |
+| `--mb-reasoning-content-indent` | `12px` | `14px` | Space after the hairline |
+| `--mb-reasoning-chevron-width`, `-height` | `5px`, `9px` | `6px`, `11px` | The chevron |

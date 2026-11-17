@@ -3,7 +3,7 @@ import { ExamplesGallery } from "@/components/examples/gallery"
 import { socialMetadata } from "@/lib/og/routes"
 
 const description =
-  "Full app screens built with macbetter: Settings, Mail, an analytics dashboard, Music and Home, on macOS, iPadOS and iOS."
+  "Full app screens built with macbetter: Settings, Mail, an analytics dashboard, Music, Home and an assistant, on macOS, iPadOS and iOS."
 
 export const metadata: Metadata = {
   title: "Examples",

@@ -1,0 +1,111 @@
+export const metadata = {
+  title: "Inspector",
+  description: "Show details about the selected content in a panel at the trailing edge of a window.",
+}
+
+# Inspector
+
+<Lead>Show details about the selected content in a panel at the trailing edge of a window.</Lead>
+
+<Demo name="inspector/window" platforms={["macos"]} height={480} />
+
+## When to use it
+
+An inspector shows details and settings for whatever is selected in the main view: a file's outputs and sources, an image's size and prompt, a shape's fill. It's SwiftUI's `.inspector`.
+
+- Put it on the trailing side, after the content, and let people show and hide it from a toolbar button.
+- Keep the content about the selection. When nothing is selected, say so with a [Content Unavailable](/docs/components/content-unavailable) view instead of an empty panel.
+- Group the details into sections with short titles. Put a section's one action, like an add button, at the end of its title row.
+
+## Usage
+
+```tsx
+import {
+  Inspector,
+  InspectorBody,
+  InspectorClose,
+  InspectorHeader,
+  InspectorSection,
+  InspectorSectionTitle,
+  InspectorTitle,
+} from "macbetter/inspector"
+```
+
+Put `Inspector` inside a [Window](/docs/components/window), after `WindowBody`. It takes the trailing column below the title bar, and the title bar runs across it, as a unified toolbar does. It works beside a window sidebar too. `InspectorClose` is a small close button for the header; you hide the inspector in its `onClick`.
+
+`InspectorSectionTitle` takes an `action` for the trailing end of its row. Rows of [Attachments](/docs/components/attachment) and plain buttons in a section line their text up with the section title.
+
+### Floating
+
+`variant="floating"` draws the inspector as a rounded pane of material over the content, inset from the window's edges. Use it over a canvas or an image, where the content should run under the panel.
+
+<Demo name="inspector/floating" platforms={["macos"]} height={480} />
+
+### On iPhone and iPad
+
+On iPhone, present the inspector's content in a [Sheet](/docs/components/sheet), as SwiftUI does in a compact width. The sheet gives it a title and a Done button, so leave out `InspectorHeader` and name the inspector with `aria-label`.
+
+<Demo name="inspector/sheet" platforms={["ios", "ipados"]} height={560} />
+
+## Platform behavior
+
+- **macOS.** A 264-point column with a hairline on its leading edge, 13-point section titles and 16 points of padding.
+- **iPadOS.** A 320-point column in a regular-width window, or a sheet's content.
+- **iOS.** The inspector takes the sheet's width and drops its own fill, so the sheet's shows. Section titles are 20 points, as in a grouped list.
+- The floating variant uses the regular material, which turns opaque under Reduce Transparency and Increase Contrast.
+- In right-to-left layouts the inspector moves to the left and its hairline to its right.
+
+## Accessibility
+
+- The inspector is an `aside`, a complementary landmark, named by its `InspectorTitle`. Pass `aria-label` when it has no title.
+- The title is an `h2` and section titles are `h3`, so people can move between sections by heading.
+- `InspectorClose` is named "Close Inspector". Give the toolbar button that shows the inspector `aria-pressed`, as the first demo does, so its state is announced.
+
+## API
+
+### Inspector
+
+<PropsTable
+  rows={[
+    { name: "variant", type: '"edge" | "floating"', default: '"edge"', description: "A column with a hairline, or a pane of material over the content." },
+    { name: "...props", type: 'ComponentProps<"aside">', description: "Passed to the aside." },
+  ]}
+/>
+
+### InspectorSectionTitle
+
+<PropsTable
+  rows={[
+    { name: "action", type: "ReactNode", description: "A control at the trailing end of the title row, like an add button." },
+    { name: "...props", type: 'ComponentProps<"h3">', description: "Passed to the heading." },
+  ]}
+/>
+
+### InspectorClose
+
+<PropsTable
+  rows={[
+    { name: "aria-label", type: "string", default: '"Close Inspector"', description: "The button's name." },
+    { name: "children", type: "ReactNode", description: "Replaces the × glyph." },
+    { name: "...props", type: "ButtonProps", description: "A plain, small, circular Button." },
+  ]}
+/>
+
+`InspectorHeader`, `InspectorBody` and `InspectorSection` render a `div`, a `div` and a `section`. `InspectorTitle` renders an `h2`.
+
+### Data attributes
+
+| Attribute | Values |
+| --- | --- |
+| `data-variant` | `edge`, `floating` |
+
+### CSS variables
+
+| Variable | macOS | iOS | What it sets |
+| --- | --- | --- | --- |
+| `--mb-inspector-width` | `264px` | `100%` (iPadOS `320px`) | The panel's width |
+| `--mb-inspector-padding` | `16px` | `20px` | Inline padding of the header and sections |
+| `--mb-inspector-header-height` | `44px` | `56px` | The header |
+| `--mb-inspector-title-font`, `--mb-inspector-section-title-font` | headline | title 3 | Title fonts |
+| `--mb-inspector-floating-inset` | `8px` | `10px` | The floating pane's inset from the window |
+| `--mb-inspector-bg` | `--mb-bg` | transparent in a sheet | The panel's fill |

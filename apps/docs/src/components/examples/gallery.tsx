@@ -4,6 +4,7 @@ import Link from "next/link"
 import * as React from "react"
 import { SiteFooter } from "@/components/site-footer"
 import { AnalyticsApp } from "./analytics/analytics"
+import { AssistantApp } from "./assistant/assistant"
 import { HomeApp } from "./home/home"
 import { MailApp } from "./mail/mail"
 import { MusicApp } from "./music/music"
@@ -56,6 +57,15 @@ const examples = [
     App: HomeApp,
     mac: { width: 1160, height: 760 },
   },
+  {
+    slug: "assistant",
+    title: "AI Assistant",
+    description:
+      "A chat app with history, projects and a new chat screen, a conversation that streams a scripted reply with reasoning, tool calls, sources and generated images, an inspector, and plugin and skill directories.",
+    platforms: ["macOS", "iOS"],
+    App: AssistantApp,
+    mac: { width: 1160, height: 760 },
+  },
 ]
 
 function useWidth() {
@@ -76,10 +86,12 @@ function useWidth() {
 function Preview({ example }: { example: (typeof examples)[number] }) {
   const [ref, width] = useWidth()
   const { App, mac } = example
-  const macScale = width ? Math.min((width - 64) / mac.width, 300 / mac.height) : 0
+  // Room on either side of the screens, which grows with the card.
+  const pad = Math.round(Math.min(56, Math.max(32, width * 0.075)))
+  const macScale = width ? Math.min((width - pad * 2) / mac.width, 300 / mac.height) : 0
   const phoneScale = macScale * 1.25
   return (
-    <div ref={ref} className="ex-card-preview ex-wallpaper">
+    <div ref={ref} className="ex-card-preview ex-wallpaper" style={{ "--ex-card-pad": `${pad}px` } as React.CSSProperties}>
       {width ? (
         <>
           <StagePreview
@@ -110,7 +122,7 @@ function ExamplesGallery() {
             Better examples for better&nbsp;apps.
           </h1>
           <p className="stack-copy type-intro type-two-tone">
-            Settings, Mail, Analytics, Music and Home, built only from macbetter components.{" "}
+            Settings, Mail, Analytics, Music, Home and AI Assistant, built only from macbetter components.{" "}
             <strong>Each one runs live, keeps its own state, and changes idiom with the&nbsp;platform.</strong>
           </p>
         </header>

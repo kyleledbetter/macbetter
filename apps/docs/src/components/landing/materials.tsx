@@ -22,7 +22,7 @@ const albums = [
 
 function Materials() {
   return (
-    <section id="materials" className="lp-section" aria-labelledby="lp-materials">
+    <section id="materials" className="lp-section" data-surface="alt" aria-labelledby="lp-materials">
       <div className="lp-section-inner">
       <SectionHeading
         id="lp-materials"

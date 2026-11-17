@@ -1,0 +1,699 @@
+/* Assistant example. The components bring their own look; this lays out the screens around them. */
+
+:where(:root, [data-platform="macos"]) {
+  --ex-ai-tile-size: 32px;
+  --ex-ai-tile-glyph: 17px;
+  --ex-ai-row-gap: 12px;
+  --ex-ai-row-padding: 10px;
+  --ex-ai-gutter: 32px;
+}
+
+:where([data-platform="ios"], [data-platform="ipados"]) {
+  --ex-ai-tile-size: 40px;
+  --ex-ai-tile-glyph: 21px;
+  --ex-ai-row-gap: 14px;
+  --ex-ai-row-padding: 12px;
+  --ex-ai-gutter: 16px;
+}
+
+/* ── Generated icon tiles ─────────────────────────────────────────── */
+
+.ex-ai-tile {
+  --ex-ai-tint: var(--mb-accent);
+
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: var(--ex-ai-tile-size);
+  height: var(--ex-ai-tile-size);
+  background: linear-gradient(
+    180deg,
+    oklch(from var(--ex-ai-tint) calc(l + 0.06) c h),
+    var(--ex-ai-tint)
+  );
+  color: #fff;
+  box-shadow: inset 0 0 0 var(--mb-hairline) rgb(0 0 0 / 0.08);
+}
+
+.ex-ai-tile > svg {
+  width: var(--ex-ai-tile-glyph);
+  height: var(--ex-ai-tile-glyph);
+  stroke-width: 2;
+}
+
+.ex-ai-tile[data-color="blue"] { --ex-ai-tint: var(--mb-blue); }
+.ex-ai-tile[data-color="green"] { --ex-ai-tint: var(--mb-green); }
+.ex-ai-tile[data-color="orange"] { --ex-ai-tint: var(--mb-orange); }
+.ex-ai-tile[data-color="pink"] { --ex-ai-tint: var(--mb-pink); }
+.ex-ai-tile[data-color="purple"] { --ex-ai-tint: var(--mb-purple); }
+.ex-ai-tile[data-color="teal"] { --ex-ai-tint: var(--mb-teal); }
+.ex-ai-tile[data-color="indigo"] { --ex-ai-tint: var(--mb-indigo); }
+.ex-ai-tile[data-color="red"] { --ex-ai-tint: var(--mb-red); }
+.ex-ai-tile[data-color="cyan"] { --ex-ai-tint: var(--mb-cyan); }
+.ex-ai-tile[data-color="brown"] { --ex-ai-tint: var(--mb-brown); }
+.ex-ai-tile[data-color="mint"] { --ex-ai-tint: var(--mb-mint); }
+.ex-ai-tile[data-color="yellow"] { --ex-ai-tint: var(--mb-yellow); }
+.ex-ai-tile[data-color="gray"] { --ex-ai-tint: oklch(from var(--mb-label-secondary) l 0 h / 1); }
+
+/* ── Mac window ──────────────────────────────────────────────────── */
+
+.ex-ai-window {
+  --mb-window-sidebar-width: 248px;
+}
+
+.ex-ai-window > .mb-window-sidebar > .ex-ai-sidebar-title,
+.ex-ai-window > .mb-window-sidebar > .ex-ai-sidebar-search,
+.ex-ai-window > .mb-window-sidebar > .ex-ai-sidebar-footer {
+  flex: none;
+}
+
+.ex-ai-sidebar-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--mb-space-3);
+  padding-inline: calc(var(--mb-sidebar-inset) + var(--mb-sidebar-row-padding)) calc(var(--mb-sidebar-inset) + 2px);
+  padding-block: 0 2px;
+}
+
+.ex-ai-app-name {
+  font: var(--mb-text-title-3);
+  letter-spacing: var(--mb-tracking-title);
+  color: var(--mb-label);
+}
+
+.ex-ai-sidebar-search {
+  padding: 4px var(--mb-sidebar-inset) 2px;
+}
+
+.ex-ai-sidebar-search .mb-search-field {
+  width: 100%;
+}
+
+.ex-ai-sidebar.mb-sidebar {
+  padding-top: var(--mb-space-3);
+}
+
+.ex-ai-sidebar-empty {
+  padding: 4px var(--mb-sidebar-row-padding);
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-subheadline);
+}
+
+.ex-ai-sidebar-footer {
+  padding: 6px var(--mb-sidebar-inset) 10px;
+  box-shadow: inset 0 var(--mb-hairline) 0 var(--mb-separator);
+}
+
+.ex-ai-account.mb-button {
+  --mb-button-padding: var(--mb-sidebar-row-padding);
+  justify-content: flex-start;
+  width: 100%;
+  height: 44px;
+  gap: 9px;
+  border-radius: var(--mb-radius-md);
+  text-align: start;
+}
+
+.ex-ai-account-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.ex-ai-account-name {
+  color: var(--mb-label);
+  font: 500 13px/16px var(--mb-font);
+}
+
+.ex-ai-account-plan {
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-caption);
+}
+
+/* The chat title as a pull-down button: its text lines up where a plain title would sit. */
+.ex-ai-title-menu.mb-button {
+  min-width: 0;
+  max-width: 340px;
+  font: var(--mb-text-headline);
+}
+
+.ex-ai-title-text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* The body is a column: the thread scrolls, the composer stays at the bottom. */
+.ex-ai-body.mb-window-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.ex-ai-body[data-screen="chat"],
+.ex-ai-body[data-screen="new"] {
+  overflow: hidden;
+}
+
+.ex-ai-dock {
+  flex: none;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: calc(var(--mb-chat-max-width, 720px) + 48px);
+  margin-inline: auto;
+  padding: 0 24px 18px;
+}
+
+/* An assistant turn stacks its reasoning, steps, reply and outputs with even gaps. */
+.ex-ai-reply {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.ex-ai-reply > .mb-response + .mb-response {
+  margin-top: -2px;
+}
+
+.ex-ai-reply > .mb-generated-image {
+  max-width: 480px;
+}
+
+/* ── New chat ────────────────────────────────────────────────────── */
+
+.ex-ai-new {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: center;
+  gap: 36px;
+  min-height: 0;
+  overflow-y: auto;
+  padding: clamp(32px, 9vh, 88px) var(--ex-ai-gutter) 32px;
+}
+
+.ex-ai-greeting.mb-chat-greeting {
+  width: 100%;
+  max-width: 680px;
+  margin-inline: auto;
+}
+
+.ex-ai-composer-lg {
+  width: 100%;
+}
+
+.ex-ai-chip.mb-button {
+  color: var(--mb-label-secondary);
+}
+
+.ex-ai-chip.mb-button[aria-pressed="true"] {
+  color: var(--mb-accent-text);
+}
+
+.ex-ai-outputs {
+  width: 100%;
+  max-width: 680px;
+}
+
+.ex-ai-outputs-title {
+  margin: 0 0 10px;
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-subheadline);
+  font-weight: 600;
+}
+
+.ex-ai-outputs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ex-ai-output {
+  display: grid;
+  gap: 2px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: default;
+}
+
+.ex-ai-output-art {
+  margin-bottom: 6px;
+  overflow: hidden;
+  border-radius: var(--mb-radius-lg);
+  box-shadow: 0 0 0 var(--mb-hairline) var(--mb-separator);
+  transition: scale var(--mb-spring-snappy-duration) var(--mb-spring-snappy);
+}
+
+.ex-ai-output:active .ex-ai-output-art {
+  scale: 0.98;
+}
+
+.ex-ai-output:focus-visible {
+  outline: none;
+}
+
+.ex-ai-output:focus-visible .ex-ai-output-art {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: 2px;
+}
+
+.ex-ai-output-title {
+  overflow: hidden;
+  color: var(--mb-label);
+  font: 500 13px/16px var(--mb-font);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.ex-ai-output-time {
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-caption);
+}
+
+/* ── Directories: plugins and skills ─────────────────────────────── */
+
+.ex-ai-directory {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 860px;
+  margin-inline: auto;
+  padding: 28px var(--ex-ai-gutter) 40px;
+}
+
+.ex-ai-directory-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 16px 20px;
+  margin-bottom: 18px;
+}
+
+.ex-ai-directory-heading {
+  min-width: 0;
+}
+
+.ex-ai-directory-title {
+  margin: 0 0 4px;
+  font: var(--mb-text-title-1);
+  letter-spacing: var(--mb-tracking-title);
+}
+
+.ex-ai-directory-description {
+  margin: 0;
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-body);
+}
+
+.ex-ai-directory-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ex-ai-directory-search {
+  width: 220px;
+}
+
+.ex-ai-directory-scope {
+  grid-column: 1 / -1;
+  justify-self: start;
+}
+
+.ex-ai-section {
+  margin-top: 22px;
+}
+
+.ex-ai-section-title {
+  margin: 0 0 6px;
+  font: var(--mb-text-headline);
+  letter-spacing: var(--mb-tracking-body);
+}
+
+.ex-ai-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ex-ai-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--ex-ai-row-gap);
+  min-width: 0;
+  margin-inline: calc(-1 * var(--ex-ai-row-padding));
+  padding: var(--ex-ai-row-padding);
+  border-radius: var(--mb-radius-lg);
+}
+
+/* A hairline under each row, inset to the text, as a list draws it. */
+.ex-ai-row::after {
+  content: "";
+  position: absolute;
+  inset-inline: calc(var(--ex-ai-row-padding) + var(--ex-ai-tile-size) + var(--ex-ai-row-gap)) var(--ex-ai-row-padding);
+  inset-block-end: 0;
+  border-bottom: var(--mb-hairline) solid var(--mb-separator);
+  pointer-events: none;
+}
+
+.ex-ai-row-text {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.ex-ai-row-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  color: var(--mb-label);
+  font: var(--mb-text-headline);
+  letter-spacing: var(--mb-tracking-body);
+}
+
+.ex-ai-row-badge {
+  flex: none;
+}
+
+.ex-ai-row-description {
+  overflow: hidden;
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-subheadline);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.ex-ai-row-chevron {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  color: var(--mb-label-tertiary);
+}
+
+/* A skill row: the name is the button, and its hit area covers the row. */
+.ex-ai-row-button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: start;
+  cursor: default;
+}
+
+.ex-ai-row-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+}
+
+.ex-ai-row-button:focus-visible {
+  outline: none;
+}
+
+.ex-ai-row:has(.ex-ai-row-button:focus-visible) {
+  outline: var(--mb-focus-ring-width) solid var(--mb-focus-ring);
+  outline-offset: -2px;
+}
+
+.ex-ai-row:has(.ex-ai-row-button:active) {
+  background: var(--mb-fill-secondary);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ex-ai-row[data-interactive]:hover {
+    background: var(--mb-fill-quaternary);
+  }
+}
+
+.ex-ai-empty.mb-content-unavailable {
+  min-height: 300px;
+}
+
+/* ── Inspector ───────────────────────────────────────────────────── */
+
+.ex-ai-show-more.mb-button {
+  margin-top: -6px;
+}
+
+/* ── Skill detail ────────────────────────────────────────────────── */
+
+.ex-ai-skill-dialog.mb-dialog {
+  --mb-dialog-w: 780px;
+  padding: 0;
+  overflow: hidden;
+}
+
+.ex-ai-skill {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: min(560px, 80vh);
+}
+
+.ex-ai-skill-header {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 12px 14px 20px;
+  box-shadow: inset 0 calc(-1 * var(--mb-hairline)) 0 var(--mb-separator);
+}
+
+.ex-ai-skill-icon.ex-ai-tile {
+  --ex-ai-tile-size: 40px;
+  --ex-ai-tile-glyph: 21px;
+}
+
+.ex-ai-skill-heading {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.ex-ai-skill-title {
+  margin: 0;
+  font: var(--mb-text-headline);
+  font-family: var(--mb-font-mono);
+  font-size: 15px;
+  text-align: start;
+}
+
+.ex-ai-skill-byline {
+  margin: 2px 0 0;
+  color: var(--mb-label-secondary);
+  font: var(--mb-text-subheadline);
+}
+
+.ex-ai-skill-body {
+  display: grid;
+  flex: 1 1 auto;
+  grid-template-columns: 210px minmax(0, 1fr);
+  min-height: 0;
+}
+
+.ex-ai-skill-tree.mb-outline {
+  min-height: 0;
+  overflow-y: auto;
+  padding: 10px 8px;
+  background: var(--mb-bg-secondary);
+  box-shadow: inset calc(-1 * var(--mb-hairline)) 0 0 var(--mb-separator);
+}
+
+.ex-ai-skill-file {
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 18px 22px 24px;
+  outline: none;
+}
+
+.ex-ai-skill-doc {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ex-ai-skill-meta.mb-description-list {
+  padding: 4px 12px;
+  border-radius: var(--mb-radius-lg);
+  box-shadow: inset 0 0 0 var(--mb-hairline) var(--mb-separator-strong);
+}
+
+.ex-ai-skill-footer {
+  display: flex;
+  flex: none;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 16px;
+  box-shadow: inset 0 var(--mb-hairline) 0 var(--mb-separator);
+}
+
+/* ── iPhone ──────────────────────────────────────────────────────── */
+
+.ex-ai-phone-main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+  background: var(--mb-bg);
+}
+
+/* Outside a NavigationStack the bar has no scroll to reveal its material, so it shows it from the start. */
+.ex-ai-phone-bar.mb-navigation-bar {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+}
+
+.ex-ai-phone-bar.mb-navigation-bar::before {
+  opacity: 1;
+  animation: none;
+}
+
+.ex-ai-phone-bar .mb-navigation-bar-title {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.ex-ai-phone-thread.mb-chat {
+  padding-top: calc(var(--mb-safe-top, 0px) + var(--mb-navigation-bar-row));
+}
+
+.ex-ai-phone-new {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  padding-top: calc(var(--mb-safe-top, 0px) + var(--mb-navigation-bar-row));
+}
+
+.ex-ai-new-phone {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 16px 16px 120px;
+}
+
+.ex-ai-phone-stack {
+  padding-bottom: 24px;
+}
+
+.ex-ai-muted {
+  color: var(--mb-label-secondary);
+}
+
+.ex-ai-sheet {
+  overflow-y: auto;
+}
+
+.ex-ai-sheet-inspector.mb-inspector {
+  --mb-inspector-padding: 20px;
+  width: 100%;
+  overflow: visible;
+}
+
+@scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
+  .ex-ai-directory {
+    padding-top: 4px;
+  }
+
+  .ex-ai-directory-header {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  .ex-ai-directory-controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .ex-ai-directory-search {
+    width: auto;
+  }
+
+  .ex-ai-directory-scope {
+    justify-self: stretch;
+  }
+
+  .ex-ai-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ex-ai-section-title {
+    font: var(--mb-text-title-3);
+  }
+
+  .ex-ai-row-description {
+    white-space: normal;
+  }
+
+  .ex-ai-new-phone .mb-suggestion-label {
+    white-space: normal;
+  }
+
+  .ex-ai-new-phone .mb-suggestion {
+    padding-block: 10px;
+  }
+
+  /* The skill sheet stacks the tree over the file. */
+  .ex-ai-skill {
+    height: auto;
+    min-height: 100%;
+  }
+
+  .ex-ai-skill-header {
+    padding: 22px 12px 14px 20px;
+    box-shadow: none;
+  }
+
+  .ex-ai-skill-title {
+    font-size: 17px;
+  }
+
+  .ex-ai-skill-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ex-ai-skill-tree.mb-outline {
+    margin: 0 16px;
+    border-radius: var(--mb-radius-xl);
+    box-shadow: none;
+  }
+
+  .ex-ai-skill-file {
+    overflow: visible;
+    padding: 18px 16px;
+  }
+
+  .ex-ai-skill-footer {
+    position: sticky;
+    bottom: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 12px 16px calc(12px + var(--mb-safe-bottom, 0px));
+    background: var(--mb-bg-elevated);
+  }
+}

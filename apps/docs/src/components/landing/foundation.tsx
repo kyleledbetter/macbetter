@@ -58,7 +58,7 @@ const features = [
 
 function Foundation() {
   return (
-    <section id="foundation" className="lp-section" data-surface="alt" aria-labelledby="lp-foundation">
+    <section id="foundation" className="lp-section" aria-labelledby="lp-foundation">
       <div className="lp-section-inner">
       <SectionHeading
         id="lp-foundation"
