@@ -353,6 +353,13 @@
   }
 }
 
+/* In two columns the cards get more room between them as the window widens. */
+@media (min-width: 1069px) {
+  .ex-index-grid {
+    gap: clamp(28px, 3.4vw, 56px);
+  }
+}
+
 .ex-card {
   position: relative;
   display: flex;
