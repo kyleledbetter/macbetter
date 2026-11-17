@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { LocalNav } from "@/components/local-nav"
 import { SiteFooter } from "@/components/site-footer"
 import { SiteHeader } from "@/components/site-header"
+import { AiBento } from "@/components/landing/ai-bento"
 import { Bento } from "@/components/landing/bento"
 import { ChartsBento } from "@/components/landing/charts-bento"
 import { Closing } from "@/components/landing/closing"
@@ -32,6 +33,7 @@ const sections = [
   { id: "components", label: "Components" },
   { id: "home", label: "Home" },
   { id: "charts", label: "Charts" },
+  { id: "ai", label: "AI" },
   { id: "materials", label: "Guidelines" },
 ]
 
@@ -48,6 +50,7 @@ export default function Home() {
         <Bento />
         <HomeBento />
         <ChartsBento />
+        <AiBento />
         <Materials />
         <Foundation />
         <Closing />
