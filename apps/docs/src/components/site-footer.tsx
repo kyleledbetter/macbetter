@@ -45,6 +45,7 @@ const columns = [
       { href: "/examples/analytics", label: "Analytics" },
       { href: "/examples/music", label: "Music" },
       { href: "/examples/home", label: "Home" },
+      { href: "/examples/assistant", label: "Assistant" },
       { href: "/themes", label: "Theme Studio" },
     ],
   },

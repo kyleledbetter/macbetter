@@ -4,6 +4,7 @@ import Link from "next/link"
 import * as React from "react"
 import { SiteFooter } from "@/components/site-footer"
 import { AnalyticsApp } from "./analytics/analytics"
+import { AssistantApp } from "./assistant/assistant"
 import { HomeApp } from "./home/home"
 import { MailApp } from "./mail/mail"
 import { MusicApp } from "./music/music"
@@ -54,6 +55,15 @@ const examples = [
       "A house whose kitchen has one of everything, down to a leak sensor under the sink: accessory tiles, scenes, cameras, a control sheet for each kind of accessory, automations and adding an accessory.",
     platforms: ["macOS", "iOS"],
     App: HomeApp,
+    mac: { width: 1160, height: 760 },
+  },
+  {
+    slug: "assistant",
+    title: "Assistant",
+    description:
+      "A chat app with history, projects and a new chat screen, a conversation that streams a scripted reply with reasoning, tool calls, sources and generated images, an inspector, and plugin and skill directories.",
+    platforms: ["macOS", "iOS"],
+    App: AssistantApp,
     mac: { width: 1160, height: 760 },
   },
 ]
@@ -110,7 +120,7 @@ function ExamplesGallery() {
             Better examples for better&nbsp;apps.
           </h1>
           <p className="stack-copy type-intro type-two-tone">
-            Settings, Mail, Analytics, Music and Home, built only from macbetter components.{" "}
+            Settings, Mail, Analytics, Music, Home and Assistant, built only from macbetter components.{" "}
             <strong>Each one runs live, keeps its own state, and changes idiom with the&nbsp;platform.</strong>
           </p>
         </header>

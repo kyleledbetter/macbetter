@@ -106,6 +106,10 @@
 }
 
 /* Floating: the body and the pane share the last column, the pane on top. */
+.mb-window:has(> .mb-window-sidebar):has(> .mb-inspector[data-variant="edge"]) > .mb-window-body {
+  grid-column: 2;
+}
+
 .mb-window:has(> .mb-inspector[data-variant="floating"]) > .mb-window-body {
   grid-column: -2 / -1;
 }

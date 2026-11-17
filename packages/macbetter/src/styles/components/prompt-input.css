@@ -450,7 +450,7 @@
 
 @scope ([data-platform="ios"], [data-platform="ipados"]) to (:scope [data-platform]) {
   .mb-prompt-input {
-    --mb-prompt-input-bg: var(--mb-material-thin);
+    --mb-prompt-input-bg: var(--mb-material-thick);
     --mb-prompt-input-edge: inset 0 1px 0 0 var(--mb-glass-edge), inset 0 0 0 var(--mb-hairline) var(--mb-glass-edge-soft),
       0 0 0 var(--mb-hairline) var(--mb-glass-border);
     --mb-prompt-input-shadow: var(--mb-shadow-3);

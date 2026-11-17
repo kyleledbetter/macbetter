@@ -28,6 +28,7 @@ const exampleSources = {
   analytics: { title: "Analytics", entry: "analytics/analytics.tsx", folder: "analytics" },
   music: { title: "Music", entry: "music/music.tsx", folder: "music" },
   home: { title: "Home", entry: "home/home.tsx", folder: "home" },
+  assistant: { title: "Assistant", entry: "assistant/assistant.tsx", folder: "assistant" },
 } satisfies Record<string, ExampleSourceManifest>
 
 type ExampleSlug = keyof typeof exampleSources
