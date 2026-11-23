@@ -100,7 +100,8 @@ export const metadata = { title: "Switch", description: "Turn a setting on or of
 ```
 
 - A demo is a default-exported component in its own file. Add `"use client"` only if it uses state or handlers. Its source is shown under the preview, so write it the way a user should copy it: imports from `macbetter/<name>`, real labels, realistic content (a Wi-Fi setting, not "Option 1"), every control named.
-- `<Demo name="…" />` props: `platforms={["ios","ipados"]}` to limit the picker, `wallpaper` to float the demo over a colorful backdrop (use it for anything translucent), `fill` for edge-to-edge layouts, `height={420}`, `hideCode` (the source stays closed behind a toggle in the preview bar instead of showing under the preview).
+- `<Demo name="…" />` props: `platforms={["ios","ipados"]}` to limit the picker, `wallpaper` to float the demo over a colorful backdrop (use it for anything translucent), `fill` for edge-to-edge layouts, `hideCode` (the source stays closed behind a toggle in the preview bar instead of showing under the preview).
+- Every preview is the same height (520px on small screens, 650px from 768px up; `--docs-stage-height`) and scrolls inside when a demo is taller. `height` on `<Demo>` is still accepted but no longer sizes anything. Dialogs, alerts, sheets and the command palette open inside the preview; anchored popups (menus, popovers) stay with their triggers.
 - Demos are centered in a flex row with wrapping. Wrap in your own `<div>` to lay out a column, using Tailwind classes or inline `style`.
 - Other MDX helpers: `<Callout type="note|tip|warning" title="…">`, `<Steps>`, fenced code blocks.
 - Icons in demos come from `lucide-react`, always with `aria-hidden="true"` beside a text label, or inside a button that has `aria-label`.

@@ -24,7 +24,7 @@ function sourceOf(name: string) {
 async function Demo({ name, hideCode, ...stage }: DemoProps) {
   const { default: Example } = await import(`@/demos/${name}.tsx`)
   return (
-    <div className="my-6">
+    <div className="my-6" data-demo={name}>
       <Stage {...stage} code={hideCode ? <CodeBlock code={sourceOf(name)} lang="tsx" /> : undefined}>
         <Example />
       </Stage>

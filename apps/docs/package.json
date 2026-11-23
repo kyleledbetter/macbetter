@@ -17,6 +17,7 @@
     "@phosphor-icons/react": "^2.1.10",
     "@ui-sdk/core": "0.1.0-beta.1",
     "@ui-sdk/react": "0.1.0-beta.1",
+    "@zumer/snapdom": "^3.8.2",
     "echarts": "^6.1.0",
     "lucide-react": "latest",
     "macbetter": "workspace:*",

@@ -35,6 +35,9 @@ importers:
       '@ui-sdk/react':
         specifier: 0.1.0-beta.1
         version: 0.1.0-beta.1(@types/react@19.3.0)(@ui-sdk/core@0.1.0-beta.1)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@zumer/snapdom':
+        specifier: ^3.8.2
+        version: 3.8.2
       echarts:
         specifier: ^6.1.0
         version: 6.1.0
@@ -1332,6 +1335,9 @@ packages:
 
   '@vitest/utils@3.2.7':
     resolution: {integrity: sha512-x6BDOd7dyo3PFLY3I9/HJ25X/6OurhGXk2/B9gOZNPF7XDVjeBK4k01lQE5uvDpbuheErh91qYuE1E2OEjK3Rw==}
+
+  '@zumer/snapdom@3.8.2':
+    resolution: {integrity: sha512-TONdpVPmzkaK/GOQe6NsH3GWog74oRxenePZKv0AeL6s5o0GPuOZT2UzA0W9Hgnaq/96XjkzOr5VjB5gJz1tCA==}
 
   acorn-jsx@5.3.2:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
@@ -4420,6 +4426,8 @@ snapshots:
       '@vitest/pretty-format': 3.2.7
       loupe: 3.2.1
       tinyrainbow: 2.0.0
+
+  '@zumer/snapdom@3.8.2': {}
 
   acorn-jsx@5.3.2(acorn@8.19.0):
     dependencies:

@@ -6,8 +6,10 @@ import { Toggle } from "macbetter/toggle"
 import type { Platform } from "macbetter"
 import { CodeIcon, ContrastIcon } from "lucide-react"
 import { usePreference } from "@ui-sdk/react/preferences"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { theme } from "@/lib/preferences"
+import { useStageScreen } from "@/components/use-stage-screen"
+import { StageImageMenu } from "@/components/preview-image"
 
 type StageProps = {
   children: React.ReactNode
@@ -17,6 +19,7 @@ type StageProps = {
   wallpaper?: boolean
   /** Lays the demo out edge to edge instead of centered. */
   fill?: boolean
+  /** No longer sizes anything: every preview is the same height, and taller content scrolls inside it. */
   height?: number
   /** Hides the platform picker, for demos that look the same everywhere. */
   bare?: boolean
@@ -33,7 +36,6 @@ function Stage({
   platforms = ["macos", "ipados", "ios"],
   wallpaper,
   fill,
-  height,
   bare,
   code,
 }: StageProps) {
@@ -49,11 +51,13 @@ function Stage({
   const [showCode, setShowCode] = useState(false)
 
   const width = widths[platform]
-  const minHeight = height ?? 220
+  const stageRef = useRef<HTMLDivElement>(null)
+  const canvasRef = useRef<HTMLDivElement>(null)
+  useStageScreen(stageRef, canvasRef)
 
   return (
     <>
-    <div className="docs-stage not-prose" data-wallpaper={wallpaper ? "" : undefined}>
+    <div ref={stageRef} className="docs-stage not-prose" data-wallpaper={wallpaper ? "" : undefined}>
       <div data-platform="macos" className="docs-stage-bar">
         {bare ? (
           <span />
@@ -79,6 +83,7 @@ function Stage({
               {width} pt
             </span>
           ) : null}
+          <StageImageMenu platform={platform} />
           <Button
             variant="plain"
             tone="neutral"
@@ -113,21 +118,20 @@ function Stage({
         // A forced scheme restates the theme, so every token is resolved again in that scheme.
         data-theme={scheme ? themeName : undefined}
         className={`docs-stage-canvas ${wallpaper ? "docs-wallpaper" : ""}`}
-        style={{ minHeight }}
+        ref={canvasRef}
       >
-        {wallpaper ? null : <div aria-hidden="true" className="docs-grid absolute inset-0" />}
-        <div
-          data-platform={platform}
-          data-macbetter=""
-          data-device={width ? "" : undefined}
-          className={
-            fill
-              ? "docs-stage-screen relative mx-auto w-full"
-              : "docs-stage-screen relative mx-auto flex w-full flex-wrap items-center justify-center gap-4 p-8"
-          }
-          style={{ maxWidth: width, minHeight, color: "var(--mb-label)" }}
-        >
-          {children}
+        <div className="docs-stage-content">
+          {wallpaper ? null : <div aria-hidden="true" className="docs-grid absolute inset-0" />}
+          <div
+            data-platform={platform}
+            data-macbetter=""
+            data-device={width ? "" : undefined}
+            data-fill={fill ? "" : undefined}
+            className="docs-stage-screen"
+            style={{ maxWidth: width, color: "var(--mb-label)" }}
+          >
+            {children}
+          </div>
         </div>
       </div>
     </div>

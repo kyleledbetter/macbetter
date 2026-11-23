@@ -908,10 +908,27 @@ body[data-macbetter] {
   }
 }
 
+/* Every preview is the same height, so moving between pages doesn't jump; taller content scrolls inside. */
+.docs-stage {
+  --docs-stage-height: 520px;
+}
+
+@media (width >= 768px) {
+  .docs-stage {
+    --docs-stage-height: 650px;
+  }
+}
+
 .docs-stage-canvas {
   position: relative;
-  display: flex;
-  justify-content: center;
+  height: var(--docs-stage-height);
+  overflow: auto;
+}
+
+/* Set by useStageScreen only when there's something to scroll: Chrome keeps the wheel in a contained box
+   even when it can't scroll, which would stop the page scrolling under the pointer. */
+.docs-stage-canvas[data-overflow] {
+  overscroll-behavior: contain;
 }
 
 .docs-stage-canvas:not(.docs-wallpaper) {
@@ -920,13 +937,62 @@ body[data-macbetter] {
     var(--mb-bg);
 }
 
+/* Grows with the demo, so the grid and the device column run the full scroll height. */
+.docs-stage-content {
+  position: relative;
+  display: flex;
+  min-height: 100%;
+}
+
 .docs-stage-canvas .docs-grid {
   opacity: 0.55;
 }
 
 /* The screen is a macbetter root, which paints --mb-bg; the canvas behind it is the surface here. */
 .docs-stage-screen {
+  position: relative;
+  width: 100%;
+  margin-inline: auto;
   background: transparent;
+}
+
+/* `safe` keeps the start of a demo wider or taller than the canvas reachable by scrolling. */
+.docs-stage-screen:not([data-fill]) {
+  display: flex;
+  flex-wrap: wrap;
+  place-content: safe center;
+  align-items: safe center;
+  gap: 16px;
+  padding: 32px;
+}
+
+/* A device frame shrinks to fit the canvas's height rather than scroll; the numbers are (height − padding) ÷ frame height. */
+.docs-stage-screen .mb-device-frame {
+  --docs-device-fit: 0.52;
+
+  zoom: min(var(--mb-device-scale), var(--docs-device-fit));
+}
+
+.docs-stage-screen .mb-device-frame[data-device="ipad"] {
+  --docs-device-fit: 0.53;
+}
+
+.docs-stage-screen .mb-device-frame[data-device="ipad"][data-orientation="portrait"] {
+  --docs-device-fit: 0.37;
+}
+
+@media (width >= 768px) {
+  .docs-stage-screen .mb-device-frame {
+    --docs-device-fit: 0.67;
+  }
+
+  .docs-stage-screen .mb-device-frame[data-device="ipad"] {
+    --docs-device-fit: 0.68;
+  }
+
+  .docs-stage-screen .mb-device-frame[data-device="ipad"][data-orientation="portrait"] {
+    --docs-device-fit: 0.48;
+  }
 }
 
 /* iPhone and iPad widths: the screen is a column with visible edges. */
@@ -938,6 +1004,168 @@ body[data-macbetter] {
 .docs-wallpaper .docs-stage-screen[data-device] {
   background: transparent;
   box-shadow: -0.5px 0 0 rgb(255 255 255 / 0.18), 0.5px 0 0 rgb(255 255 255 / 0.18);
+}
+
+/*
+ * Modal popups use the preview as their screen. They paint in the top layer,
+ * positioned against the window, so useStageScreen writes the preview's box
+ * as distances from the window's edges while one is open: --docs-canvas-* is
+ * the whole canvas (for the scrim), --docs-screen-* the device column's part
+ * of it that's in view (for the popup). Without them everything falls back to
+ * the window, as it was.
+ */
+.docs-stage {
+  --docs-screen: var(--docs-screen-top, 0px) var(--docs-screen-right, 0px) var(--docs-screen-bottom, 0px)
+    var(--docs-screen-left, 0px);
+  --docs-screen-w: var(--docs-screen-width, 100vw);
+  --docs-screen-h: var(--docs-screen-height, 100dvh);
+  --docs-screen-radius: calc(var(--radius-tile) * var(--docs-stage-live, 0));
+}
+
+.docs-stage :is(.mb-dialog-backdrop, .mb-alert-backdrop, .mb-sheet-backdrop, .mb-command-palette-backdrop) {
+  inset: var(--docs-canvas-top, 0px) var(--docs-canvas-right, 0px) var(--docs-canvas-bottom, 0px)
+    var(--docs-canvas-left, 0px);
+  border-end-start-radius: var(--docs-screen-radius);
+  border-end-end-radius: var(--docs-screen-radius);
+}
+
+:where(.docs-stage) .mb-dialog {
+  inset: var(--docs-screen);
+  width: min(var(--mb-dialog-w), calc(var(--docs-screen-w) - 32px));
+  max-height: calc(var(--docs-screen-h) - 48px);
+}
+
+.docs-stage-screen[data-platform="ipados"] {
+  --mb-dialog-height: min(620px, calc(var(--docs-screen-h) - 80px));
+}
+
+:where(.docs-stage) .mb-alert {
+  inset: var(--docs-screen);
+  width: min(var(--mb-alert-width), calc(var(--docs-screen-w) - 32px));
+  max-height: calc(var(--docs-screen-h) - 32px);
+}
+
+/* Spotlight sits in the upper part of the screen, so results grow downward without moving the field. */
+.docs-stage-screen[data-platform="macos"] {
+  --mb-command-top: max(calc(var(--docs-screen-h) * 0.14), 24px);
+}
+
+.docs-stage-screen:is([data-platform="ios"], [data-platform="ipados"]) {
+  --mb-command-top: 12px;
+}
+
+.docs-stage .mb-command-palette {
+  inset: calc(var(--docs-screen-top, 0px) + var(--mb-command-top)) var(--docs-screen-right, 0px) auto
+    var(--docs-screen-left, 0px);
+  width: min(var(--mb-command-width), calc(var(--docs-screen-w) - 24px));
+  max-height: calc(var(--docs-screen-h) - var(--mb-command-top) * 2);
+}
+
+.docs-stage .mb-command-palette .mb-command-list {
+  max-height: min(420px, calc(var(--docs-screen-h) * 0.6));
+}
+
+/*
+ * A sheet (and a dialog presented as one on a phone) moves inside a host that
+ * ui-sdk sizes to the window with inline styles; only !important outranks them.
+ * With a pointer the host clips the sheet as it slides in from the preview's
+ * edge. With touch the sheet scrolls inside the host, which runs 120px past the
+ * bottom (ui-sdk's toolbar bleed): keep that, so detents land where they should,
+ * and clip it at the preview's edge, rounded like the canvas.
+ */
+.docs-stage :is([data-slot="drawer-viewport"], [data-slot="dialog-viewport"]) {
+  inset: var(--docs-screen) !important;
+  border-end-start-radius: var(--docs-screen-radius);
+  border-end-end-radius: var(--docs-screen-radius);
+}
+
+.docs-stage :is([data-slot="drawer-viewport"], [data-slot="dialog-viewport"]):not(:has(> [data-driver="scroll-snap"])) {
+  overflow: clip !important;
+}
+
+.docs-stage :is([data-slot="drawer-viewport"], [data-slot="dialog-viewport"]):has(> [data-driver="scroll-snap"]) {
+  bottom: calc(var(--docs-screen-bottom, 0px) - 120px) !important;
+  clip-path: inset(0 0 120px 0 round 0 0 var(--docs-screen-radius) var(--docs-screen-radius));
+}
+
+.docs-stage .mb-sheet:is([data-side="bottom"], [data-side="top"]) {
+  max-height: calc(var(--docs-screen-h) - var(--mb-sheet-top-gap));
+}
+
+.docs-stage .mb-sheet[data-side="bottom"][data-large] {
+  height: calc(var(--docs-screen-h) - var(--mb-sheet-top-gap));
+}
+
+.docs-stage .mb-sheet:is([data-side="left"], [data-side="right"]) {
+  max-width: calc(var(--docs-screen-w) - 32px);
+}
+
+/* The preview is the screen, so a phone's own safe area doesn't push sheets down inside it. */
+.docs-stage-screen[data-platform="ios"] {
+  --mb-sheet-inspector-width: min(340px, calc(var(--docs-screen-w) * 0.85));
+  --mb-sheet-top-gap: 30px;
+  --mb-dialog-top-gap: 30px;
+}
+
+/*
+ * iPhone: the page sheet and the action sheet rise from the bottom of the
+ * preview. Nothing can clip a popup in the top layer, so each clips its own
+ * overhang below the preview. The slide and the clip read one number,
+ * --docs-slide (0 at rest, 1 off the bottom; registered by useStageScreen,
+ * since this stylesheet's build drops @property rules), so they move together on
+ * the main thread; a translate alone would run on the compositor and drift
+ * from the clip by a frame. The stage's screen is the outermost platform, so
+ * plain descendant selectors don't leak into a nested one.
+ */
+.docs-stage-screen[data-platform="ios"] .mb-dialog {
+  inset: calc(var(--docs-screen-top, 0px) + var(--mb-dialog-top-gap)) var(--docs-screen-right, 0px)
+    var(--docs-screen-bottom, 0px) var(--docs-screen-left, 0px);
+  width: min(var(--docs-screen-w), 440px);
+  max-height: none;
+  translate: 0 calc(var(--docs-slide, 0) * 100%);
+  clip-path: inset(-100px -100px calc(var(--docs-slide, 0) * 100%) -100px);
+  transition-property: --docs-slide, opacity;
+  transition-duration: var(--mb-spring-sheet-duration), var(--mb-duration-fast);
+  transition-timing-function: var(--mb-spring-sheet), var(--mb-ease-out);
+}
+
+.docs-stage-screen[data-platform="ios"] .mb-dialog:is([data-starting-style], [data-ending-style]) {
+  --docs-slide: 1;
+}
+
+.docs-stage-screen[data-platform="ios"] .mb-dialog[data-ending-style] {
+  transition-duration: var(--mb-duration-slow);
+  transition-timing-function: var(--mb-ease-ios);
+}
+
+/* On a phone the dialog is a real sheet that ui-sdk moves itself; only its height is the preview's. */
+.docs-stage-screen[data-platform="ios"] .mb-dialog[data-presentation="sheet"] {
+  inset: auto;
+  height: calc(var(--docs-screen-h) - var(--mb-dialog-top-gap));
+  translate: none;
+  clip-path: none;
+  transition: none;
+}
+
+/* It rests 8px above the edge. */
+.docs-stage-screen[data-platform="ios"] .mb-alert[data-variant="sheet"] {
+  inset: auto var(--docs-screen-right, 0px) calc(var(--docs-screen-bottom, 0px) + 8px) var(--docs-screen-left, 0px);
+  width: min(calc(var(--docs-screen-w) - 16px), 420px);
+  max-height: calc(var(--docs-screen-h) - 48px);
+  translate: 0 calc(var(--docs-slide, 0) * (100% + 16px));
+  clip-path: inset(-100px -100px calc(var(--docs-slide, 0) * (100% + 16px) - 8px) -100px);
+  transition-property: opacity, --docs-slide;
+  transition-duration: var(--mb-duration-fast), var(--mb-spring-sheet-duration);
+  transition-timing-function: var(--mb-ease-out), var(--mb-spring-sheet);
+}
+
+.docs-stage-screen[data-platform="ios"] .mb-alert[data-variant="sheet"]:is([data-starting-style], [data-ending-style]) {
+  --docs-slide: 1;
+}
+
+.docs-stage-screen[data-platform="ios"] .mb-alert[data-variant="sheet"][data-ending-style] {
+  transition-duration: var(--mb-duration-base);
+  transition-timing-function: var(--mb-ease-in-out);
 }
 
 /* ── Component index: lineup tiles ─────────────────────────── */

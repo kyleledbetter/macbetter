@@ -12,6 +12,7 @@ import Link from "next/link"
 import * as React from "react"
 import type { ExampleSourceSet, SourceFile } from "@/lib/example-sources"
 import { colorScheme, theme, themeLabels, themes, type ThemeName } from "@/lib/preferences"
+import { ExampleImageMenu } from "@/components/preview-image"
 import { CodeView, copyAllFiles, copyFile, copyInstall, useCopied } from "./code-view"
 import { useExampleSource } from "./source-context"
 
@@ -323,6 +324,7 @@ function ExampleShell({ title, platforms, children }: ExampleShellProps) {
           {narrow ? null : (
             <>
               <ThemePicker />
+              {showCode ? null : <ExampleImageMenu stage={stageRef} platform={platform} />}
               <SchemeButton />
             </>
           )}
